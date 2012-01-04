@@ -3,8 +3,8 @@ Contributors: C- Pres
 Donate link: http://c-pr.es/satellite
 Tags: slideshow pro, photographer, galleries, satellite, orbit, zurb, zurb orbit, slideshow gallery, slides, slideshow, image gallery, gallery, slideshow satellite, photography, slideshow orbit
 Requires at least: 3.0
-Tested up to: 3.2.1
-Stable tag: 1.0
+Tested up to: 3.3.1
+Stable tag: 1.0.1
 
 Rad photo slideshow. Build the narliest content displays with Slideshow Satellite's incredible customization capabilities. 
 

@@ -154,7 +154,7 @@ div.timer {
     right: -4px;
     opacity: .6;
     cursor: pointer;
-    display: <?php echo($styles['playshow'] == Y) ? "block" : "none";?>
+    display: <?php echo($styles['playshow'] == Y) ? "block" : "none";?>;
     z-index: 100; }
 
 span.rotator {

@@ -5,7 +5,7 @@ Plugin URI: http://c-pr.es/projects/satellite
 Author: C- Pres
 Author URI: http://c-pr.es/membership-options
 Description: Rad Photo Slideshow. Build the most narly content displays ever.
-Version: 1.0
+Version: 1.0.1
 */
 define('DS', DIRECTORY_SEPARATOR);
 define( 'SATL_VERSION', '1' );

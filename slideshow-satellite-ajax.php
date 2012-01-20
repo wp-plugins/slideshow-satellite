@@ -7,7 +7,7 @@ require_once(ABSPATH . 'wp-admin' . DS . 'admin-functions.php');
 class SatelliteAjax extends SatellitePlugin {
 	var $safecommands = array('slides_order');
 	function SatelliteAjax($cmd) {
-		$this -> register_plugin(SATL_PLUGIN_NAME, __FILE__);
+		$this -> register_plugin('slideshow-satellite', __FILE__);
 		if (!empty($cmd)) {		
 			if (in_array($cmd, $this -> safecommands) || current_user_can('edit_plugins')) {			
 				if (method_exists($this, $cmd)) {

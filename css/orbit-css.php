@@ -25,11 +25,14 @@ IF ($styles['navbuttons'] == 3) { $navright = 'url(../pro/images/right-pl.png) n
 IF ($styles['nav'] == 'off') { $navright = 'none'; $navleft = 'none'; }
 
 $extrathumbarea = (int) $styles['thumbareamargin'];
-$topspace = (int) $styles['height'] *.67;
+$brtopspace = (int) $styles['height'] *.69;
+$trtopspace = (int) $styles['height'] *.17;
+$sattxtwidth = (int) $styles['width'] *.48;
+$arrowpush = (int) $styles['navpush'];
 $thumbrow = (int) $styles['thumbspacing'];
 IF ($styles['infomin'] == "Y") {
     ?>
-    .orbit-caption h5, .satellite-text h5, .orbit-caption p, .satellite-text p { margin:0 !important; }
+    .orbit-caption h5, .orbit-caption p { margin:0 !important; }
 <?php } ?>
     
 /*** CLEAR CSS ****/
@@ -233,31 +236,38 @@ span.pause.active {
 .orbit-caption p {
     color: <?php echo $styles['infocolor']; ?>;
     padding-bottom: 7px;
+    font-size:.9em;
+    font-weight:bold;
 }
-div.orbit-wrapper .satellite-text {
+div.orbit-wrapper .sattext {
     bottom: auto !important;
     height: auto;
     float:right;
     text-align:left;
     position:absolute;
-    width:40%;
+    width:<?php echo($sattxtwidth)?>px;
     background: rgba(<?php echo(hex2RGB($styles['infobackground'], true)); ?>,.6);
     border: 2px solid rgba(<?php echo(hex2RGB($styles['infocolor'], true)); ?>,.6);
     border-right:0px;
-    top: <?php echo ($topspace)?>px;
     }
+div.orbit-wrapper .sattextBR {
+    top: <?php echo ($brtopspace)?>px;    
+}
+div.orbit-wrapper .sattextTR {
+    top: <?php echo ($trtopspace)?>px;    
+}
 a.sorbit-link:hover {
     text-decoration:none;}
     
-div.satellite-text p { color:<?php echo $styles['infocolor']; ?>; padding:0 8px 3px; font-size:.9 em;}
-div.satellite-text h5 {
+div.sattext p { color:<?php echo $styles['infocolor']; ?>; padding:0 8px 3px;}
+div.sattext h5 {
     color:<?php echo $styles['infocolor']; ?>; 
     padding:4px 8px 3px; 
     font-size:1.2em; 
     }
     
 .orbit-default .thumb-on {
-    margin-bottom: <?php echo ((int) $styles['thumbheight'] + $styles['thumbspacing'] + $styles['thumbspacing'] + $styles['thumbmargin']+5); ?>px; 
+    margin-bottom: <?php echo ((int) $styles['thumbheight'] + $styles['thumbspacing'] + $styles['thumbspacing'] +5); ?>px; 
 }
 .orbit-default.default-thumbs .orbit-wrapper {
     height: <?php echo ((int) $styles['height'] + $styles['thumbheight'] + $styles['thumbspacing'] + $styles['thumbspacing'] + $styles['thumbmargin'] + 5); ?>px;
@@ -279,10 +289,16 @@ div.slider-nav span {
 div.slider-nav span.right {
     background: <?php echo($navright); ?>;
 	/*background: background: url(../images/right-arrow.png) no-repeat 0 0*/
-    right: 0; }
+    right: 0;
+    <?php if ($arrowpush > 0) ?>
+        margin-right: -<?php echo((int)$arrowpush); ?>px;
+    }
 div.slider-nav span.left {
     background: <?php echo($navleft); ?>;
-    left: 0; }
+    left: 0; 
+    <?php if ($arrowpush > 0) ?>
+        margin-left: -<?php echo((int)$arrowpush); ?>px;
+    }
 
 /* BULLET NAV
    ================================================== */
@@ -327,11 +343,13 @@ ul.orbit-thumbnails {
     height: <?php echo($styles['thumbheight']);?>px;
     -moz-border-radius:4px;
     -webkit-border-radius:4px;
-    border-radius:4px
-    background: none;
-    padding: 0;
+    border: 2px solid <?php echo($styles['background'])?>;
+    border-radius:4px;
+    background: none !important;
+    padding: 0 !important;
     opacity: .<?php echo($styles['thumbopacity']);?>;
     overflow:hidden;
+    margin: <?php echo( (int) ($styles['thumbspacing']-2));?>px;
 }
 .orbit-thumbnails li img {
     max-width:100%;
@@ -380,10 +398,7 @@ ul.orbit-thumbnails {
 .full-right .orbit-thumbnails li, .full-left .orbit-thumbnails li {
     height:<?php echo ((int) $styles['thumbheight']); ?>px;
     width:<?php echo ((int) $styles['thumbheight']); ?>px;
-    margin:<?php echo ((int) $styles['thumbspacing']) ?>px;
-}
-.full-right .orbit-thumbnails li.active, .full-left .orbit-thumbnails li.active {
-    margin:<?php echo ((int) $styles['thumbspacing']-2) ?>px;
+    margin:<?php echo ((int) $styles['thumbspacing'] -2) ?>px;
 }
 .full-right .orbit-thumbnails, .full-left .orbit-thumbnails {
     margin: 0 !important;
@@ -408,12 +423,16 @@ ul.orbit-thumbnails {
 }
 .full-right .thumbholder, .full-left .thumbholder {
     width: <?php echo (int)($styles['thumbarea']); ?>px;
-}
+    }
 .full-right .thumbholder {
     margin-left: <?php echo ($extrathumbarea );?>px;
+    float:left;
+    left:0;
 }
 .full-left .thumbholder {
     margin-right: <?php echo ($extrathumbarea );?>px;
+    float:right;
+    right:0;
 }
 div.full-right .orbit-wrapper div.timer {
     right:<?php echo ((int)($styles['thumbarea'] + $extrathumbarea )); ?>px;
@@ -426,11 +445,11 @@ div.full-right .orbit-wrapper div.timer {
     width:<?php echo ((int) ($styles['width'])) ?>px;
     left:<?php echo ((int)($styles['thumbarea'] + $extrathumbarea)); ?>px;
 }
-.full-left div.satellite-text {
+.full-left div.sattext {
     left: auto;
 }
-.full-left div.satellite-text, .full-right div.satellite-text {
-    width:<?php echo ((int) ($styles['width']/2)) ?>px; 
+.full-left div.sattext, .full-right div.sattext {
+    width:<?php echo ($sattxtwidth) ?>px; 
 }
 .full-right .slider-nav span.right {
     right:<?php echo ((int)($styles['thumbarea'] + $extrathumbarea)); ?>px

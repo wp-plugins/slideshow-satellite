@@ -25,15 +25,7 @@
             	<span class="howto"><?php _e('Same as setting that <em>target</em> pages are &quot;_self&quot; or &quot;_blank&quot;', SATL_PLUGIN_NAME); ?></span>
             </td>
         </tr>
-        <tr>
-            <th><label for="wpattach"><?php _e('Enable WP Attachment Page?', SATL_PLUGIN_NAME); ?></label></th>
-            <td>
-                <label><input <?php echo ($this -> get_option('wpattach') == "Y") ? 'checked="checked"' : ''; ?> type="radio" name="wpattach" value="Y" id="wpattach_Y" /> <?php _e('Yes', SATL_PLUGIN_NAME); ?></label>
-            	<label><input <?php echo ($this -> get_option('wpattach') == "N") ? 'checked="checked"' : ''; ?> type="radio" name="wpattach" value="N" id="wpattach_N" /> <?php _e('No', SATL_PLUGIN_NAME); ?></label>
-            	<span class="howto"><?php _e('If yes, Wordpress images will open to their associated attachment page', SATL_PLUGIN_NAME); ?></span>
-            </td>
-        </tr>
-		<?php if ( SATL_PRO ) {		?>
+	<?php if ( SATL_PRO ) {		?>
 		<tr>
         	<th><label for="captionlink_N"><?php _e('Use Caption Field as a Link?', SATL_PLUGIN_NAME); ?></label></th>
             <td>

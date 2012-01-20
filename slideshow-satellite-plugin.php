@@ -8,6 +8,8 @@ class SatellitePlugin {
     var $debugging = false;
     var $menus = array();
     var $latestorbit = 'jquery.orbit-1.3.0.js';
+    var $cssfile = 'orbit-css.php';
+    var $cssadmin = 'admin-styles.css';
     var $sections = array(
         'satellite' => 'satellite-slides',
         'settings' => 'satellite',
@@ -37,83 +39,86 @@ class SatellitePlugin {
             @ini_set('display_errors', 1);
         }
         $this->add_filter('the_posts', 'conditionally_add_scripts_and_styles'); // the_posts gets triggered before wp_head
+        $this->add_action('admin_head', 'add_admin_styles');
         //$this->add_action('wp_enqueue_scripts', 'sg2_enqueue_styles');
 //        $this->add_action('wp_footer', 'print_satellite_styles');
 //        $this->add_action('wp_footer', 'print_satellite_scripts');
 
         return true;
     }
-    
-function conditionally_add_scripts_and_styles($posts){
-	if (empty($posts)) return $posts;
- 
-	$shortcode_found = false; // use this flag to see if styles and scripts need to be enqueued
-	foreach ($posts as $post) {
-		if (stripos($post->post_content, '[gpslideshow') !== false) {
-			$shortcode_found = true; // bingo!
-                        $pID = $post->ID;
-			break;
-		}
-		elseif (stripos($post->post_content, '[satellite') !== false) {
-			$shortcode_found = true; // bingo!
-                        $pID = $post->ID;
-			break;
-		}
-	}
-        
-	if ($shortcode_found) {
-        $cssfile = 'orbit-css.php';
-        $satlStyleFile = SATL_PLUGIN_DIR . '/css/' . $cssfile;
-        $satlStyleUrl = SATL_PLUGIN_URL . '/css/' . $cssfile . '?v=' . SATL_VERSION . '&amp;pID=' . $pID;
-        if ($_SERVER['HTTPS']) {
-            $satlStyleUrl = str_replace("http:", "https:", $satlStyleUrl);
-        }
-        //$infogal = $this;
-        if (file_exists($satlStyleFile)) {
-            if ($styles = $this->get_option('styles')) {
-                foreach ($styles as $skey => $sval) {
-                    $satlStyleUrl .= "&amp;" . $skey . "=" . urlencode($sval);
-                }
-            }
-            $width_temp = $this->get_option('width_temp');
-            $height_temp = $this->get_option('height_temp');
-            $align_temp = $this->get_option('align_temp');
-            $nav_temp = $this->get_option('nav_temp');
-            //print_r($wp_query->current_post);
-                    
-            if (is_array($width_temp)) {
-                foreach ($width_temp as $skey => $sval) {
-                    if ($skey == $pID) 
-                        $satlStyleUrl .= "&amp;width_temp=" . urlencode($sval);
-                }
-            }
-            if (is_array($height_temp)) {
-                foreach ($height_temp as $skey => $sval) {
-                    if ($skey == $pID)
-                        $satlStyleUrl .= "&amp;height_temp=" . urlencode($sval);
-                }
-            }
-            if (is_array($align_temp)) {
-                foreach ($align_temp as $skey => $sval) {
-                    if ($skey == $pID)
-                        $satlStyleUrl .= "&amp;align=" . urlencode($sval);
-                }
-            }
-            if (is_array($nav_temp)) {
-                foreach ($nav_temp as $skey => $sval) {
-                    if ($skey == $pID)
-                        $satlStyleUrl .= "&amp;nav=" . urlencode($sval);
-                }
-            }
-            wp_register_style(SATL_PLUGIN_NAME . "_style", $satlStyleUrl);
-	}
+    function add_admin_styles() {
+        $adminStyleUrl = SATL_PLUGIN_URL . '/css/' . $this -> cssadmin . '?v=' . SATL_VERSION;
+        wp_register_style(SATL_PLUGIN_NAME . "_adstyle", $adminStyleUrl);
+        wp_enqueue_style(SATL_PLUGIN_NAME . "_adstyle");
+    }
+    function conditionally_add_scripts_and_styles($posts){
+            if (empty($posts)) return $posts;
 
-		// enqueue here
-            wp_enqueue_style(SATL_PLUGIN_NAME . "_style");
-            wp_enqueue_script(SATL_PLUGIN_NAME . "_script");
-        }
-	return $posts;
-}
+            $shortcode_found = false; // use this flag to see if styles and scripts need to be enqueued
+            foreach ($posts as $post) {
+                    if (( stripos($post->post_content, '[gpslideshow') !== false ) ||
+                    ( stripos($post->post_content, '[satellite') !== false) ||
+                    ( stripos($post->post_content, '[slideshow') !== false && $this->get_option('embedss') == "Y" )
+                    ) {
+                            $shortcode_found = true; // bingo!
+                            $pID = $post->ID;
+                            break;
+                    }
+            }
+
+            if ($shortcode_found) {
+
+            $satlStyleFile = SATL_PLUGIN_DIR . '/css/' . $this -> cssfile;
+            $satlStyleUrl = SATL_PLUGIN_URL . '/css/' . $this -> cssfile . '?v=' . SATL_VERSION . '&amp;pID=' . $pID;
+            if ($_SERVER['HTTPS']) {
+                $satlStyleUrl = str_replace("http:", "https:", $satlStyleUrl);
+            }
+            //$infogal = $this;
+            if (file_exists($satlStyleFile)) {
+                if ($styles = $this->get_option('styles')) {
+                    foreach ($styles as $skey => $sval) {
+                        $satlStyleUrl .= "&amp;" . $skey . "=" . urlencode($sval);
+                    }
+                }
+                $width_temp = $this->get_option('width_temp');
+                $height_temp = $this->get_option('height_temp');
+                $align_temp = $this->get_option('align_temp');
+                $nav_temp = $this->get_option('nav_temp');
+                //print_r($wp_query->current_post);
+
+                if (is_array($width_temp)) {
+                    foreach ($width_temp as $skey => $sval) {
+                        if ($skey == $pID) 
+                            $satlStyleUrl .= "&amp;width_temp=" . urlencode($sval);
+                    }
+                }
+                if (is_array($height_temp)) {
+                    foreach ($height_temp as $skey => $sval) {
+                        if ($skey == $pID)
+                            $satlStyleUrl .= "&amp;height_temp=" . urlencode($sval);
+                    }
+                }
+                if (is_array($align_temp)) {
+                    foreach ($align_temp as $skey => $sval) {
+                        if ($skey == $pID)
+                            $satlStyleUrl .= "&amp;align=" . urlencode($sval);
+                    }
+                }
+                if (is_array($nav_temp)) {
+                    foreach ($nav_temp as $skey => $sval) {
+                        if ($skey == $pID)
+                            $satlStyleUrl .= "&amp;nav=" . urlencode($sval);
+                    }
+                }
+                wp_register_style(SATL_PLUGIN_NAME . "_style", $satlStyleUrl);
+            }
+
+                    // enqueue here
+                wp_enqueue_style(SATL_PLUGIN_NAME . "_style");
+                wp_enqueue_script(SATL_PLUGIN_NAME . "_script");
+            }
+            return $posts;
+    }
     function init_class($name = null, $params = array()) {
         if (!empty($name)) {
             $name = $this->pre . $name;
@@ -176,6 +181,7 @@ function conditionally_add_scripts_and_styles($posts){
             'infobackground' => "#000000",
             'infocolor' => "#FFFFFF",
             'playshow'  => "Y",
+            'navpush'   => "0",
             'infomin' => "Y"
         );
 
@@ -191,11 +197,9 @@ function conditionally_add_scripts_and_styles($posts){
         $this->add_option('captionlink', "N");
         $this->add_option('transition', "F");
         $this->add_option('information', "Y");
-        $this->add_option('information_temp', "Y");
         $this->add_option('infospeed', 10);
         $this->add_option('showhover', "P");
         $this->add_option('thumbnails', "N");
-        $this->add_option('thumbnails_temp', "N");
         $this->add_option('thumbposition', "bottom");
         $this->add_option('thumbscrollspeed', 5);
         $this->add_option('autoslide', "Y");
@@ -203,9 +207,9 @@ function conditionally_add_scripts_and_styles($posts){
         $this->add_option('imagesbox', "T");
         $this->add_option('autospeed', 10);
         $this->add_option('abscenter', "Y");
-        $this->add_option('width_temp', "450");
-        $this->add_option('height_temp', "300");
-
+        $this->add_option('embedss', "Y");
+        $this->add_option('satwiz', "Y");
+        $this->add_option('db_version', "1.0");
         // Orbit Only
         $this->add_option('autospeed2', 5000);
         $this->add_option('duration', 700);
@@ -432,28 +436,29 @@ function conditionally_add_scripts_and_styles($posts){
         return false;
     }
 
-    function check_table($model = null) {
+    function check_table( $model = null ) {
         global $wpdb;
-
-        if (!empty($model)) {
-            if (!empty($this->fields) && is_array($this->fields)) {
-                if (!$wpdb->get_var("SHOW TABLES LIKE '" . $this->table . "'")) {
-                    $query = "CREATE TABLE `" . $this->table . "` (";
+        
+        if ( !empty($model) ) {
+            if ( !empty($this->fields) && is_array($this->fields ) ) {
+                if ( !$wpdb->get_var("SHOW TABLES LIKE '" . $this->table . "'"  || $this->get_option('db_version') != SATL_VERSION) ) {
+                    $query = "CREATE TABLE " . $this->table . " (\n";
                     $c = 1;
 
-                    foreach ($this->fields as $field => $attributes) {
-                        if ($field != "key") {
+                    foreach ( $this->fields as $field => $attributes ) {
+                        if ( $field != "key" ) {
                             $query .= "`" . $field . "` " . $attributes . "";
+                            //$query .= "`".$field . "` " . $attributes ;
                         } else {
                             $query .= "" . $attributes . "";
                         }
                         if ($c < count($this->fields)) {
-                            $query .= ",";
+                            $query .= ",\n";
                         }
                         $c++;
                     }
 
-                    $query .= ") ENGINE=MyISAM AUTO_INCREMENT=1 CHARSET=UTF8;";
+                    $query .= ");";
 
                     if (!empty($query)) {
                         $this->table_query[] = $query;
@@ -469,8 +474,9 @@ function conditionally_add_scripts_and_styles($posts){
                 }
 
                 if (!empty($this->table_query)) {
-                    require_once(ABSPATH . 'wp-admin' . DS . 'upgrade-functions.php');
+                    require_once(ABSPATH . 'wp-admin'.DS.'includes'.DS.'upgrade.php');
                     dbDelta($this->table_query, true);
+                    $this -> update_option('db_version', SATL_VERSION);
                 }
             }
         }
@@ -603,6 +609,5 @@ function conditionally_add_scripts_and_styles($posts){
         }
         return $links;
     }
-
 }
 ?>

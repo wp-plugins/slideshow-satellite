@@ -31,7 +31,7 @@ class SatelliteHtmlHelper extends SatellitePlugin {
 	function thumbname($filename = null, $append = "thumb") {
 		if (!empty($filename)) {
 			$name = $this -> strip_ext($filename, "name");
-			$ext = $this -> strip_ext($filename, "ext");
+			$ext = strtolower($this -> strip_ext($filename, "ext"));
 			
 			return $name . '-' . $append . '.' . $ext;
 		}

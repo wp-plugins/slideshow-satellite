@@ -5,6 +5,9 @@ wp_nonce_field('closedpostboxes', 'closedpostboxesnonce', false);
 wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
 ?>
 <div class="wrap">
+    
+        <img src="<?php echo(SATL_PLUGIN_URL.'/images/Satellite-Logo-sm.png');?>" style="height:100px" />
+        
 	<h2><?php _e('Configuration Settings', SATL_PLUGIN_NAME); ?></h2>
 	
 	<form action="<?php echo $this -> url; ?>" name="post" id="post" method="post">
@@ -14,16 +17,16 @@ wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
 				<?php do_meta_boxes($this -> menus['satellite'], 'side', $post); ?>
                 <?php do_action('submitpage_box'); ?>
 				<div id="submitdiv" class="postbox">
-							<?php if(SATL_PRO) {?>
+                                     <?php if(SATL_PRO) {?>
                 	<h3>Thank you plugin supporter!</h3>
-								<?php $satellitebtn = "Get Support";?>
-								<?php } else { ?>
+                                        <?php $satellitebtn = "Get Support";?>
+                                        <?php } else { ?>
                 	<h3>Slideshow Satellite Premium!</h3>
-								<?php $satellitebtn = "Learn More & Get it";?>
-								<?php } ?>
+                                        <?php $satellitebtn = "Learn More & Get it";?>
+                                     <?php } ?>
                     <div class="inside">
                         <div id="minor-publishing">
-                            <div id="misc-publishing-actions">
+                            <div id="misc-publishing-actions" class="preminfo">
                                 <h4>What's different on the Premium Edition?</h4>
                                 <p>Display multiple slideshows in a page</p>
                                 <p>Customize height and width per use</p>
@@ -35,7 +38,7 @@ wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
                         </div>
                         <div id="major-publishing-actions">
                             <div id="publishing-action">
-                                <a href="http://c-pr.es/satellite" class="button-primary" target="_blank"><?php echo($satellitebtn); ?></a>
+                                <a href="http://c-pr.es/projects/satellite" class="button-primary" target="_blank"><?php echo($satellitebtn); ?></a>
                             </div>
                             <br class="clear" />
                         </div>
@@ -48,7 +51,7 @@ wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
 					<?php do_meta_boxes($this -> menus['satellite'], 'normal', $post); ?>
 				</div>
 			</div>
-			<div id="side-info-column" class="inner-sidebar" style="margin-top:450px">		
+			<div id="side-info-column" class="inner-sidebar inner2">		
 				<?php do_meta_boxes($this -> menus['satellite'], 'side', $post); ?>
                 <?php do_action('submitpage_box'); ?>
 			</div>
@@ -56,4 +59,5 @@ wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
 			
 		</div>
 	</form>
+        <h4><?php _e('Current Satellite Version:', SATL_PLUGIN_NAME); ?><?php echo($this->get_option('db_version'));?> </h4>
 </div>

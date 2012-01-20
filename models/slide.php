@@ -16,11 +16,11 @@ class SatelliteSlide extends SatelliteDbHelper {
 		'image_url'		=>	"VARCHAR(200) NOT NULL DEFAULT ''",
 		'uselink'		=>	"ENUM('Y','N') NOT NULL DEFAULT 'N'",
 		'link'			=>	"VARCHAR(200) NOT NULL DEFAULT ''",
-                'textlocation'		=>	"INT(11) NOT NULL DEFAULT '0'",
+                'textlocation'		=>	"VARCHAR(5) NOT NULL DEFAULT 'D'",
 		'order'			=>	"INT(11) NOT NULL DEFAULT '0'",
 		'created'		=>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
 		'modified'		=>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
-		'key'			=>	"PRIMARY KEY (`id`)",
+		'key'			=>	"PRIMARY KEY  (`id`)",
 	);
 	function SatelliteSlide($data = array()) {
 		global $wpdb;
@@ -38,9 +38,9 @@ class SatelliteSlide extends SatelliteDbHelper {
 	}
 	function defaults() {
 		$defaults = array(
-			'order'				=>	0,
-			'created'			=>	SatelliteHtmlHelper::gen_date(),
-			'modified'		=>	SatelliteHtmlHelper::gen_date(),
+                    'order'		=>	0,
+                    'created'		=>	SatelliteHtmlHelper::gen_date(),
+                    'modified'          =>	SatelliteHtmlHelper::gen_date(),
 		);
 		
 		return $defaults;
@@ -128,8 +128,9 @@ class SatelliteSlide extends SatelliteDbHelper {
 							@fclose($fh);
 							$name = SatelliteHtmlHelper::strip_ext($filename, 'filename');
 							$ext = SatelliteHtmlHelper::strip_ext($filename, 'ext');
-							$thumbfull = $filepath . $name . '-thumb.' . strtolower($ext);
-							$smallfull = $filepath . $name . '-small.' . strtolower($ext);
+                                                        $ext = strtolower($ext);
+							$thumbfull = $filepath . $name . '-thumb.' . $ext;
+							$smallfull = $filepath . $name . '-small.' . $ext;
 							image_resize($filefull, $width = 100, $height = 100, $crop = true, $append = 'thumb', $dest = null, $quality = 100);
 							image_resize($filefull, $width = 50, $height = 50, $crop = true, $append = 'small', $dest = null, $quality = 100);
 							@chmod($filefull, 0777);

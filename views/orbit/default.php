@@ -43,12 +43,12 @@ if (!empty($slides)) :
                     ?>
                     <?PHP if ($this->get_option('wpattach') == 'Y') { ?>
                         <a href="<?php echo $attachment_link; ?>" rel="" title="<?php echo $slider->post_title; ?>">
-                    <?PHP } elseif ($imagesbox == ("T" || "S") && $this->get_option('nolinker') != 'Y') { ?>
+                    <?PHP } elseif ($imagesbox != "N" && $this->get_option('nolinker') != 'Y') { ?>
                         <a class="thickbox sorbit-link" href="<?php echo $full_image_href[0]; ?>" rel="" title="<?php echo $slider->post_title; ?>">
                     <?PHP } ?>
                         <img <?php echo ($this->get_option('abscenter') == "Y") ? "class='absoluteCenter'":"" ?> src="<?php echo $full_image_href[0]; ?>" 
-                             alt="<?php echo $imagesbox . $slider->post_title; ?>" />
-                        <?PHP if ($imagesbox == ("T" || "S" || "P")) { ?></a><?PHP } ?>
+                             alt="<?php echo $slider->post_title; ?>" />
+                        <?PHP if ($imagesbox != "N" && $this->get_option('nolinker') != 'Y') { ?></a><?PHP } ?>
                 </div>
             
                 <span class="orbit-caption<?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' thumb-on' : ''; ?>" id="post-<?php echo $slider->ID; ?>">
@@ -92,16 +92,16 @@ if (!empty($slides)) :
                 <?php foreach ($slides as $slider) : ?>     
                     <?php
                     if ($this->get_option('abscenter') == "Y" ) {
-                        echo "<div class='sorbit-wide absoluteCenter' data-caption='#custom-$i'
+                        echo "<div class='sorbit-wide absoluteCenter' data-caption='#custom{$satellite_init_ok}-$i'
                             data-thumb='{$this->Html->image_url($this->Html->thumbname($slider->image))}'>";
                     } else {
-                        echo "<div class='sorbit-basic' data-caption='#custom-$i'
+                        echo "<div class='sorbit-basic' data-caption='#custom{$satellite_init_ok}-$i'
                             data-thumb='{$this->Html->image_url($this->Html->thumbname($slider->image))}'>";
                     }
                     ?>					
                     <?php if ($slider->uselink == "Y" && !empty($slider->link)) : ?>
                         <a href="<?php echo $slider->link; ?>" title="<?php echo $slider->title; ?>" target="<?php echo ($this->get_option('pagelink') == "S") ? "_self":"_blank" ?>">
-                    <?PHP elseif ($imagesbox == ("T" || "S" || "P") && $this->get_option('nolinker') != 'Y') : ?>
+                    <?PHP elseif ($imagesbox != "N" && $this->get_option('nolinker') != 'Y') : ?>
                         <a class="thickbox sorbit-link" href="<?php echo $this->Html->image_url($slider->image); ?>" rel="" title="<?php echo $slider->title; ?>">
                     <?PHP endif; ?>
 
@@ -110,14 +110,17 @@ if (!empty($slides)) :
                         alt="<?php echo $slider->title; ?>"                       
                         />
                     
-                    <?PHP if ($imagesbox == ("T" || "S" || "P") || $slider->uselink == "Y") : ?></a><?PHP endif; ?>
+                    <?PHP if ($imagesbox != "N" || $slider->uselink == "Y") : ?></a><?PHP endif; ?>
                 </div>
-
-                <span class="orbit-caption<?php echo ($slider->textlocation == '2') ? " satellite-text":""?><?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' thumb-on' : ''; ?>" id="custom-<?php echo $i; ?>">
+                <?php if ($slider->textlocation != "N") { ?>
+                <span class="orbit-caption<?php echo ($slider->textlocation == 'BR'|| $slider->textlocation == 'TR') ? ' sattext sattext'.$slider->textlocation:''?><?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' thumb-on' : ''; ?>" id='custom<?php echo ($satellite_init_ok.'-'.$i); ?>'>
                     <h5><?php echo $slider->title; ?></h5>
                     <p><?php echo $slider->description; ?> </p>
                 </span>   
-                  
+                <?php } else { ?>
+                    <span class="sattext-none" id='custom<?php echo ($satellite_init_ok.'-'.$i); ?>'>
+                    </span>
+                <?php } ?>
                 <?php $i = $i +1; ?>
             <?php endforeach; ?>
             </div>

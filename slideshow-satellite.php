@@ -4,11 +4,11 @@ Plugin Name: Slideshow Satellite
 Plugin URI: http://c-pr.es/projects/satellite
 Author: C- Pres
 Author URI: http://c-pr.es/membership-options
-Description: Rad Photo Slideshow. Build the most narly content displays ever.
-Version: 1.0.1
+Description: Display photography and content in new ways with this slideshow. Slideshow Satellite uses Orbit to give a multitude of transition options and customizations.
+Version: 1.0.2
 */
 define('DS', DIRECTORY_SEPARATOR);
-define( 'SATL_VERSION', '1' );
+define( 'SATL_VERSION', '1.0.2' );
 $uploads = wp_upload_dir();
 if ( ! defined( 'SATL_PLUGIN_BASENAME' ) )
 	define( 'SATL_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -43,13 +43,17 @@ class Satellite extends SatellitePlugin {
 //		$this -> add_action('sg2_enqueue_styles');
 		
 		//WordPress filter hooks
+              if ( $this -> get_option('satwiz') != "N") {
 		$this -> add_filter('mce_buttons');
 		$this -> add_filter('mce_external_plugins');
+              }
 		$this -> add_filter('plugin_action_links', 'add_satl_settings_link', 10, 2 );			
 		
-		add_shortcode('slideshow', array($this, 'embed'));
 		add_shortcode('satellite', array($this, 'embed'));
 		add_shortcode('gpslideshow', array($this, 'embed'));
+                if ($this->get_option('embedss') == "Y") {
+        		add_shortcode('slideshow', array($this, 'embed'));
+                }
 		
 	}
 	function admin_menu() {
@@ -69,6 +73,8 @@ class Satellite extends SatellitePlugin {
 		add_meta_box('generaldiv', __('General Settings', SATL_PLUGIN_NAME), array($this -> Metabox, "settings_general"), $this -> menus['satellite'], 'normal', 'core');
 		add_meta_box('linksimagesdiv', __('Links &amp; Images Overlay', SATL_PLUGIN_NAME), array($this -> Metabox, "settings_linksimages"), $this -> menus['satellite'], 'normal', 'core');
 		add_meta_box('stylesdiv', __('Appearance &amp; Styles', SATL_PLUGIN_NAME), array($this -> Metabox, "settings_styles"), $this -> menus['satellite'], 'normal', 'core');
+		add_meta_box('thumbsdiv', __('Thumbnail Settings', SATL_PLUGIN_NAME), array($this -> Metabox, "settings_thumbs"), $this -> menus['satellite'], 'normal', 'core');
+		add_meta_box('advanceddiv', __('Advanced Settings', SATL_PLUGIN_NAME), array($this -> Metabox, "settings_advanced"), $this -> menus['satellite'], 'normal', 'core');
                 if ( SATL_PRO ) {
                     add_meta_box('prodiv', __('Premium Edition Only', SATL_PLUGIN_NAME), array($this -> Metabox, "settings_pro"), $this -> menus['satellite'], 'normal', 'core');
                 }
@@ -324,10 +330,12 @@ class Satellite extends SatellitePlugin {
                                         $msg_type = 'message';
                                         $single = $_POST['section'];
                                         $message = __('You have successfully updated your view to '.$single, SATL_PLUGIN_NAME);
-                                        if ( $single != "All")
+                                        if ( $single != "All") {
+                                            $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($single)), null, array('order', "ASC"));
                                             $this -> url = $this -> url . "&single={$single}";
-                                        else
+                                        } else {
                                             $this -> url = $this -> url;
+                                        }
 				} else {
 					$msg_type = 'error';
 					$message = __('No section was specified', SATL_PLUGIN_NAME);

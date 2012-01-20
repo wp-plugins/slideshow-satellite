@@ -177,20 +177,6 @@
                 </td>
             </tr-->
             <!--tr>
-                <th><label for="navopacity"><?php _e('Navigation Default Opacity', SATL_PLUGIN_NAME); ?></label></th>
-                <td>
-                    <input type="text" name="navopacity" value="<?php echo $this->get_option('navopacity'); ?>" id="navopacity" style="width:45px;" /> <?php _e('&#37; <!-- percentage -->', SATL_PLUGIN_NAME); ?>
-                    <span class="howto"><?php _e('opacity of the prev/next buttons by default', SATL_PLUGIN_NAME); ?></span>
-                </td>
-            </tr-->
-            <!--tr>
-                <th><label for="navhover"><?php _e('Navigation Hover Opacity', SATL_PLUGIN_NAME); ?></label></th>
-                <td>
-                    <input type="text" name="navhover" value="<?php echo $this->get_option('navhover'); ?>" id="navhover" style="width:45px;" /> <?php _e('&#37; <!-- percentage -->', SATL_PLUGIN_NAME); ?>
-                    <span class="howto"><?php _e('opacity of the prev/next buttons when they are hovered', SATL_PLUGIN_NAME); ?></span>
-                </td>
-            </tr-->
-            <!--tr>
                 <th><label for="informationY"><?php _e('Show Information', SATL_PLUGIN_NAME); ?></label></th>
                 <td>
                     <label><input onclick="jQuery('#information_div').show();" <?php echo ($this->get_option('information') == "Y") ? 'checked="checked"' : ''; ?> type="radio" name="information" value="Y" id="informationY" /> <?php _e('Yes', SATL_PLUGIN_NAME); ?></label>

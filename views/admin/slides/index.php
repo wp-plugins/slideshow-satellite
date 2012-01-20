@@ -1,5 +1,12 @@
 ﻿<div class="wrap">
 	<h2><?php _e('Manage Slides', SATL_PLUGIN_NAME); ?> <?php echo $this -> Html -> link(__('Add New'), $this -> url . '&amp;method=save', array('class' => "button add-new-h2")); ?></h2>
+        <?php 
+        if (!empty($_GET['single'])) {
+            $single = $_GET['single'];
+            $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($single)), null, array('order', "ASC"));
+        } else { $single = false; }
+        
+        ?>
 	<?php if (!empty($slides)) : ?>	
 		<form id="posts-filter" action="<?php echo $this -> url; ?>" method="post">
 			<ul class="subsubsub">
@@ -62,12 +69,8 @@
 					</tr>
 				</tfoot>
 				<tbody>
-                                    <?php if (!empty($_GET['single'])) {
-                                        $single = $_GET['single'];
-                                    } else { $single = false; }
-                                    
+                                    <?php                                     
                                     foreach ($slides as $slide) : 
-                                        if ($slide -> section == $single || $single == false) :
                                       ?>
                                     
 						<tr class="<?php echo $class = (empty($class)) ? 'alternate' : ''; ?>">
@@ -77,26 +80,25 @@
 								<a href="<?php echo $this -> Html -> image_url($image); ?>" title="<?php echo $slide -> title; ?>" class="thickbox"><img src="<?php echo $this -> Html -> image_url($this -> Html -> thumbname($image, "small")); ?>" alt="<?php echo $this -> Html -> sanitize($slide -> title); ?>" /></a>
 							</td>
 							<td>
-                            	<a class="row-title" href="<?php echo $this -> url; ?>&amp;method=save&amp;id=<?php echo $slide -> id; ?>" title=""><?php echo $slide -> title; ?></a>
-                                <div class="row-actions">
-                                <span class="edit"><?php echo $this -> Html -> link(__('Edit', SATL_PLUGIN_NAME), "?page=satellite-slides&amp;method=save&amp;id=" . $slide -> id); ?> |</span>
-                                    <span class="delete"><?php echo $this -> Html -> link(__('Delete', SATL_PLUGIN_NAME), "?page=satellite-slides&amp;method=delete&amp;id=" . $slide -> id, array('class' => "submitdelete", 'onclick' => "if (!confirm('" . __('Are you sure you want to permanently remove this slide?', SATL_PLUGIN_NAME) . "')) { return false; }")); ?></span>
-                                </div>
-                            </td>
-                            <td>
-                            	<?php if (!empty($slide -> uselink) && $slide -> uselink == "Y") : ?>
-                                	<span style="color:green;"><?php _e('Yes', SATL_PLUGIN_NAME); ?></span>
-                                <?php else : ?>
-                                	<span style="color:red;"><?php _e('No', SATL_PLUGIN_NAME); ?></span>
-                                <?php endif; ?>
-                            </td>
-							<td><abbr title="<?php echo $slide -> modified; ?>"><?php echo date("Y-m-d", strtotime($slide -> modified)); ?></abbr></td>
-							<td><?php echo ((int) $slide -> section); ?></td>
-							<td><?php echo ((int) $slide -> order + 1); ?></td>
-						</tr>
+                                                        <a class="row-title" href="<?php echo $this -> url; ?>&amp;method=save&amp;id=<?php echo $slide -> id; ?>" title=""><?php echo $slide -> title; ?></a>
+                                                        <div class="row-actions">
+                                                        <span class="edit"><?php echo $this -> Html -> link(__('Edit', SATL_PLUGIN_NAME), "?page=satellite-slides&amp;method=save&amp;id=" . $slide -> id); ?> |</span>
+                                                            <span class="delete"><?php echo $this -> Html -> link(__('Delete', SATL_PLUGIN_NAME), "?page=satellite-slides&amp;method=delete&amp;id=" . $slide -> id, array('class' => "submitdelete", 'onclick' => "if (!confirm('" . __('Are you sure you want to permanently remove this slide?', SATL_PLUGIN_NAME) . "')) { return false; }")); ?></span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <?php if (!empty($slide -> uselink) && $slide -> uselink == "Y") : ?>
+                                                                <span style="color:green;"><?php _e('Yes', SATL_PLUGIN_NAME); ?></span>
+                                                        <?php else : ?>
+                                                                <span style="color:red;"><?php _e('No', SATL_PLUGIN_NAME); ?></span>
+                                                        <?php endif; ?>
+                                                    </td>
+                                                    <td><abbr title="<?php echo $slide -> modified; ?>"><?php echo date("Y-m-d", strtotime($slide -> modified)); ?></abbr></td>
+                                                    <td><?php echo ((int) $slide -> section); ?></td>
+                                                    <td><?php echo ((int) $slide -> order + 1); ?></td>
+                                            </tr>
                                                     
 					<?php 
-                                            endif; 
                                         endforeach; ?>
 				</tbody>
 			</table>

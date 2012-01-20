@@ -24,6 +24,13 @@ class SatelliteMetaboxHelper extends SatellitePlugin {
     function settings_styles() {
         $this->render('metaboxes' . DS . 'settings-styles', false, true, 'admin');
     }
+    function settings_thumbs() {
+        $this->render('metaboxes' . DS . 'settings-thumbs', false, true, 'admin');
+    }
+   
+    function settings_advanced() {
+        $this->render('metaboxes' . DS . 'settings-advanced', false, true, 'admin');
+    }
 
     function settings_pro() {
         $this->render('metaboxes' . DS . 'settings-pro', false, true, 'admin');

@@ -39,10 +39,12 @@
                 <tr>
                 	<th><label for="Slide.text.location"><?php _e('Text Location', SATL_PLUGIN_NAME); ?></label></th>
                     <td>
-                    	<label><input <?php echo (empty($this -> Slide -> data -> textlocation) || $this -> Slide -> data -> textlocation == "1") ? 'checked="checked"' : ''; ?> type="radio" name="Slide[textlocation]" value="1" id="Slide.text.location1" /> <?php _e('1 (Caption Only)', SATL_PLUGIN_NAME); ?></label>
-                        <label><input <?php echo ($this -> Slide -> data -> textlocation == "2") ? 'checked="checked"' : ''; ?> type="radio" name="Slide[textlocation]" value="2" id="Slide.text.location2" /> <?php _e('2 (Centered)', SATL_PLUGIN_NAME); ?></label>
-                        <?php echo (!empty($this -> Slide -> errors['type'])) ? '<div style="color:red;">' . $this -> Slide -> errors['type'] . '</div>' : ''; ?>
-                        <span class="howto"><?php _e('Orbit slides can show text in many different areas', SATL_PLUGIN_NAME); ?></span>
+                        <label><input <?php echo ($this -> Slide -> data -> textlocation == "N") ? 'checked="checked"' : ''; ?> type="radio" name="Slide[textlocation]" value="N" id="Slide.text.location0" /> <?php _e('None', SATL_PLUGIN_NAME); ?></label>
+                    	<label><input <?php echo (empty($this -> Slide -> data -> textlocation) || $this -> Slide -> data -> textlocation == "D") ? 'checked="checked"' : ''; ?> type="radio" name="Slide[textlocation]" value="D" id="Slide.text.locationD" /> <?php _e('Default', SATL_PLUGIN_NAME); ?></label>
+                        <label><input <?php echo ($this -> Slide -> data -> textlocation == "BR") ? 'checked="checked"' : ''; ?> type="radio" name="Slide[textlocation]" value="BR" id="Slide.text.locationBR" /> <?php _e('Bottom Right', SATL_PLUGIN_NAME); ?></label>
+                        <label><input <?php echo ($this -> Slide -> data -> textlocation == "TR") ? 'checked="checked"' : ''; ?> type="radio" name="Slide[textlocation]" value="TR" id="Slide.text.locationTR" /> <?php _e('Top Right', SATL_PLUGIN_NAME); ?></label>
+                        <?php echo (!empty($this -> Slide -> errors['textlocation'])) ? '<div style="color:red;">' . $this -> Slide -> errors['textlocation'] . '</div>' : ''; ?>
+                        <span class="howto"><?php _e('Default is the bottom caption bar', SATL_PLUGIN_NAME); ?></span>
                     </td>
                 </tr>
                 <tr>
@@ -68,41 +70,31 @@
                             <span class="howto"><?php _e('choose your image file from your computer. JPG, PNG, GIF, SWF are supported.', SATL_PLUGIN_NAME); ?></span>
                             <?php echo (!empty($this -> Slide -> errors['image_file'])) ? '<div style="color:red;">' . $this -> Slide -> errors['image_file'] . '</div>' : ''; ?>
                             <?php
-							if (!empty($this -> Slide -> data -> type) && $this -> Slide -> data -> type == "file") {
-								if (!empty($this -> Slide -> data -> image)) {
-									$name = $this -> Html -> strip_ext($this -> Slide -> data -> image, 'filename');
-									$ext = $this -> Html -> strip_ext($this -> Slide -> data -> image, 'ext');
-									?>
+                            /*if (!empty($this -> Slide -> data -> type) && $this -> Slide -> data -> type == "file") {
+                                    if (!empty($this -> Slide -> data -> image)) {
+                                            $name = $this -> Html -> strip_ext($this -> Slide -> data -> image, 'filename');
+                                            $ext = $this -> Html -> strip_ext($this -> Slide -> data -> image, 'ext');*/
+                                            ?>
+
+                                <input type="hidden" name="Slide[image_oldfile]" value="<?php echo esc_attr(stripslashes($this -> Slide -> data -> image)); ?>" />
+
+                                <?php 
+                                if (!empty($this -> Slide -> data -> image)) {
+                                    $image = $this -> Slide -> data -> image;
                                     
-                                    <input type="hidden" name="Slide[image_oldfile]" value="<?php echo esc_attr(stripslashes($this -> Slide -> data -> image)); ?>" />
+                                    ?>                                    
                                     <p><small><?php _e('Current thumbnail. Leave the field above blank to keep this image.', SATL_PLUGIN_NAME); ?></small></p>
-                                   	<a href="<?php echo SATL_UPLOAD_URL; ?>/<?php echo $name; ?>.<?php echo $ext; ?>" class="thickbox">
-									<?php if ($ext =="swf") { ?>
-									<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="550" height="400" id="movie_name" align="middle">
-										<param name="movie" value="<?php echo SATL_UPLOAD_URL; ?>/<?php echo $name; ?>.<?php echo $ext; ?>" />
-										<!--[if !IE]>-->
-										<object type="application/x-shockwave-flash" data="<?php echo SATL_UPLOAD_URL; ?>/<?php echo $name; ?>.<?php echo $ext; ?>" width="550" height="400">
-											<param name="movie" value="movie_name.swf" />
-										<!--<![endif]-->
-											<a href="http://www.adobe.com/go/getflash">
-												<img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
-											</a>
-										<!--[if !IE]>-->
-										</object>
-										<!--<![endif]-->
-									</object>
-									
-									<?php } else { ?>
-										<img src="<?php echo SATL_UPLOAD_URL; ?>/<?php echo $name; ?>-thumb.<?php echo $ext; ?>" alt="" />
-									<?php } ?>
-											<br />
-											<?php	echo ("filename" . $this -> Slide -> data -> image); ?>
-										<br />
-									</a>
+                                   	<a href="<?php echo $this -> Html -> image_url($image); ?>" class="thickbox">
+                                                <!--img src="<?php echo SATL_UPLOAD_URL; ?>/<?php echo $name; ?>-thumb.<?php echo $ext; ?>" alt="" /-->
+                                                <img src="<?php echo $this -> Html -> image_url($this -> Html -> thumbname($image, "thumb")); ?>" />
+                                                        <br />
+                                                        <?php	echo ("Filename: " . $this -> Slide -> data -> image); ?>
+                                                <br />
+                                        </a>
                                     <?php	
-								}
-							}
-							?>
+                                 }
+                            //}
+                            ?>
                         </td>
                     </tr>
                 </tbody>

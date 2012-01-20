@@ -288,5 +288,25 @@ class SatelliteDbHelper extends SatellitePlugin {
 	
 		return false;
 	}
+        
+	function alter_field($field = null, $value = null, $action = null) {
+		if (!empty($this -> model)) {
+                    global $wpdb;
+
+                    if (!empty($field)) {
+                        $query = "ALTER `" . $this -> table . "`";
+
+                        if ($action == "modify") {
+                            $query .= "MODIFY " . $field . " " . $value . "";
+                        }
+
+                        if ($wpdb -> query($query)) {
+                                return true;
+                        }
+                    }
+		}
+		
+		return false;
+	}
 }
 ?>

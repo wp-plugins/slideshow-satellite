@@ -21,7 +21,7 @@
                     <th><label for="styles.navpush"><?php _e('Navigational Push', SATL_PLUGIN_NAME); ?></label></th>
 			<td>
 				<input style="width:45px;" id="styles.navpush" type="text" name="styles[navpush]" value="<?php echo $styles['navpush']; ?>" /> <?php _e('px', SATL_PLUGIN_NAME); ?>
-				<span class="howto"><?php _e('How far your navigational arrows are pushed away from the slideshow', SATL_PLUGIN_NAME); ?></span>
+				<span class="howto"><?php _e('How far your navigational arrows are pushed away from the slideshow, 0 or 78 are most popular', SATL_PLUGIN_NAME); ?></span>
 			</td>
                 </tr>
  		<tr class="gal-width">
@@ -48,6 +48,12 @@
 			<th><label for="styles.background"><?php _e('Slideshow Background', SATL_PLUGIN_NAME); ?></label></th>
 			<td>
 				<input type="text" name="styles[background]" value="<?php echo $styles['background']; ?>" id="styles.background" style="width:65px;" />
+			</td>
+		</tr>
+		<tr>
+			<th><label for="styles.infotitle"><?php _e('Caption Title', SATL_PLUGIN_NAME); ?></label></th>
+			<td>
+				<input type="text" name="styles[infotitle]" value="<?php echo $styles['infotitle']; ?>" id="styles.infotitle" style="width:65px;" />
 			</td>
 		</tr>
 		<tr>

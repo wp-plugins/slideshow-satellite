@@ -235,6 +235,12 @@ span.pause.active {
     font-size:1.4em; 
     font-weight:bold;
     }
+.orbit-caption h5.orbit-title0 { display:none; }
+.orbit-caption h5.orbit-title1 { font-size:1.0em; }
+.orbit-caption h5.orbit-title2 { font-size:1.2em; }
+.orbit-caption h5.orbit-title3 { font-size:1.5em; }
+.orbit-caption h5.orbit-title4 { font-size:1.8em; }
+
 .orbit-caption p {
     color: <?php echo $styles['infocolor']; ?>;
     padding-bottom: 7px;
@@ -428,6 +434,9 @@ ul.orbit-thumbnails {
     width: <?php echo (int)($styles['thumbarea']); ?>px;
     overflow:visible;
     margin-top:0px;
+    height: <?php echo ($styles['height']); ?>px;
+    overflow-y:scroll;
+    overflow-x:hidden;
     }
 .full-right .thumbholder {
     margin-left: <?php echo ($extrathumbarea );?>px;

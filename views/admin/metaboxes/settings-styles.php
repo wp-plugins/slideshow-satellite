@@ -53,8 +53,16 @@
 		<tr>
 			<th><label for="styles.infotitle"><?php _e('Caption Title', SATL_PLUGIN_NAME); ?></label></th>
 			<td>
-				<input type="text" name="styles[infotitle]" value="<?php echo $styles['infotitle']; ?>" id="styles.infotitle" style="width:65px;" />
-			</td>
+                            <select name="styles[infotitle]">
+
+                                    <option <?php echo (empty($styles['infotitle']) || $styles['infotitle'] == "0") ? 'selected="selected"' : ''; ?> value="0" />None - Hidden </option> <?php _e('1- Default', SATL_PLUGIN_NAME); ?>
+                                    <option <?php echo ($styles['infotitle'] == "1") ? 'selected="selected"' : ''; ?> value="1" />Small</option> <?php _e('Small', SATL_PLUGIN_NAME); ?>
+                                    <option <?php echo ($styles['infotitle'] == "2") ? 'selected="selected"' : ''; ?> value="2" />Medium</option> <?php _e('Medium', SATL_PLUGIN_NAME); ?>
+                                    <option <?php echo ($styles['infotitle'] == "3") ? 'selected="selected"' : ''; ?> value="3" />Large</option> <?php _e('Large', SATL_PLUGIN_NAME); ?>
+                                    <option <?php echo ($styles['infotitle'] == "4") ? 'selected="selected"' : ''; ?> value="4" />XLarge</option> <?php _e('X-Large', SATL_PLUGIN_NAME); ?>
+
+                            </select>			
+                        </td>
 		</tr>
 		<tr>
 			<th><label for="styles.infobackground"><?php _e('Caption Background', SATL_PLUGIN_NAME); ?></label></th>

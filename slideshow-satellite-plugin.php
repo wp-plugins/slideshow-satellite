@@ -178,6 +178,7 @@ class SatellitePlugin {
             'align' => "none",
             'border' => "1px solid #CCCCCC",
             'background' => "#000000",
+            'infotitle' => "2",
             'infobackground' => "#000000",
             'infocolor' => "#FFFFFF",
             'playshow'  => "Y",

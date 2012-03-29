@@ -56,7 +56,7 @@ if (!empty($slides)) :
                 </div>
             
                 <span class="orbit-caption" id="post-<?php echo $slider->ID; ?>">
-                    <h5><?php echo $slider->post_title; ?></h5>
+                    <h5 class="orbit-title<?php echo($style['infotitle']) ?>"><?php echo $slider->post_title; ?></h5>
                     <p><?php echo $slider->post_content; ?></p>
                 </span>
             <?php endforeach;  ?>
@@ -118,7 +118,7 @@ if (!empty($slides)) :
                 </div>
                 <?php if ($slider->textlocation != "N") { ?>
                 <span class="orbit-caption <?php echo ($slider->textlocation == 'BR'|| $slider->textlocation == 'TR') ? ' sattext sattext'.$slider->textlocation:''?>" id="custom-<?php echo $i; ?>">
-                    <h5><?php echo $slider->title; ?></h5>
+                    <h5 class="orbit-title<?php echo($style['infotitle']) ?>"><?php echo $slider->title; ?></h5>
                     <p><?php echo $slider->description; ?></p>
                 </span> 
                 <?php } ?>

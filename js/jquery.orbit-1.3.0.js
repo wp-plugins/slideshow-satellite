@@ -23,7 +23,7 @@
       captions: true, 					// do you want captions?
       captionAnimation: 'fade', 			// fade, slideOpen, none
       captionAnimationSpeed: 600, 		// if so how quickly should they animate in
-      //captionHover: false,
+      captionHover: false,
       bullets: false,						// true or false to activate the bullet navigation
       bulletThumbs: false,				// thumbnails for the bullets
       bulletThumbLocation: '',			// location from this file where thumbs will be
@@ -100,13 +100,8 @@
       }
       
       if (this.options.captions) {
-        if (this.options.captionHover) {
-            this.setupCaptions(false);
-        } else {
-            this.setupCaptions(true);
-        }
+          this.setupCaptions();
       }
-      this.$element.hover(function(){this.setupCaptions(true);;this.setupCaptions(false);});
       
       if (this.options.directionalNav) {
         this.setupDirectionalNav();
@@ -269,18 +264,28 @@
       }
     },
     
-    setupCaptions: function (capshow) {
+    setupCaptions: function () {
       this.$caption = $(this.captionHTML);
       this.$wrapper.append(this.$caption);
+        //if (this.options.captionHover) {
+       // this.$wrapper.mouseleave(this.setCaption(false));
+        //this.$wrapper.mouseenter(this.setCaption(true));
+        /*} else {
+            this.setCaption(true);
+        }*/
+        $setfalse = this.setCaption(false);
+        $settrue = this.setCaption(true);
+        
+        this.setCaption(true);
 
-      this.setCaption(true);
     },
     
     setCaption: function (capshow) {
+      
       if (capshow == true) {
           var captionLocation = this.currentSlide().attr('data-caption'),
               captionHTML;     
-      }
+      } else { var captionLocation = null; }
     		
       if (!this.options.captions) {
     		return false; 
@@ -294,41 +299,44 @@
             .html(captionHTML); // Change HTML in Caption 
             //
         captionClass = $(captionLocation).attr('class');
-            this.$caption
-            .attr('class', captionClass); // Add class caption TODO why is the id being set?
-            
-        /*this.$wrapper.hover(function () {
-          this.$caption.show();
-        },function(){
-          this.$caption.hide();
-        });*/
-        
+            this.$caption.attr('class', captionClass); // Add class caption TODO why is the id being set?
+            $cap = this.$caption;
+            $speed = this.options.captionAnimationSpeed;
           //Animations for Caption entrances
-        switch (this.options.captionAnimation) {
-          case 'none':
-            this.$caption.show();
-            break;
-          case 'fade':
-            this.$caption.fadeIn(this.options.captionAnimationSpeed);
-            break;
-          case 'slideOpen':
-            this.$caption.slideDown(this.options.captionAnimationSpeed);
-            break;
-        }
+            switch (this.options.captionAnimation) {
+              case 'none':
+                this.$caption.show();
+                break;
+              case 'fade':
+                this.$caption.fadeIn(this.options.captionAnimationSpeed);
+                break;
+              case 'slideOpen':
+                this.$caption.slideDown(this.options.captionAnimationSpeed);
+                break;
+            }
     	} else {
-    		//Animations for Caption exits
-    		switch (this.options.captionAnimation) {
-          case 'none':
-            this.$caption.hide();
-            break;
-          case 'fade':
-            this.$caption.fadeOut(this.options.captionAnimationSpeed);
-            break;
-          case 'slideOpen':
-            this.$caption.slideUp(this.options.captionAnimationSpeed);
-            break;
-        }
+            //Animations for Caption exits
+            switch (this.options.captionAnimation) {
+              case 'none':
+                this.$caption.hide();
+                break;
+              case 'fade':
+                this.$caption.fadeOut(this.options.captionAnimationSpeed);
+                break;
+              case 'slideOpen':
+                this.$caption.slideUp(this.options.captionAnimationSpeed);
+                break;
+            }
     	}
+        
+        //this.$wrapper.hover(this.$caption.slideDown(this.options.captionAnimationSpeed),this.$caption.slideDown(this.options.captionAnimationSpeed));
+       this.hover(function () {
+            this.$caption.slideUp(this.options.captionAnimationSpeed);
+        });
+                                
+      //this.$wrapper.mouseleave(this.$caption.slideUp(this.options.captionAnimationSpeed));
+      //this.$wrapper.mouseenter(this.$caption.slideDown(this.options.captionAnimationSpeed));
+
     },
     
     setupDirectionalNav: function () {
@@ -416,7 +424,7 @@
     },
     
     setActiveBullet: function () {
-      if(!this.options.bullets) { return false; } else {
+      if(!this.options.bullets) {return false;} else {
     		this.$bullets.find('li')
     		  .removeClass('active')
     		  .eq(this.activeSlide)
@@ -439,9 +447,9 @@
       this.prevActiveSlide = this.activeSlide;
       
       //exit function if bullet clicked is same as the current image
-      if (this.prevActiveSlide == slideDirection) { return false; }
+      if (this.prevActiveSlide == slideDirection) {return false;}
       
-      if (this.$slides.length == "1") { return false; }
+      if (this.$slides.length == "1") {return false;}
       if (!this.locked) {
         this.lock();
 	      //deduce the proper activeImage

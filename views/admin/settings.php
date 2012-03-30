@@ -30,7 +30,7 @@ wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
                 	<h3>Thank you plugin supporter!</h3>
                                         <?php $satellitebtn = "Get Support";?>
                                         <?php } else { ?>
-                	<h3>Slideshow Satellite Premium!</h3>
+                	<h3>Satellite Premium!</h3>
                                         <?php $satellitebtn = "Learn More & Get it";?>
                                      <?php } ?>
                     <div class="inside">

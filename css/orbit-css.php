@@ -60,7 +60,8 @@ div.orbit-wrapper {
     margin: 0 auto;
     background:<?php echo $styles['background']?>; /* VAR BACKGROUND */
     border:<?php echo $styles['border']; ?>;
-    position: relative; }
+    position: relative;
+    z-index:105; }
 
 div.orbit {
     width: 1px;

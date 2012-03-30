@@ -73,7 +73,7 @@ if (!empty($slides)) :
                     directionalNav: true, 		 // manual advancing directional navs
                     captions: <?php echo($this->get_option('information_temp') == 'Y') ? 'true' : 'false'; ?>,	 // do you want captions?
                     captionAnimation: 'slideOpen', 		 // fade, slideOpen, none
-                    captionHover: true, // true means only show caption on mousehover
+                    captionHover: <?php echo ($this->get_option("showhover") == "H") ? 'true' : 'false';?>, // true means only show caption on mousehover
                     captionAnimationSpeed: 800, 	 // if so how quickly should they animate in
                     bullets: <?php echo($this->get_option('thumbnails_temp') == 'Y') ? 'true' : 'false'; ?>,		 // true or false to activate the bullet navigation
                     bulletThumbs: true,		 // thumbnails for the bullets
@@ -141,7 +141,7 @@ if (!empty($slides)) :
                     directionalNav: true, 		 // manual advancing directional navs
                     captions: <?php echo($this->get_option('information_temp') == 'Y') ? 'true' : 'false'; ?>,	 // do you want captions?
                     captionAnimation: 'slideOpen', 		 // fade, slideOpen, none
-                    captionHover: true, // true means only show caption on mousehover
+                    captionHover: <?php echo ($this->get_option("showhover") == "H") ? 'true' : 'false';?>, // true means only show caption on mousehover
                     captionAnimationSpeed: 800, 	 // if so how quickly should they animate in
                     bullets: <?php echo($this->get_option('thumbnails_temp') == 'Y') ? 'true' : 'false'; ?>,	// true or false to activate the bullet navigation
                     bulletThumbs: true,		 // thumbnails for the bullets

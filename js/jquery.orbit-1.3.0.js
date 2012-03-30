@@ -266,6 +266,7 @@
     
     setupCaptions: function () {
       this.$caption = $(this.captionHTML);
+      $tcap = $(this.captionHTML);
       this.$wrapper.append(this.$caption);
         //if (this.options.captionHover) {
        // this.$wrapper.mouseleave(this.setCaption(false));
@@ -274,18 +275,17 @@
             this.setCaption(true);
         }*/
         $setfalse = this.setCaption(false);
-        $settrue = this.setCaption(true);
+        this.setCaption($tcap);
+        //this.$wrapper.hover(  this.setCaption(true), this.setCaption(false) );
         
-        this.setCaption(true);
-
     },
     
-    setCaption: function (capshow) {
+    setCaption: function ($tcap) {
       
-      if (capshow == true) {
+      //if (capshow == true) {
           var captionLocation = this.currentSlide().attr('data-caption'),
               captionHTML;     
-      } else { var captionLocation = null; }
+      //} else { var captionLocation = null; }
     		
       if (!this.options.captions) {
     		return false; 
@@ -300,9 +300,19 @@
             //
         captionClass = $(captionLocation).attr('class');
             this.$caption.attr('class', captionClass); // Add class caption TODO why is the id being set?
+            
+          //Animations for Caption entrances
+          if ( this.options.captionHover ) {
             $cap = this.$caption;
             $speed = this.options.captionAnimationSpeed;
-          //Animations for Caption entrances
+            this.$wrapper.find('.orbit').parent().hover( function() {
+                jQuery($cap).fadeIn($speed)
+            },function() {
+                jQuery($cap).fadeOut($speed)
+            });
+            return;
+          } 
+              
             switch (this.options.captionAnimation) {
               case 'none':
                 this.$caption.show();
@@ -327,15 +337,7 @@
                 this.$caption.slideUp(this.options.captionAnimationSpeed);
                 break;
             }
-    	}
-        
-        //this.$wrapper.hover(this.$caption.slideDown(this.options.captionAnimationSpeed),this.$caption.slideDown(this.options.captionAnimationSpeed));
-       this.hover(function () {
-            this.$caption.slideUp(this.options.captionAnimationSpeed);
-        });
-                                
-      //this.$wrapper.mouseleave(this.$caption.slideUp(this.options.captionAnimationSpeed));
-      //this.$wrapper.mouseenter(this.$caption.slideDown(this.options.captionAnimationSpeed));
+          }
 
     },
     

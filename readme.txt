@@ -4,9 +4,9 @@ Donate link: http://c-pr.es/projects/satellite
 Tags: slideshow pro, photographer, galleries, satellite, orbit, zurb, zurb orbit, slideshow gallery, slides, slideshow, image gallery, gallery, slideshow satellite, photography, slideshow orbit
 Requires at least: 3.0
 Tested up to: 3.2.1
-Stable tag: 1.P.3
+Stable tag: 1.03
 
-Rad photo slideshow. Build the narliest content displays with Slideshow Satellite's incredible customization capabilities. 
+Rad photo slideshow. Build the best content displays with Slideshow Satellite's incredible customization capabilities. 
 
 == Description ==
 The goal of this slideshow is to create beautiful ways of displaying content in ways that suit the content you are providing.
@@ -15,7 +15,7 @@ Either use your current Wordpress Media Galleries or take advantage of the Satel
 
 To explore the manual or get the premium edition: http://c-pr.es/projects/satellite/
 
-To embed into a post/page, simply insert <code>satellite</code> into its content with optional <code>post_id</code>, <code>thumbs</code>, <code>exclude</code>, <code>include</code>, <code>caption</code>, and <code>auto</code>  parameters.  Check out the Slideshow Satellite Manual on the plugin details page (linked above) for code examples.
+To embed into a post/page, simply insert <code>[satellit]e</code> into its content with optional <code>post_id</code>, <code>thumbs</code>, <code>exclude</code>, <code>include</code>, <code>caption</code>, and <code>auto</code>  parameters.  Check out the Slideshow Satellite Manual on the plugin details page (linked above) for code examples.
 
 == Installation ==
 Installing the WordPress Slideshow Satellite plugin manually is very easy. Simply follow the steps below.
@@ -30,7 +30,7 @@ Installing the WordPress Slideshow Satellite plugin manually is very easy. Simpl
 
 1. Put `[satellite post_id="X" exclude="" caption="on/off" thumbs="on/off"]` to embed a slideshow with the images of a post into your posts/pages or use `[satellite custom=1]` to embed a slideshow with images in 'Manage Slides'
 
-1. For the most up to date list of options available please goto: http://c-pr.es/projects/satellite
+1. For the most up to date list of options available please goto: http://c-pr.es/projects/satellite and check out the manual
 
 1. Premium Edition: You will download the premium edition from the website directly after paying and setting up your user account
 
@@ -42,6 +42,12 @@ Start with 'Reset to Defaults' on the top of your plugin configuration page.
 
 = How can I display the slideshow in a sidebar as a widget? =
 Install the plugin Advanced Text Widget and put the embed code in there. We would suggest using the Premium Edition as you can specify width and height in the embed.
+
+= All the images show up on the page, this ain't no slideshow!!! =
+The slideshow isn't loading your JS or CSS most likely! That's because the plugin doesn't know it's being called. It's looking for the `[satellite` reference and not seeing it. `[satellite display=off]` in an area being called by the loop on that page or just going to Advanced Settings and turn 'Shortcode Requirement' to off.
+
+= I'm seeing a non-stop loading icon on the page =
+You're most likely dealing with some javascript weirdness. Check using Firebug and ask for help in the forums. Your theme or another plugin might be working improperly with Satellite
 
 = Can I display/embed multiple instances of Slideshow Satellite? =
 Yes you can, but you have to have the Premium Edition
@@ -69,11 +75,13 @@ You may also want to "Reset Configuration" from the Configuration page
 Two should be enough, we don't want to bog down your install with screenshots.
 
 == Changelog ==
-= 1.03 = 
+= 1.1 = 
+* Added Caption Hover!
 * Added Random capability
 * Toggle Requirement of shortcode to load js and css
 * Minor bug fixes including Directory Separator
 * Added Premium edition notifier of new versions
+
 
 = 1.02 =
 * Created easy out for tinyMCE bug

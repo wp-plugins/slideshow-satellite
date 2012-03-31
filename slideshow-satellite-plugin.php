@@ -212,7 +212,7 @@ class SatellitePlugin {
         $this->add_option('embedss', "Y");
         $this->add_option('satwiz', "Y");
         $this->add_option('satshort', "Y");
-        $this->add_option('db_version', "1.0");
+        $this->add_option('stldb_version', "1.0");
         // Orbit Only
         $this->add_option('autospeed2', 5000);
         $this->add_option('duration', 700);
@@ -444,7 +444,7 @@ class SatellitePlugin {
         
         if ( !empty($model) ) {
             if ( !empty($this->fields) && is_array($this->fields ) ) {
-                if ( !$wpdb->get_var("SHOW TABLES LIKE '" . $this->table . "'"  || $this->get_option('db_version') != SATL_VERSION) ) {
+                if ( !$wpdb->get_var("SHOW TABLES LIKE '" . $this->table . "'")  || $this->get_option('stldb_version') != SATL_VERSION ) {
                     $query = "CREATE TABLE " . $this->table . " (\n";
                     $c = 1;
 
@@ -460,11 +460,19 @@ class SatellitePlugin {
                         }
                         $c++;
                     }
-
+                    echo "Satl_ver: ". SATL_VERSION;
+                    echo "  DBver: ". $this->get_option('stldb_version');
+                    echo "  ShowinTable: ".$wpdb->get_var("SHOW TABLES LIKE '" . $this->table . "'");
                     $query .= ");";
 
                     if (!empty($query)) {
                         $this->table_query[] = $query;
+                    }
+                    
+                    if (!empty($this->table_query)) {
+                        require_once(ABSPATH . 'wp-admin'.DS.'includes'.DS.'upgrade.php');
+                        dbDelta($this->table_query, true);
+                        $this -> update_option('stldb_version', SATL_VERSION);
                     }
                 } else {
                     $field_array = $this->get_fields($this->table);
@@ -476,11 +484,7 @@ class SatellitePlugin {
                     }
                 }
 
-                if (!empty($this->table_query)) {
-                    require_once(ABSPATH . 'wp-admin'.DS.'includes'.DS.'upgrade.php');
-                    dbDelta($this->table_query, true);
-                    $this -> update_option('db_version', SATL_VERSION);
-                }
+
             }
         }
 

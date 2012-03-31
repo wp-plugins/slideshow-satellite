@@ -43,7 +43,7 @@ ul.orbit-thumbnails, ul.orbit-thumbnails li {
     list-style-type:none !important;
 }
 
-#featured, #featured1, #featured2, #featured3 {
+#featured, #featured1, #featured2, #featured3, #featured4, #featured5 {
     width: <?php echo $styles['width'] ?>px;
     height: <?php echo $styles['height'] ?>px;
     background:<?php echo($loadbg)?> no-repeat center center;

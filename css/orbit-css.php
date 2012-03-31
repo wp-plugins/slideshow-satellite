@@ -61,7 +61,7 @@ div.orbit-wrapper {
     background:<?php echo $styles['background']?>; /* VAR BACKGROUND */
     border:<?php echo $styles['border']; ?>;
     position: relative;
-    z-index:105; }
+    z-index:55; }
 
 div.orbit {
     width: 1px;
@@ -161,7 +161,7 @@ div.timer {
     opacity: .6;
     cursor: pointer;
     display: <?php echo($styles['playshow'] == Y) ? "block" : "none";?>;
-    z-index: 100; }
+    z-index: 50; }
 
 span.rotator {
     display: none;
@@ -217,7 +217,7 @@ span.pause.active {
     
 .orbit-wrapper .orbit-caption {
     background: rgba(<?php echo(hex2RGB($styles['infobackground'], true)); ?>,.6);
-    z-index: 100;
+    z-index: 50;
     color: <?php echo $styles['infocolor']; ?>;
     text-align: center;
     font-size: 13px;
@@ -291,7 +291,7 @@ div.slider-nav span {
     height: 100px;
     text-indent: -9999px;
     position: absolute;
-    z-index: 100;
+    z-index: 50;
     top: 50%;
     margin-top: -<?php echo($styles['thumbheight']);?>px;
     cursor: pointer; }
@@ -318,7 +318,7 @@ ul.orbit-bullets {
 }
 .orbit-bullets {
     position: absolute;
-    z-index: 100;
+    z-index: 50;
     list-style: none;
 /*    left: 50%;
     margin-left: -50px;*/
@@ -385,7 +385,7 @@ ul.orbit-thumbnails {
     background:url('../images/scroll-left.gif') center center no-repeat; 
     background-color:<?php echo $styles['background']; ?>;
     position:relative;
-    z-index:100;
+    z-index:50;
 }
 #slideleft:hover { background-color:#666; }
 #slideright { float:right; width:20px; 

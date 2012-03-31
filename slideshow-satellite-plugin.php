@@ -460,9 +460,6 @@ class SatellitePlugin {
                         }
                         $c++;
                     }
-                    echo "Satl_ver: ". SATL_VERSION;
-                    echo "  DBver: ". $this->get_option('stldb_version');
-                    echo "  ShowinTable: ".$wpdb->get_var("SHOW TABLES LIKE '" . $this->table . "'");
                     $query .= ");";
 
                     if (!empty($query)) {

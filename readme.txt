@@ -68,6 +68,8 @@ Many times this has to do with how it was uploaded... Delete all the slideshow-s
 
 You may also want to "Reset Configuration" from the Configuration page
 
+= Will I be able to use my 1 time download on a future version? If you're lucky copying the /pro/ folder from your initial install to your next you will keep your updates. If new premium updates were made this may not work.
+
 == Screenshots ==
 1. Slideshow Satellite with bottom thumbnails
 2. Slideshow Satellite with "Full Right"
@@ -79,6 +81,7 @@ Two should be enough, we don't want to bog down your install with screenshots.
 * Added Caption Hover!
 * Added Random capability
 * Toggle Requirement of shortcode to load js and css
+* Added multiple title sizing including 'Hidden'
 * Minor bug fixes including Directory Separator
 * Added Premium edition notifier of new versions
 

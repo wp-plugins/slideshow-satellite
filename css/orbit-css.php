@@ -436,7 +436,7 @@ ul.orbit-thumbnails {
     overflow:visible;
     margin-top:0px;
     height: <?php echo ($styles['height']); ?>px;
-    overflow-y:scroll;
+    overflow-y:auto;
     overflow-x:hidden;
     }
 .full-right .thumbholder {

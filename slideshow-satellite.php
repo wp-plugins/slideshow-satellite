@@ -5,7 +5,7 @@ Plugin URI: http://c-pr.es/projects/satellite
 Author: C- Pres
 Author URI: http://c-pr.es/membership-options
 Description: Display photography and content in new ways with this slideshow. Slideshow Satellite uses Orbit to give a multitude of transition options and customizations.
-Version: 1.03
+Version: 1.1
 */
 define('DS', '/');
 define( 'SATL_VERSION', '1.1' );

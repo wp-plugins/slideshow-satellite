@@ -52,7 +52,7 @@ if (!empty($slides)) :
                 </div>
             
                 <span class="orbit-caption<?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' thumb-on' : ''; ?>" id="post-<?php echo $slider->ID; ?>">
-                    <h5><?php echo $slider->post_title; ?></h5>
+                    <h5 class="orbit-title<?php echo($style['infotitle']) ?>"><?php echo $slider->post_title; ?></h5>
                     <p><?php echo $slider->post_content; ?></p>
                 </span>
             <?php endforeach;  ?>
@@ -73,6 +73,7 @@ if (!empty($slides)) :
                     directionalNav: true, 		 // manual advancing directional navs
                     captions: <?php echo($this->get_option('information_temp') == 'Y') ? 'true' : 'false'; ?>,	 // do you want captions?
                     captionAnimation: 'slideOpen', 		 // fade, slideOpen, none
+                    captionHover: <?php echo ($this->get_option("showhover") == "H") ? 'true' : 'false';?>, // true means only show caption on mousehover
                     captionAnimationSpeed: 800, 	 // if so how quickly should they animate in
                     bullets: <?php echo($this->get_option('thumbnails_temp') == 'Y') ? 'true' : 'false'; ?>,		 // true or false to activate the bullet navigation
                     bulletThumbs: true,		 // thumbnails for the bullets
@@ -114,7 +115,7 @@ if (!empty($slides)) :
                 </div>
                 <?php if ($slider->textlocation != "N") { ?>
                 <span class="orbit-caption<?php echo ($slider->textlocation == 'BR'|| $slider->textlocation == 'TR') ? ' sattext sattext'.$slider->textlocation:''?><?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' thumb-on' : ''; ?>" id='custom<?php echo ($satellite_init_ok.'-'.$i); ?>'>
-                    <h5><?php echo $slider->title; ?></h5>
+                    <h5 class="orbit-title<?php echo($style['infotitle']) ?>"><?php echo $slider->title; ?></h5>
                     <p><?php echo $slider->description; ?> </p>
                 </span>   
                 <?php } else { ?>
@@ -140,6 +141,7 @@ if (!empty($slides)) :
                     directionalNav: true, 		 // manual advancing directional navs
                     captions: <?php echo($this->get_option('information_temp') == 'Y') ? 'true' : 'false'; ?>,	 // do you want captions?
                     captionAnimation: 'slideOpen', 		 // fade, slideOpen, none
+                    captionHover: <?php echo ($this->get_option("showhover") == "H") ? 'true' : 'false';?>, // true means only show caption on mousehover
                     captionAnimationSpeed: 800, 	 // if so how quickly should they animate in
                     bullets: <?php echo($this->get_option('thumbnails_temp') == 'Y') ? 'true' : 'false'; ?>,	// true or false to activate the bullet navigation
                     bulletThumbs: true,		 // thumbnails for the bullets

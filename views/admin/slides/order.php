@@ -1,4 +1,5 @@
 ﻿<div class="wrap"> 
+
 	<h2><?php _e('Order Slides', SG2_PLUGIN_NAME); ?></h2>
 	<div style="float:none;" class="subsubsub">
 		<a href="<?php echo $this -> url; ?>"><?php _e('&larr; Manage All Slides', SG2_PLUGIN_NAME); ?></a>

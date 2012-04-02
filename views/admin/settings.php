@@ -5,8 +5,17 @@ wp_nonce_field('closedpostboxes', 'closedpostboxesnonce', false);
 wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
 ?>
 <div class="wrap">
-    
-        <img src="<?php echo(SATL_PLUGIN_URL.'/images/Satellite-Logo-sm.png');?>" style="height:100px" />
+        
+	 <?php $version = $this->Version->checkLatestVersion();
+			if(!$version['latest'] && SATL_PRO){ ?>
+				<div class="plugin-update-tr">
+					<div class="update-message">
+						<?php echo $version['message']; ?>
+					</div>
+				</div>
+	<?php } ?>
+	
+    <img src="<?php echo(SATL_PLUGIN_URL.'/images/Satellite-Logo-sm.png');?>" style="height:100px" />
         
 	<h2><?php _e('Configuration Settings', SATL_PLUGIN_NAME); ?></h2>
 	
@@ -21,7 +30,7 @@ wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
                 	<h3>Thank you plugin supporter!</h3>
                                         <?php $satellitebtn = "Get Support";?>
                                         <?php } else { ?>
-                	<h3>Slideshow Satellite Premium!</h3>
+                	<h3>Satellite Premium!</h3>
                                         <?php $satellitebtn = "Learn More & Get it";?>
                                      <?php } ?>
                     <div class="inside">
@@ -59,5 +68,5 @@ wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
 			
 		</div>
 	</form>
-        <h4><?php _e('Current Satellite Version:', SATL_PLUGIN_NAME); ?><?php echo($this->get_option('db_version'));?> </h4>
+        <h4><?php _e('Current Satellite Version:', SATL_PLUGIN_NAME); ?><?php echo($this->get_option('stldb_version'));?> </h4>
 </div>

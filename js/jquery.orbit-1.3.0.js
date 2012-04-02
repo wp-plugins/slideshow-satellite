@@ -23,6 +23,7 @@
       captions: true, 					// do you want captions?
       captionAnimation: 'fade', 			// fade, slideOpen, none
       captionAnimationSpeed: 600, 		// if so how quickly should they animate in
+      captionHover: false,
       bullets: false,						// true or false to activate the bullet navigation
       bulletThumbs: false,				// thumbnails for the bullets
       bulletThumbLocation: '',			// location from this file where thumbs will be
@@ -99,7 +100,7 @@
       }
       
       if (this.options.captions) {
-        this.setupCaptions();
+          this.setupCaptions();
       }
       
       if (this.options.directionalNav) {
@@ -265,13 +266,26 @@
     
     setupCaptions: function () {
       this.$caption = $(this.captionHTML);
+      $tcap = $(this.captionHTML);
       this.$wrapper.append(this.$caption);
-  	  this.setCaption();
+        //if (this.options.captionHover) {
+       // this.$wrapper.mouseleave(this.setCaption(false));
+        //this.$wrapper.mouseenter(this.setCaption(true));
+        /*} else {
+            this.setCaption(true);
+        }*/
+        $setfalse = this.setCaption(false);
+        this.setCaption($tcap);
+        //this.$wrapper.hover(  this.setCaption(true), this.setCaption(false) );
+        
     },
     
-    setCaption: function () {
-      var captionLocation = this.currentSlide().attr('data-caption'),
-          captionHTML;      
+    setCaption: function ($tcap) {
+      
+      //if (capshow == true) {
+          var captionLocation = this.currentSlide().attr('data-caption'),
+              captionHTML;     
+      //} else { var captionLocation = null; }
     		
       if (!this.options.captions) {
     		return false; 
@@ -285,35 +299,46 @@
             .html(captionHTML); // Change HTML in Caption 
             //
         captionClass = $(captionLocation).attr('class');
-            this.$caption
-            .attr('class', captionClass); // Add class caption TODO why is the id being set?
+            this.$caption.attr('class', captionClass); // Add class caption TODO why is the id being set?
             
           //Animations for Caption entrances
-        switch (this.options.captionAnimation) {
-          case 'none':
-            this.$caption.show();
-            break;
-          case 'fade':
-            this.$caption.fadeIn(this.options.captionAnimationSpeed);
-            break;
-          case 'slideOpen':
-            this.$caption.slideDown(this.options.captionAnimationSpeed);
-            break;
-        }
+          if ( this.options.captionHover ) {
+            $cap = this.$caption;
+            $speed = this.options.captionAnimationSpeed;
+            this.$wrapper.find('.orbit').parent().hover( function() {
+                jQuery($cap).fadeIn($speed)
+            },function() {
+                jQuery($cap).fadeOut($speed)
+            });
+            return;
+          } 
+              
+            switch (this.options.captionAnimation) {
+              case 'none':
+                this.$caption.show();
+                break;
+              case 'fade':
+                this.$caption.fadeIn(this.options.captionAnimationSpeed);
+                break;
+              case 'slideOpen':
+                this.$caption.slideDown(this.options.captionAnimationSpeed);
+                break;
+            }
     	} else {
-    		//Animations for Caption exits
-    		switch (this.options.captionAnimation) {
-          case 'none':
-            this.$caption.hide();
-            break;
-          case 'fade':
-            this.$caption.fadeOut(this.options.captionAnimationSpeed);
-            break;
-          case 'slideOpen':
-            this.$caption.slideUp(this.options.captionAnimationSpeed);
-            break;
-        }
-    	}
+            //Animations for Caption exits
+            switch (this.options.captionAnimation) {
+              case 'none':
+                this.$caption.hide();
+                break;
+              case 'fade':
+                this.$caption.fadeOut(this.options.captionAnimationSpeed);
+                break;
+              case 'slideOpen':
+                this.$caption.slideUp(this.options.captionAnimationSpeed);
+                break;
+            }
+          }
+
     },
     
     setupDirectionalNav: function () {
@@ -402,7 +427,7 @@
     },
     
     setActiveBullet: function () {
-      if(!this.options.bullets) { return false; } else {
+      if(!this.options.bullets) {return false;} else {
     		this.$bullets.find('li')
     		  .removeClass('active')
     		  .eq(this.activeSlide)
@@ -425,9 +450,9 @@
       this.prevActiveSlide = this.activeSlide;
       
       //exit function if bullet clicked is same as the current image
-      if (this.prevActiveSlide == slideDirection) { return false; }
+      if (this.prevActiveSlide == slideDirection) {return false;}
       
-      if (this.$slides.length == "1") { return false; }
+      if (this.$slides.length == "1") {return false;}
       if (!this.locked) {
         this.lock();
 	      //deduce the proper activeImage

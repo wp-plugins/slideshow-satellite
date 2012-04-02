@@ -7,7 +7,7 @@ class SatellitePlugin {
     var $pre = 'Satellite';
     var $debugging = false;
     var $menus = array();
-    var $latestorbit = 'jquery.orbit-1.3.0.js';
+    var $latestorbit = 'orbit-min.js';
     var $cssfile = 'orbit-css.php';
     var $cssadmin = 'admin-styles.css';
     var $sections = array(
@@ -178,6 +178,7 @@ class SatellitePlugin {
             'align' => "none",
             'border' => "1px solid #CCCCCC",
             'background' => "#000000",
+            'infotitle' => "2",
             'infobackground' => "#000000",
             'infocolor' => "#FFFFFF",
             'playshow'  => "Y",
@@ -209,7 +210,7 @@ class SatellitePlugin {
         $this->add_option('abscenter', "Y");
         $this->add_option('embedss', "Y");
         $this->add_option('satwiz', "Y");
-        $this->add_option('db_version', "1.0");
+        $this->add_option('stldb_version', "1.0");
         // Orbit Only
         $this->add_option('autospeed2', 5000);
         $this->add_option('duration', 700);
@@ -441,7 +442,8 @@ class SatellitePlugin {
         
         if ( !empty($model) ) {
             if ( !empty($this->fields) && is_array($this->fields ) ) {
-                if ( !$wpdb->get_var("SHOW TABLES LIKE '" . $this->table . "'"  || $this->get_option('db_version') != SATL_VERSION) ) {
+                if ( /* !$wpdb->get_var("SHOW TABLES LIKE '" . $this->table . "'") ||*/ $this->get_option('stldb_version') != SATL_VERSION ) {
+                    echo "test3";
                     $query = "CREATE TABLE " . $this->table . " (\n";
                     $c = 1;
 
@@ -457,11 +459,16 @@ class SatellitePlugin {
                         }
                         $c++;
                     }
-
                     $query .= ");";
 
                     if (!empty($query)) {
                         $this->table_query[] = $query;
+                    }
+                    
+                    if (!empty($this->table_query)) {
+                        require_once(ABSPATH . 'wp-admin'.DS.'includes'.DS.'upgrade.php');
+                        dbDelta($this->table_query, true);
+                        $this -> update_option('stldb_version', SATL_VERSION);
                     }
                 } else {
                     $field_array = $this->get_fields($this->table);
@@ -473,11 +480,7 @@ class SatellitePlugin {
                     }
                 }
 
-                if (!empty($this->table_query)) {
-                    require_once(ABSPATH . 'wp-admin'.DS.'includes'.DS.'upgrade.php');
-                    dbDelta($this->table_query, true);
-                    $this -> update_option('db_version', SATL_VERSION);
-                }
+
             }
         }
 

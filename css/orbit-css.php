@@ -43,7 +43,7 @@ ul.orbit-thumbnails, ul.orbit-thumbnails li, {
     list-style-type:none;
 }
 
-#featured, #featured1, #featured2, #featured3 {
+#featured, #featured1, #featured2, #featured3, #featured4, #featured5 {
     width: <?php echo $styles['width'] ?>px;
     height: <?php echo $styles['height'] ?>px;
     background:<?php echo($loadbg)?> no-repeat center center;
@@ -60,7 +60,8 @@ div.orbit-wrapper {
     margin: 0 auto;
     background:<?php echo $styles['background']?>; /* VAR BACKGROUND */
     border:<?php echo $styles['border']; ?>;
-    position: relative; }
+    position: relative;
+    z-index:55; }
 
 div.orbit {
     width: 1px;
@@ -158,7 +159,7 @@ div.timer {
     opacity: .6;
     cursor: pointer;
     display: <?php echo($styles['playshow'] == Y) ? "block" : "none";?>;
-    z-index: 100; }
+    z-index: 50; }
 
 span.rotator {
     display: none;
@@ -214,7 +215,7 @@ span.pause.active {
     
 .orbit-wrapper .orbit-caption {
     background: rgba(<?php echo(hex2RGB($styles['infobackground'], true)); ?>,.6);
-    z-index: 100;
+    z-index: 50;
     color: <?php echo $styles['infocolor']; ?>;
     text-align: center;
     font-size: 13px;
@@ -233,6 +234,12 @@ span.pause.active {
     font-size:1.4em; 
     font-weight:bold;
     }
+.orbit-caption h5.orbit-title0 { display:none; }
+.orbit-caption h5.orbit-title1 { font-size:1.0em; }
+.orbit-caption h5.orbit-title2 { font-size:1.2em; }
+.orbit-caption h5.orbit-title3 { font-size:1.5em; }
+.orbit-caption h5.orbit-title4 { font-size:1.8em; }
+
 .orbit-caption p {
     color: <?php echo $styles['infocolor']; ?>;
     padding-bottom: 7px;
@@ -282,7 +289,7 @@ div.slider-nav span {
     height: 100px;
     text-indent: -9999px;
     position: absolute;
-    z-index: 100;
+    z-index: 50;
     top: 50%;
     margin-top: -<?php echo($styles['thumbheight']);?>px;
     cursor: pointer; }
@@ -309,7 +316,7 @@ ul.orbit-bullets {
 }
 .orbit-bullets {
     position: absolute;
-    z-index: 100;
+    z-index: 50;
     list-style: none;
 /*    left: 50%;
     margin-left: -50px;*/
@@ -375,7 +382,7 @@ ul.orbit-thumbnails {
     background:url('../images/scroll-left.gif') center center no-repeat; 
     background-color:<?php echo $styles['background']; ?>;
     position:relative;
-    z-index:100;
+    z-index:50;
 }
 #slideleft:hover { background-color:#666; }
 #slideright { float:right; width:20px; 
@@ -423,6 +430,9 @@ ul.orbit-thumbnails {
 }
 .full-right .thumbholder, .full-left .thumbholder {
     width: <?php echo (int)($styles['thumbarea']); ?>px;
+    height: <?php echo ($styles['height']); ?>px;
+    overflow-y:auto;
+    overflow-x:hidden;
     }
 .full-right .thumbholder {
     margin-left: <?php echo ($extrathumbarea );?>px;

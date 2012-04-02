@@ -116,16 +116,16 @@
                         <span class="howto"><?php _e('speed at which the information will slide in', SATL_PLUGIN_NAME); ?></span>
                     </td>
                 </tr>-->
-              <!--tr>
+              <tr>
                     <th><label for="showhoverP"><?php _e('Caption Display Settings', SATL_PLUGIN_NAME); ?></label></th>
                     <td>
                         <?php $showh = $this->get_option('showhover'); ?>
-                        <label><input <?php echo (empty($showh) || $this->get_option('showhover') == "S" ) ? 'checked="checked"' : ''; ?> type="radio" name="showhover" value="S" id="showhoverS" /> <?php _e('Scroll Up', SATL_PLUGIN_NAME); ?></label>
+                        <!--label><input <?php echo (empty($showh) || $this->get_option('showhover') == "S" ) ? 'checked="checked"' : ''; ?> type="radio" name="showhover" value="S" id="showhoverS" /> <?php _e('Scroll Up', SATL_PLUGIN_NAME); ?></label-->
                         <label><input <?php echo ( empty($showh) || $this->get_option('showhover') == "P" ) ? 'checked="checked"' : ''; ?> type="radio" name="showhover" value="P" id="showhoverP" /> <?php _e('Permanently Show', SATL_PLUGIN_NAME); ?></label>
                         <label><input <?php echo ( $this->get_option('showhover') == "H" ) ? 'checked="checked"' : ''; ?> type="radio" name="showhover" value="H" id="showhoverH" /> <?php _e('Mouse Hover Only', SATL_PLUGIN_NAME); ?></label>
                         <span class="howto"><?php _e('How do you want to display the information (caption) bar?', SATL_PLUGIN_NAME); ?></span>
                     </td>
-                </tr-->
+                </tr>
             </tbody>
         </table>
     </div>    

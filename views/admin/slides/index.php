@@ -1,4 +1,12 @@
 ﻿<div class="wrap">
+	 <?php $version = $this->Version->checkLatestVersion();
+            if(!$version['latest'] && SATL_PRO){ ?>
+                <div class="plugin-update-tr">
+                    <div class="update-message">
+                            <?php echo $version['message']; ?>
+                    </div>
+                </div>
+	<?php } ?>
 	<h2><?php _e('Manage Slides', SATL_PLUGIN_NAME); ?> <?php echo $this -> Html -> link(__('Add New'), $this -> url . '&amp;method=save', array('class' => "button add-new-h2")); ?></h2>
         <?php 
         if (!empty($_GET['single'])) {

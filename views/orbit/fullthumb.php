@@ -56,7 +56,7 @@ if (!empty($slides)) :
                 </div>
             
                 <span class="orbit-caption" id="post-<?php echo $slider->ID; ?>">
-                    <h5><?php echo $slider->post_title; ?></h5>
+                    <h5 class="orbit-title<?php echo($style['infotitle']) ?>"><?php echo $slider->post_title; ?></h5>
                     <p><?php echo $slider->post_content; ?></p>
                 </span>
             <?php endforeach;  ?>
@@ -76,6 +76,7 @@ if (!empty($slides)) :
                     startClockOnMouseOutAfter: 1000, 	 // how long after MouseOut should the timer start again
                     directionalNav: true, 		 // manual advancing directional navs
                     captions: <?php echo($this->get_option('information_temp') == 'Y') ? 'true' : 'false'; ?>,	 // do you want captions?
+                    captionHover: <?php echo ($this->get_option("showhover") == "H") ? 'true' : 'false';?>, // true means only show caption on mousehover
                     captionAnimation: 'slideOpen', 		 // fade, slideOpen, none
                     captionAnimationSpeed: 800, 	 // if so how quickly should they animate in
                     bullets: true,		 // true or false to activate the bullet navigation
@@ -118,7 +119,7 @@ if (!empty($slides)) :
                 </div>
                 <?php if ($slider->textlocation != "N") { ?>
                 <span class="orbit-caption <?php echo ($slider->textlocation == 'BR'|| $slider->textlocation == 'TR') ? ' sattext sattext'.$slider->textlocation:''?>" id="custom-<?php echo $i; ?>">
-                    <h5><?php echo $slider->title; ?></h5>
+                    <h5 class="orbit-title<?php echo($style['infotitle']) ?>"><?php echo $slider->title; ?></h5>
                     <p><?php echo $slider->description; ?></p>
                 </span> 
                 <?php } ?>
@@ -140,6 +141,7 @@ if (!empty($slides)) :
                     startClockOnMouseOutAfter: 1000, 	 // how long after MouseOut should the timer start again
                     directionalNav: true, 		 // manual advancing directional navs
                     captions: <?php echo($this->get_option('information_temp') == 'Y') ? 'true' : 'false'; ?>,	 // do you want captions?
+                    captionHover: <?php echo ($this->get_option("showhover") == "H") ? 'true' : 'false';?>, // true means only show caption on mousehover
                     captionAnimation: 'slideOpen', 		 // fade, slideOpen, none
                     captionAnimationSpeed: 800, 	 // if so how quickly should they animate in
                     bullets: true,		 // true or false to activate the bullet navigation

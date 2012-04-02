@@ -20,35 +20,49 @@
                 <tr class="navpush">
                     <th><label for="styles.navpush"><?php _e('Navigational Push', SATL_PLUGIN_NAME); ?></label></th>
 			<td>
-				<input style="width:45px;" id="styles.navpush" type="text" name="styles[navpush]" value="<?php echo $styles['navpush']; ?>" /> <?php _e('px', SATL_PLUGIN_NAME); ?>
-				<span class="howto"><?php _e('How far your navigational arrows are pushed away from the slideshow', SATL_PLUGIN_NAME); ?></span>
+                            <input style="width:45px;" id="styles.navpush" type="text" name="styles[navpush]" value="<?php echo $styles['navpush']; ?>" /> <?php _e('px', SATL_PLUGIN_NAME); ?>
+                            <span class="howto"><?php _e('How far your navigational arrows are pushed away from the slideshow, 0 or 78 are most popular', SATL_PLUGIN_NAME); ?></span>
 			</td>
                 </tr>
  		<tr class="gal-width">
 			<th><label for="styles.width"><?php _e('Gallery Width', SATL_PLUGIN_NAME); ?></label></th>
 			<td>
-				<input style="width:45px;" id="styles.width" type="text" name="styles[width]" value="<?php echo $styles['width']; ?>" /> <?php _e('px', SATL_PLUGIN_NAME); ?>
-				<span class="howto"><?php _e('width of the slideshow gallery', SATL_PLUGIN_NAME); ?></span>
+                            <input style="width:45px;" id="styles.width" type="text" name="styles[width]" value="<?php echo $styles['width']; ?>" /> <?php _e('px', SATL_PLUGIN_NAME); ?>
+                            <span class="howto"><?php _e('width of the slideshow gallery', SATL_PLUGIN_NAME); ?></span>
 			</td>
 		</tr>
 		<tr class="gal-height">
 			<th><label for="styles.height"><?php _e('Gallery Height', SATL_PLUGIN_NAME); ?></label></th>
 			<td>
-				<input style="width:45px;" id="styles.height" type="text" name="styles[height]" value="<?php echo $styles['height']; ?>" /> <?php _e('px', SATL_PLUGIN_NAME); ?>
-				<span class="howto"><?php _e('height of the slideshow gallery', SATL_PLUGIN_NAME); ?></span>
+                            <input style="width:45px;" id="styles.height" type="text" name="styles[height]" value="<?php echo $styles['height']; ?>" /> <?php _e('px', SATL_PLUGIN_NAME); ?>
+                            <span class="howto"><?php _e('height of the slideshow gallery', SATL_PLUGIN_NAME); ?></span>
 			</td>
 		</tr>
 		<tr class="border">
 			<th><label for="styles.border"><?php _e('Slideshow Border', SATL_PLUGIN_NAME); ?></label></th>
 			<td>
-				<input type="text" name="styles[border]" value="<?php echo $styles['border']; ?>" id="styles.border" style="width:145px;" />
+                            <input type="text" name="styles[border]" value="<?php echo $styles['border']; ?>" id="styles.border" style="width:145px;" />
 			</td>
 		</tr>
 		<tr class="background">
 			<th><label for="styles.background"><?php _e('Slideshow Background', SATL_PLUGIN_NAME); ?></label></th>
 			<td>
-				<input type="text" name="styles[background]" value="<?php echo $styles['background']; ?>" id="styles.background" style="width:65px;" />
+                            <input type="text" name="styles[background]" value="<?php echo $styles['background']; ?>" id="styles.background" style="width:65px;" />
 			</td>
+		</tr>
+		<tr>
+			<th><label for="styles.infotitle"><?php _e('Caption Title', SATL_PLUGIN_NAME); ?></label></th>
+			<td>
+                            <select name="styles[infotitle]">
+
+                                <option <?php echo (empty($styles['infotitle']) || $styles['infotitle'] == "0") ? 'selected="selected"' : ''; ?> value="0" />None - Hidden </option> <?php _e('1- Default', SATL_PLUGIN_NAME); ?>
+                                <option <?php echo ($styles['infotitle'] == "1") ? 'selected="selected"' : ''; ?> value="1" />Small</option> <?php _e('Small', SATL_PLUGIN_NAME); ?>
+                                <option <?php echo ($styles['infotitle'] == "2") ? 'selected="selected"' : ''; ?> value="2" />Medium</option> <?php _e('Medium', SATL_PLUGIN_NAME); ?>
+                                <option <?php echo ($styles['infotitle'] == "3") ? 'selected="selected"' : ''; ?> value="3" />Large</option> <?php _e('Large', SATL_PLUGIN_NAME); ?>
+                                <option <?php echo ($styles['infotitle'] == "4") ? 'selected="selected"' : ''; ?> value="4" />XLarge</option> <?php _e('X-Large', SATL_PLUGIN_NAME); ?>
+
+                            </select>			
+                        </td>
 		</tr>
 		<tr>
 			<th><label for="styles.infobackground"><?php _e('Caption Background', SATL_PLUGIN_NAME); ?></label></th>

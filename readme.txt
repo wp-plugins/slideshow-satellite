@@ -15,7 +15,7 @@ Either use your current Wordpress Media Galleries or take advantage of the Satel
 
 To explore the manual or get the premium edition: http://c-pr.es/projects/satellite/
 
-To embed into a post/page, simply insert <code>[satellit]e</code> into its content with optional <code>post_id</code>, <code>thumbs</code>, <code>exclude</code>, <code>include</code>, <code>caption</code>, and <code>auto</code>  parameters.  Check out the Slideshow Satellite Manual on the plugin details page (linked above) for code examples.
+To embed into a post/page, simply insert <code>[satellite]</code> into its content with optional <code>post_id</code>, <code>thumbs</code>, <code>exclude</code>, <code>include</code>, <code>caption</code>, and <code>auto</code>  parameters.  Check out the Slideshow Satellite Manual on the plugin details page (linked above) for code examples.
 
 == Installation ==
 Installing the WordPress Slideshow Satellite plugin manually is very easy. Simply follow the steps below.
@@ -87,7 +87,6 @@ Two should be enough, we don't want to bog down your install with screenshots.
 * Added multiple title sizing including 'Hidden'
 * Minor bug fixes including Directory Separator
 * Added Premium edition notifier of new versions
-
 
 = 1.02 =
 * Created easy out for tinyMCE bug

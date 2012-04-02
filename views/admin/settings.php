@@ -5,9 +5,9 @@ wp_nonce_field('closedpostboxes', 'closedpostboxesnonce', false);
 wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
 ?>
 <div class="wrap">
-     
+        
 	 <?php $version = $this->Version->checkLatestVersion();
-			if(!$version['latest']){ ?>
+			if(!$version['latest'] && SATL_PRO){ ?>
 				<div class="plugin-update-tr">
 					<div class="update-message">
 						<?php echo $version['message']; ?>
@@ -69,5 +69,5 @@ wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
 		</div>
             <a onclick="jQuery('.postbox h3').click();" class="showall">Toggle On/Off All Form Options</a>
 	</form>
-        <h4><?php _e('Current Satellite Version:', SATL_PLUGIN_NAME); ?><?php echo($this->get_option('db_version'));?> </h4>
+        <h4><?php _e('Current Satellite Version:', SATL_PLUGIN_NAME); ?><?php echo($this->get_option('stldb_version'));?> </h4>
 </div>

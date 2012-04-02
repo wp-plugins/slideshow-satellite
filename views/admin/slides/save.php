@@ -1,12 +1,4 @@
 <div class="wrap">
-	 <?php $version = $this->Version->checkLatestVersion();
-			if(!$version['latest']){ ?>
-				<div class="plugin-update-tr">
-					<div class="update-message">
-						<?php echo $version['message']; ?>
-					</div>
-				</div>
-	<?php } ?>
 	<h2><?php _e('Save a Slide', SATL_PLUGIN_NAME); ?></h2>
 	
 	<form action="<?php echo $this -> url; ?>&amp;method=save" method="post" enctype="multipart/form-data">

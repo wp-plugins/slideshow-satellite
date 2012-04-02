@@ -8,7 +8,7 @@ Description: Display photography and content in new ways with this slideshow. Sl
 Version: 1.03
 */
 define('DS', '/');
-define( 'SATL_VERSION', '1.0.3' );
+define( 'SATL_VERSION', '1.1' );
 $uploads = wp_upload_dir();
 if ( ! defined( 'SATL_PLUGIN_BASENAME' ) )
 	define( 'SATL_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );

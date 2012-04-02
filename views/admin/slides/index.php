@@ -1,6 +1,6 @@
 ﻿<div class="wrap">
 	 <?php $version = $this->Version->checkLatestVersion();
-            if(!$version['latest']){ ?>
+            if(!$version['latest'] && SATL_PRO){ ?>
                 <div class="plugin-update-tr">
                     <div class="update-message">
                             <?php echo $version['message']; ?>

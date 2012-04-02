@@ -1,12 +1,5 @@
 ﻿<div class="wrap"> 
-	 <?php $version = $this->Version->checkLatestVersion();
-            if(!$version['latest']){ ?>
-                <div class="plugin-update-tr">
-                    <div class="update-message">
-                            <?php echo $version['message']; ?>
-                    </div>
-                </div>
-	<?php } ?>
+
 	<h2><?php _e('Order Slides', SG2_PLUGIN_NAME); ?></h2>
 	<div style="float:none;" class="subsubsub">
 		<a href="<?php echo $this -> url; ?>"><?php _e('&larr; Manage All Slides', SG2_PLUGIN_NAME); ?></a>

@@ -444,7 +444,8 @@ class SatellitePlugin {
         
         if ( !empty($model) ) {
             if ( !empty($this->fields) && is_array($this->fields ) ) {
-                if ( !$wpdb->get_var("SHOW TABLES LIKE '" . $this->table . "'")  || $this->get_option('stldb_version') != SATL_VERSION ) {
+                if ( /* !$wpdb->get_var("SHOW TABLES LIKE '" . $this->table . "'") ||*/ $this->get_option('stldb_version') != SATL_VERSION ) {
+                    echo "test3";
                     $query = "CREATE TABLE " . $this->table . " (\n";
                     $c = 1;
 

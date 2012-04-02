@@ -2,13 +2,13 @@
 
 class SatelliteVersionHelper extends SatellitePlugin {
 	
-	private $versionCheckUrl = "http://c-pr.es/latest-satellite-version.txt";
-	private $membersPageUrl	=	"http://c-pr.es/members";
-	
+    private $versionCheckUrl    =   "http://c-pr.es/latest-satellite-version.txt";
+    private $membersPageUrl     =   "http://c-pr.es/members";
+    
     function checkLatestVersion(){
-		$thisVersion 			= $this->get_option('db_version'); // check installed version
+		$thisVersion 		= $this->get_option('stldb_version'); // check installed version
 		$latestVersionAvailable = $this->readFile($this->versionCheckUrl); // check current version available
-		$mssageLatest			=	"Latest version ".$latestVersionAvailable." of the plugin is available. Go to <a href='".$this->membersPageUrl."' target='_blank'>Members Page</a> to download the latest version.";
+		$messageLatest		= "Update to latest Satellite version ".$latestVersionAvailable.". Go to C-Pres <a href='".$this->membersPageUrl."' target='_blank'>Members Page</a> to download the latest version.";
 		
 		if($thisVersion >= $latestVersionAvailable && $latestVersionAvailable != ''){ // check if the current version is latest
 			$arr['latest']  = true;
@@ -16,8 +16,10 @@ class SatelliteVersionHelper extends SatellitePlugin {
 		}else{
 			$arr['latest']  = false;
 			$arr['version'] =  $latestVersionAvailable;
-			$arr['message'] =  $mssageLatest;
+			$arr['message'] =  $messageLatest;
 		}
+                //DEBUG
+                //print_r($thisVersion." = ".$latestVersionAvailable);
 		return $arr;
 	}
 	

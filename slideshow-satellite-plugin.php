@@ -14,7 +14,7 @@ class SatellitePlugin {
         'satellite' => 'satellite-slides',
         'settings' => 'satellite',
     );
-    var $helpers = array('Db', 'Html', 'Form', 'Metabox');
+    var $helpers = array('Db', 'Html', 'Form', 'Metabox', 'Version');
     var $models = array('Slide');
 
     function register_plugin($name, $base) {

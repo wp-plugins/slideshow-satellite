@@ -7,8 +7,8 @@ Author URI: http://c-pr.es/membership-options
 Description: Display photography and content in new ways with this slideshow. Slideshow Satellite uses Orbit to give a multitude of transition options and customizations.
 Version: 1.1
 */
-define('DS', DIRECTORY_SEPARATOR);
-define( 'SATL_VERSION', '1.0.3' );
+define('DS', '/');
+define( 'SATL_VERSION', '1.1' );
 $uploads = wp_upload_dir();
 if ( ! defined( 'SATL_PLUGIN_BASENAME' ) )
 	define( 'SATL_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -55,7 +55,60 @@ class Satellite extends SatellitePlugin {
         		add_shortcode('slideshow', array($this, 'embed'));
                 }
 		
+		add_action('admin_init', array( $this, 'prefix_upgrade_plugin' ));
+		register_activation_hook(__FILE__, array($this,'prefix_activate_plugin'));
 	}
+	
+	function prefix_activate_plugin() 
+	{
+            $proPlugin 	= SATL_PLUGIN_DIR.'/pro/';
+            $proUploads = SATL_UPLOAD_DIR.'/pro/';
+            $currDate	= date('F j, Y, g:i a', time());
+            if(SATL_PRO){
+                if(!file_exists($proUploads)){
+                    if(!$this->get_option('premium_orig')){
+                            $this->add_option('premium_orig', $styles);
+                    }else{
+                            $this->update_option('premium_orig', $styles);
+                    }
+                    $this->copy_directory($proPlugin, $proUploads);
+                }
+            }
+		
+	}
+	
+	function prefix_upgrade_plugin(){
+            $proPlugin 	= SATL_PLUGIN_DIR.'/pro/';
+            $proUploads = SATL_UPLOAD_DIR.'/pro/';
+            if(!SATL_PRO){
+                if(file_exists($proUploads)){
+                    $this->copy_directory($proUploads, $proPlugin);
+                }
+            }
+	}
+
+        function copy_directory( $source, $destination ) {
+            if ( is_dir( $source ) ) {
+                @mkdir( $destination );
+                $directory = dir( $source );
+                while ( FALSE !== ( $readdirectory = $directory->read() ) ) {
+                        if ( $readdirectory == '.' || $readdirectory == '..' ) {
+                                continue;
+                        }
+                        $PathDir = $source . '/' . $readdirectory; 
+                        if ( is_dir( $PathDir ) ) {
+                                $this->copy_directory( $PathDir, $destination . '/' . $readdirectory );
+                                continue;
+                        }
+                        copy( $PathDir, $destination . '/' . $readdirectory );
+                }
+
+                $directory->close();
+            }else {
+                copy( $source, $destination );
+            }
+	}
+	 
 	function admin_menu() {
 		add_menu_page(__('Satellite', SATL_PLUGIN_NAME), __('Satellite', SATL_PLUGIN_NAME), $this -> get_option('manager'), "satellite", array($this, 'admin_settings'), SATL_PLUGIN_URL . '/images/icon.png');
 		$this -> menus['satellite'] = add_submenu_page("satellite", __('Configuration', SATL_PLUGIN_NAME), __('Configuration', SATL_PLUGIN_NAME), $this -> get_option('manager'), "satellite", array($this, 'admin_settings'));
@@ -163,9 +216,6 @@ class Satellite extends SatellitePlugin {
                     if ($display == "off") {
                         return null;
                     }
-                    if ($display == "sidewinder") {
-                        $this -> update_option('display', 'sidewinder');
-                    }
                 }
 		if ( !empty( $caption ) ) { 
 			if ( ($this -> get_option('information')=='Y') && ( $caption == 'off' ) ) {
@@ -240,9 +290,7 @@ class Satellite extends SatellitePlugin {
 						shuffle($slides);
 					}
                     $this->slidenum = count($slides);
-                    if ( $this -> get_option( 'display') == "sidewinder" )
-                        $content = $this -> render('default', array('slides' => $slides, 'frompost' => false), false, 'sidewinder');
-                    elseif ( $this -> get_option( 'thumbnails_temp') == "FR" || $this -> get_option( 'thumbnails_temp') == "FL" )
+                    if ( $this -> get_option( 'thumbnails_temp') == "FR" || $this -> get_option( 'thumbnails_temp') == "FL" )
                         $content = $this -> render('fullthumb', array('slides' => $slides, 'frompost' => false), false, 'orbit');
                     else
                         $content = $this -> render('default', array('slides' => $slides, 'frompost' => false), false, 'orbit');
@@ -322,9 +370,7 @@ class Satellite extends SatellitePlugin {
 				else { unset($attachments[$id]); }
 			}
 		}
-		if ( $this -> get_option('display') == "sidewinder") {
-			$content = $this -> render('default', array('slides' => $attachments, 'frompost' => true), false, 'sidewinder');
-                } elseif ( $this -> get_option('transition_temp') == "OM") {
+		if ( $this -> get_option('transition_temp') == "OM") {
 			$content = $this -> render('multislider', array('slides' => $attachments, 'frompost' => true), false, 'pro');
 		} elseif ( $this -> get_option( 'thumbnails_temp') == "FR" || $this -> get_option( 'thumbnails_temp') == "FL" ) {
 			$content = $this -> render('fullthumb', array('slides' => $attachments, 'frompost' => true), false, 'orbit');

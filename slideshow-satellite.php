@@ -59,9 +59,10 @@ class Satellite extends SatellitePlugin {
                 if ($this->get_option('embedss') == "Y") {
         		add_shortcode('slideshow', array($this, 'embed'));
                 }
+                register_activation_hook(__FILE__, array(SatellitePremium,'prefix_activate_plugin'));
 		
 	}      
-	 
+
 	function admin_menu() {
 		add_menu_page(__('Satellite', SATL_PLUGIN_NAME), __('Satellite', SATL_PLUGIN_NAME), $this -> get_option('manager'), "satellite", array($this, 'admin_settings'), SATL_PLUGIN_URL . '/images/icon.png');
 		$this -> menus['satellite'] = add_submenu_page("satellite", __('Configuration', SATL_PLUGIN_NAME), __('Configuration', SATL_PLUGIN_NAME), $this -> get_option('manager'), "satellite", array($this, 'admin_settings'));

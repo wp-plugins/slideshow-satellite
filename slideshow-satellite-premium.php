@@ -5,8 +5,7 @@ class SatellitePremium extends SatellitePlugin {
     
     function __construct() {
 
-        add_action('admin_init', array( $this, 'prefix_upgrade_plugin' ));
-        register_activation_hook(__FILE__, array($this,'prefix_activate_plugin'));
+        add_action('admin_init', array( $this, 'prefix_upgrade_plugin' ));        
 
     }
 
@@ -14,18 +13,19 @@ class SatellitePremium extends SatellitePlugin {
     function prefix_activate_plugin() 
     {
         $currDate	= date('F j, Y, g:i a', time());
+        //echo("<script type='text/javascript'>alert('include!".$currDate."');</script>");
         if(SATL_PRO){
             if(!file_exists(SATL_UPLOADPRO_DIR)){
-                if(!$this->get_option('premium_orig')){
-                        $this->add_option('premium_orig', $styles);
+/*                if(!$Satellite->get_option('premium_orig')){
+                        $Satellite->add_option('premium_orig', $styles);
                 }else{
-                        $this->update_option('premium_orig', $styles);
-                }
+                        $Satellite->update_option('premium_orig', $styles);
+                }*/
                 $this->copy_directory(SATL_PLUGINPRO_DIR, SATL_UPLOADPRO_DIR);
             }
         }
 
-    }
+    }    
     
     // On Automatic update, pro directory gets removed and needs to be replaced
     function prefix_upgrade_plugin(){

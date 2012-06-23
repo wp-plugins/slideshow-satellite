@@ -22,12 +22,17 @@ if ( ! defined( 'SATL_UPLOAD_DIR' ) )
 	define( 'SATL_UPLOAD_DIR', $uploads['basedir']. DS . SATL_PLUGIN_NAME );
 if ( ! defined( 'SATL_UPLOAD_URL' ) )
 	define( 'SATL_UPLOAD_URL', $uploads['baseurl']. DS . SATL_PLUGIN_NAME );
-if ( ! file_exists( SATL_PLUGIN_DIR . '/pro/' ) )
+if ( ! defined( 'SATL_UPLOADPRO_DIR' ) )
+	define( 'SATL_UPLOADPRO_DIR', SATL_UPLOAD_DIR . '/pro/' );
+if ( ! defined( 'SATL_PLUGINPRO_DIR' ) )
+	define( 'SATL_PLUGINPRO_DIR', SATL_PLUGIN_DIR . '/pro/' );
+if ( ! file_exists( SATL_PLUGINPRO_DIR ) )
 	define( 'SATL_PRO', false );
 else
 	define( 'SATL_PRO', true );
 	
 require_once SATL_PLUGIN_DIR . '/slideshow-satellite-plugin.php';
+require_once SATL_PLUGIN_DIR . '/slideshow-satellite-premium.php';
 	
 class Satellite extends SatellitePlugin {
 	function __construct() {
@@ -55,59 +60,7 @@ class Satellite extends SatellitePlugin {
         		add_shortcode('slideshow', array($this, 'embed'));
                 }
 		
-		add_action('admin_init', array( $this, 'prefix_upgrade_plugin' ));
-		register_activation_hook(__FILE__, array($this,'prefix_activate_plugin'));
-	}
-	
-	function prefix_activate_plugin() 
-	{
-            $proPlugin 	= SATL_PLUGIN_DIR.'/pro/';
-            $proUploads = SATL_UPLOAD_DIR.'/pro/';
-            $currDate	= date('F j, Y, g:i a', time());
-            if(SATL_PRO){
-                if(!file_exists($proUploads)){
-                    if(!$this->get_option('premium_orig')){
-                            $this->add_option('premium_orig', $styles);
-                    }else{
-                            $this->update_option('premium_orig', $styles);
-                    }
-                    $this->copy_directory($proPlugin, $proUploads);
-                }
-            }
-		
-	}
-	
-	function prefix_upgrade_plugin(){
-            $proPlugin 	= SATL_PLUGIN_DIR.'/pro/';
-            $proUploads = SATL_UPLOAD_DIR.'/pro/';
-            if(!SATL_PRO){
-                if(file_exists($proUploads)){
-                    $this->copy_directory($proUploads, $proPlugin);
-                }
-            }
-	}
-
-        function copy_directory( $source, $destination ) {
-            if ( is_dir( $source ) ) {
-                @mkdir( $destination );
-                $directory = dir( $source );
-                while ( FALSE !== ( $readdirectory = $directory->read() ) ) {
-                        if ( $readdirectory == '.' || $readdirectory == '..' ) {
-                                continue;
-                        }
-                        $PathDir = $source . '/' . $readdirectory; 
-                        if ( is_dir( $PathDir ) ) {
-                                $this->copy_directory( $PathDir, $destination . '/' . $readdirectory );
-                                continue;
-                        }
-                        copy( $PathDir, $destination . '/' . $readdirectory );
-                }
-
-                $directory->close();
-            }else {
-                copy( $source, $destination );
-            }
-	}
+	}      
 	 
 	function admin_menu() {
 		add_menu_page(__('Satellite', SATL_PLUGIN_NAME), __('Satellite', SATL_PLUGIN_NAME), $this -> get_option('manager'), "satellite", array($this, 'admin_settings'), SATL_PLUGIN_URL . '/images/icon.png');

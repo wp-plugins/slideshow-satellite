@@ -40,8 +40,6 @@ class SatellitePlugin {
         }
         $this->add_filter('the_posts', 'conditionally_add_scripts_and_styles'); // the_posts gets triggered before wp_head
         $this->add_action('admin_head', 'add_admin_styles');
-	if (SATL_PRO)
-		$this->add_filter( 'http_request_args', 'satl_hidden_plugin_check', 5, 2 );
         //$this->add_action('wp_enqueue_scripts', 'sg2_enqueue_styles');
 //        $this->add_action('wp_footer', 'print_satellite_styles');
 //        $this->add_action('wp_footer', 'print_satellite_scripts');
@@ -445,7 +443,6 @@ class SatellitePlugin {
         if ( !empty($model) ) {
             if ( !empty($this->fields) && is_array($this->fields ) ) {
                 if ( /* !$wpdb->get_var("SHOW TABLES LIKE '" . $this->table . "'") ||*/ $this->get_option('stldb_version') != SATL_VERSION ) {
-                    echo "test3";
                     $query = "CREATE TABLE " . $this->table . " (\n";
                     $c = 1;
 
@@ -465,6 +462,9 @@ class SatellitePlugin {
 
                     if (!empty($query)) {
                         $this->table_query[] = $query;
+                    }
+                    if (SATL_PRO) {
+                        $this->checkProDirs();
                     }
                     
                     if (!empty($this->table_query)) {
@@ -614,15 +614,5 @@ class SatellitePlugin {
         }
         return $links;
     }
-	function satl_hidden_plugin_check( $r, $url ) {
-	  if ( 0 !== strpos( $url, 'http://api.wordpress.org/plugins/update-check' ) )
-		return $r; // Not a plugin update request. Bail immediately.
-	  $plugins = unserialize( $r['body']['plugins'] );
-	  unset( $plugins->plugins[ plugin_basename( __FILE__ ) ] );
-	  unset( $plugins->active[ array_search( plugin_basename( __FILE__ ), $plugins->active ) ] );
-	  $r['body']['plugins'] = serialize( $plugins );
-	  return $r;
-	}
-
 }
 ?>

@@ -462,7 +462,10 @@ class SatellitePlugin {
                         $this->table_query[] = $query;
                     }
                     if (SATL_PRO) {
-                        //$this->checkProDirs();
+                        if ( class_exists( 'SatellitePremium' ) ) {
+                            $satlprem = new SatellitePremium;
+                            $satlprem->checkProDirs();
+                        }
                     }
                     
                     if (!empty($this->table_query)) {

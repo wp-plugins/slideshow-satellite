@@ -18,6 +18,7 @@ if ($styles['background'] == '#000000') {
 } else {
 	$loadbg = $styles['background']." url('../images/spinner.gif')";
 }
+if (!isset($styles['navbuttons'])) { $styles['navbuttons'] = 0;}
 IF ($styles['navbuttons'] == 0) { $navright = 'url(../images/right-arrow.png) no-repeat 0 0';$navleft = 'url(../images/left-arrow.png) no-repeat 0 0'; }
 IF ($styles['navbuttons'] == 1) { $navright = 'url("../pro/images/right-sq.png") no-repeat 30px 0';$navleft = 'url(../pro/images/left-sq.png) no-repeat 0 0'; }
 IF ($styles['navbuttons'] == 2) { $navright = 'url(../pro/images/right-rd.png) no-repeat 30px 0';$navleft = 'url(../pro/images/left-rd.png) no-repeat 0 0'; }

@@ -58,25 +58,31 @@ class SatellitePremium extends SatellitePlugin {
         }
     }
 
+    function checkProDirs() {
+        if ($this->folderSize(SATL_UPLOADPRO_DIR) != $this->folderSize(SATL_PLUGINPRO_DIR) ) {
+            $this->remove_dir(SATL_UPLOADPRO_DIR);
+            $this->copy_directory(SATL_PLUGINPRO_DIR, SATL_UPLOADPRO_DIR);
+            $this->render_msg("You've just updated your premium plugin! Congratulations and enjoy the new features.");
+        }
+    }
+
     function remove_dir($dir) {
-       if (is_dir($dir)) {
+        if (is_dir($dir)) {
          $objects = scandir($dir);
          foreach ($objects as $object) {
            if ($object != "." && $object != "..") {
                  if (filetype($dir."/".$object) == "dir") $this->remove_dir($dir."/".$object); else unlink($dir."/".$object);
            }
          }
-         reset($objects);
-         rmdir($dir);
+         try {
+             reset($objects);
+             rmdir($dir);
+         } catch (Exception $e) {
+             echo "Removing the directory did not work:". $e->getMessage();
+         }
        }
+       return true;
      }
-
-    function checkProDirs() {
-        if (folderSize(SATL_UPLOADPRO_DIR) != folderSize(SATL_PLUGINPRO_DIR) ) {
-            $this->remove_dir(SATL_UPLOADPRO_DIR);
-            $this->copy_directory(SATL_PLUGINPRO_DIR, SATL_UPLOADPRO_DIR);
-        }
-    }
 
     function folderSize($path) {
         $total_size = 0;
@@ -87,7 +93,7 @@ class SatellitePremium extends SatellitePlugin {
             if ( $t<>"." && $t<>".." ) {
                 $currentFile = $cleanPath . $t;
                 if (is_dir($currentFile)) {
-                    $size = folderSize($currentFile);
+                    $size = $this->folderSize($currentFile);
                     $total_size += $size;
                 } else {
                     $size = filesize($currentFile);

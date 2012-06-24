@@ -4,10 +4,10 @@ $styles = array();
 foreach ($_GET as $skey => $sval) :
 	$styles[$skey] = urldecode($sval);
 endforeach;
-IF ($styles['width_temp']) {
+IF (isset($styles['width_temp'])) {
 	$styles['width'] = $styles['width_temp'];
 }
-IF ($styles['height_temp']) {
+IF (isset($styles['height_temp'])) {
 	$styles['height'] = $styles['height_temp'];
 }
 IF (!$styles['thumbheight']) {
@@ -19,6 +19,7 @@ if ($styles['background'] == '#000000') {
 	$loadbg = $styles['background']." url('../images/spinner.gif')";
 }
 if (!isset($styles['navbuttons'])) { $styles['navbuttons'] = 0;}
+if (!isset($styles['nav'])) { $styles['nav'] = 'off';}
 IF ($styles['navbuttons'] == 0) { $navright = 'url(../images/right-arrow.png) no-repeat 0 0';$navleft = 'url(../images/left-arrow.png) no-repeat 0 0'; }
 IF ($styles['navbuttons'] == 1) { $navright = 'url("../pro/images/right-sq.png") no-repeat 30px 0';$navleft = 'url(../pro/images/left-sq.png) no-repeat 0 0'; }
 IF ($styles['navbuttons'] == 2) { $navright = 'url(../pro/images/right-rd.png) no-repeat 30px 0';$navleft = 'url(../pro/images/left-rd.png) no-repeat 0 0'; }
@@ -159,7 +160,7 @@ div.timer {
     right: -4px;
     opacity: .6;
     cursor: pointer;
-    display: <?php echo($styles['playshow'] == Y) ? "block" : "none";?>;
+    display: <?php echo($styles['playshow'] == 'Y') ? "block" : "none";?>;
     z-index: 50; }
 
 span.rotator {
@@ -174,7 +175,6 @@ span.rotator {
 	/*filter: alpha(opacity=60);	*/
     /*background: url(../images/rotator-black.png) no-repeat;*/
     z-index: 1; 
-    /*-moz-transform: <?php echo($styles['autotimer'] == Y) ? "" : "none !important"; ?>;*/
     }
 span.mask {
     display: block;

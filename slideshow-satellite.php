@@ -45,7 +45,6 @@ class Satellite extends SatellitePlugin {
 		$this -> add_action('admin_menu');
 		$this -> add_action('admin_head');
 		$this -> add_action('admin_notices');
-//		$this -> add_action('sg2_enqueue_styles');
 		
 		//WordPress filter hooks
               if ( $this -> get_option('satwiz') != "N") {
@@ -127,7 +126,6 @@ class Satellite extends SatellitePlugin {
 			require SATL_PLUGIN_DIR . '/pro/custom_sizing.php';
 		}
 		
-//		$this -> add_action( 'wp_print_styles', 'gs_enqueue_styles' );
 		if ( ! empty($post_id) && $post = get_post($post_id)) {
 			if ($attachments = get_children("post_parent=" . $post -> ID . "&post_type=attachment&post_mime_type=image&orderby=menu_order ASC, ID ASC")) {
 				$content = $this -> exclude_ids($attachments, $exclude, $include);

@@ -37,10 +37,10 @@ class SatellitePlugin {
             error_reporting(E_ALL);
             @ini_set('display_errors', 1);
         }
-        $this->add_filter('the_posts', 'conditionally_add_scripts_and_styles'); // the_posts gets triggered before wp_head
-        $this->add_action('wp_head', $this->enqueue_scripts());
+        $this->add_action('wp_head', 'enqueue_scripts', 1);
         $this->add_action('admin_head', 'add_admin_styles');
         $this->add_action('admin_init', 'admin_scripts');
+        $this->add_filter('the_posts', 'conditionally_add_scripts_and_styles'); // the_posts gets triggered before wp_head
 
         return true;
     }
@@ -65,7 +65,7 @@ class SatellitePlugin {
             }
 
             if ($shortcode_found) {
-
+                        
             $satlStyleFile = SATL_PLUGIN_DIR . '/css/' . $this -> cssfile;
             $satlStyleUrl = SATL_PLUGIN_URL . '/css/' . $this -> cssfile . '?v=' . SATL_VERSION . '&amp;pID=' . $pID;
             if ($_SERVER['HTTPS']) {
@@ -113,7 +113,13 @@ class SatellitePlugin {
 
                     // enqueue here
                 wp_enqueue_style(SATL_PLUGIN_NAME . "_style");
-                wp_enqueue_script(SATL_PLUGIN_NAME . "_script");
+                
+                wp_enqueue_script(SATL_PLUGIN_NAME . "_script", '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/' . $this->latestorbit,
+                        array('jquery'),
+                        SATL_VERSION);
+
+                //wp_enqueue_script(SATL_PLUGIN_NAME . "_script");        
+                
             }
             return $posts;
     }
@@ -377,8 +383,6 @@ class SatellitePlugin {
         wp_deregister_script( 'jquery' );
         wp_register_script( 'jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js');
         wp_enqueue_script('jquery');
-
-        wp_register_script(SATL_PLUGIN_NAME . "_script", '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/' . $this->latestorbit, 'jquery', SATL_VERSION);
 
         if (SATL_PRO && ($this->get_option('preload') == 'Y')) {
             wp_register_script('satellite_preloader', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/pro/preloader.js');

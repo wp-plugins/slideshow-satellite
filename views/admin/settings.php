@@ -24,7 +24,7 @@ wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
 			<div id="side-info-column" class="inner-sidebar">		
 				<?php do_action('submitpage_box'); ?>	
 				<?php do_meta_boxes($this -> menus['satellite'], 'side', $post); ?>
-                <?php do_action('submitpage_box'); ?>
+                <?php //do_action('submitpage_box'); ?>
 				<div id="submitdiv" class="postbox">
                                      <?php if(SATL_PRO) {?>
                 	<h3>Thank you plugin supporter!</h3>
@@ -62,7 +62,7 @@ wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
 			</div>
 			<div id="side-info-column" class="inner-sidebar inner2">		
 				<?php do_meta_boxes($this -> menus['satellite'], 'side', $post); ?>
-                <?php do_action('submitpage_box'); ?>
+                <?php //do_action('submitpage_box'); ?>
 			</div>
 			<br class="clear" />
 			

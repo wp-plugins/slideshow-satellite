@@ -66,7 +66,7 @@ wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
 			</div>
 			<br class="clear" />
 			
-		</div>
+            </div>
             <a href="#" onclick="jQuery('.postbox h3').click()">Toggle On/Off All Form Options</a>
 	</form>
         <h4><?php _e('Current Satellite Version:', SATL_PLUGIN_NAME); ?><?php echo($this->get_option('stldb_version'));?> </h4>

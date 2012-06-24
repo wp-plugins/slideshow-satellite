@@ -356,7 +356,6 @@ class SatellitePlugin {
                 wp_enqueue_script('autosave');
 
                 if ($_GET['page'] == 'satellite') {
-                    print_r("enqueuing scripts");
                     wp_enqueue_script('common');
                     wp_enqueue_script('wp-lists');
                     wp_enqueue_script('postbox');

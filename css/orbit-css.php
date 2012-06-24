@@ -346,6 +346,8 @@ ul.orbit-thumbnails {
 }
     
 .orbit-thumbnails li {
+    width: <?php echo($styles['thumbheight']);?>px;
+    height: <?php echo($styles['thumbheight']);?>px;
     -moz-border-radius:4px;
     -webkit-border-radius:4px;
     border: 2px solid <?php echo($styles['background'])?>;
@@ -358,7 +360,6 @@ ul.orbit-thumbnails {
 }
 .orbit-thumbnails li img {
     max-width:100%;
-    height: <?php echo($styles['thumbheight']);?>px;
 }
 .orbit-thumbnails li:hover {
     opacity: 1;

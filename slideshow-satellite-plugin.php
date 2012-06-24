@@ -19,7 +19,6 @@ class SatellitePlugin {
 
     function register_plugin($name, $base) {
         $this->plugin_base = rtrim(dirname($base), DS);
-        $this->enqueue_scripts();
         $this->initialize_classes();
         $this->initialize_options();
 
@@ -39,10 +38,9 @@ class SatellitePlugin {
             @ini_set('display_errors', 1);
         }
         $this->add_filter('the_posts', 'conditionally_add_scripts_and_styles'); // the_posts gets triggered before wp_head
+        $this->add_action('wp_head', $this->enqueue_scripts());
         $this->add_action('admin_head', 'add_admin_styles');
-        //$this->add_action('wp_enqueue_scripts', 'sg2_enqueue_styles');
-//        $this->add_action('wp_footer', 'print_satellite_styles');
-//        $this->add_action('wp_footer', 'print_satellite_scripts');
+        $this->add_action('admin_init', 'admin_scripts');
 
         return true;
     }
@@ -352,16 +350,13 @@ class SatellitePlugin {
         }
         return false;
     }
-
-
-    function enqueue_scripts() {
-        wp_enqueue_script('jquery');
-
-        if (is_admin()) {
+    
+    function admin_scripts() {
             if (!empty($_GET['page']) && in_array($_GET['page'], (array) $this->sections)) {
                 wp_enqueue_script('autosave');
 
                 if ($_GET['page'] == 'satellite') {
+                    print_r("enqueuing scripts");
                     wp_enqueue_script('common');
                     wp_enqueue_script('wp-lists');
                     wp_enqueue_script('postbox');
@@ -376,19 +371,23 @@ class SatellitePlugin {
 
                 add_thickbox();
             }
+    }
 
-//	wp_enqueue_script(SATL_PLUGIN_NAME . 'admin', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/admin.js', null, '1.0');
-        } else {
-            wp_register_script(SATL_PLUGIN_NAME . "_script", '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/' . $this->latestorbit, 'jquery', SATL_VERSION);
 
-            if (SATL_PRO && ($this->get_option('preload') == 'Y')) {
-                wp_register_script('satellite_preloader', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/pro/preloader.js');
-                wp_enqueue_script('satellite_preloader');
-            }
+    function enqueue_scripts() {
+        wp_deregister_script( 'jquery' );
+        wp_register_script( 'jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js');
+        wp_enqueue_script('jquery');
 
-            if ($this->get_option('imagesbox') == "T")
-                add_thickbox();
+        wp_register_script(SATL_PLUGIN_NAME . "_script", '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/' . $this->latestorbit, 'jquery', SATL_VERSION);
+
+        if (SATL_PRO && ($this->get_option('preload') == 'Y')) {
+            wp_register_script('satellite_preloader', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/pro/preloader.js');
+            wp_enqueue_script('satellite_preloader');
         }
+
+        if ($this->get_option('imagesbox') == "T")
+            add_thickbox();
 
         return true;
     }
@@ -443,7 +442,6 @@ class SatellitePlugin {
         if ( !empty($model) ) {
             if ( !empty($this->fields) && is_array($this->fields ) ) {
                 if ( /* !$wpdb->get_var("SHOW TABLES LIKE '" . $this->table . "'") ||*/ $this->get_option('stldb_version') != SATL_VERSION ) {
-                    echo "test3";
                     $query = "CREATE TABLE " . $this->table . " (\n";
                     $c = 1;
 
@@ -463,6 +461,9 @@ class SatellitePlugin {
 
                     if (!empty($query)) {
                         $this->table_query[] = $query;
+                    }
+                    if (SATL_PRO) {
+                        //$this->checkProDirs();
                     }
                     
                     if (!empty($this->table_query)) {

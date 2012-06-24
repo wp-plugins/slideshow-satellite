@@ -86,7 +86,7 @@ class SatelliteSlide extends SatelliteDbHelper {
 							$thumbfull = $imagepath . $name . '-thumb.' . strtolower($ext);
 							$smallfull = $imagepath . $name . '-small.' . strtolower($ext);
 						
-							image_resize($imagefull, $width = 100, $height = 100, $crop = false, $append = 'thumb', $dest = null, $quality = 100);
+							image_resize($imagefull, $width = 100, $height = 100, $crop = true, $append = 'thumb', $dest = null, $quality = 100);
 							image_resize($imagefull, $width = 50, $height = 50, $crop = true, $append = 'small', $dest = null, $quality = 100);
 							
 							@chmod($imagefull, 0777);

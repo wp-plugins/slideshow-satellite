@@ -59,7 +59,10 @@ class Satellite extends SatellitePlugin {
                 if ($this->get_option('embedss') == "Y") {
         		add_shortcode('slideshow', array($this, 'embed'));
                 }
-                register_activation_hook(__FILE__, array("SatellitePremium",'prefix_activate_plugin'));
+                if ( class_exists( 'SatellitePremium' ) ) {
+                  $satlp = new SatellitePremium;
+                  register_activation_hook( __FILE__, array( &$satlp, 'prem_activate_plugin' ));
+                }
 		
 	}      
 

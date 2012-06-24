@@ -4,10 +4,10 @@ $styles = array();
 foreach ($_GET as $skey => $sval) :
 	$styles[$skey] = urldecode($sval);
 endforeach;
-IF (isset($styles['width_temp'])) {
+IF (isset($styles['width_temp']) && ($styles['width_temp'] > 1)) {
 	$styles['width'] = $styles['width_temp'];
 }
-IF (isset($styles['height_temp'])) {
+IF (isset($styles['height_temp']) && ($styles['height_temp'] > 1)) {
 	$styles['height'] = $styles['height_temp'];
 }
 IF (!$styles['thumbheight']) {
@@ -19,7 +19,7 @@ if ($styles['background'] == '#000000') {
 	$loadbg = $styles['background']." url('../images/spinner.gif')";
 }
 if (!isset($styles['navbuttons'])) { $styles['navbuttons'] = 0;}
-if (!isset($styles['nav'])) { $styles['nav'] = 'off';}
+if (!isset($styles['nav'])) { $styles['nav'] = 'on';}
 IF ($styles['navbuttons'] == 0) { $navright = 'url(../images/right-arrow.png) no-repeat 0 0';$navleft = 'url(../images/left-arrow.png) no-repeat 0 0'; }
 IF ($styles['navbuttons'] == 1) { $navright = 'url("../pro/images/right-sq.png") no-repeat 30px 0';$navleft = 'url(../pro/images/left-sq.png) no-repeat 0 0'; }
 IF ($styles['navbuttons'] == 2) { $navright = 'url(../pro/images/right-rd.png) no-repeat 30px 0';$navleft = 'url(../pro/images/left-rd.png) no-repeat 0 0'; }

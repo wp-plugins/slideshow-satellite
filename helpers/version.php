@@ -1,5 +1,4 @@
 <?php
-
 class SatelliteVersionHelper extends SatellitePlugin {
 	
     private $versionCheckUrl    =   "http://c-pr.es/latest-satellite-version.txt";

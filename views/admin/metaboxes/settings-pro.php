@@ -37,6 +37,10 @@
                     <option <?php echo ($this->get_option('manager') == "publish_posts") ? 'selected' : ''; ?> value="publish_posts">Author</option> 
                 </select>
             </td>
-        </tr>        
+        </tr>  
+        <tr>
+            <p>KEEP IN MIND: Doing the automatic update of the plugin from the Wordpress Plugins page will overwrite this plugin to the basic edition. When a new Premium edition is available a small
+                yellow note will pop up on top of this Configuration Page with a link to download the proper version.</p>
+        </tr>
     </tbody>
 </table>

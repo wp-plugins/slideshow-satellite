@@ -429,37 +429,36 @@ class Satellite extends SatellitePlugin {
 	}
 	
 	function admin_settings() {
-            if (isset($_GET['method'])) {
-		switch ($_GET['method']) {
-                    case 'reset'			:
-                        global $wpdb;
-                        $query = "DELETE FROM `" . $wpdb -> prefix . "options` WHERE `option_name` LIKE '" . $this -> pre . "%';";
+            if ( ! isset( $_GET['method'] ) ) { $_GET['method'] = "undefined"; }
+            switch ($_GET['method']) {
+                case 'reset'			:
+                    global $wpdb;
+                    $query = "DELETE FROM `" . $wpdb -> prefix . "options` WHERE `option_name` LIKE '" . $this -> pre . "%';";
 
-                        if ($wpdb -> query($query)) {
-                                $message = __('All configuration settings have been reset to their defaults', SATL_PLUGIN_NAME);
-                                $msg_type = 'message';
-                                $this -> render_msg($message);	
-                        } else {
-                                $message = __('Configuration settings could not be reset', SATL_PLUGIN_NAME);
-                                $msg_type = 'error';
-                                $this -> render_err($message);
-                        }
+                    if ($wpdb -> query($query)) {
+                            $message = __('All configuration settings have been reset to their defaults', SATL_PLUGIN_NAME);
+                            $msg_type = 'message';
+                            $this -> render_msg($message);	
+                    } else {
+                            $message = __('Configuration settings could not be reset', SATL_PLUGIN_NAME);
+                            $msg_type = 'error';
+                            $this -> render_err($message);
+                    }
 
-                        $this -> redirect($this -> url, $msg_type, $message);
-                        break;
-                    default					:
-                        if (!empty($_POST)) {
-                                foreach ($_POST as $pkey => $pval) {		
-                                        $this -> update_option($pkey, $pval);
-                                }
+                    $this -> redirect($this -> url, $msg_type, $message);
+                    break;
+                default					:
+                    if (!empty($_POST)) {
+                            foreach ($_POST as $pkey => $pval) {		
+                                    $this -> update_option($pkey, $pval);
+                            }
 
-                                $message = __('Configuration has been saved', SATL_PLUGIN_NAME);
-                                $this -> render_msg($message);
-                        }	
-                        break;
-		}
-				
+                            $message = __('Configuration has been saved', SATL_PLUGIN_NAME);
+                            $this -> render_msg($message);
+                    }	
+                    break;
             }
+
             $this -> render('settings', false, true, 'admin');
 	}
 	

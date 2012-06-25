@@ -32,6 +32,7 @@ $trtopspace = (int) $styles['height'] *.17;
 $sattxtwidth = (int) $styles['width'] *.48;
 $arrowpush = (int) $styles['navpush'];
 $thumbrow = (int) $styles['thumbspacing'];
+$orbitThumbMargin = 5;
 IF ($styles['infomin'] == "Y") {
     ?>
     .orbit-caption h5, .orbit-caption p { margin:0 !important; }
@@ -337,11 +338,12 @@ ul.orbit-bullets {
 
 ul.orbit-thumbnails {
     height:auto;
-    margin: 5px auto;
+    margin: <?php echo( $orbitThumbMargin ); ?>px auto;
     list-style-type:none
 }
 .thumbholder {
     width: <?php echo (int) ($styles['width'] - 40) ?>px; /* 40px for the #slideleft and #slideright*/
+    height: <?php echo((int) $styles['thumbheight'] + (2 * $orbitThumbMargin) + (int) (( 2 * $styles['thumbspacing'] )-4));?>px;
     overflow:hidden;
     margin: <?php echo $styles['thumbmargin']; ?>px auto 0 auto;
 }
@@ -377,7 +379,7 @@ ul.orbit-thumbnails {
 #slideleft, #slideright {
     text-indent: -9999px;
     height:<?php echo ((int) $styles['thumbheight']); ?>px;
-    margin-top:-<?php echo ((int) $styles['thumbheight'] + 5); ?>px;
+    margin-top:-<?php echo (((int) $styles['thumbheight'] + 5)+$styles['thumbspacing']-4); ?>px;
 }
 #slideleft { float:left; width:20px; 
     background:url('../images/scroll-left.gif') center center no-repeat; 
@@ -411,7 +413,7 @@ ul.orbit-thumbnails {
 .full-right .orbit-thumbnails, .full-left .orbit-thumbnails {
     margin: 0 !important;
     left:0;
-    width:<?php echo ((int)($styles['thumbarea'])); ?>px !important;
+    width:<?php echo ((int)($styles['thumbarea']-20)); ?>px !important;
     position:relative;
 }
 .full-right .orbit-thumbnails {
@@ -436,12 +438,12 @@ ul.orbit-thumbnails {
     overflow-x:hidden;
     }
 .full-right .thumbholder {
-    margin-left: <?php echo ($extrathumbarea );?>px;
+    margin:0 0 0 <?php echo ($extrathumbarea );?>px;
     float:left;
     left:0;
 }
 .full-left .thumbholder {
-    margin-right: <?php echo ($extrathumbarea );?>px;
+    margin: 0 <?php echo ($extrathumbarea );?>px 0 0;
     float:right;
     right:0;
 }

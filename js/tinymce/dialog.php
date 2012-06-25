@@ -2,7 +2,7 @@
 error_reporting(0);
 @ini_set('display_errors', 1);
 if (!defined('DS')) { 
-	define('DS', DIRECTORY_SEPARATOR); 
+	define('DS', '/'); 
 }
 $root = __FILE__;
 for ($i = 0; $i < 6; $i++) $root = dirname($root);

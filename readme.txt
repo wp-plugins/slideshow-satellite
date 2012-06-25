@@ -4,7 +4,7 @@ Donate link: http://c-pr.es/projects/satellite
 Tags: slideshow pro, photographer, galleries, satellite, orbit, zurb, zurb orbit, slideshow gallery, slides, slideshow, image gallery, gallery, slideshow satellite, photography, slideshow orbit
 Requires at least: 3.0
 Tested up to: 3.4
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 
 Rad photo slideshow. Build the best content displays with Slideshow Satellite's incredible customization capabilities. 
 
@@ -80,6 +80,12 @@ You may also want to "Reset Configuration" from the Configuration page
 Two should be enough, we don't want to bog down your install with screenshots.
 
 == Changelog ==
+= 1.1.4 = 
+* Fixing for Wordpress 3.4
+* Premium /pro/ directory copying feature for Automatic Updates
+* Fixes for Full-Right Scrolling
+* Fix all PHP errors
+
 = 1.1 = 
 * Added Caption Hover!
 * Added Random capability

@@ -5,10 +5,10 @@ Plugin URI: http://c-pr.es/projects/satellite
 Author: C- Pres
 Author URI: http://c-pr.es/membership-options
 Description: Display photography and content in new ways with this slideshow. Slideshow Satellite uses Orbit to give a multitude of transition options and customizations.
-Version: 1.1.2
+Version: 1.1.3
 */
 define('DS', '/');
-define( 'SATL_VERSION', '1.1' );
+define( 'SATL_VERSION', '1.1.3');
 $uploads = wp_upload_dir();
 if ( ! defined( 'SATL_PLUGIN_BASENAME' ) )
 	define( 'SATL_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -22,12 +22,17 @@ if ( ! defined( 'SATL_UPLOAD_DIR' ) )
 	define( 'SATL_UPLOAD_DIR', $uploads['basedir']. DS . SATL_PLUGIN_NAME );
 if ( ! defined( 'SATL_UPLOAD_URL' ) )
 	define( 'SATL_UPLOAD_URL', $uploads['baseurl']. DS . SATL_PLUGIN_NAME );
-if ( ! file_exists( SATL_PLUGIN_DIR . '/pro/' ) )
+if ( ! defined( 'SATL_UPLOADPRO_DIR' ) )
+	define( 'SATL_UPLOADPRO_DIR', SATL_UPLOAD_DIR . '/pro/' );
+if ( ! defined( 'SATL_PLUGINPRO_DIR' ) )
+	define( 'SATL_PLUGINPRO_DIR', SATL_PLUGIN_DIR . '/pro/' );
+if ( ! file_exists( SATL_PLUGINPRO_DIR ) )
 	define( 'SATL_PRO', false );
 else
 	define( 'SATL_PRO', true );
 	
 require_once SATL_PLUGIN_DIR . '/slideshow-satellite-plugin.php';
+require_once SATL_PLUGIN_DIR . '/slideshow-satellite-premium.php';
 	
 class Satellite extends SatellitePlugin {
 	function __construct() {
@@ -40,7 +45,6 @@ class Satellite extends SatellitePlugin {
 		$this -> add_action('admin_menu');
 		$this -> add_action('admin_head');
 		$this -> add_action('admin_notices');
-//		$this -> add_action('sg2_enqueue_styles');
 		
 		//WordPress filter hooks
               if ( $this -> get_option('satwiz') != "N") {
@@ -54,8 +58,13 @@ class Satellite extends SatellitePlugin {
                 if ($this->get_option('embedss') == "Y") {
         		add_shortcode('slideshow', array($this, 'embed'));
                 }
+                if ( class_exists( 'SatellitePremium' ) ) {
+                  $satlp = new SatellitePremium;
+                  register_activation_hook( __FILE__, array( &$satlp, 'prem_activate_plugin' ));
+                }
 		
-	}
+	}      
+
 	function admin_menu() {
 		add_menu_page(__('Satellite', SATL_PLUGIN_NAME), __('Satellite', SATL_PLUGIN_NAME), $this -> get_option('manager'), "satellite", array($this, 'admin_settings'), SATL_PLUGIN_URL . '/images/icon.png');
 		$this -> menus['satellite'] = add_submenu_page("satellite", __('Configuration', SATL_PLUGIN_NAME), __('Configuration', SATL_PLUGIN_NAME), $this -> get_option('manager'), "satellite", array($this, 'admin_settings'));
@@ -117,7 +126,6 @@ class Satellite extends SatellitePlugin {
 			require SATL_PLUGIN_DIR . '/pro/custom_sizing.php';
 		}
 		
-//		$this -> add_action( 'wp_print_styles', 'gs_enqueue_styles' );
 		if ( ! empty($post_id) && $post = get_post($post_id)) {
 			if ($attachments = get_children("post_parent=" . $post -> ID . "&post_type=attachment&post_mime_type=image&orderby=menu_order ASC, ID ASC")) {
 				$content = $this -> exclude_ids($attachments, $exclude, $include);
@@ -153,7 +161,7 @@ class Satellite extends SatellitePlugin {
                     require SATL_PLUGIN_DIR . '/pro/newinit.php';
                 }
 
-		$defaults = array('post_id' => null, 'exclude' => null, 'include' => null, 'custom' => null, 'caption' => null, 'auto' => null, 'w' => null, 'h' => null, 'nolink' => null, 'slug' => null, 'thumbs' => null, 'align' => null, 'nav' => null, 'transition' => null, 'display' => null);
+		$defaults = array('post_id' => null, 'exclude' => null, 'include' => null, 'custom' => null, 'caption' => null, 'auto' => null, 'w' => null, 'h' => null, 'nolink' => null, 'slug' => null, 'thumbs' => null, 'align' => null, 'nav' => null, 'transition' => null, 'display' => null, "random" => "off");
 		extract( shortcode_atts( $defaults, $atts ) );
 		
 		$this->resetTemp();
@@ -162,7 +170,7 @@ class Satellite extends SatellitePlugin {
                 if (!empty ($display)) {
                     if ($display == "off") {
                         return null;
-                    }                    
+                    }
                 }
 		if ( !empty( $caption ) ) { 
 			if ( ($this -> get_option('information')=='Y') && ( $caption == 'off' ) ) {
@@ -211,7 +219,13 @@ class Satellite extends SatellitePlugin {
 		} elseif ( $this -> get_option( 'autoslide') == 'Y' ) {
 			$this -> update_option( 'autoslide_temp', 'Y' ); 
 		}
-                
+        if( !empty( $random ) ){   // update random in db options
+			if(($this -> get_option('random') == 'off' )  && ($random == 'on') ){
+				$this -> update_option('random', 'on' );	
+			} elseif(($this -> get_option('random') == 'on' )  && ($random == 'off')){
+				$this -> update_option('random', 'off' );
+			}
+		}
 		/******** PRO ONLY **************/
 		if ( SATL_PRO ) {
 			require SATL_PLUGIN_DIR . '/pro/custom_sizing.php';
@@ -227,6 +241,9 @@ class Satellite extends SatellitePlugin {
 			else { $this -> update_option( 'nolinker', 'N' ); }
 		if ( !empty($custom) ) {
                     $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($custom)), null, array('order', "ASC"));
+					if( $this -> get_option('random') == "on"){
+						shuffle($slides);
+					}
                     $this->slidenum = count($slides);
                     if ( $this -> get_option( 'thumbnails_temp') == "FR" || $this -> get_option( 'thumbnails_temp') == "FL" )
                         $content = $this -> render('fullthumb', array('slides' => $slides, 'frompost' => false), false, 'orbit');
@@ -252,11 +269,15 @@ class Satellite extends SatellitePlugin {
 			}
 			if (!empty( $pid ) && $post = get_post($pid)) {
 				if ($attachments = get_children("post_parent=" . $post -> ID . "&post_type=attachment&post_mime_type=image&orderby=menu_order ASC, ID ASC")) {
+					if( $this -> get_option('random') == "on"){
+						shuffle($attachments);
+					}
 					$content = $this->exclude_ids($attachments, $exclude, $include);
 				}
 			}
 			$post -> ID = $post_id_orig;
 		}
+		
 		return $content;
 	}
 	function resetTemp() {
@@ -274,6 +295,13 @@ class Satellite extends SatellitePlugin {
 		elseif ($this -> get_option('transition')=='OHS') { $this -> update_option('transition_temp', 'OHS'); }
 		elseif ($this -> get_option('transition')=='OHP') { $this -> update_option('transition_temp', 'OHP'); }
 		elseif ($this -> get_option('transition')=='OM') { $this -> update_option('transition_temp', 'OM'); }
+                if ($this -> get_option('random') != null) { $this -> update_option('random', null); }
+                
+                // RESET FOR PREMIUM EDITION SINGLE INSTANCE
+                if ($this -> get_option('nav_temp') != null) { $this -> update_option('nav_temp', null); }
+                if ($this -> get_option('align_temp') != null) { $this -> update_option('align_temp', null); }
+                if ($this -> get_option('width_temp') != null) { $this -> update_option('width_temp', null); }
+                if ($this -> get_option('height_temp') != null) { $this -> update_option('height_temp', null); }
 		$style = array();
 		$style = $this -> get_option('styles');
 		$style['align'] = "none";
@@ -401,36 +429,37 @@ class Satellite extends SatellitePlugin {
 	}
 	
 	function admin_settings() {
-		switch ($_GET['method']) {
-			case 'reset'			:
-				global $wpdb;
-				$query = "DELETE FROM `" . $wpdb -> prefix . "options` WHERE `option_name` LIKE '" . $this -> pre . "%';";
-				
-				if ($wpdb -> query($query)) {
-					$message = __('All configuration settings have been reset to their defaults', SATL_PLUGIN_NAME);
-					$msg_type = 'message';
-					$this -> render_msg($message);	
-				} else {
-					$message = __('Configuration settings could not be reset', SATL_PLUGIN_NAME);
-					$msg_type = 'error';
-					$this -> render_err($message);
-				}
-				
-				$this -> redirect($this -> url, $msg_type, $message);
-				break;
-			default					:
-				if (!empty($_POST)) {
-					foreach ($_POST as $pkey => $pval) {		
-						$this -> update_option($pkey, $pval);
-					}
-					
-					$message = __('Configuration has been saved', SATL_PLUGIN_NAME);
-					$this -> render_msg($message);
-				}	
-				break;
-		}
-				
-		$this -> render('settings', false, true, 'admin');
+            if ( ! isset( $_GET['method'] ) ) { $_GET['method'] = "undefined"; }
+            switch ($_GET['method']) {
+                case 'reset'			:
+                    global $wpdb;
+                    $query = "DELETE FROM `" . $wpdb -> prefix . "options` WHERE `option_name` LIKE '" . $this -> pre . "%';";
+
+                    if ($wpdb -> query($query)) {
+                            $message = __('All configuration settings have been reset to their defaults', SATL_PLUGIN_NAME);
+                            $msg_type = 'message';
+                            $this -> render_msg($message);	
+                    } else {
+                            $message = __('Configuration settings could not be reset', SATL_PLUGIN_NAME);
+                            $msg_type = 'error';
+                            $this -> render_err($message);
+                    }
+
+                    $this -> redirect($this -> url, $msg_type, $message);
+                    break;
+                default					:
+                    if (!empty($_POST)) {
+                            foreach ($_POST as $pkey => $pval) {		
+                                    $this -> update_option($pkey, $pval);
+                            }
+
+                            $message = __('Configuration has been saved', SATL_PLUGIN_NAME);
+                            $this -> render_msg($message);
+                    }	
+                    break;
+            }
+
+            $this -> render('settings', false, true, 'admin');
 	}
 	
 }

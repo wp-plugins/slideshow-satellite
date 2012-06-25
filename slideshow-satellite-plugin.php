@@ -19,7 +19,6 @@ class SatellitePlugin {
 
     function register_plugin($name, $base) {
         $this->plugin_base = rtrim(dirname($base), DS);
-        $this->enqueue_scripts();
         $this->initialize_classes();
         $this->initialize_options();
 
@@ -38,11 +37,10 @@ class SatellitePlugin {
             error_reporting(E_ALL);
             @ini_set('display_errors', 1);
         }
-        $this->add_filter('the_posts', 'conditionally_add_scripts_and_styles'); // the_posts gets triggered before wp_head
+        $this->add_action('wp_head', 'enqueue_scripts', 1);
         $this->add_action('admin_head', 'add_admin_styles');
-        //$this->add_action('wp_enqueue_scripts', 'sg2_enqueue_styles');
-//        $this->add_action('wp_footer', 'print_satellite_styles');
-//        $this->add_action('wp_footer', 'print_satellite_scripts');
+        $this->add_action('admin_init', 'admin_scripts');
+        $this->add_filter('the_posts', 'conditionally_add_scripts_and_styles'); // the_posts gets triggered before wp_head
 
         return true;
     }
@@ -67,7 +65,7 @@ class SatellitePlugin {
             }
 
             if ($shortcode_found) {
-
+                        
             $satlStyleFile = SATL_PLUGIN_DIR . '/css/' . $this -> cssfile;
             $satlStyleUrl = SATL_PLUGIN_URL . '/css/' . $this -> cssfile . '?v=' . SATL_VERSION . '&amp;pID=' . $pID;
             if ($_SERVER['HTTPS']) {
@@ -115,7 +113,13 @@ class SatellitePlugin {
 
                     // enqueue here
                 wp_enqueue_style(SATL_PLUGIN_NAME . "_style");
-                wp_enqueue_script(SATL_PLUGIN_NAME . "_script");
+                
+                wp_enqueue_script(SATL_PLUGIN_NAME . "_script", '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/' . $this->latestorbit,
+                        array('jquery'),
+                        SATL_VERSION);
+
+                //wp_enqueue_script(SATL_PLUGIN_NAME . "_script");        
+                
             }
             return $posts;
     }
@@ -352,12 +356,8 @@ class SatellitePlugin {
         }
         return false;
     }
-
-
-    function enqueue_scripts() {
-        wp_enqueue_script('jquery');
-
-        if (is_admin()) {
+    
+    function admin_scripts() {
             if (!empty($_GET['page']) && in_array($_GET['page'], (array) $this->sections)) {
                 wp_enqueue_script('autosave');
 
@@ -376,19 +376,21 @@ class SatellitePlugin {
 
                 add_thickbox();
             }
+    }
 
-//	wp_enqueue_script(SATL_PLUGIN_NAME . 'admin', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/admin.js', null, '1.0');
-        } else {
-            wp_register_script(SATL_PLUGIN_NAME . "_script", '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/' . $this->latestorbit, 'jquery', SATL_VERSION);
 
-            if (SATL_PRO && ($this->get_option('preload') == 'Y')) {
-                wp_register_script('satellite_preloader', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/pro/preloader.js');
-                wp_enqueue_script('satellite_preloader');
-            }
+    function enqueue_scripts() {
+        wp_deregister_script( 'jquery' );
+        wp_register_script( 'jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js');
+        wp_enqueue_script('jquery');
 
-            if ($this->get_option('imagesbox') == "T")
-                add_thickbox();
+        if (SATL_PRO && ($this->get_option('preload') == 'Y')) {
+            wp_register_script('satellite_preloader', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/pro/preloader.js');
+            wp_enqueue_script('satellite_preloader');
         }
+
+        if ($this->get_option('imagesbox') == "T")
+            add_thickbox();
 
         return true;
     }
@@ -443,7 +445,6 @@ class SatellitePlugin {
         if ( !empty($model) ) {
             if ( !empty($this->fields) && is_array($this->fields ) ) {
                 if ( /* !$wpdb->get_var("SHOW TABLES LIKE '" . $this->table . "'") ||*/ $this->get_option('stldb_version') != SATL_VERSION ) {
-                    echo "test3";
                     $query = "CREATE TABLE " . $this->table . " (\n";
                     $c = 1;
 
@@ -463,6 +464,12 @@ class SatellitePlugin {
 
                     if (!empty($query)) {
                         $this->table_query[] = $query;
+                    }
+                    if (SATL_PRO) {
+                        if ( class_exists( 'SatellitePremium' ) ) {
+                            $satlprem = new SatellitePremium;
+                            $satlprem->checkProDirs();
+                        }
                     }
                     
                     if (!empty($this->table_query)) {

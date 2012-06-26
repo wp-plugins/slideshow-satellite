@@ -359,7 +359,7 @@ ul.orbit-thumbnails {
     padding: 0 !important;
     opacity: .<?php echo($styles['thumbopacity']);?>;
     overflow:hidden;
-    margin: <?php echo( (int) ($styles['thumbspacing']-2));?>px;
+    margin: <?php echo( (int) ($styles['thumbspacing']-2));?>px !important;
 }
 .orbit-thumbnails li img {
     max-width:100%;

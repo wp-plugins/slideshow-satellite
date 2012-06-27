@@ -8,7 +8,7 @@ class SatelliteVersionHelper extends SatellitePlugin {
     function checkLatestVersion(){
 		$thisVersion 		= $this->get_option('stldb_version'); // check installed version
 		$latestVersionAvailable = $this->readFile($this->versionCheckUrl); // check current version available
-		$messageLatest		= "Update to latest Satellite version ".$latestVersionAvailable.". Go to C-Pres <a href='".$this->membersPageUrl."' target='_blank'>Members Page</a> to download the latest version.";
+		$messageLatest		= "New Premium edition available!! Release version ".$latestVersionAvailable.". Do not Automatic Update, instead go to C-Pres <a href='".$this->membersPageUrl."' target='_blank'>Members Page</a> to download the latest version.";
 		
 		if($thisVersion >= $latestVersionAvailable && $latestVersionAvailable != ''){ // check if the current version is latest
 			$arr['latest']  = true;

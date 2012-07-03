@@ -7,15 +7,16 @@ class SatellitePlugin {
     var $pre = 'Satellite';
     var $debugging = false;
     var $menus = array();
-    var $latestorbit = 'orbit-min.js';
+    var $latestorbit = 'jquery.orbit-1.3.0.js';
     var $cssfile = 'orbit-css.php';
     var $cssadmin = 'admin-styles.css';
     var $sections = array(
         'satellite' => 'satellite-slides',
         'settings' => 'satellite',
+        'newgallery' => 'satellite-newgallery',
     );
     var $helpers = array('Db', 'Html', 'Form', 'Metabox', 'Version');
-    var $models = array('Slide');
+    var $models = array('Slide','Gallery');
 
     function register_plugin($name, $base) {
         $this->plugin_base = rtrim(dirname($base), DS);
@@ -444,7 +445,7 @@ class SatellitePlugin {
         
         if ( !empty($model) ) {
             if ( !empty($this->fields) && is_array($this->fields ) ) {
-                if ( /* !$wpdb->get_var("SHOW TABLES LIKE '" . $this->table . "'") ||*/ $this->get_option('stldb_version') != SATL_VERSION ) {
+                if ( /* !$wpdb->get_var("SHOW TABLES LIKE '" . $this->table . "'") ||*/ $this->get_option($model.'db_version') != SATL_VERSION ) {
                     $query = "CREATE TABLE " . $this->table . " (\n";
                     $c = 1;
 
@@ -475,9 +476,11 @@ class SatellitePlugin {
                     if (!empty($this->table_query)) {
                         require_once(ABSPATH . 'wp-admin'.DS.'includes'.DS.'upgrade.php');
                         dbDelta($this->table_query, true);
+                        $this -> update_option($model.'db_version', SATL_VERSION);
                         $this -> update_option('stldb_version', SATL_VERSION);
                     }
                 } else {
+                    //echo "this model db version: ".$this->get_option($model.'db_version');
                     $field_array = $this->get_fields($this->table);
 
                     foreach ($this->fields as $field => $attributes) {

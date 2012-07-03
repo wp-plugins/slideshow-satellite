@@ -142,11 +142,17 @@ class SatelliteDbHelper extends SatellitePlugin {
 						$this -> data -> section  = "1";
 					}
 					break;
+				case 'Gallery'				:
+					if (empty($this -> data -> satl_caption_disable) || $this -> data -> satl_caption_disable == "N") {
+						$this -> data -> link = "";
+					}
+					break;                                     
+                                     
 			}
 			
 			//the MySQL query
 			$query = (empty($this -> data -> id)) ? $this -> insert_query($this -> model) : $this -> update_query($this -> model);			
-			//echo $query;
+			//echo "query : ". $query;
 			//return false;
 			
 			if ($wpdb -> query($query)) {

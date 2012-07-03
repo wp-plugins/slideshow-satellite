@@ -60,7 +60,15 @@ div.orbit-default {
 div.orbit-wrapper {
     width: <?php echo $styles['width'] ?>px;
     height: <?php echo $styles['height'] ?>px;
-    margin: 0 auto;
+    <?php if ($styles['align'] == 'left'){ ?>
+        margin: 0 15px 0 0;
+        float: left;
+    <?php } elseif ($styles['align'] == 'right'){ ?>
+        margin: 0 0 0 15px;
+        float: right;
+    <?php } else { ?>
+        margin: 0 auto;
+    <?php } ?>
     background:<?php echo $styles['background']?>; /* VAR BACKGROUND */
     border:<?php echo $styles['border']; ?>;
     position: relative;

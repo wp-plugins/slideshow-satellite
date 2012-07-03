@@ -30,6 +30,10 @@ root {
     user-select: none;
     border-image: initial;
 }
+#satl_table {
+    background-color:#eef5fb; 
+    padding:10px;
+}
 .togbox {
     padding: 0;
     width: 22px;

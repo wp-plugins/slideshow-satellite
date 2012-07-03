@@ -8,7 +8,7 @@ Description: Display photography and content in new ways with this slideshow. Sl
 Version: 1.1.4
 */
 define('DS', '/');
-define( 'SATL_VERSION', '1.1.4');
+define( 'SATL_VERSION', '1.4');
 $uploads = wp_upload_dir();
 if ( ! defined( 'SATL_PLUGIN_BASENAME' ) )
 	define( 'SATL_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -69,6 +69,7 @@ class Satellite extends SatellitePlugin {
 		add_menu_page(__('Satellite', SATL_PLUGIN_NAME), __('Satellite', SATL_PLUGIN_NAME), $this -> get_option('manager'), "satellite", array($this, 'admin_settings'), SATL_PLUGIN_URL . '/images/icon.png');
 		$this -> menus['satellite'] = add_submenu_page("satellite", __('Configuration', SATL_PLUGIN_NAME), __('Configuration', SATL_PLUGIN_NAME), $this -> get_option('manager'), "satellite", array($this, 'admin_settings'));
 		$this -> menus['satellite-slides'] = add_submenu_page("satellite", __('Manage Slides', SATL_PLUGIN_NAME), __('Manage Slides', SATL_PLUGIN_NAME), $this -> get_option('manager'), "satellite-slides", array($this, 'admin_slides'));		
+		$this -> menus['satellite-newgallery'] = add_submenu_page("satellite", __('Create New Gallery', SATL_PLUGIN_NAME), __('Create New Gallery', SATL_PLUGIN_NAME), $this -> get_option('manager'), "satellite-newgallery", array($this, 'admin_newgallery'));		
 		
 		add_action('admin_head-' . $this -> menus['satellite'], array($this, 'admin_head_gallery_settings'));
 	}
@@ -161,7 +162,7 @@ class Satellite extends SatellitePlugin {
                     require SATL_PLUGIN_DIR . '/pro/newinit.php';
                 }
 
-		$defaults = array('post_id' => null, 'exclude' => null, 'include' => null, 'custom' => null, 'caption' => null, 'auto' => null, 'w' => null, 'h' => null, 'nolink' => null, 'slug' => null, 'thumbs' => null, 'align' => null, 'nav' => null, 'transition' => null, 'display' => null, "random" => "off");
+		$defaults = array('post_id' => null, 'exclude' => null, 'include' => null, 'custom' => null, 'caption' => null, 'auto' => null, 'w' => null, 'h' => null, 'nolink' => null, 'slug' => null, 'thumbs' => null, 'align' => null, 'nav' => null, 'transition' => null, 'display' => null, 'random' => null );
 		extract( shortcode_atts( $defaults, $atts ) );
 		
 		$this->resetTemp();
@@ -197,6 +198,15 @@ class Satellite extends SatellitePlugin {
                             	$this -> update_option( 'thumbnails_temp', 'FL' );
 			}
 		}
+                if( !empty( $random ) ){   // update random in db options
+                        echo "randomis on".$this -> get_option('random');
+			if(($this -> get_option('random') == 'off' || $this -> get_option('random') == null)  && ($random == 'on') ){
+				$this -> update_option('random', 'on' );	
+			} elseif(($this -> get_option('random') == 'on' )  && ($random == 'off')){
+				$this -> update_option('random', 'off' );
+			}
+		}
+
 		if ( !empty( $transition ) ) {
 			if (($this -> get_option( 'transition' )!='F' ) && ( $transition == 'fade' )) {
 				$this -> update_option('transition_temp', 'F');	
@@ -219,15 +229,10 @@ class Satellite extends SatellitePlugin {
 		} elseif ( $this -> get_option( 'autoslide') == 'Y' ) {
 			$this -> update_option( 'autoslide_temp', 'Y' ); 
 		}
-        if( !empty( $random ) ){   // update random in db options
-			if(($this -> get_option('random') == 'off' )  && ($random == 'on') ){
-				$this -> update_option('random', 'on' );	
-			} elseif(($this -> get_option('random') == 'on' )  && ($random == 'off')){
-				$this -> update_option('random', 'off' );
-			}
-		}
-		/******** PRO ONLY **************/
+
+                /******** PRO ONLY **************/
 		if ( SATL_PRO ) {
+
 			require SATL_PLUGIN_DIR . '/pro/custom_sizing.php';
                        
 		}
@@ -241,9 +246,9 @@ class Satellite extends SatellitePlugin {
 			else { $this -> update_option( 'nolinker', 'N' ); }
 		if ( !empty($custom) ) {
                     $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($custom)), null, array('order', "ASC"));
-					if( $this -> get_option('random') == "on"){
-						shuffle($slides);
-					}
+                        if( $this -> get_option('random') == "on"){
+                            shuffle($slides);
+                        }
                     $this->slidenum = count($slides);
                     if ( $this -> get_option( 'thumbnails_temp') == "FR" || $this -> get_option( 'thumbnails_temp') == "FL" )
                         $content = $this -> render('fullthumb', array('slides' => $slides, 'frompost' => false), false, 'orbit');
@@ -427,6 +432,24 @@ class Satellite extends SatellitePlugin {
 				break;
 		}
 	}
+        
+        function admin_newgallery() {
+                if (!empty($_POST)) {
+                        if ($this -> Gallery -> save($_POST, true)) {
+                                echo "test1";
+                                $message = __('Gallery has been saved', SATL_PLUGIN_NAME);
+                                $this -> redirect($this -> url, "message", $message);
+                        } else {
+                            $this -> render('new-gallery', false, true, 'admin');
+                        }
+                } else {
+                    echo "test";
+                        $this -> Db -> model = $this -> Gallery -> model;
+                        $this -> Gallery -> find(array('id' => $_GET['id']));
+                        $this -> render('new-gallery', false, true, 'admin');
+                }
+
+        }
 	
 	function admin_settings() {
             if ( ! isset( $_GET['method'] ) ) { $_GET['method'] = "undefined"; }
@@ -449,12 +472,12 @@ class Satellite extends SatellitePlugin {
                     break;
                 default					:
                     if (!empty($_POST)) {
-                            foreach ($_POST as $pkey => $pval) {		
-                                    $this -> update_option($pkey, $pval);
-                            }
+                        foreach ($_POST as $pkey => $pval) {		
+                                $this -> update_option($pkey, $pval);
+                        }
 
-                            $message = __('Configuration has been saved', SATL_PLUGIN_NAME);
-                            $this -> render_msg($message);
+                        $message = __('Configuration has been saved', SATL_PLUGIN_NAME);
+                        $this -> render_msg($message);
                     }	
                     break;
             }

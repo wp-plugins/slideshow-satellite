@@ -491,6 +491,20 @@
             .animate({"opacity" : 1}, this.options.animationSpeed, this.resetAndUnlock);
         }
         
+        //pull out - transition effects
+        if (this.options.animation == "pullout") {
+          //this.$slides
+            //.eq(this.activeSlide)
+            //.css({"opacity" : 0, "z-index" : 3})
+            //.animate({"opacity" : 1}, this.options.animationSpeed, this.resetAndUnlock);
+            this.$slides.eq(this.activeSlide).transition({
+                opacity: 0.4,
+                scale: 1.6,
+                rotate:'-5deg'
+            });
+            
+        }
+        
         //horizontal-slide
         if (this.options.animation == "horizontal-slide") {
           if (slideDirection == "next") {

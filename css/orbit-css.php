@@ -61,13 +61,13 @@ div.orbit-wrapper {
     width: <?php echo $styles['width'] ?>px;
     height: <?php echo $styles['height'] ?>px;
     <?php if ($styles['align'] == 'left'){ ?>
-        margin: 0 15px 0 0;
+        margin: 0 15px 15px 0;
         float: left;
     <?php } elseif ($styles['align'] == 'right'){ ?>
-        margin: 0 0 0 15px;
+        margin: 0 0 15px 15px;
         float: right;
     <?php } else { ?>
-        margin: 0 auto;
+        margin: 0 auto 15px auto;
     <?php } ?>
     background:<?php echo $styles['background']?>; /* VAR BACKGROUND */
     border:<?php echo $styles['border']; ?>;

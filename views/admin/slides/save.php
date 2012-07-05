@@ -23,18 +23,18 @@
 					</td>
 				</tr>
 				<tr>
-					<th><label for="Slide.section"><?php _e('Section', SATL_PLUGIN_NAME); ?></label></th>
-					<td>
-						<?php if (SATL_PRO) { 
-							require SATL_PLUGIN_DIR . '/pro/multi-custom.php';
-						} else { ?>
-						<select disabled><?php echo esc_attr($this -> Slide -> data -> section); ?>
-							<option value="1">Custom 1</option>
-						</select>						
-						<?php } ?>
-                        <span class="howto"><?php _e('FULL EDITION ONLY: which custom slideshow would you like this image to apply to?', SATL_PLUGIN_NAME); ?></span>
-						<?php echo (!empty($this -> Slide -> errors['section'])) ? '<div style="color:red;">' . $this -> Slide -> errors['section'] . '</div>' : ''; ?>
-					</td>
+                                    <th><label for="Slide.section"><?php _e('Gallery', SATL_PLUGIN_NAME); ?></label></th>
+                                    <td>
+                                            <?php if (SATL_PRO) { 
+                                                    require SATL_PLUGIN_DIR . '/pro/multi-custom.php';
+                                            } else { ?>
+                                            <select disabled><?php echo esc_attr($this -> Slide -> data -> section); ?>
+                                                    <option value="1">Custom 1</option>
+                                            </select>						
+                                            <?php } ?>
+                    <span class="howto"><?php _e('FULL EDITION ONLY: which custom slideshow would you like this image to apply to?', SATL_PLUGIN_NAME); ?></span>
+                                            <?php echo (!empty($this -> Slide -> errors['section'])) ? '<div style="color:red;">' . $this -> Slide -> errors['section'] . '</div>' : ''; ?>
+                                    </td>
 				</tr>				
                 <tr>
                 	<th><label for="Slide.text.location"><?php _e('Text Location', SATL_PLUGIN_NAME); ?></label></th>

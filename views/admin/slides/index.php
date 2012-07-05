@@ -27,13 +27,13 @@
                             require SATL_PLUGIN_DIR . '/pro/multi-custom-single.php';
                     } else { ?>
                         <select disabled><?php echo esc_attr($this -> Slide -> data -> section); ?>
-                                <option value="1">Custom 1</option>
+                                <option value="1">Gallery 1</option>
                         </select>	
                     <?php } ?>
                         <input type="submit" name="View" />
                     </form>
                 </div>
-                <span class="alignright">View Only : </span>
+                <span class="alignright" style="padding-top:5px">View Only : </span>
 
 	<?php endif; ?>
         
@@ -61,7 +61,7 @@
 						<th><?php _e('Title', SATL_PLUGIN_NAME); ?></th>
                         <th><?php _e('Link', SATL_PLUGIN_NAME); ?></th>
 						<th><?php _e('Date', SATL_PLUGIN_NAME); ?></th>
-                        <th><?php _e('Section', SATL_PLUGIN_NAME); ?></th>
+                        <th><?php _e('Gallery', SATL_PLUGIN_NAME); ?></th>
 						<th><?php _e('Order', SATL_PLUGIN_NAME); ?></th>
 					</tr>
 				</thead>
@@ -72,7 +72,7 @@
 						<th><?php _e('Title', SATL_PLUGIN_NAME); ?></th>
                         <th><?php _e('Link', SATL_PLUGIN_NAME); ?></th>
 						<th><?php _e('Date', SATL_PLUGIN_NAME); ?></th>
-                        <th><?php _e('Section', SATL_PLUGIN_NAME); ?></th>
+                        <th><?php _e('Gallery', SATL_PLUGIN_NAME); ?></th>
 						<th><?php _e('Order', SATL_PLUGIN_NAME); ?></th>
 					</tr>
 				</tfoot>

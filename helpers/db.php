@@ -117,17 +117,18 @@ class SatelliteDbHelper extends SatellitePlugin {
 		
 		$defaults = (method_exists($this, 'defaults')) ? $this -> defaults() : false;
 		$data = (empty($data[$this -> model])) ? $data : $data[$this -> model];
-		
 		$r = wp_parse_args($data, $defaults);
 		$this -> data = SatelliteHtmlHelper::array_to_object($r);
 		
 		if ($validate == true) {
 			if (method_exists($this, 'validate')) {
 				$this -> validate($r);
+                                
 			}
 		}
 		
 		if (empty($this -> errors)) {
+
 			switch ($this -> model) {
 				case 'Slide'				:
 					if ($this -> data -> type == "file") {
@@ -142,10 +143,10 @@ class SatelliteDbHelper extends SatellitePlugin {
 						$this -> data -> section  = "1";
 					}
 					break;
-				case 'Gallery'				:
-					if (empty($this -> data -> satl_caption_disable) || $this -> data -> satl_caption_disable == "N") {
+				case 'Gallery':	
+					/*if (empty($this -> data -> caption_disable) || $this -> data -> caption_disable == "N") {
 						$this -> data -> link = "";
-					}
+					}*/
 					break;                                     
                                      
 			}

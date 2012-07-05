@@ -19,26 +19,30 @@ array(  "name" => "Create a New Gallery",
 array(  "type" => "open"),
 
 array(  "name"      => "Title",
-        "desc"      => "What is the path to your logo?",
-        "id"        => $shortname."_logo",
+        "id"        => "title",
         "type"      => "text",
         "std"       => "New Gallery"),
 
-array(  "name"      => "Type",
+array(  "name"      => "Gallery Type",
         "desc"      => "What kind of slideshow is this?",
-        "id"        => $shortname."_planetheight",
+        "id"        => "type",
         "type"      => "select",
-        "std"       => "1000",
-        "options"   => array('custom','wordpress')),
+        "std"       => "custom",
+        "options"   => array('custom slides')),
 
 array(  "name"      => "Description",
-        "desc"      => "How much space between your planets?.",
-        "id"        => $shortname."_space",
+        "desc"      => "This will be used in future slideshow versions to describe the slideshow before someone selects to view it.",
+        "id"        => "description",
         "type"      => "textarea"),
+
+/*array(  "name"      => "Cover Image?",
+        "desc"      => "What do you want as the cover image?.",
+        "id"        => "image",
+        "type"      => "image"),*/
 
 array(  "name"      => "Disable Captions?",
         "desc"      => "Check this box if you would like to DISABLE text from popping up.",
-        "id"        => $shortname."_caption_disable",
+        "id"        => "caption_disable",
         "type"      => "checkbox",
         "std"       => "false"),
 
@@ -66,32 +70,21 @@ array(  "type"      => "close")
         
 	<?php 
 //    if ( $_REQUEST['page'] == basename(__FILE__) ) {
-	    if( 'save-option' == $_REQUEST['action'] ) {
-		   foreach ( $options as $value ) {
-			update_option( $value['id'], $_REQUEST[ $value['id'] ] );
-//                    if ($_REQUEST[ $value['class']]) {
-				//	$update_option( $value['class'], $_REQUEST[ $value['class'] ] );
-				//}
-			}
+         if( 'save-option' == $_REQUEST['action'] ) {
+               foreach ( $options as $value ) {
+                    update_option( $value['id'], $_REQUEST[ $value['id'] ] );
+               }
 
-			$action = "saved";
+                    $action = "saved";
 
-        } else if( 'reset-option' == $_REQUEST['action'] ) {
-            foreach ($options as $value) {
-                delete_option( $value['id'] ); }
-
-            //header("Location: admin.php?page=gx_options.php&reset=true");
-			$action = "reset";
-		}
-		else {echo("<script><alert>No request has worked.!</alert></script>");}
+        } else {echo("<script><alert>No request has worked.!</alert></script>");}
    // }
 	
-    if ( $action == 'saved' ) echo '<div id="message" class="updated fade"><p><strong>'.$plugin_name.' settings saved.</strong></p></div>';
-    if ( $action == 'reset' ) echo '<div id="message" class="updated fade"><p><strong>'.$plugin_name.' settings reset well.</strong></p></div>';
+    if ( $action == 'saved' ) echo '<div id="message" class="updated fade"><p><strong>'.$pluginName.' gallery created.</strong></p></div>';
 
 ?>
 <div class="wrap">
-<h2><?php echo $plugin_name; ?> <?php _e('Gallery Creator', SATL_PLUGIN_NAME); ?></h2>
+<h2><?php echo $pluginName; ?> <?php _e('Gallery Creator', SATL_PLUGIN_NAME); ?></h2>
 	<h2></h2>
 
 
@@ -139,7 +132,7 @@ foreach ($options as $value) {
 			
 			<tr>
 				<td width="20%" rowspan="2" valign="middle"><strong><?php echo $value['name']; ?></strong></td>
-				<td width="80%"><textarea name="Gallery[<?php echo $value['id']; ?>]" style="width:400px; height:200px;" type="<?php echo $value['type']; ?>" cols="" rows=""><?php if ( get_settings( $value['id'] ) != "") { echo get_settings( $value['id'] ); } else { echo $value['std']; } ?></textarea></td>
+				<td width="80%"><textarea name="Gallery[<?php echo $value['id']; ?>]" style="width:400px; height:80px;" type="<?php echo $value['type']; ?>" cols="" rows=""><?php if ( get_settings( $value['id'] ) != "") { echo get_settings( $value['id'] ); } else { echo $value['std']; } ?></textarea></td>
 			
 			</tr>
 			
@@ -154,7 +147,7 @@ foreach ($options as $value) {
 			?>
 			<tr>
                             <td width="20%" rowspan="2" valign="middle"><strong><?php echo $value['name']; ?></strong></td>
-                            <td width="80%"><select style="width:140px;" name="<?php echo $value['id']; ?>" id="<?php echo $value['id']; ?>">
+                            <td width="80%"><select style="width:140px;" name="Gallery[<?php echo $value['id']; ?>]" id="<?php echo $value['id']; ?>">
                             <?php foreach ($value['options'] as $option) { ?>
                                 <option id="<?php echo(get_settings( $value['id'])); ?>"<?php 
                                 if ( get_settings( $value['id'] ) == $option) { echo ' selected="selected"'; 

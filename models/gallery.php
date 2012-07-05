@@ -12,6 +12,8 @@ class SatelliteGallery extends SatelliteDbHelper {
 		'description'		=>	"TEXT",
 		'image'			=>	"VARCHAR(75) NOT NULL DEFAULT ''",
 		'type'			=>	"VARCHAR(40) NOT NULL DEFAULT ''",
+                'caption_disable'       =>      "BOOLEAN NOT NULL DEFAULT FALSE",
+		'order'			=>	"INT(11) NOT NULL DEFAULT '0'",
 		'created'		=>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
 		'modified'		=>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
 		'key'			=>	"PRIMARY KEY  (`id`)",

@@ -8,7 +8,9 @@ Description: Display photography and content in new ways with this slideshow. Sl
 Version: 1.1.4
 */
 define('DS', '/');
-define( 'SATL_VERSION', '1.4');
+define( 'SATL_VERSION', '1.4
+    
+');
 $uploads = wp_upload_dir();
 if ( ! defined( 'SATL_PLUGIN_BASENAME' ) )
 	define( 'SATL_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -198,8 +200,8 @@ class Satellite extends SatellitePlugin {
                             	$this -> update_option( 'thumbnails_temp', 'FL' );
 			}
 		}
+                
                 if( !empty( $random ) ){   // update random in db options
-                        echo "randomis on".$this -> get_option('random');
 			if(($this -> get_option('random') == 'off' || $this -> get_option('random') == null)  && ($random == 'on') ){
 				$this -> update_option('random', 'on' );	
 			} elseif(($this -> get_option('random') == 'on' )  && ($random == 'off')){
@@ -436,14 +438,12 @@ class Satellite extends SatellitePlugin {
         function admin_newgallery() {
                 if (!empty($_POST)) {
                         if ($this -> Gallery -> save($_POST, true)) {
-                                echo "test1";
                                 $message = __('Gallery has been saved', SATL_PLUGIN_NAME);
                                 $this -> redirect($this -> url, "message", $message);
                         } else {
                             $this -> render('new-gallery', false, true, 'admin');
                         }
                 } else {
-                    echo "test";
                         $this -> Db -> model = $this -> Gallery -> model;
                         $this -> Gallery -> find(array('id' => $_GET['id']));
                         $this -> render('new-gallery', false, true, 'admin');

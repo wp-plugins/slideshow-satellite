@@ -165,22 +165,30 @@ class SatelliteSlide extends SatelliteDbHelper {
                     copy( $source, $target );
             }
         }
-        function processImages($images) {
-            $imgarray = str_getcsv($images, ',');
-            $section = $this -> latestSection();
-            //$section = 7;
+        public function processImages($images, $section = false) {
+            $imgarray = explode(",",$images);
+            if (! $section) {
+                $section = $this -> latestSection();
+            }
             $i = 0;
             foreach ($imgarray as $image) {
                 $file = basename($image);
                 $name = SatelliteHtmlHelper::strip_ext($file, 'filename');
-                //Array ( [Slide] => Array ( [id] => [order] => [title] => buddhistboyz [description] => [section] => 7 [textlocation] => D [type] => url [image_oldfile] => [image_url] => http://localhost:8888/Eatfindr/dev/wp-content/uploads/2012/07/buddhist-boys2.jpg [uselink] => N [link] => ) [submit] => Save Slide ) 
                 $data = array(title=>$name,section=>$section,type=>'url',image_url=>$image,use_link=>'N',order=>$i);
-                $slidedata = array('[Slide]' => $data);
-                $this -> save($data, true);
+                $slidedata = array('Slide' => $data);
+                
+                if ($this -> save($data, true)) {
+                    error_log($name . " has successfully saved");
+                    continue;
+                } else { 
+                    error_log("processImages has failed"); 
+                    return false;
+                }
                 $i++;
             }
+            return true;
         }
-        function slideCount($gallery) {
+        public function slideCount($gallery) {
             $images = $this->find_all(array('section' => $gallery ), array('id','section'));
             if (is_array($images)) {
                 return count($images);

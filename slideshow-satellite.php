@@ -459,8 +459,11 @@ class Satellite extends SatellitePlugin {
 				if (!empty($_POST)) {
 					if ($this -> Gallery -> save($_POST, true)) {
                                             if (!empty($_POST['images'])) {
-                                                $this -> Slide -> processImages($_POST['images']);
-                                                $message = __('Gallery and images have been saved', SATL_PLUGIN_NAME);
+                                                if ($this -> Slide -> processImages($_POST['images'], $_POST['Gallery']['id'])) {
+                                                    $message = __('Gallery and images have been saved', SATL_PLUGIN_NAME);
+                                                } else {
+                                                    $message = __('Gallery has saved but image upload failed', SATL_PLUGIN_NAME);
+                                                }
                                             } else {
                                                 $message = __('Gallery with no images has been saved', SATL_PLUGIN_NAME);
                                             }

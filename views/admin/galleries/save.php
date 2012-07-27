@@ -40,15 +40,15 @@ array(  "name"      => "Description",
         "id"        => "image",
         "type"      => "image"),*/
 array(  "name"      => "Upload Images",
-        "desc"      => "These will be the images within that slideshow, you can add more later",
+        "desc"      => "Select multiple images using the uploader, then drag the thumbs to order them right here before saving the gallery",
         "id"        => "slides",
         "type"      => "upload"),
 
-array(  "name"      => "Disable Captions?",
+/*array(  "name"      => "Disable Captions?",
         "desc"      => "Check this box if you would like to DISABLE text from popping up.",
         "id"        => "caption_disable",
         "type"      => "checkbox",
-        "std"       => "false"),
+        "std"       => "false"),*/
 
 array(  "type"      => "close")
 
@@ -255,33 +255,6 @@ foreach ($options as $value) {
                     <tr>
                         <td width="20%" rowspan="2" valign="middle"><strong><?php echo $value['name']; ?></strong></td>
                     <td width="80%">
-                        <!--form method="post" action="<?php echo $this -> url; ?>" enctype="multipart/form-data">
-                            <div id="divSWFUploadUI">
-                                    <div class="fieldset flash" id="fsUploadProgress">
-                                    <span class="legend">Upload Queue</span>
-                                    </div>
-                                    <p id="divStatus">0 Files Uploaded</p>
-                                    <p>
-                                            <span id="spanButtonPlaceholder"></span>
-                                            <input id="btnUpload" type="button" value="Select Files" style="width: 61px; height: 22px; font-size: 8pt;" />
-                                            <input id="btnCancel" type="button" value="Cancel All Uploads" disabled="disabled" style="margin-left: 2px; height: 22px; font-size: 8pt;" />
-                                    </p>
-                                    <br style="clear: both;" />
-                            </div>
-                            <noscript style="background-color: #FFFF66; border-top: solid 4px #FF9966; border-bottom: solid 4px #FF9966; margin: 10px 25px; padding: 10px 15px;">
-                                    We're sorry.  SWFUpload could not load.  You must have JavaScript enabled to enjoy SWFUpload.
-                            </noscript>
-                            <div id="divLoadingContent" class="content" style="background-color: #FFFF66; border-top: solid 4px #FF9966; border-bottom: solid 4px #FF9966; margin: 10px 25px; padding: 10px 15px; display: none;">
-                                    SWFUpload is loading. Please wait a moment...
-                            </div>
-                            <div id="divLongLoading" class="content" style="background-color: #FFFF66; border-top: solid 4px #FF9966; border-bottom: solid 4px #FF9966; margin: 10px 25px; padding: 10px 15px; display: none;">
-                                    SWFUpload is taking a long time to load or the load has failed.  Please make sure that the Flash Plugin is enabled and that a working version of the Adobe Flash Player is installed.
-                            </div>
-                            <div id="divAlternateContent" class="content" style="background-color: #FFFF66; border-top: solid 4px #FF9966; border-bottom: solid 4px #FF9966; margin: 10px 25px; padding: 10px 15px; display: none;">
-                                    We're sorry.  SWFUpload could not load.  You may need to install or upgrade Flash Player.
-                                    Visit the <a href="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash">Adobe website</a> to get the Flash Player.
-                            </div>
-                        </form-->
                         <?php
                         // adjust values here
                         $id = "images"; // this will be the name of form field. Image url(s) will be submitted in $_POST using this key. So if $id == “img1” then $_POST[“img1”] will have all the image urls
@@ -295,7 +268,7 @@ foreach ($options as $value) {
                         $height = null; // If you want to automatically resize all uploaded images then provide height here (in pixels)
                         ?>
 
-                        <label>Upload Images</label>
+                        <label>Upload and Order Images</label>
                         <input type="hidden" name="<?php echo $id; ?>" id="<?php echo $id; ?>" value="<?php echo $svalue; ?>" />
                         <div class="plupload-upload-uic hide-if-no-js <?php if ($multiple): ?>plupload-upload-uic-multiple<?php endif; ?>" id="<?php echo $id; ?>plupload-upload-ui">
                             <input id="<?php echo $id; ?>plupload-browse-button" type="button" value="<?php esc_attr_e('Select Files'); ?>" class="button" />

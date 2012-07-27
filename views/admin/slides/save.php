@@ -5,37 +5,42 @@
 		<input type="hidden" name="Slide[id]" value="<?php echo $this -> Slide -> data -> id; ?>" />
 		<input type="hidden" name="Slide[order]" value="<?php echo $this -> Slide -> data -> order; ?>" />
 		<table class="form-table">
-			<tbody>
-				<tr>
-					<th><label for="Slide.title"><?php _e('Title', SATL_PLUGIN_NAME); ?></label></th>
-					<td>
-						<input class="widefat" type="text" name="Slide[title]" value="<?php echo esc_attr($this -> Slide -> data -> title); ?>" id="Slide.title" />
-                        <span class="howto"><?php _e('title/name of your slide as it will be displayed to your users.', SATL_PLUGIN_NAME); ?></span>
-						<?php echo (!empty($this -> Slide -> errors['title'])) ? '<div style="color:red;">' . $this -> Slide -> errors['title'] . '</div>' : ''; ?>
-					</td>
-				</tr>
-				<tr>
-					<th><label for="Slide.description"><?php _e('Description', SATL_PLUGIN_NAME); ?></label></th>
-					<td>
-						<textarea class="widefat" name="Slide[description]"><?php echo esc_attr($this -> Slide -> data -> description); ?></textarea>
-                        <span class="howto"><?php _e('description of your slide as it will be displayed to your users below the title.', SATL_PLUGIN_NAME); ?></span>
-						<?php echo (!empty($this -> Slide -> errors['description'])) ? '<div style="color:red;">' . $this -> Slide -> errors['description'] . '</div>' : ''; ?>
-					</td>
-				</tr>
-				<tr>
-                                    <th><label for="Slide.section"><?php _e('Gallery', SATL_PLUGIN_NAME); ?></label></th>
-                                    <td>
-                                            <?php if (SATL_PRO) { 
-                                                    require SATL_PLUGIN_DIR . '/pro/multi-custom.php';
-                                            } else { ?>
-                                            <select disabled><?php echo esc_attr($this -> Slide -> data -> section); ?>
-                                                    <option value="1">Custom 1</option>
-                                            </select>						
+                    <tbody>
+                        <tr>
+                                <th><label for="Slide.title"><?php _e('Title', SATL_PLUGIN_NAME); ?></label></th>
+                                <td>
+                                        <input class="widefat" type="text" name="Slide[title]" value="<?php echo esc_attr($this -> Slide -> data -> title); ?>" id="Slide.title" />
+                                        <span class="howto"><?php _e('title/name of your slide as it will be displayed to your users.', SATL_PLUGIN_NAME); ?></span>
+                                        <?php echo (!empty($this -> Slide -> errors['title'])) ? '<div style="color:red;">' . $this -> Slide -> errors['title'] . '</div>' : ''; ?>
+                                </td>
+                        </tr>
+                        <tr>
+                                <th><label for="Slide.description"><?php _e('Description', SATL_PLUGIN_NAME); ?></label></th>
+                                <td>
+                                        <textarea class="widefat" name="Slide[description]"><?php echo esc_attr($this -> Slide -> data -> description); ?></textarea>
+                                        <span class="howto"><?php _e('description of your slide as it will be displayed to your users below the title.', SATL_PLUGIN_NAME); ?></span>
+                                        <?php echo (!empty($this -> Slide -> errors['description'])) ? '<div style="color:red;">' . $this -> Slide -> errors['description'] . '</div>' : ''; ?>
+                                </td>
+                        </tr>
+                        <tr>
+                            <th><label for="Slide.section"><?php _e('Gallery', SATL_PLUGIN_NAME); ?></label></th>
+                            <td>
+                                <select name="Slide[section]">
+                                    <?php $gals = $this -> Gallery -> find_all(null, array('id','title'), array('order', "ASC") ); ?>
+
+                                        <?php if (!empty($gals)) : ?>
+                                            <?php foreach ( $gals as $gallery ) {?>
+                                                <option <?php echo ((int) $this -> Slide -> data -> section == $gallery -> id) ? 'selected="selected"' : ''; ?> value="<?php echo($gallery -> id) ?>">Gallery <?php echo($gallery -> id. ": ".$gallery -> title)?></option>
                                             <?php } ?>
-                    <span class="howto"><?php _e('FULL EDITION ONLY: which custom slideshow would you like this image to apply to?', SATL_PLUGIN_NAME); ?></span>
-                                            <?php echo (!empty($this -> Slide -> errors['section'])) ? '<div style="color:red;">' . $this -> Slide -> errors['section'] . '</div>' : ''; ?>
-                                    </td>
-				</tr>				
+                                        <?php else : ?>
+                                                <option <?php echo ((int) $this -> Slide -> data -> section == '1') ? 'selected="selected"' : ''; ?> value="1">Gallery 1</option>
+                                        <?php endif; ?>
+
+                                </select>              				
+                                <span class="howto"><?php _e('The gallery this slide belongs to', SATL_PLUGIN_NAME); ?></span>
+                                    <?php echo (!empty($this -> Slide -> errors['section'])) ? '<div style="color:red;">' . $this -> Slide -> errors['section'] . '</div>' : ''; ?>
+                            </td>
+                        </tr>				
                 <tr>
                 	<th><label for="Slide.text.location"><?php _e('Text Location', SATL_PLUGIN_NAME); ?></label></th>
                     <td>

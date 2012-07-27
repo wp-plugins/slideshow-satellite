@@ -50,7 +50,6 @@ class SatelliteSlide extends SatelliteDbHelper {
 	
 		if (!empty($data)) {
 			$data = (empty($data[$this -> model])) ? $data : $data[$this -> model];
-			
 			foreach ($data as $dkey => $dval) {
 				$this -> data -> {$dkey} = stripslashes($dval);
 			}
@@ -117,7 +116,7 @@ class SatelliteSlide extends SatelliteDbHelper {
 			} elseif ($type == "url") {
 				if (empty($image_url)) { $this -> errors['image_url'] = __('Please specify an image', SATL_PLUGIN_NAME); }
 				else {
-					if ($image = wp_remote_fopen($image_url)) {
+					if ( $image = wp_remote_fopen($image_url) ) {
 						$filename = str_replace(" ", "-", basename($image_url));
 						$filepath = SATL_UPLOAD_DIR . DS;
 						
@@ -162,9 +161,27 @@ class SatelliteSlide extends SatelliteDbHelper {
                     }
 
                     $d->close();
-            }else {
+            } else {
                     copy( $source, $target );
             }
         }
+        function processImages($images) {
+            $imgarray = str_getcsv($images, ',');
+            $section = $this -> latestSection();
+            //$section = 7;
+            $i = 0;
+            foreach ($imgarray as $image) {
+                $file = basename($image);
+                $name = SatelliteHtmlHelper::strip_ext($file, 'filename');
+                //Array ( [Slide] => Array ( [id] => [order] => [title] => buddhistboyz [description] => [section] => 7 [textlocation] => D [type] => url [image_oldfile] => [image_url] => http://localhost:8888/Eatfindr/dev/wp-content/uploads/2012/07/buddhist-boys2.jpg [uselink] => N [link] => ) [submit] => Save Slide ) 
+                $data = array(title=>$name,section=>$section,type=>'url',image_url=>$image,use_link=>'N',order=>$i);
+                $slidedata = array('[Slide]' => $data);
+                $this -> save($data, true);
+                $i++;
+            }
+        }
+        
+        
+
 }
 ?>

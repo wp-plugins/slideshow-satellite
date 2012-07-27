@@ -23,14 +23,20 @@
 		</form>
                 <div class="alignright">
                     <form action="<?php echo $this -> url; ?>&amp;method=single" method="POST">
-                    <?php if (SATL_PRO) { 
-                            require SATL_PLUGIN_DIR . '/pro/multi-custom-single.php';
-                    } else { ?>
-                        <select disabled><?php echo esc_attr($this -> Slide -> data -> section); ?>
-                                <option value="1">Gallery 1</option>
-                        </select>	
-                    <?php } ?>
-                        <input type="submit" name="View" />
+                        <select name="section">
+                            <option value="All">All</option>
+                            <?php $single = ($_GET['single']) ? $_GET['single'] : null;?>
+                            <?php $gals = $this -> Gallery -> find_all(null, array('id','title'), array('order', "ASC") ); ?>
+
+                                <?php if (!empty($gals)) : ?>
+                                    <?php foreach ( $gals as $gallery ) {?>
+                                        <option <?php echo ((int) $single == $gallery -> id) ? 'selected="selected"' : ''; ?> value="<?php echo($gallery -> id) ?>">Gallery <?php echo($gallery -> id. ": ".$gallery -> title)?></option>
+                                    <?php } ?>
+                                <?php else : ?>
+                                        <option <?php echo ((int) $this -> Slide -> data -> section == '1') ? 'selected="selected"' : ''; ?> value="1">Gallery 1</option>
+                                <?php endif; ?>
+                        </select>
+                        <input type="submit" name="View" value="View"/>
                     </form>
                 </div>
                 <span class="alignright" style="padding-top:5px">View Only : </span>

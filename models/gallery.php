@@ -53,9 +53,9 @@ class SatelliteGallery extends SatelliteDbHelper {
 			
 			extract($data, EXTR_SKIP);
 			
-			if (empty($title)) { $this -> errors['title'] = __('Please fill in a title', SATL_PLUGIN_NAME); }
+			if (empty($title)) { $this -> errors['title'] = __('Please enter a title', SATL_PLUGIN_NAME); }
 			//if (empty($description)) { $this -> errors['description'] = __('Please fill in a description', SATL_PLUGIN_NAME); }
-			if (empty($type)) { $this -> errors['type'] = __('Please select an gallery type', SATL_PLUGIN_NAME); }
+			if (empty($type)) { $this -> errors['type'] = __('Please select a gallery type', SATL_PLUGIN_NAME); }
 			//if (empty($section)) { $section = '1'; }
 			
 			elseif ($type == "customslides") {
@@ -67,5 +67,12 @@ class SatelliteGallery extends SatelliteDbHelper {
 		}
 		return $this -> errors;
 	}
+        function latestSection() {
+            global $wpdb;
+            $this -> table = $wpdb -> prefix . "satl_galleries";
+            $latest = $this -> find(null,'id');
+            return $latest -> id;
+        }
+        
 }
 ?>

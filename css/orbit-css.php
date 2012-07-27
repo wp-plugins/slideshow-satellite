@@ -46,13 +46,15 @@ ul.orbit-thumbnails, ul.orbit-thumbnails li, {
     list-style-type:none;
 }
 
-#featured, #featured1, #featured2, #featured3, #featured4, #featured5 {
+#featured, #featured1, #featured2, #featured3, #featured4, #featured5, #featured6, #featured7 {
     width: <?php echo $styles['width'] ?>px;
     height: <?php echo $styles['height'] ?>px;
     background:<?php echo($loadbg)?> no-repeat center center;
     overflow: hidden; 
     }
-#featured>div, #featured1>div, #featured2>div, #featured3>div { display: none; }
+#featured>div, #featured1>div, #featured2>div, #featured3>div, #featured4>div, #featured5>div, #featured6>div, #featured7>div { 
+    display: none; 
+}
 
 div.orbit-default {
     margin-top:20px;

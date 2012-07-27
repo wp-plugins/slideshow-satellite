@@ -5,10 +5,10 @@ Plugin URI: http://c-pr.es/projects/satellite
 Author: C- Pres
 Author URI: http://c-pr.es/membership-options
 Description: Display photography and content in new ways with this slideshow. Slideshow Satellite uses Orbit to give a multitude of transition options and customizations.
-Version: 1.1.5
+Version: 1.2
 */
 define('DS', '/');
-define( 'SATL_VERSION', '1.1.5');
+define( 'SATL_VERSION', '1.2');
 $uploads = wp_upload_dir();
 if ( ! defined( 'SATL_PLUGIN_BASENAME' ) )
 	define( 'SATL_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -69,7 +69,8 @@ class Satellite extends SatellitePlugin {
 		add_menu_page(__('Satellite', SATL_PLUGIN_NAME), __('Satellite', SATL_PLUGIN_NAME), $this -> get_option('manager'), "satellite", array($this, 'admin_settings'), SATL_PLUGIN_URL . '/images/icon.png');
 		$this -> menus['satellite'] = add_submenu_page("satellite", __('Configuration', SATL_PLUGIN_NAME), __('Configuration', SATL_PLUGIN_NAME), $this -> get_option('manager'), "satellite", array($this, 'admin_settings'));
 		$this -> menus['satellite-slides'] = add_submenu_page("satellite", __('Manage Slides', SATL_PLUGIN_NAME), __('Manage Slides', SATL_PLUGIN_NAME), $this -> get_option('manager'), "satellite-slides", array($this, 'admin_slides'));		
-		$this -> menus['satellite-newgallery'] = add_submenu_page("satellite", __('Create New Gallery', SATL_PLUGIN_NAME), __('Create New Gallery', SATL_PLUGIN_NAME), $this -> get_option('manager'), "satellite-newgallery", array($this, 'admin_newgallery'));		
+		$this -> menus['satellite-galleries'] = add_submenu_page("satellite", __('Manage Galleries', SATL_PLUGIN_NAME), __('Manage Galleries', SATL_PLUGIN_NAME), $this -> get_option('manager'), "satellite-galleries", array($this, 'admin_galleries'));		
+		//$this -> menus['satellite-newgallery'] = add_submenu_page("satellite", __('Create New Gallery', SATL_PLUGIN_NAME), __('Create New Gallery', SATL_PLUGIN_NAME), $this -> get_option('manager'), "satellite-newgallery", array($this, 'admin_newgallery'));		
 		
 		add_action('admin_head-' . $this -> menus['satellite'], array($this, 'admin_head_gallery_settings'));
 	}
@@ -433,18 +434,91 @@ class Satellite extends SatellitePlugin {
 		}
 	}
         
+	function admin_galleries() {	
+                $galleries = $this->Gallery->find_all(null, null, array('id', "ASC"));
+
+		switch ($_GET['method']) {
+			case 'delete'			:
+				if (!empty($_GET['id'])) {
+					if ($this -> Gallery -> delete($_GET['id'])) {
+						$msg_type = 'message';
+						$message = __('Gallery has been removed', SATL_PLUGIN_NAME);
+					} else {
+						$msg_type = 'error';
+						$message = __('Gallery cannot be removed', SATL_PLUGIN_NAME);	
+					}
+				} else {
+					$msg_type = 'error';
+					$message = __('No gallery was specified', SATL_PLUGIN_NAME);
+				}
+				
+				$this -> redirect($this -> url, $msg_type, $message);
+				break;
+			case 'save'				:
+				if (!empty($_POST)) {
+					if ($this -> Gallery -> save($_POST, true)) {
+                                            if (!empty($_POST['images'])) {
+                                                $this -> Slide -> processImages($_POST['images']);
+                                                $message = __('Gallery and images have been saved', SATL_PLUGIN_NAME);
+                                            } else {
+                                                $message = __('Gallery with no images has been saved', SATL_PLUGIN_NAME);
+                                            }
+                                            $this -> redirect($this -> url, "message", $message);
+					} else {
+						$this -> render('galleries' . DS . 'save', false, true, 'admin');
+					}
+				} else {
+					$this -> Db -> model = $this -> Gallery -> model;
+					$this -> Gallery -> find(array('id' => $_GET['id']));
+					$this -> render('galleries' . DS . 'save', false, true, 'admin');
+				}
+				break;                                
+			case 'mass'				:
+				if (!empty($_POST['action'])) {
+					if (!empty($_POST['Gallery']['checklist'])) {						
+						switch ($_POST['action']) {
+							case 'delete'				:							
+								foreach ($_POST['Gallery']['checklist'] as $gallery_id) {
+									$this -> Gallery -> delete($gallery_id);
+								}
+								
+								$message = __('Selected galleries have been removed', SATL_PLUGIN_NAME);
+								$this -> redirect($this -> url, 'message', $message);
+								break;
+						}
+					} else {
+						$message = __('No galleries were selected', SATL_PLUGIN_NAME);
+						$this -> redirect($this -> url, "error", $message);
+					}
+				} else {
+					$message = __('No action was specified', SATL_PLUGIN_NAME);
+					$this -> redirect($this -> url, "error", $message);
+				}
+				break;
+			default					:
+				$data = $this -> paginate('Gallery');				
+				$this -> render('galleries' . DS . 'index', array('galleries' => $data[$this -> Gallery -> model], 'paginate' => $data['Paginate']), true, 'admin');
+				break;
+		}
+	}
+        
         function admin_newgallery() {
                 if (!empty($_POST)) {
-                        if ($this -> Gallery -> save($_POST, true)) {
-                                $message = __('Gallery has been saved', SATL_PLUGIN_NAME);
-                                $this -> redirect($this -> url, "message", $message);
+                    if ($this -> Gallery -> save($_POST, true)) {
+                        if (!empty($_POST['images'])) {
+                            $this -> Slide -> processImages($_POST['images']);
+                            $message = __('Gallery and images have been saved', SATL_PLUGIN_NAME);
                         } else {
-                            $this -> render('new-gallery', false, true, 'admin');
+                            $message = __('Gallery with no images has been saved', SATL_PLUGIN_NAME);
                         }
+                        $this -> redirect($this -> url, "message", $message);
+                    } else {
+                        $this -> render('galleries' . DS . 'save', false, true, 'admin');
+                    }
                 } else {
-                        $this -> Db -> model = $this -> Gallery -> model;
-                        $this -> Gallery -> find(array('id' => $_GET['id']));
-                        $this -> render('new-gallery', false, true, 'admin');
+                    $this -> Db -> model = $this -> Gallery -> model;
+                    $this -> Gallery -> find(array('id' => $_GET['id']));
+                    $this -> render('galleries' . DS . 'save', false, true, 'admin');
                 }
 
         }

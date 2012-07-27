@@ -47,6 +47,7 @@ class SatelliteDbHelper extends SatellitePlugin {
 		list($ofield, $odir) = $order;
 		$query .= " ORDER BY `" . $ofield . "` " . $odir . "";
 		$query .= " LIMIT 1";
+                //print_r( $query);
 		
 		if ($record = $wpdb -> get_row($query)) {		
 			if (!empty($record)) {			
@@ -58,6 +59,7 @@ class SatelliteDbHelper extends SatellitePlugin {
 				return $data;
 			}
 		}
+
 		
 		return false;
 	}
@@ -112,13 +114,22 @@ class SatelliteDbHelper extends SatellitePlugin {
 		return false;
 	}
 	
-	function save($data = null, $validate = true) {
+	function save($data = null, $validate = true, $model = null) {
 		global $wpdb;
-		
 		$defaults = (method_exists($this, 'defaults')) ? $this -> defaults() : false;
+               /* if ($model != null) {
+                    $this -> model = $model;
+                    print_r( $this->model );
+                    $data = (empty($data[$this -> model])) ? $data : $data[$this -> model];
+                    $r = wp_parse_args($data, $defaults);
+                    $this -> data = SatelliteHtmlHelper::array_to_object($r);
+                    print_r ($this -> data);
+                    die();
+                }*/
 		$data = (empty($data[$this -> model])) ? $data : $data[$this -> model];
 		$r = wp_parse_args($data, $defaults);
 		$this -> data = SatelliteHtmlHelper::array_to_object($r);
+                
 		
 		if ($validate == true) {
 			if (method_exists($this, 'validate')) {
@@ -134,19 +145,19 @@ class SatelliteDbHelper extends SatellitePlugin {
 					if ($this -> data -> type == "file") {
 						//$this -> data -> image = $_FILES['image_file']['name'];	
 					} else {
-						$this -> data -> image = basename($this -> data -> image_url);
+						$this -> data -> image = basename( $this -> data -> image_url );
 					}
-					if (empty($this -> data -> uselink) || $this -> data -> uselink == "N") {
+					if ( empty($this -> data -> uselink ) || $this -> data -> uselink == "N" ) {
 						$this -> data -> link = "";
 					}
-					if (empty($this -> data -> section)) {
+					if ( empty($this -> data -> section )) {
 						$this -> data -> section  = "1";
 					}
 					break;
 				case 'Gallery':	
-					/*if (empty($this -> data -> caption_disable) || $this -> data -> caption_disable == "N") {
-						$this -> data -> link = "";
-					}*/
+					if ( empty($this -> data -> images )) {
+						//$this -> data -> link = "";
+					}
 					break;                                     
                                      
 			}
@@ -315,5 +326,12 @@ class SatelliteDbHelper extends SatellitePlugin {
 		
 		return false;
 	}
+        
+        function latestSection() {
+            $Gallery = new SatelliteGallery;
+            $latest = $Gallery -> find(null,'id');
+            return $latest -> id;
+        }
+                
 }
 ?>

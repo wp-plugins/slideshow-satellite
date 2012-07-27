@@ -13,7 +13,7 @@ class SatellitePlugin {
     var $sections = array(
         'satellite' => 'satellite-slides',
         'settings' => 'satellite',
-        'newgallery' => 'satellite-newgallery',
+        'newgallery' => 'satellite-galleries',
     );
     var $helpers = array('Db', 'Html', 'Form', 'Metabox', 'Version');
     var $models = array('Slide','Gallery');
@@ -40,9 +40,11 @@ class SatellitePlugin {
         }
         $this->add_action('wp_head', 'enqueue_scripts', 1);
         $this->add_action('admin_head', 'add_admin_styles');
+        $this->add_action("admin_head", 'plupload_admin_head');
         $this->add_action('admin_init', 'admin_scripts');
         $this->add_filter('the_posts', 'conditionally_add_scripts_and_styles'); // the_posts gets triggered before wp_head
-
+        $this->add_action('wp_ajax_plupload_action', "g_plupload_action");
+        
         return true;
     }
     function add_admin_styles() {
@@ -215,6 +217,7 @@ class SatellitePlugin {
         $this->add_option('abscenter', "Y");
         $this->add_option('embedss', "Y");
         $this->add_option('satwiz', "Y");
+        $this->add_option('ggljquery', "Y");
         $this->add_option('stldb_version', "1.0");
         // Orbit Only
         $this->add_option('autospeed2', 5000);
@@ -368,12 +371,20 @@ class SatellitePlugin {
                     wp_enqueue_script('postbox');
 
                     wp_enqueue_script('settings-editor', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/settings-editor.js', array('jquery'), SATL_VERSION);
+                    wp_enqueue_script('admin', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/admin.js', array('jquery'), SATL_VERSION);
                 }
 
                 if ($_GET['page'] == "satellite-slides" && $_GET['method'] == "order") {
                     wp_enqueue_script('jquery-ui-sortable');
                 }
-                wp_enqueue_script('jquery-ui-sortable');
+                
+                if ($_GET['page'] == "satellite-galleries") {
+                    wp_enqueue_script('plupload-all');
+                    wp_enqueue_script('jquery-ui-sortable');
+                    wp_enqueue_script('admin', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/admin.js', array('jquery'), SATL_VERSION);
+                }
+                wp_enqueue_scripts();
+                //wp_enqueue_script('jquery-ui-sortable');
 
                 add_thickbox();
             }
@@ -381,8 +392,10 @@ class SatellitePlugin {
 
 
     function enqueue_scripts() {
-        wp_deregister_script( 'jquery' );
-        wp_register_script( 'jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js');
+        if ($this->get_option('ggljquery') == "Y") {
+            wp_deregister_script( 'jquery' );
+            wp_register_script( 'jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js');
+        }
         wp_enqueue_script('jquery');
 
         if (SATL_PRO && ($this->get_option('preload') == 'Y')) {
@@ -394,6 +407,52 @@ class SatellitePlugin {
             add_thickbox();
 
         return true;
+    }
+    
+    function plupload_admin_head() {
+        //Thank you Krishna!! http://www.krishnakantsharma.com/
+        // place js config array for plupload
+        $plupload_init = array(
+            'runtimes' => 'html5,silverlight,flash,html4',
+            'browse_button' => 'plupload-browse-button', // will be adjusted per uploader
+            'container' => 'plupload-upload-ui', // will be adjusted per uploader
+            'drop_element' => 'drag-drop-area', // will be adjusted per uploader
+            'file_data_name' => 'async-upload', // will be adjusted per uploader
+            'multiple_queues' => true,
+            'max_file_size' => wp_max_upload_size() . 'b',
+            'url' => admin_url('admin-ajax.php'),
+            'flash_swf_url' => includes_url('js/plupload/plupload.flash.swf'),
+            'silverlight_xap_url' => includes_url('js/plupload/plupload.silverlight.xap'),
+            'filters' => array(array('title' => __('Allowed Files'), 'extensions' => '*')),
+            'multipart' => true,
+            'urlstream_upload' => true,
+            'multi_selection' => false, // will be added per uploader
+             // additional post data to send to our ajax hook
+            'multipart_params' => array(
+                '_ajax_nonce' => "", // will be added per uploader
+                'action' => 'plupload_action', // the ajax action name
+                'imgid' => 0 // will be added per uploader
+            )
+        );
+    ?>
+    <script type="text/javascript">
+        var base_plupload_config=<?php echo json_encode($plupload_init); ?>;
+    </script>
+    <?php
+    }
+    
+    function g_plupload_action() {
+
+        // check ajax noonce
+        $imgid = $_POST["imgid"];
+        check_ajax_referer($imgid . 'pluploadan');
+
+        // handle file upload
+        $status = wp_handle_upload($_FILES[$imgid . 'async-upload'], array('test_form' => true, 'action' => 'plupload_action'));
+
+        // send the uploaded file url in response
+        echo $status['url'];
+        exit;
     }
 
     function plugin_base() {

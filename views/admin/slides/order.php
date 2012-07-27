@@ -11,15 +11,15 @@
 	<h2><?php _e('Order Slides', SG2_PLUGIN_NAME); ?></h2>
 	<div style="float:none;" class="subsubsub">
             <?php $manage_link = ($single) ? $this -> url .'&single='.$single : $this -> url; ?>
-		<a href="<?php echo $manage_link; ?>"><?php _e('&larr; Manage All Slides', SG2_PLUGIN_NAME); ?></a>
+		<a href="<?php echo $manage_link; ?>"><?php _e('&larr; Back to Slides', SG2_PLUGIN_NAME); ?></a>
 	</div>
 	<?php if (!empty($slides)) :
             foreach ($galleries as $gallery ) {
             echo "<h3>".$gallery -> title . "(#".$gallery -> id.")</h3>";
             ?>
             <ul id="slidelist<?php echo $i;?>">
-                <?php $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($single)), null, array('order', "ASC")); ?>
-                
+                <?php $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($gallery -> id)), null, array('order', "ASC")); ?>
+                    <?php if (is_array($slides)) : ?>
                     <?php foreach ($slides as $slide) : ?>
                             <li class="lineitem" id="item_<?php echo $slide -> id; ?>">
                                     <span style="float:left; margin:5px 10px 0 5px;"><img src="<?php echo $this -> Html -> image_url($this -> Html -> thumbname($slide -> image, "small")); ?>" alt="<?php echo $this -> Html -> sanitize($slide -> title); ?>" /></span>
@@ -27,6 +27,7 @@
                                     <hr class="clear" style="clear:both; visibility:hidden; height:1px; display:block;" />
                             </li>
                     <?php endforeach; ?>
+                    <?php endif; ?>
             </ul>
             <div id="slidemessage<?php echo $i;?>"></div>
 

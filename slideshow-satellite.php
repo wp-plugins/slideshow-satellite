@@ -114,7 +114,7 @@ class Satellite extends SatellitePlugin {
 		return $plugins;
 	}
 	
-	function slideshow($output = true, $post_id = null, $exclude = null, $include = null, $custom = null, $width = null, $height = null) {
+	function slideshow($output = true, $post_id = null, $exclude = null, $include = null, $custom = null, $gallery = null,$width = null, $height = null) {
                 if (SATL_PRO) {
                     require SATL_PLUGIN_DIR . '/pro/newinit.php';
                 }
@@ -132,15 +132,16 @@ class Satellite extends SatellitePlugin {
 				$content = $this -> exclude_ids($attachments, $exclude, $include);
 			}
 		}
-		elseif ( ! empty( $custom ) ) {
-			$slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($custom)), null, array('order', "ASC"));
-                        $this->slidenum = count($slides);
+		elseif ( (! empty( $custom ) || (! empty( $gallery ) ) ) ) {
+                    $gallery = ($custom) ? $custom : $gallery;
+                    $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($gallery)), null, array('order', "ASC"));
+                    $this->slidenum = count($slides);
 
-			if ( $this -> get_option('transition_temp') == "OM") {
-				$content = $this -> render('multislider', array('slides' => $slides, 'frompost' => false), false, 'pro');
-			} else {
-				$content = $this -> render('default', array('slides' => $slides, 'frompost' => false), false, 'orbit');
-			}			
+                    if ( $this -> get_option('transition_temp') == "OM") {
+                            $content = $this -> render('multislider', array('slides' => $slides, 'frompost' => false), false, 'pro');
+                    } else {
+                            $content = $this -> render('default', array('slides' => $slides, 'frompost' => false), false, 'orbit');
+                    }			
 		}
 		else {
 			$slides = $this -> Slide -> find_all(null, null, array('order', "ASC"));
@@ -162,7 +163,7 @@ class Satellite extends SatellitePlugin {
                     require SATL_PLUGIN_DIR . '/pro/newinit.php';
                 }
 
-		$defaults = array('post_id' => null, 'exclude' => null, 'include' => null, 'custom' => null, 'caption' => null, 'auto' => null, 'w' => null, 'h' => null, 'nolink' => null, 'slug' => null, 'thumbs' => null, 'align' => null, 'nav' => null, 'transition' => null, 'display' => null, 'random' => null );
+		$defaults = array('post_id' => null, 'exclude' => null, 'include' => null, 'custom' => null, 'gallery' => null, 'caption' => null, 'auto' => null, 'w' => null, 'h' => null, 'nolink' => null, 'slug' => null, 'thumbs' => null, 'align' => null, 'nav' => null, 'transition' => null, 'display' => null, 'random' => null );
 		extract( shortcode_atts( $defaults, $atts ) );
 		
 		$this->resetTemp();
@@ -244,11 +245,12 @@ class Satellite extends SatellitePlugin {
                     }
 		if ( !empty($nolink) ) { $this -> update_option( 'nolinker', 'Y' ); }
 			else { $this -> update_option( 'nolinker', 'N' ); }
-		if ( !empty($custom) ) {
-                    $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($custom)), null, array('order', "ASC"));
-                        if( $this -> get_option('random') == "on"){
-                            shuffle($slides);
-                        }
+		if ( (!empty($custom)) || (!empty($gallery)) ) {
+                    $gallery = ($custom) ? $custom : $gallery;
+                    $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($gallery)), null, array('order', "ASC"));
+                    if( $this -> get_option('random') == "on"){
+                        shuffle($slides);
+                    }
                     $this->slidenum = count($slides);
                     if ( $this -> get_option( 'thumbnails_temp') == "FR" || $this -> get_option( 'thumbnails_temp') == "FL" )
                         $content = $this -> render('fullthumb', array('slides' => $slides, 'frompost' => false), false, 'orbit');

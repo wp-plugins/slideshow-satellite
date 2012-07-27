@@ -13,7 +13,7 @@
     <?php if (!empty($galleries)) : ?>	
         <form id="posts-filter" action="<?php echo $this->url; ?>" method="post">
             <ul class="subsubsub">
-                <li><?php echo $paginate->allcount; ?> <?php _e('slides', SATL_PLUGIN_NAME); ?></li>
+                <li><?php echo $paginate->allcount; ?> <?php _e('galleries', SATL_PLUGIN_NAME); ?></li>
             </ul>
         </form>
     <?php endif; ?>
@@ -38,6 +38,7 @@
                         <th><?php _e('ID', SATL_PLUGIN_NAME); ?></th>
                         <th><?php _e('Title', SATL_PLUGIN_NAME); ?></th>
                         <th><?php _e('Description', SATL_PLUGIN_NAME); ?></th>
+                        <th><?php _e('# Slides', SATL_PLUGIN_NAME); ?></th>
                         <th><?php _e('Date', SATL_PLUGIN_NAME); ?></th>
                     </tr>
                 </thead>
@@ -47,6 +48,7 @@
                         <th><?php _e('ID', SATL_PLUGIN_NAME); ?></th>
                         <th><?php _e('Title', SATL_PLUGIN_NAME); ?></th>
                         <th><?php _e('Description', SATL_PLUGIN_NAME); ?></th>
+                        <th><?php _e('# Slides', SATL_PLUGIN_NAME); ?></th>
                         <th><?php _e('Date', SATL_PLUGIN_NAME); ?></th>
                     </tr>
                 </tfoot>
@@ -66,7 +68,8 @@
                                     <span class="view"><?php echo $this->Html->link(__('View the Slides', SATL_PLUGIN_NAME), "?page=satellite-slides&amp;single=" . $gallery->id); ?> </span>
                                 </div>
                             </td>
-                            <td><?php echo ($gallery->description); ?></td>                            
+                            <td style="width:400px"><?php echo ($gallery->description); ?></td>                            
+                            <td><?php echo ( $this -> Slide -> slideCount( $gallery->id ) ); ?></td>                            
                             <td><abbr title="<?php echo $gallery->modified; ?>"><?php echo date("Y-m-d", strtotime($gallery->modified)); ?></abbr></td>
                         </tr>
 

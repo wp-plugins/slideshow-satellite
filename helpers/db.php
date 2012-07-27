@@ -32,14 +32,18 @@ class SatelliteDbHelper extends SatellitePlugin {
 			$query .= " WHERE";
 			$c = 1;
 			
-			foreach ($conditions as $ckey => $cval) {
+			foreach ($conditions as $ckey => $cval) {;
+                            if (is_numeric($cval)) {
+				$query .= " `" . $ckey . "` = " . $cval;
+                            } else {
 				$query .= " `" . $ckey . "` = '" . $cval . "'";
-				
-				if ($c < count($conditions)) {
-					$query .= " AND";
-				}
-				
-				$c++;
+                            }
+
+                            if ($c < count($conditions)) {
+                                    $query .= " AND";
+                            }
+
+                            $c++;
 			}
 		}
 		
@@ -47,7 +51,6 @@ class SatelliteDbHelper extends SatellitePlugin {
 		list($ofield, $odir) = $order;
 		$query .= " ORDER BY `" . $ofield . "` " . $odir . "";
 		$query .= " LIMIT 1";
-                //print_r( $query);
 		
 		if ($record = $wpdb -> get_row($query)) {		
 			if (!empty($record)) {			
@@ -78,8 +81,9 @@ class SatelliteDbHelper extends SatellitePlugin {
 			$c = 1;
 			
 			foreach ($conditions as $ckey => $cval) {
-				if (is_int($cval))
-					$query .= " `" . $ckey . "` = " . $cval . "";
+                            
+				if (is_numeric($cval))
+					$query .= " `" . $ckey . "` = " . $cval;
 				else 
 					$query .= " `" . $ckey . "` = `" . $cval . "`";
 					

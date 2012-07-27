@@ -180,6 +180,15 @@ class SatelliteSlide extends SatelliteDbHelper {
                 $i++;
             }
         }
+        function slideCount($gallery) {
+            $images = $this->find_all(array('section' => $gallery ), array('id','section'));
+            if (is_array($images)) {
+                return count($images);
+            } else {
+                return 0;
+            }
+            
+        }
         
         
 

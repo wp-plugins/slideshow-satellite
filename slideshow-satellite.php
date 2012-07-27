@@ -68,9 +68,8 @@ class Satellite extends SatellitePlugin {
 	function admin_menu() {
 		add_menu_page(__('Satellite', SATL_PLUGIN_NAME), __('Satellite', SATL_PLUGIN_NAME), $this -> get_option('manager'), "satellite", array($this, 'admin_settings'), SATL_PLUGIN_URL . '/images/icon.png');
 		$this -> menus['satellite'] = add_submenu_page("satellite", __('Configuration', SATL_PLUGIN_NAME), __('Configuration', SATL_PLUGIN_NAME), $this -> get_option('manager'), "satellite", array($this, 'admin_settings'));
-		$this -> menus['satellite-slides'] = add_submenu_page("satellite", __('Manage Slides', SATL_PLUGIN_NAME), __('Manage Slides', SATL_PLUGIN_NAME), $this -> get_option('manager'), "satellite-slides", array($this, 'admin_slides'));		
 		$this -> menus['satellite-galleries'] = add_submenu_page("satellite", __('Manage Galleries', SATL_PLUGIN_NAME), __('Manage Galleries', SATL_PLUGIN_NAME), $this -> get_option('manager'), "satellite-galleries", array($this, 'admin_galleries'));		
-		//$this -> menus['satellite-newgallery'] = add_submenu_page("satellite", __('Create New Gallery', SATL_PLUGIN_NAME), __('Create New Gallery', SATL_PLUGIN_NAME), $this -> get_option('manager'), "satellite-newgallery", array($this, 'admin_newgallery'));		
+		$this -> menus['satellite-slides'] = add_submenu_page("satellite", __('Manage Slides', SATL_PLUGIN_NAME), __('Manage Slides', SATL_PLUGIN_NAME), $this -> get_option('manager'), "satellite-slides", array($this, 'admin_slides'));		
 		
 		add_action('admin_head-' . $this -> menus['satellite'], array($this, 'admin_head_gallery_settings'));
 	}

@@ -245,14 +245,15 @@ class Satellite extends SatellitePlugin {
                     }
 		if ( !empty($nolink) ) { $this -> update_option( 'nolinker', 'Y' ); }
 			else { $this -> update_option( 'nolinker', 'N' ); }
-		if ( (!empty($custom)) || (!empty($gallery)) ) {
+		if ( (!empty($custom)) || (!empty($gallery)) ) { // custom is deprecated as of version 1.2
                     $gallery = ($custom) ? $custom : $gallery;
                     $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($gallery)), null, array('order', "ASC"));
                     if( $this -> get_option('random') == "on"){
                         shuffle($slides);
                     }
                     $this->slidenum = count($slides);
-                    if ( $this -> get_option( 'thumbnails_temp') == "FR" || $this -> get_option( 'thumbnails_temp') == "FL" )
+                    if (    $this -> get_option( 'thumbnails_temp') == "FR" || 
+                            $this -> get_option( 'thumbnails_temp') == "FL" )
                         $content = $this -> render('fullthumb', array('slides' => $slides, 'frompost' => false), false, 'orbit');
                     else
                         $content = $this -> render('default', array('slides' => $slides, 'frompost' => false), false, 'orbit');
@@ -293,7 +294,11 @@ class Satellite extends SatellitePlugin {
 		elseif ($this -> get_option('information')=='N') { $this -> update_option('information_temp', 'N'); }
 		if ($this -> get_option('orbitinfo')=='Y') { $this -> update_option('orbitinfo_temp', 'Y'); }
 		elseif ($this -> get_option('orbitinfo')=='N') { $this -> update_option('orbitinfo_temp', 'N'); }
-		if ($this -> get_option('thumbnails')=='Y') { $this -> update_option('thumbnails_temp', 'Y'); }
+		if ($this -> get_option('thumbnails')=='Y') { 
+                    $this -> update_option('thumbnails_temp', 'Y'); 
+                    if ($this -> get_option('thumbposition')=='FR') { $this -> update_option('thumbnails_temp', 'FR'); }
+                    elseif ($this -> get_option('thumbposition')=='FL') { $this -> update_option('thumbnails_temp', 'FL'); }
+                }
 		elseif ($this -> get_option('thumbnails')=='N') { $this -> update_option('thumbnails_temp', 'N'); }
 		if ($this -> get_option('autoslide')=='Y') { $this -> update_option('autoslide_temp', 'Y'); }
 		elseif ($this -> get_option('autoslide')=='N') { $this -> update_option('autoslide_temp', 'N'); }
@@ -334,7 +339,8 @@ class Satellite extends SatellitePlugin {
 		}
 		if ( $this -> get_option('transition_temp') == "OM") {
 			$content = $this -> render('multislider', array('slides' => $attachments, 'frompost' => true), false, 'pro');
-		} elseif ( $this -> get_option( 'thumbnails_temp') == "FR" || $this -> get_option( 'thumbnails_temp') == "FL" ) {
+		} elseif (  $this -> get_option( 'thumbnails_temp') == "FR" || 
+                            $this -> get_option( 'thumbnails_temp') == "FL" ) {
 			$content = $this -> render('fullthumb', array('slides' => $attachments, 'frompost' => true), false, 'orbit');
 		} else {
 			$content = $this -> render('default', array('slides' => $attachments, 'frompost' => true), false, 'orbit');

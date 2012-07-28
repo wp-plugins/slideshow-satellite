@@ -66,30 +66,6 @@
                     <span class="howto"><?php _e('default:700 recommended:300-2000', SATL_PLUGIN_NAME); ?><br/><?php _e('lower number for quicker transition of images', SATL_PLUGIN_NAME); ?></span>
                 </td>
             </tr>
-            <tr>
-                <td colspan="2">
-        <div id="thumbnails_div" style="display:<?php echo ($this->get_option('othumbs') != "N" || $this->get_option('othumbs') != "B" ) ? 'block' : 'none'; ?>;">
-        <table class="form-table">
-            <tbody>
-                <!--tr class="thumbposition" style="display:<?php echo ($this->get_option('othumbs') == "T") ? 'table-row' : 'none'; ?>;">
-                    <th><label for="thubmpositionbottom"><?php _e('Thumbnails Position', SATL_PLUGIN_NAME); ?></label></th>
-                    <td>
-                        <label><input <?php echo ($this->get_option('thumbposition') == "top") ? 'checked="checked"' : ''; ?> type="radio" name="thumbposition" value="top" id="thumbpositiontop" /> <?php _e('Top', SATL_PLUGIN_NAME); ?></label>
-                        <label><input <?php echo ($this->get_option('thumbposition') == "bottom") ? 'checked="checked"' : ''; ?> type="radio" name="thumbposition" value="bottom" id="thumbpositionbottom" /> <?php _e('Bottom', SATL_PLUGIN_NAME); ?></label>
-                    </td>
-                </tr-->
-                <!--tr class="thumbscrollspeed">
-                    <th><label for="thumbscrollspeed"><?php _e('Thumbnails Scroll Speed', SATL_PLUGIN_NAME); ?></label></th>
-                    <td>
-                        <input class="widefat" style="width:45px;" name="thumbscrollspeed" value="<?php echo $this->get_option('thumbscrollspeed'); ?>" id="thumbscrollspeed" /> <?php _e('speed', SATL_PLUGIN_NAME); ?>
-                        <span class="howto"><?php _e('default:5 recommended:1-20', SATL_PLUGIN_NAME); ?></span>
-                    </td>
-                </tr-->
-            </tbody>
-        </table>
-        </div>
-                </td>
-            </tr>
                 <!--tr class="bullcenter">
                     <th><label for="bullcenter"><?php _e('Bullet Centering', SATL_PLUGIN_NAME); ?></label></th>
                     <td>
@@ -217,6 +193,33 @@
                     <label><input onclick="jQuery('#thumbnails_div').hide();" <?php echo ($this->get_option('thumbnails') == "N") ? 'checked="checked"' : ''; ?> type="radio" name="thumbnails" value="N" id="thumbnailsN" /> <?php _e('No', SATL_PLUGIN_NAME); ?></label>
                 </td>
             </tr>
+            <tr>
+                <td colspan="2">
+                <div id="thumbnails_div" style="display:<?php echo ($this->get_option('thumbnails') != "N" ) ? 'block' : 'none'; ?>;">
+                <table class="form-table">
+                    <tbody>
+                        <tr class="thumbposition">
+                            <th><label for="thubmposition"><?php _e('Default Thumbnail Position', SATL_PLUGIN_NAME); ?></label></th>
+                            <td>
+                                <!--label><input <?php echo ($this->get_option('thumbposition') == "top") ? 'checked="checked"' : ''; ?> type="radio" name="thumbposition" value="top" id="thumbpositiontop" /> <?php _e('Top', SATL_PLUGIN_NAME); ?></label-->
+                                <label><input <?php echo ($this->get_option('thumbposition') == "B") ? 'checked="checked"' : ''; ?> type="radio" name="thumbposition" value="B" id="thumbpositionbottom" /> <?php _e('Bottom', SATL_PLUGIN_NAME); ?></label>
+                                <label><input <?php echo ($this->get_option('thumbposition') == "FL") ? 'checked="checked"' : ''; ?> type="radio" name="thumbposition" value="FL" id="thumbpositionfl" /> <?php _e('Full Left', SATL_PLUGIN_NAME); ?></label>
+                                <label><input <?php echo ($this->get_option('thumbposition') == "FR") ? 'checked="checked"' : ''; ?> type="radio" name="thumbposition" value="FR" id="thumbpositionfr" /> <?php _e('Full Right', SATL_PLUGIN_NAME); ?></label>
+                            </td>
+                        </tr>
+                        <!--tr class="thumbscrollspeed">
+                            <th><label for="thumbscrollspeed"><?php _e('Thumbnails Scroll Speed', SATL_PLUGIN_NAME); ?></label></th>
+                            <td>
+                                <input class="widefat" style="width:45px;" name="thumbscrollspeed" value="<?php echo $this->get_option('thumbscrollspeed'); ?>" id="thumbscrollspeed" /> <?php _e('speed', SATL_PLUGIN_NAME); ?>
+                                <span class="howto"><?php _e('default:5 recommended:1-20', SATL_PLUGIN_NAME); ?></span>
+                            </td>
+                        </tr-->
+                    </tbody>
+                </table>
+                </div>
+                </td>
+            </tr>
+            
         </tbody>
     </table>
     <table class="form-table">

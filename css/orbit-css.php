@@ -20,11 +20,12 @@ if ($styles['background'] == '#000000') {
 }
 if (!isset($styles['navbuttons'])) { $styles['navbuttons'] = 0;}
 if (!isset($styles['nav'])) { $styles['nav'] = 'on';}
-IF ($styles['navbuttons'] == 0) { $navright = 'url(../images/right-arrow.png) no-repeat 0 0';$navleft = 'url(../images/left-arrow.png) no-repeat 0 0'; }
-IF ($styles['navbuttons'] == 1) { $navright = 'url("../pro/images/right-sq.png") no-repeat 30px 0';$navleft = 'url(../pro/images/left-sq.png) no-repeat 0 0'; }
-IF ($styles['navbuttons'] == 2) { $navright = 'url(../pro/images/right-rd.png) no-repeat 30px 0';$navleft = 'url(../pro/images/left-rd.png) no-repeat 0 0'; }
-IF ($styles['navbuttons'] == 3) { $navright = 'url(../pro/images/right-pl.png) no-repeat 30px 0';$navleft = 'url(../pro/images/left-pl.png) no-repeat 0 0'; }
-IF ($styles['nav'] == 'off') { $navright = 'none'; $navleft = 'none'; }
+if (!isset($styles['align'])) { $styles['align'] = null;}
+IF ($styles['navbuttons'] == 0) { $navright = 'url(../images/right-arrow.png) no-repeat 0 0';$navleft = 'url(../images/left-arrow.png) no-repeat 0 0'; $arrowheight = 100; }
+IF ($styles['navbuttons'] == 1) { $navright = 'url("../pro/images/right-sq.png") no-repeat 30px 0';$navleft = 'url(../pro/images/left-sq.png) no-repeat 0 0'; $arrowheight= 60;}
+IF ($styles['navbuttons'] == 2) { $navright = 'url(../pro/images/right-rd.png) no-repeat 30px 0';$navleft = 'url(../pro/images/left-rd.png) no-repeat 0 0'; $arrowheight= 60;}
+IF ($styles['navbuttons'] == 3) { $navright = 'url(../pro/images/right-pl.png) no-repeat 30px 0';$navleft = 'url(../pro/images/left-pl.png) no-repeat 0 0'; $arrowheight= 50;}
+IF ($styles['nav'] == 'off') { $navright = 'none'; $navleft = 'none'; $arrowheight = 0; }
 
 $extrathumbarea = (int) $styles['thumbareamargin'];
 $brtopspace = (int) $styles['height'] *.69;
@@ -33,6 +34,7 @@ $sattxtwidth = (int) $styles['width'] *.48;
 $arrowpush = (int) $styles['navpush'];
 $thumbrow = (int) $styles['thumbspacing'];
 $orbitThumbMargin = 5;
+$fullthumbheight = (int) $styles['thumbheight'] + (2 * $orbitThumbMargin) + (int) (( 2 * $styles['thumbspacing'] )-4);
 IF ($styles['infomin'] == "Y") {
     ?>
     .orbit-caption h5, .orbit-caption p { margin:0 !important; }
@@ -303,8 +305,11 @@ div.slider-nav span {
     position: absolute;
     z-index: 50;
     top: 50%;
-    margin-top: -<?php echo($styles['thumbheight']);?>px;
+    margin-top: -<?php echo($fullthumbheight);?>px;
     cursor: pointer; }
+.full-right div.slider-nav span, .full-left div.slider-nav span {
+    margin-top: -<?php echo( $arrowheight / 2);?>px;
+}    
 div.slider-nav span.right {
     background: <?php echo($navright); ?>;
 	/*background: background: url(../images/right-arrow.png) no-repeat 0 0*/
@@ -353,7 +358,7 @@ ul.orbit-thumbnails {
 }
 .thumbholder {
     width: <?php echo (int) ($styles['width'] - 40) ?>px; /* 40px for the #slideleft and #slideright*/
-    height: <?php echo((int) $styles['thumbheight'] + (2 * $orbitThumbMargin) + (int) (( 2 * $styles['thumbspacing'] )-4));?>px;
+    height: <?php echo($fullthumbheight);?>px;
     overflow:hidden;
     margin: <?php echo $styles['thumbmargin']; ?>px auto 0 auto;
 }

@@ -12,7 +12,7 @@ class SatelliteGallery extends SatelliteDbHelper {
 		'description'		=>	"TEXT",
 		'image'			=>	"VARCHAR(75) NOT NULL DEFAULT ''",
 		'type'			=>	"VARCHAR(40) NOT NULL DEFAULT ''",
-                'caption_disable'       =>      "BOOLEAN NOT NULL DEFAULT FALSE",
+                'capdisplay'            =>      "VARCHAR(40) NOT NULL DEFAULT ''",
 		'order'			=>	"INT(11) NOT NULL DEFAULT '0'",
 		'created'		=>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
 		'modified'		=>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
@@ -67,11 +67,22 @@ class SatelliteGallery extends SatelliteDbHelper {
 		}
 		return $this -> errors;
 	}
+        /** Send Nothing - Returns Integer **/
         function latestSection() {
             global $wpdb;
             $this -> table = $wpdb -> prefix . "satl_galleries";
             $latest = $this -> find(null,'id');
             return $latest -> id;
+        }
+        /** Send Integer - Returns a string **/
+        public function capLocation($gallery) {
+            $location = $this -> find(array('id'=>$gallery), 'capdisplay,id');
+            if ($location -> capdisplay == "On Right") :
+                $briefLocation = "right";
+            else:
+                $briefLocation = $location -> capdisplay;
+            endif;
+            return $briefLocation;
         }
         
 }

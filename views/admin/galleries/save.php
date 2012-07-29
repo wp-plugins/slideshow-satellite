@@ -44,11 +44,12 @@ array(  "name"      => "Upload Images",
         "id"        => "slides",
         "type"      => "upload"),
 
-/*array(  "name"      => "Disable Captions?",
-        "desc"      => "Check this box if you would like to DISABLE text from popping up.",
-        "id"        => "caption_disable",
-        "type"      => "checkbox",
-        "std"       => "false"),*/
+array(  "name"      => "Caption Display",
+        "desc"      => "Where would you like to display the caption?",
+        "id"        => "capdisplay",
+        "type"      => "select",
+        "std"       => "Overlayed",
+        "options"   => array('Overlayed', 'On Right', 'Disabled')),
 
 array(  "type"      => "close")
 
@@ -214,13 +215,17 @@ foreach ($options as $value) {
 		break;
 
 		case 'select':
+                        if ($this -> Gallery -> data -> capdisplay && $value['id'] == 'capdisplay' ) {
+                            $display = esc_attr($this -> Gallery -> data -> capdisplay);
+                        } else { $display = $value['std']; }
+                    
 			?>
 			<tr>
                             <td width="20%" rowspan="2" valign="middle"><strong><?php echo $value['name']; ?></strong></td>
                             <td width="80%"><select style="width:140px;" name="Gallery[<?php echo $value['id']; ?>]" id="<?php echo $value['id']; ?>">
                             <?php foreach ($value['options'] as $option) { ?>
                                 <option id="<?php echo(get_settings( $value['id'])); ?>"<?php 
-                                if ( get_settings( $value['id'] ) == $option) { echo ' selected="selected"'; 
+                                if ( $display == $option) { echo ' selected="selected"'; 
 
                                 } elseif (($option == $value['std']) && (get_settings( $value['id']) == FALSE)) { echo ' selected="selected"'; } ?>>
                                 <?php echo $option; ?></option>

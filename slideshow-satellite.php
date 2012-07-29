@@ -471,7 +471,7 @@ class Satellite extends SatellitePlugin {
                                                     $message = __('Gallery has saved but image upload failed', SATL_PLUGIN_NAME);
                                                 }
                                             } else {
-                                                $message = __('Gallery with no images has been saved', SATL_PLUGIN_NAME);
+                                                $message = __('Gallery info has been saved', SATL_PLUGIN_NAME);
                                             }
                                             $this -> redirect($this -> url, "message", $message);
 					} else {

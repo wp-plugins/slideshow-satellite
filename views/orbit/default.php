@@ -7,7 +7,9 @@ if (!empty($slides)) :
     $imagesbox = $this->get_option('imagesbox');
     $textloc = $this->get_option('textlocation');
     $thumbwidth = (int) $style['thumbheight'] + $style['thumbspacing'] + $style['thumbspacing'];
-
+    if (!$frompost) {
+        $sidetext = $this -> Gallery -> capLocation($slides[0]->section);
+    }
     if ($this->get_option('autoslide') == "Y") {
         $autospeed = $this->get_option('autospeed');
         $autospeed2 = $this->get_option('autospeed2');     }
@@ -87,7 +89,10 @@ if (!empty($slides)) :
         <!--  CUSTOM GALLERY -->
     <?php else : ?>  
 
-        <div class="orbit-default<?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' default-thumbs' : ''; ?>">
+        <div class="orbit-default
+            <?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' default-thumbs ' : ''; ?>
+            <?php echo($sidetext) ? 'text-'.$sidetext : ''; ?>
+             ">
             <div id="featured<?php echo $satellite_init_ok; ?>"> 
                 <?php $i = 0; ?>
                 <?php foreach ($slides as $slider) : ?>     
@@ -113,17 +118,20 @@ if (!empty($slides)) :
                     
                     <?PHP if ($imagesbox != "N" || $slider->uselink == "Y") : ?></a><?PHP endif; ?>
                 </div>
-                <?php if ($slider->textlocation != "N") { ?>
-                <span class="orbit-caption<?php echo ($slider->textlocation == 'BR'|| $slider->textlocation == 'TR') ? ' sattext sattext'.$slider->textlocation:''?><?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' thumb-on' : ''; ?>" id='custom<?php echo ($satellite_init_ok.'-'.$i); ?>'>
-                    <h5 class="orbit-title<?php echo($style['infotitle']) ?>"><?php echo $slider->title; ?></h5>
-                    <p><?php echo $slider->description; ?> </p>
-                </span>   
-                <?php } else { ?>
-                    <span class="sattext-none" id='custom<?php echo ($satellite_init_ok.'-'.$i); ?>'>
-                    </span>
-                <?php } ?>
-                <?php $i = $i +1; ?>
-            <?php endforeach; ?>
+                <?php
+                if ($sidetext == ( "Overlayed" || "right" ) ) :
+                    if ($slider->textlocation != "N") : ?>
+                    <span class="orbit-caption<?php echo ($slider->textlocation == 'BR'|| $slider->textlocation == 'TR') ? ' sattext sattext'.$slider->textlocation:''?><?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' thumb-on' : ''; ?>" id='custom<?php echo ($satellite_init_ok.'-'.$i); ?>'>
+                        <h5 class="orbit-title<?php echo($style['infotitle']) ?>"><?php echo $slider->title; ?></h5>
+                        <p><?php echo $slider->description; ?> </p>
+                    </span>   
+                    <?php else : ?>
+                        <span class="sattext-none" id='custom<?php echo ($satellite_init_ok.'-'.$i); ?>'>
+                        </span>
+                    <?php endif;
+                endif;
+                $i = $i +1;
+                endforeach; ?>
             </div>
 
         </div>

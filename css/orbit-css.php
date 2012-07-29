@@ -220,10 +220,10 @@ span.pause.active {
     font-family: "HelveticaNeue", "Helvetica-Neue", Helvetica, Arial, sans-serif; }
     
 .orbit-wrapper .orbit-caption {
-    <?php if ($styles['infobackground'] == 'transparent') :?>
-    background: transparent;
-    <?php else: ?>
+    <?php if (substr($styles['infobackground'], 0, 1) == '#') :?>
     background: rgba(<?php echo(hex2RGB($styles['infobackground'], true)); ?>,.6);
+    <?php else: ?>
+    background: <?php echo($styles['infobackground']); ?>;
     <?php endif; ?>
     z-index: 50;
     color: <?php echo $styles['infocolor']; ?>;

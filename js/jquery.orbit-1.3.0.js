@@ -93,6 +93,7 @@
       this.setDimentionsFromLargestSlide(this.options.bullets, this.options.thumbWidth);
       this.updateOptionsIfOnlyOneSlide();
       this.setupFirstSlide();
+      this.setupClicks();
       
       if (this.options.timer) {
         this.setupTimer();
@@ -172,6 +173,14 @@
       		//brings in all other slides IF css declares a display: none
       		self.$slides.css({"display":"block"})
       });
+    },
+    
+    setupClicks: function () {
+        var self = this;
+        var slide = this.currentSlide();
+        slide.click(function () { 
+            self.stopClock();
+        });
     },
     
     startClock: function () {
@@ -440,6 +449,7 @@
       	.eq(this.prevActiveSlide)
       	.css({"z-index" : 1});
       this.unlock();
+      this.setupClicks();
       this.options.afterSlideChange.call(this, this.$slides.eq(this.prevActiveSlide), this.$slides.eq(this.activeSlide));
     },
     

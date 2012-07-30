@@ -119,7 +119,7 @@ if (!empty($slides)) :
                     <?PHP if ($imagesbox != "N" || $slider->uselink == "Y") : ?></a><?PHP endif; ?>
                 </div>
                 <?php
-                if ($sidetext == ( "Overlayed" || "right" ) ) :
+                if ($sidetext != ( "Disabled" ) ) :
                     if ($slider->textlocation != "N") : ?>
                     <span class="orbit-caption<?php echo ($slider->textlocation == 'BR'|| $slider->textlocation == 'TR') ? ' sattext sattext'.$slider->textlocation:''?><?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' thumb-on' : ''; ?>" id='custom<?php echo ($satellite_init_ok.'-'.$i); ?>'>
                         <h5 class="orbit-title<?php echo($style['infotitle']) ?>"><?php echo $slider->title; ?></h5>

@@ -296,6 +296,7 @@ div.sattext h5 {
    ================================================== */
 .text-right .orbit-wrapper {
     margin-right: <?php echo($sideTextWidth);?>px;
+    margin-left: 0;
 }
 .text-right .orbit-caption {
     height: 100%;

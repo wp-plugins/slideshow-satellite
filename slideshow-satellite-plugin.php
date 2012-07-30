@@ -7,7 +7,7 @@ class SatellitePlugin {
     var $pre = 'Satellite';
     var $debugging = false;
     var $menus = array();
-    var $latestorbit = 'jquery.orbit-1.3.0.js';
+    var $latestorbit = 'orbit-min.js';
     var $cssfile = 'orbit-css.php';
     var $cssadmin = 'admin-styles.css';
     var $sections = array(

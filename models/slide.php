@@ -50,7 +50,6 @@ class SatelliteSlide extends SatelliteDbHelper {
 	
 		if (!empty($data)) {
 			$data = (empty($data[$this -> model])) ? $data : $data[$this -> model];
-			
 			foreach ($data as $dkey => $dval) {
 				$this -> data -> {$dkey} = stripslashes($dval);
 			}
@@ -117,7 +116,7 @@ class SatelliteSlide extends SatelliteDbHelper {
 			} elseif ($type == "url") {
 				if (empty($image_url)) { $this -> errors['image_url'] = __('Please specify an image', SATL_PLUGIN_NAME); }
 				else {
-					if ($image = wp_remote_fopen($image_url)) {
+					if ( $image = wp_remote_fopen($image_url) ) {
 						$filename = str_replace(" ", "-", basename($image_url));
 						$filepath = SATL_UPLOAD_DIR . DS;
 						
@@ -162,9 +161,44 @@ class SatelliteSlide extends SatelliteDbHelper {
                     }
 
                     $d->close();
-            }else {
+            } else {
                     copy( $source, $target );
             }
         }
+        public function processImages($images, $section = false) {
+            $imgarray = explode(",",$images);
+            if (! $section) {
+                $section = $this -> latestSection();
+            }
+            $i = 0;
+            foreach ($imgarray as $image) {
+                $file = basename($image);
+                $name = SatelliteHtmlHelper::strip_ext($file, 'filename');
+                $data = array(title=>$name,section=>$section,type=>'url',image_url=>$image,use_link=>'N',order=>$i);
+                $slidedata = array('Slide' => $data);
+                
+                if ($this -> save($data, true)) {
+                    error_log($name . " has successfully saved");
+                    continue;
+                } else { 
+                    error_log("processImages has failed"); 
+                    return false;
+                }
+                $i++;
+            }
+            return true;
+        }
+        public function slideCount($gallery) {
+            $images = $this->find_all(array('section' => $gallery ), array('id','section'));
+            if (is_array($images)) {
+                return count($images);
+            } else {
+                return 0;
+            }
+            
+        }
+        
+        
+
 }
 ?>

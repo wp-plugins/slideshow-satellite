@@ -4,27 +4,19 @@ $styles = array();
 foreach ($_GET as $skey => $sval) :
 	$styles[$skey] = urldecode($sval);
 endforeach;
-IF (isset($styles['width_temp']) && ($styles['width_temp'] > 1)) {
-	$styles['width'] = $styles['width_temp'];
-}
-IF (isset($styles['height_temp']) && ($styles['height_temp'] > 1)) {
-	$styles['height'] = $styles['height_temp'];
-}
-IF (!$styles['thumbheight']) {
-    $styles['thumbheight'] = "75";
-}
-if ($styles['background'] == '#000000') {
-	$loadbg = $styles['background']." url('../images/loading.gif')";
-} else {
-	$loadbg = $styles['background']." url('../images/spinner.gif')";
-}
+IF (isset($styles['width_temp']) && ($styles['width_temp'] > 1)) { $styles['width'] = $styles['width_temp']; }
+IF (isset($styles['height_temp']) && ($styles['height_temp'] > 1)) { $styles['height'] = $styles['height_temp']; }
+IF (!$styles['thumbheight']) { $styles['thumbheight'] = "75"; }
+if ($styles['background'] == '#000000') { $loadbg = $styles['background']." url('../images/loading.gif')";
+} else { $loadbg = $styles['background']." url('../images/spinner.gif')"; }
 if (!isset($styles['navbuttons'])) { $styles['navbuttons'] = 0;}
 if (!isset($styles['nav'])) { $styles['nav'] = 'on';}
-IF ($styles['navbuttons'] == 0) { $navright = 'url(../images/right-arrow.png) no-repeat 0 0';$navleft = 'url(../images/left-arrow.png) no-repeat 0 0'; }
-IF ($styles['navbuttons'] == 1) { $navright = 'url("../pro/images/right-sq.png") no-repeat 30px 0';$navleft = 'url(../pro/images/left-sq.png) no-repeat 0 0'; }
-IF ($styles['navbuttons'] == 2) { $navright = 'url(../pro/images/right-rd.png) no-repeat 30px 0';$navleft = 'url(../pro/images/left-rd.png) no-repeat 0 0'; }
-IF ($styles['navbuttons'] == 3) { $navright = 'url(../pro/images/right-pl.png) no-repeat 30px 0';$navleft = 'url(../pro/images/left-pl.png) no-repeat 0 0'; }
-IF ($styles['nav'] == 'off') { $navright = 'none'; $navleft = 'none'; }
+if (!isset($styles['align'])) { $styles['align'] = null;}
+IF ($styles['navbuttons'] == 0) { $navright = 'url(../images/right-arrow.png) no-repeat 0 0';$navleft = 'url(../images/left-arrow.png) no-repeat 0 0'; $arrowheight = 100; }
+IF ($styles['navbuttons'] == 1) { $navright = 'url("../pro/images/right-sq.png") no-repeat 30px 0';$navleft = 'url(../pro/images/left-sq.png) no-repeat 0 0'; $arrowheight= 60;}
+IF ($styles['navbuttons'] == 2) { $navright = 'url(../pro/images/right-rd.png) no-repeat 30px 0';$navleft = 'url(../pro/images/left-rd.png) no-repeat 0 0'; $arrowheight= 60;}
+IF ($styles['navbuttons'] == 3) { $navright = 'url(../pro/images/right-pl.png) no-repeat 30px 0';$navleft = 'url(../pro/images/left-pl.png) no-repeat 0 0'; $arrowheight= 50;}
+IF ($styles['nav'] == 'off') { $navright = 'none'; $navleft = 'none'; $arrowheight = 0; }
 
 $extrathumbarea = (int) $styles['thumbareamargin'];
 $brtopspace = (int) $styles['height'] *.69;
@@ -33,6 +25,8 @@ $sattxtwidth = (int) $styles['width'] *.48;
 $arrowpush = (int) $styles['navpush'];
 $thumbrow = (int) $styles['thumbspacing'];
 $orbitThumbMargin = 5;
+$sideTextWidth = 250;
+$fullthumbheight = (int) $styles['thumbheight'] + (2 * $orbitThumbMargin) + (int) (( 2 * $styles['thumbspacing'] )-4);
 IF ($styles['infomin'] == "Y") {
     ?>
     .orbit-caption h5, .orbit-caption p { margin:0 !important; }
@@ -46,13 +40,15 @@ ul.orbit-thumbnails, ul.orbit-thumbnails li, {
     list-style-type:none;
 }
 
-#featured, #featured1, #featured2, #featured3, #featured4, #featured5 {
+#featured, #featured1, #featured2, #featured3, #featured4, #featured5, #featured6, #featured7 {
     width: <?php echo $styles['width'] ?>px;
     height: <?php echo $styles['height'] ?>px;
     background:<?php echo($loadbg)?> no-repeat center center;
     overflow: hidden; 
     }
-#featured>div, #featured1>div, #featured2>div, #featured3>div { display: none; }
+#featured>div, #featured1>div, #featured2>div, #featured3>div, #featured4>div, #featured5>div, #featured6>div, #featured7>div { 
+    display: none; 
+}
 
 div.orbit-default {
     margin-top:20px;
@@ -60,7 +56,15 @@ div.orbit-default {
 div.orbit-wrapper {
     width: <?php echo $styles['width'] ?>px;
     height: <?php echo $styles['height'] ?>px;
-    margin: 0 auto;
+    <?php if ($styles['align'] == 'left'){ ?>
+        margin: 0 15px 15px 0;
+        float: left;
+    <?php } elseif ($styles['align'] == 'right'){ ?>
+        margin: 0 0 15px 15px;
+        float: right;
+    <?php } else { ?>
+        margin: 0 auto 15px auto;
+    <?php } ?>
     background:<?php echo $styles['background']?>; /* VAR BACKGROUND */
     border:<?php echo $styles['border']; ?>;
     position: relative;
@@ -216,7 +220,11 @@ span.pause.active {
     font-family: "HelveticaNeue", "Helvetica-Neue", Helvetica, Arial, sans-serif; }
     
 .orbit-wrapper .orbit-caption {
+    <?php if (substr($styles['infobackground'], 0, 1) == '#') :?>
     background: rgba(<?php echo(hex2RGB($styles['infobackground'], true)); ?>,.6);
+    <?php else: ?>
+    background: <?php echo($styles['infobackground']); ?>;
+    <?php endif; ?>
     z-index: 50;
     color: <?php echo $styles['infocolor']; ?>;
     text-align: center;
@@ -247,6 +255,8 @@ span.pause.active {
     padding-bottom: 7px;
     font-size:.9em;
     font-weight:bold;
+    line-height:1.3em;
+    padding:8px 4px 2px 4px;
 }
 div.orbit-wrapper .sattext {
     bottom: auto !important;
@@ -276,10 +286,33 @@ div.sattext h5 {
     }
     
 .orbit-default .thumb-on {
-    margin-bottom: <?php echo ((int) $styles['thumbheight'] + $styles['thumbspacing'] + $styles['thumbspacing'] +5); ?>px; 
+    margin-bottom: <?php echo ($fullthumbheight); ?>px; 
 }
 .orbit-default.default-thumbs .orbit-wrapper {
-    height: <?php echo ((int) $styles['height'] + $styles['thumbheight'] + $styles['thumbspacing'] + $styles['thumbspacing'] + $styles['thumbmargin'] + 5); ?>px;
+    height: <?php echo ((int) $styles['height'] + $fullthumbheight); ?>px;
+}
+
+/* TEXT ON THE SIDE
+   ================================================== */
+.text-right .orbit-wrapper {
+    margin-right: <?php echo($sideTextWidth);?>px;
+    margin-left: 0;
+}
+.text-right .orbit-caption {
+    height: 100%;
+    width: <?php echo($sideTextWidth);?>px;
+    margin-right: -<?php echo($sideTextWidth);?>px;
+    margin-bottom:0;
+}
+.text-right .orbit-caption h5 {
+    padding-top:15px;
+    text-align:left;
+}
+.text-right .orbit-caption p {
+    text-align:left;
+    padding:10px 8px 2px 8px;
+    line-height:1.5em;
+    font-size:1em;
 }
 
 /* DIRECTIONAL NAV
@@ -293,8 +326,11 @@ div.slider-nav span {
     position: absolute;
     z-index: 50;
     top: 50%;
-    margin-top: -<?php echo($styles['thumbheight']);?>px;
+    margin-top: -<?php echo( $arrowheight / 2);?>px;
     cursor: pointer; }
+.default-thumbs div.slider-nav span {
+   margin-top: -<?php echo($fullthumbheight);?>px;
+}
 div.slider-nav span.right {
     background: <?php echo($navright); ?>;
 	/*background: background: url(../images/right-arrow.png) no-repeat 0 0*/
@@ -343,7 +379,7 @@ ul.orbit-thumbnails {
 }
 .thumbholder {
     width: <?php echo (int) ($styles['width'] - 40) ?>px; /* 40px for the #slideleft and #slideright*/
-    height: <?php echo((int) $styles['thumbheight'] + (2 * $orbitThumbMargin) + (int) (( 2 * $styles['thumbspacing'] )-4));?>px;
+    height: <?php echo($fullthumbheight);?>px;
     overflow:hidden;
     margin: <?php echo $styles['thumbmargin']; ?>px auto 0 auto;
 }
@@ -359,7 +395,7 @@ ul.orbit-thumbnails {
     padding: 0 !important;
     opacity: .<?php echo($styles['thumbopacity']);?>;
     overflow:hidden;
-    margin: <?php echo( (int) ($styles['thumbspacing']-2));?>px;
+    margin: <?php echo( (int) ($styles['thumbspacing']-2));?>px !important;
 }
 .orbit-thumbnails li img {
     max-width:100%;

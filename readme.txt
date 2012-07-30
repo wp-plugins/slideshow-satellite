@@ -3,10 +3,11 @@ Contributors: C- Pres
 Donate link: http://c-pr.es/projects/satellite
 Tags: slideshow pro, photographer, galleries, satellite, orbit, zurb, zurb orbit, slideshow gallery, slides, slideshow, image gallery, gallery, slideshow satellite, photography, slideshow orbit
 Requires at least: 3.0
-Tested up to: 3.4
-Stable tag: 1.1.4
+Tested up to: 3.4.1
+Stable tag: 1.2
+License: GPLv2 or later
 
-Rad photo slideshow. Build the best content displays with Slideshow Satellite's incredible customization capabilities. 
+Ultra customizable and contemporary photo slideshow. Build photograph galleries or content displays with Slideshow Satellite. 
 
 == Description ==
 The goal of this slideshow is to create beautiful ways of displaying content in ways that suit the content you are providing.
@@ -28,7 +29,7 @@ Installing the WordPress Slideshow Satellite plugin manually is very easy. Simpl
 
 1. Add and manage your slides in the 'Satellite' > 'Manage Slides' section (Or just use the built in wordpress gallery)
 
-1. Put `[satellite post_id="X" exclude="" caption="on/off" thumbs="on/off"]` to embed a slideshow with the images of a post into your posts/pages or use `[satellite custom=1]` to embed a slideshow with images in 'Manage Slides'
+1. Put `[satellite post_id="X" exclude="" caption="on/off" thumbs="on/off"]` to embed a slideshow with the images of a post into your posts/pages or use `[satellite gallery=1]` to embed a slideshow with images in 'Manage Slides'
 
 1. For the most up to date list of options available please goto: http://c-pr.es/projects/satellite and check out the manual
 
@@ -77,9 +78,17 @@ You may also want to "Reset Configuration" from the Configuration page
 1. Slideshow Satellite with bottom thumbnails
 2. Slideshow Satellite with "Full Right"
 
-Two should be enough, we don't want to bog down your install with screenshots.
+Two should be enough, we don't want to bog down your install with screenshots. Come to the site for more, and a video tutorial: http://c-pr.es/satellite
 
 == Changelog ==
+= 1.2 =
+* Added Galleries
+* Added Bulk Image Upload
+* Fixed Transparent Caption Backgrounds
+* Added Text on the Right for Galleries
+* Full Left & Full Right on General Config
+* Slides no pause when image is clicked
+
 = 1.1.4 = 
 * Fixing for Wordpress 3.4
 * Premium /pro/ directory copying feature for Automatic Updates
@@ -110,5 +119,6 @@ Two should be enough, we don't want to bog down your install with screenshots.
 
 == Upgrade Notice ==
 
-= 1.0 =
+= 1.2 =
+Safe to use old premium 'pro' folders
 Transitioning from Slideshow Gallery Pro? Notice the top yellow bar to copy your old files over.

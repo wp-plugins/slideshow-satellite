@@ -64,7 +64,6 @@ class SatellitePaginate extends SatellitePlugin {
 	
 	function start_paging($page = '') {
 		global $wpdb;
-	
 		$page = (empty($page)) ? 1 : $page;
 	
 		if (!empty($page)) {
@@ -79,7 +78,7 @@ class SatellitePaginate extends SatellitePlugin {
 		
 		$query = "SELECT " . $this -> fields . " FROM `" . $this -> table . "`";
 		$countquery = "SELECT COUNT(*) FROM `" . $this -> table . "`";
-		
+
 		//check if some conditions where passed.
 		if (!empty($this -> where)) {
 			//append the "WHERE" command to the query

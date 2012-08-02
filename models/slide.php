@@ -17,6 +17,7 @@ class SatelliteSlide extends SatelliteDbHelper {
 		'uselink'		=>	"ENUM('Y','N') NOT NULL DEFAULT 'N'",
 		'link'			=>	"VARCHAR(200) NOT NULL DEFAULT ''",
                 'textlocation'		=>	"VARCHAR(5) NOT NULL DEFAULT 'D'",
+		'more'			=>	"INT(11) NULL",
 		'order'			=>	"INT(11) NOT NULL DEFAULT '0'",
 		'created'		=>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
 		'modified'		=>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
@@ -79,7 +80,7 @@ class SatelliteSlide extends SatelliteDbHelper {
 						elseif (!move_uploaded_file($_FILES['image_file']['tmp_name'], $imagefull)) { $this -> errors['image_file'] = __('Image could not be moved from TMP to '. SATL_UPLOAD_URL .', please check permissions', SATL_PLUGIN_NAME); }
 						else {
 							$this -> data -> image = $imagename;
-							
+                                                        
 							$name = SatelliteHtmlHelper::strip_ext($imagename, 'filename');
 							$ext = SatelliteHtmlHelper::strip_ext($imagename, 'ext');
 							$thumbfull = $imagepath . $name . '-thumb.' . strtolower($ext);
@@ -87,10 +88,10 @@ class SatelliteSlide extends SatelliteDbHelper {
 						
 							image_resize($imagefull, $width = 100, $height = 100, $crop = true, $append = 'thumb', $dest = null, $quality = 100);
 							image_resize($imagefull, $width = 50, $height = 50, $crop = true, $append = 'small', $dest = null, $quality = 100);
-							
-							@chmod($imagefull, 0777);
 							@chmod($thumbfull, 0777);
 							@chmod($smallfull, 0777);
+							
+							@chmod($imagefull, 0777);
 						}
 					} else {					
 						switch ($_FILES['image_file']['error']) {
@@ -195,6 +196,20 @@ class SatelliteSlide extends SatelliteDbHelper {
             } else {
                 return 0;
             }
+            
+        }
+        public function getAllMoreImages() {
+            $Gallery = new SatelliteGallery;
+            $moreId = $Gallery -> getMoreGallery();
+            $more = $this -> find_all(array('section'=> $moreId), 'title,section');
+            $morearray = null;
+            foreach ($more as $moreimg )
+                $morearray[] = $moreimg -> title;
+            
+            if ($morearray)
+                return $morearray;
+            else
+                return array("No Images Uploaded");
             
         }
         

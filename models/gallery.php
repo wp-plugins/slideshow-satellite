@@ -84,6 +84,14 @@ class SatelliteGallery extends SatelliteDbHelper {
             endif;
             return $briefLocation;
         }
+        /** Returns the More Gallery ID **/
+        public function getMoreGallery() {
+            $more = $this -> find(array('title'=>"More"), 'title,id');
+            if ($more->id)
+                return $more->id;
+            else
+                return null;
+        }
         
 }
 ?>

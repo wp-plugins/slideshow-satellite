@@ -99,6 +99,7 @@ class SatelliteDbHelper extends SatellitePlugin {
 		list($ofield, $odir) = $order;
 		$query .= " ORDER BY `" . $ofield . "` " . $odir . "";
 		$query .= (empty($limit)) ? '' : " LIMIT " . $limit . "";
+                //print_r($query);
 		
 		if ($records = $wpdb -> get_results($query)) {
 		if (!empty($records)) {
@@ -159,7 +160,7 @@ class SatelliteDbHelper extends SatellitePlugin {
 					}
 					break;
 				case 'Gallery':	
-					if ( empty($this -> data -> images )) {
+					if ( $this -> data -> title == "More" ) {
 						//$this -> data -> link = "";
 					}
 					break;                                     

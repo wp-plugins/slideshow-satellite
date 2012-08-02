@@ -1,4 +1,34 @@
-<div class="wrap">
+<?php
+global $post, $post_ID;
+$post_ID = 1;
+wp_nonce_field('closedpostboxes', 'closedpostboxesnonce', false);
+wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
+
+//$slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($single)), null, array('order', "ASC"));
+
+$shortname = "satl";
+$ptypes1 = get_post_types(array('public' => true),'names','and');
+$ptypes = array_push($ptypes1, 'resume');
+
+$options = array (
+array(  "name"      => "Link To",
+        "desc"      => "link/URL to go to when a user clicks the slide eg. http://www.domain.com/mypage/",
+        "id"        => "link",
+        "type"      => "text",
+        "std"       => "http://"),
+    
+array(  "name"      => "More Image",
+        "desc"      => "From here you can select an image if you have a Gallery with the title 'More'",
+        "id"        => "capdisplay",
+        "type"      => "select",
+        "std"       => "Select an Image",
+        "options"   => $this -> Slide -> getAllMoreImages())
+
+);	
+
+echo "Get all More Images: ".$this -> Slide -> getAllMoreImages();
+        
+?>  <div class="wrap">
 	<h2><?php _e('Save a Slide', SATL_PLUGIN_NAME); ?></h2>
 	
 	<form action="<?php echo $this -> url; ?>&amp;method=save" method="post" enctype="multipart/form-data">
@@ -122,31 +152,93 @@
         </div>    
                 
         <table class="form-table">
-        	<tbody>
-				<tr>
-					<th><label for="Slide_userlink_N"><?php _e('Use Link', SATL_PLUGIN_NAME); ?></label></th>
-					<td>
-						<label><input onclick="jQuery('#Slide_uselink_div').show();" <?php echo ($this -> Slide -> data -> uselink == "Y") ? 'checked="checked"' : ''; ?> type="radio" name="Slide[uselink]" value="Y" id="Slide_uselink_Y" /> <?php _e('Yes', SATL_PLUGIN_NAME); ?></label>
-						<label><input onclick="jQuery('#Slide_uselink_div').hide();" <?php echo (empty($this -> Slide -> data -> uselink) || $this -> Slide -> data -> uselink == "N") ? 'checked="checked"' : ''; ?> type="radio" name="Slide[uselink]" value="N" id="Slide_uselink_N" /> <?php _e('No', SATL_PLUGIN_NAME); ?></label>
-                        <span class="howto"><?php _e('set this to Yes to link this slide to a link/URL of your choice.', SATL_PLUGIN_NAME); ?></span>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		
-		<div id="Slide_uselink_div" style="display:<?php echo ($this -> Slide -> data -> uselink == "Y") ? 'block' : 'none'; ?>;">
-			<table class="form-table">
-				<tbody>
-					<tr>
-						<th><label for="Slide.link"><?php _e('Link To', SATL_PLUGIN_NAME); ?></label></th>
-						<td>
-                        	<input class="widefat" type="text" name="Slide[link]" value="<?php echo esc_attr($this -> Slide -> data -> link); ?>" id="Slide.link" />
-                            <span class="howto"><?php _e('link/URL to go to when a user clicks the slide eg. http://www.domain.com/mypage/', SATL_PLUGIN_NAME); ?></span>
+        <tbody>
+                    <tr>
+                        <th><label for="Slide_userlink_N"><?php _e('Use Link', SATL_PLUGIN_NAME); ?></label></th>
+                        <td>
+                                <label><input onclick="jQuery('#Slide_uselink_div').show();" <?php echo ($this -> Slide -> data -> uselink == "Y") ? 'checked="checked"' : ''; ?> type="radio" name="Slide[uselink]" value="Y" id="Slide_uselink_Y" /> <?php _e('Yes', SATL_PLUGIN_NAME); ?></label>
+                                <label><input onclick="jQuery('#Slide_uselink_div').hide();" <?php echo (empty($this -> Slide -> data -> uselink) || $this -> Slide -> data -> uselink == "N") ? 'checked="checked"' : ''; ?> type="radio" name="Slide[uselink]" value="N" id="Slide_uselink_N" /> <?php _e('No', SATL_PLUGIN_NAME); ?></label>
+            <span class="howto"><?php _e('set this to Yes to link this slide to a link/URL of your choice.', SATL_PLUGIN_NAME); ?></span>
                         </td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+                    </tr>
+                </tbody>
+        </table>
+		
+        <div id="Slide_uselink_div" style="display:<?php echo ($this -> Slide -> data -> uselink == "Y") ? 'block' : 'none'; ?>;">
+            <table class="form-table">
+                    <tbody>
+                <?php foreach ($options as $value) {
+
+                        switch ( $value['type'] ) {
+                            case 'select':
+                                if ( $this -> Slide -> data -> more  && $value['id'] == 'more' ) :
+                                    $display = esc_attr($this -> Slide -> data -> more);
+                                    $error = 'more';
+                                    if ( ! in-array($value['std'],$value['options']) ) :
+                                            $value['options'] = array_unshift(&$value['options'],$value['std']);
+                                    endif;
+                                else: 
+                                    $display = $value['std'];
+                                endif;
+
+                                ?>
+                                <tr>
+                                    <td width="20%" rowspan="2" valign="middle"><strong><?php echo $value['name']; ?></strong></td>
+                                    <td width="80%"><select style="width:140px;" name="Gallery[<?php echo $value['id']; ?>]" id="<?php echo $value['id']; ?>">
+                                    <?php if ( ! in_array($value['std'],$value['options']) ) { ?>
+                                            <option id="" ><?php echo($value['std']); ?></option> 
+                                            <?php } ?>
+                                    <?php foreach ($value['options'] as $option) { ?>
+                                        <option id="<?php echo(get_settings( $value['id'])); ?>"<?php 
+                                        if ( $display == $option) { echo ' selected="selected"'; 
+
+                                        } elseif (($option == $value['std']) && (get_settings( $value['id']) == FALSE)) { echo ' selected="selected"'; } ?>>
+                                        <?php echo $option; ?></option>
+                                     <?php } ?></select></td>
+                                </tr>
+
+                                <tr>
+                                        <td><small><?php echo $value['desc']; ?></small></td>
+                                </tr>
+                            <?php
+                            
+                            break;
+                            
+                            case 'text':
+                                    if ( $this -> Slide -> data -> title  && $value['id'] == 'title' ) :
+                                        $display = esc_attr($this -> Slide -> data -> title);
+                                        $error = 'title';
+                                    elseif ( $this -> Slide -> data -> link  && $value['id'] == 'link' ) :
+                                        $display = esc_attr($this -> Slide -> data -> link);
+                                        $error = 'more';
+                                    else :
+                                        $display = $value['std']; 
+                                    endif;
+                                    ?>
+
+                                    <tr">
+                                            <td width="20%" rowspan="2" valign="middle"><strong><?php echo $value['name']; ?></strong></td>
+                                            <td width="80%">
+                                                <input style="width:400px;" name="Slide[<?php echo $value['id']; ?>]" id="<?php echo $value['id']; ?>" type="<?php echo $value['type']; ?>" value="<?php echo $display; ?>" />
+                                                <?php echo (!empty($this -> Gallery -> errors['title'])) ? '<div style="color:red;">' . $this -> Slide -> errors[$error] . '</div>' : ''; ?>
+                                            </td>
+                                    </tr>
+
+                                    <tr>
+                                            <td><small><?php echo $value['desc']; ?></small></td>
+                                    </tr>
+
+                                    <?php
+                            break;
+                            case 'default' :
+
+                         break;
+
+                        }
+                }?>
+                    </tbody>
+            </table>
+        </div>
 		
 		<p class="submit">
 			<input class="button-primary" type="submit" name="submit" value="<?php _e('Save Slide', SATL_PLUGIN_NAME); ?>" />

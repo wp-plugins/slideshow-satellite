@@ -57,12 +57,6 @@ array(  "type"      => "close")
         
 ?>        
     <div class="wrap">
-        <style type="text/css">
-	.swfupload {
-		position: absolute;
-		z-index: 1;
-	}
-        </style>
     <script type="text/javascript">
     // Convert divs to queue widgets when the DOM is ready
     jQuery(function($) {
@@ -123,36 +117,15 @@ array(  "type"      => "close")
     <?php } ?>
 
     <img src="<?php echo(SATL_PLUGIN_URL.'/images/Satellite-Logo-sm.png');?>" style="height:100px" />
+    <div class="wrap">
+    <h2><?php echo $pluginName; ?> <?php _e('Gallery Creator', SATL_PLUGIN_NAME); ?></h2>
+            <h2></h2>
 
 
-
-        
-	<?php 
-/*    if ( $_REQUEST['page'] == basename(__FILE__) ) {
-         if( 'save-option' == $_REQUEST['action'] ) {
-               foreach ( $options as $value ) {
-                    update_option( $value['id'], $_REQUEST[ $value['id'] ] );
-               }
-
-                    $action = "saved";
-
-        } else {
-            
-        }
-   // }
-	
-    if ( $action == 'saved' ) echo '<div id="message" class="updated fade"><p><strong>New '.$pluginName.' Gallery created.</strong></p></div>';*/
-
-?>
-<div class="wrap">
-<h2><?php echo $pluginName; ?> <?php _e('Gallery Creator', SATL_PLUGIN_NAME); ?></h2>
-	<h2></h2>
-
-
-<form action="<?php echo $this -> url; ?>&amp;method=save" name="post" id="post" method="post">
-<input type="hidden" name="Gallery[id]" value="<?php echo $this -> Gallery -> data -> id; ?>" />
-<?php 
-foreach ($options as $value) {
+    <form action="<?php echo $this -> url; ?>&amp;method=save" name="post" id="post" method="post">
+    <input type="hidden" name="Gallery[id]" value="<?php echo $this -> Gallery -> data -> id; ?>" />
+    <?php 
+    foreach ($options as $value) {
 	
 	switch ( $value['type'] ) {
 
@@ -304,20 +277,20 @@ foreach ($options as $value) {
 		
 	}
 
-}
-?>
-<p class="submit">
-<input name="saver" type="submit" value="Save" />
-<input type="hidden" name="action" value="save-option" />
-</p>
-</form>
+    }
+    ?>
+    <p class="submit">
+    <input name="saver" type="submit" value="Save" />
+    <input type="hidden" name="action" value="save-option" />
+    </p>
+    </form>
 
-<form method="post">
-<p class="submit">
-<input name="reseter" type="submit" value="Reset" />
-<input type="hidden" name="action" value="reset-option" />
-</p>
-</form>
+    <form method="post">
+    <p class="submit">
+    <input name="reseter" type="submit" value="Reset" />
+    <input type="hidden" name="action" value="reset-option" />
+    </p>
+    </form>
       
         
 </div>

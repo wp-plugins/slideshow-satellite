@@ -49,7 +49,8 @@ class SatelliteHtmlHelper extends SatellitePlugin {
 	
 	function field_name($name = '') {
 		if (!empty($name)) {
-			if ($mn = $this -> strip_mn($name)) {
+                    $Html = new SatelliteHtmlHelper;
+			if ($mn = $Html -> strip_mn($name)) {
 				return $mn[1] . '[' . $mn[2] . ']';
 			}
 		}
@@ -63,9 +64,12 @@ class SatelliteHtmlHelper extends SatellitePlugin {
 				$errors = array();
 				
 				switch ($mn[1]) {
-					case 'Slide'		:
+					case 'Slide'        :
 						$errors = SatelliteSlide::validate($_POST);
-						break;
+                                                break;
+                                        case 'Gallery'      :
+                                                $errors = SatelliteGallery::validate($_POST);
+                                                break;
 				}			
 						
 				if (!empty($errors[$mn[2]])) {
@@ -80,10 +84,11 @@ class SatelliteHtmlHelper extends SatellitePlugin {
 	}
 	
 	function field_value($name = null) {
-		if ($mn = $this -> strip_mn($name)) {					
-			$value = $this -> {$mn[1]} -> data -> {$mn[2]};
-			
-			return $value;
+            //$Html = new SatelliteHtmlHelper;
+		if ($mn = $this -> strip_mn($name)) {
+                    $value = $this -> {$mn[1]} -> data -> {$mn[2]};
+
+                    return $value;
 		}
 		
 		return false;
@@ -170,5 +175,14 @@ class SatelliteHtmlHelper extends SatellitePlugin {
 	
 		return false;
 	}
+        function findInOptions($needle, $haystacks = array()) {
+            foreach ( $haystacks as $stack) {
+                if (in_array($needle, $stack)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
 }
 ?>

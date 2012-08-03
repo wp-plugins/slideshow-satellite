@@ -291,6 +291,9 @@ div.sattext h5 {
 .orbit-default.default-thumbs .orbit-wrapper {
     height: <?php echo ((int) $styles['height'] + $fullthumbheight); ?>px;
 }
+.more-img {
+    float:right;
+}
 
 /* TEXT ON THE SIDE
    ================================================== */
@@ -313,6 +316,10 @@ div.sattext h5 {
     padding:10px 8px 2px 8px;
     line-height:1.5em;
     font-size:1em;
+}
+.text-right .more-img {
+    clear:both;
+    float:none;
 }
 
 /* DIRECTIONAL NAV

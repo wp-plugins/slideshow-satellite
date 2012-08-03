@@ -124,6 +124,13 @@ if (!empty($slides)) :
                     <span class="orbit-caption<?php echo ($slider->textlocation == 'BR'|| $slider->textlocation == 'TR') ? ' sattext sattext'.$slider->textlocation:''?><?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' thumb-on' : ''; ?>" id='custom<?php echo ($satellite_init_ok.'-'.$i); ?>'>
                         <h5 class="orbit-title<?php echo($style['infotitle']) ?>"><?php echo $slider->title; ?></h5>
                         <p><?php echo $slider->description; ?> </p>
+                        <?php if ($slider->uselink == "Y" && !empty($slider->link) && $slider->more) :?>
+                        <div class="more-img">
+                            <a href="<?php echo $slider->link; ?>" title="<?php echo $slider->title; ?>" target="<?php echo ($this->get_option('pagelink') == "S") ? "_self":"_blank" ?>">
+                                <img src="<?php echo $this->Html->image_id($slider->more);?>" />
+                            </a>
+                        </div>
+                        <?php endif; ?>
                     </span>   
                     <?php else : ?>
                         <span class="sattext-none" id='custom<?php echo ($satellite_init_ok.'-'.$i); ?>'>

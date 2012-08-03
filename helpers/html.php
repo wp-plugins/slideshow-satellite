@@ -47,6 +47,14 @@ class SatelliteHtmlHelper extends SatellitePlugin {
 		return false;
 	}
 	
+        function image_id($id = null) {
+            if (!empty($id)) {
+                $Slide = new SatelliteSlide;
+                $image = $Slide -> find(array('id'=>(int) stripslashes($id)), 'id,image');
+                return $this->image_url($image->image);
+            }
+            return false;
+        }
 	function field_name($name = '') {
 		if (!empty($name)) {
                     $Html = new SatelliteHtmlHelper;

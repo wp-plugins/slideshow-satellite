@@ -201,10 +201,10 @@ class SatelliteSlide extends SatelliteDbHelper {
         public function getAllMoreImages() {
             $Gallery = new SatelliteGallery;
             $moreId = $Gallery -> getMoreGallery();
-            $more = $this -> find_all(array('section'=> $moreId), 'title,section');
+            $more = $this -> find_all(array('section'=> $moreId), 'title,section,id');
             $morearray = null;
             foreach ($more as $moreimg )
-                $morearray[] = array('title'=>$moreimg -> title,'id' => $moreimg -> section);
+                $morearray[] = array('title'=>$moreimg -> title,'id' => $moreimg -> id);
             
             if ($morearray)
                 return $morearray;

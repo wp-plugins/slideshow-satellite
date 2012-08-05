@@ -12,27 +12,27 @@
   var ORBIT = {
     
     defaults: {  
-      animation: 'horizontal-push', 		// fade, horizontal-slide, vertical-slide, horizontal-push, vertical-push
-      animationSpeed: 600, 				// how fast animtions are
-      timer: true, 						// true or false to have the timer
-      advanceSpeed: 4000, 				// if timer is enabled, time between transitions 
-      pauseOnHover: false, 				// if you hover pauses the slider
-      startClockOnMouseOut: false, 		// if clock should start on MouseOut
+      animation: 'horizontal-push', 	// fade, horizontal-slide, vertical-slide, horizontal-push, vertical-push
+      animationSpeed: 600, 		// how fast animtions are
+      timer: true, 			// true or false to have the timer
+      advanceSpeed: 4000, 		// if timer is enabled, time between transitions 
+      pauseOnHover: false, 		// if you hover pauses the slider
+      startClockOnMouseOut: false, 	// if clock should start on MouseOut
       startClockOnMouseOutAfter: 1000, 	// how long after MouseOut should the timer start again
-      directionalNav: true, 				// manual advancing directional navs
-      captions: true, 					// do you want captions?
-      captionAnimation: 'fade', 			// fade, slideOpen, none
-      captionAnimationSpeed: 600, 		// if so how quickly should they animate in
+      directionalNav: true, 		// manual advancing directional navs
+      captions: true, 			// do you want captions?
+      captionAnimation: 'fade', 	// fade, slideOpen, none
+      captionAnimationSpeed: 600, 	// if so how quickly should they animate in
       captionHover: false,
-      bullets: false,						// true or false to activate the bullet navigation
-      bulletThumbs: false,				// thumbnails for the bullets
-      bulletThumbLocation: '',			// location from this file where thumbs will be
+      bullets: false,			// true or false to activate the bullet navigation
+      bulletThumbs: false,		// thumbnails for the bullets
+      bulletThumbLocation: '',		// location from this file where thumbs will be
       afterSlideChange: $.noop,		// empty function 
-      centerBullets: true,    // center bullet nav with js, turn this off if you want to position the bullet nav manually
+      centerBullets: true,              // center bullet nav with js, turn this off if you want to position the bullet nav manually
       thumbWidth: 80
  	  },
  	  
- 	  activeSlide: 0,
+    activeSlide: 0,
     numberSlides: 0,
     orbitWidth: null,
     orbitHeight: null,
@@ -88,9 +88,10 @@
     loaded: function () {
       this.$element
         .addClass('orbit')
-        .width('1px');
+        .width('1px')
+        .css('background','none');
         
-      this.setDimentionsFromLargestSlide(this.options.bullets, this.options.thumbWidth);
+      this.setDimensionsFromLargestSlide(this.options.bullets, this.options.thumbWidth);
       this.updateOptionsIfOnlyOneSlide();
       this.setupFirstSlide();
       this.setupClicks();
@@ -115,13 +116,17 @@
       if (this.options.bulletThumbs && this.options.bullets) {
           this.setupDirectionalThumb(this.options.thumbWidth);
       }
+      //if (this.options.animation == "fade") {
+        this.$slides.css('opacity',0);
+      //}
+
     },
     
     currentSlide: function () {
       return this.$slides.eq(this.activeSlide);
     },
     
-    setDimentionsFromLargestSlide: function (bullet, twidth) {
+    setDimensionsFromLargestSlide: function (bullet, twidth) {
       //Collect all slides and set slider size of largest image
       var self = this;
       this.$slides.each(function () {
@@ -447,7 +452,8 @@
     resetAndUnlock: function () {
       this.$slides
       	.eq(this.prevActiveSlide)
-      	.css({"z-index" : 1});
+      	.css({"z-index" : 1})
+        .animate({"opacity": 0}, this.options.animationSpeed);
       this.unlock();
       this.setupClicks();
       this.options.afterSlideChange.call(this, this.$slides.eq(this.prevActiveSlide), this.$slides.eq(this.activeSlide));
@@ -494,7 +500,7 @@
           .css({"z-index" : 2});    
             
         //fade
-        if (this.options.animation == "fade") {
+        if (this.options.animation == "fade") {            
           this.$slides
             .eq(this.activeSlide)
             .css({"opacity" : 0, "z-index" : 3})
@@ -520,13 +526,14 @@
           if (slideDirection == "next") {
             this.$slides
               .eq(this.activeSlide)
-              .css({"left": this.orbitWidth, "z-index" : 3})
+              .css({"opacity": 1, "left": this.orbitWidth, "z-index" : 3})
               .animate({"left" : 0}, this.options.animationSpeed, this.resetAndUnlock);
           }
+          
           if (slideDirection == "prev") {
             this.$slides
               .eq(this.activeSlide)
-              .css({"left": -this.orbitWidth, "z-index" : 3})
+              .css({"opacity" : 1, "left": -this.orbitWidth, "z-index" : 3})
               .animate({"left" : 0}, this.options.animationSpeed, this.resetAndUnlock);
           }
         }
@@ -536,13 +543,13 @@
           if (slideDirection == "prev") {
             this.$slides
               .eq(this.activeSlide)
-              .css({"top": this.orbitHeight, "z-index" : 3})
+              .css({"top": this.orbitHeight, "z-index" : 3, "opacity":1})
               .animate({"top" : 0}, this.options.animationSpeed, this.resetAndUnlock);
           }
           if (slideDirection == "next") {
             this.$slides
               .eq(this.activeSlide)
-              .css({"top": -this.orbitHeight, "z-index" : 3})
+              .css({"top": -this.orbitHeight, "z-index" : 3, "opacity":1})
               .animate({"top" : 0}, this.options.animationSpeed, this.resetAndUnlock);
           }
         }
@@ -552,16 +559,16 @@
           if (slideDirection == "next") {
             this.$slides
               .eq(this.activeSlide)
-              .css({"left": this.orbitWidth, "z-index" : 3})
+              .css({"left": this.orbitWidth, "z-index" : 3, "opacity":1})
               .animate({"left" : 0}, this.options.animationSpeed, this.resetAndUnlock);
             this.$slides
               .eq(this.prevActiveSlide)
-              .animate({"left" : -this.orbitWidth}, this.options.animationSpeed);
+              .animate({"left" : -this.orbitWidth*2}, this.options.animationSpeed);
           }
           if (slideDirection == "prev") {
             this.$slides
               .eq(this.activeSlide)
-              .css({"left": -this.orbitWidth, "z-index" : 3})
+              .css({"left": -this.orbitWidth, "z-index" : 3, "opacity":1})
               .animate({"left" : 0}, this.options.animationSpeed, this.resetAndUnlock);
 		        this.$slides
               .eq(this.prevActiveSlide)
@@ -574,7 +581,7 @@
           if (slideDirection == "next") {
             this.$slides
               .eq(this.activeSlide)
-              .css({top: -this.orbitHeight, "z-index" : 3})
+              .css({top: -this.orbitHeight, "z-index" : 3, "opacity":1})
               .animate({top : 0}, this.options.animationSpeed, this.resetAndUnlock);
             this.$slides
               .eq(this.prevActiveSlide)
@@ -583,7 +590,7 @@
           if (slideDirection == "prev") {
             this.$slides
               .eq(this.activeSlide)
-              .css({top: this.orbitHeight, "z-index" : 3})
+              .css({top: this.orbitHeight, "z-index" : 3, "opacity":1})
               .animate({top : 0}, this.options.animationSpeed, this.resetAndUnlock);
 		        this.$slides
               .eq(this.prevActiveSlide)
@@ -622,31 +629,31 @@
       options = data || options;
     },
 		
-		add: function (handleObj) {
-		  var $this = $(this),
-		      src;
+        add: function (handleObj) {
+          var $this = $(this),
+              src;
 		      
 	    if ( this.nodeType === 1 && this.tagName.toLowerCase() === 'img' && this.src !== '' ) {
-  			if (options.forceLoad) {
-  			  src = $this.attr('src');
-  			  $this.attr('src', '');
-  			  bindToLoad(this, handleObj.handler);
-          $this.attr('src', src);
-  			} else if ( this.complete || this.readyState === 4 ) {
-          handleObj.handler.apply(this, arguments);
-  			} else {
-  			  bindToLoad(this, handleObj.handler);
-  			}
+                if (options.forceLoad) {
+                  src = $this.attr('src');
+                  $this.attr('src', '');
+                  bindToLoad(this, handleObj.handler);
+                  $this.attr('src', src);
+                } else if ( this.complete || this.readyState === 4 ) {
+                    handleObj.handler.apply(this, arguments);
+  		} else {
+                    bindToLoad(this, handleObj.handler);
   		}
-		},
+            }
+	},
 		
-		teardown: function (namespaces) {
-		  $(this).unbind('.imageready');
-		}
-	};
-	
-	function bindToLoad(element, callback) {
-	  var $this = $(element);
+        teardown: function (namespaces) {
+          $(this).unbind('.imageready');
+        }
+    };
+
+    function bindToLoad(element, callback) {
+      var $this = $(element);
 
     $this.bind('load.imageready', function () {
        callback.apply(element, arguments);

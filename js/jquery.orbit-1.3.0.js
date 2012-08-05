@@ -357,31 +357,39 @@
     
     setupDirectionalNav: function () {
       var self = this;
-
       this.$wrapper.append(this.directionalNavHTML);
+      this.$wrapper.find('.left').css('display','none');
+      this.$wrapper.find('.right').css('display','none');
       
-      this.$wrapper.find('.left').css('opacity', '0.3');
-        this.$wrapper.find('.left').hover(function () {
-          jQuery('.slider-nav .left').fadeTo("fast",0.75);
-        },function(){
-          jQuery('.slider-nav .left').fadeTo("fast",0.3);
-        });
-      this.$wrapper.find('.right').css('opacity', '0.3');
-        this.$wrapper.find('.right').hover(function () {
-          jQuery('.slider-nav .right').fadeTo("fast",0.75);
-        },function(){
-          jQuery('.slider-nav .right').fadeTo("fast",0.3);
-        });
-        
+      this.$wrapper.hover(function () {
+          self.$wrapper.find('.left').css({'opacity':'0.3','display':'block'});
+            self.$wrapper.find('.left').hover(function () {
+              jQuery('.slider-nav .left').fadeTo("fast",0.75);
+            },function(){
+              jQuery('.slider-nav .left').fadeTo("fast",0.3);
+            });
+          self.$wrapper.find('.right').css({'opacity':'0.3','display':'block'});
+            self.$wrapper.find('.right').hover(function () {
+              jQuery('.slider-nav .right').fadeTo("fast",0.75);
+            },function(){
+              jQuery('.slider-nav .right').fadeTo("fast",0.3);
+            });
+
+      }, function () {
+          self.$wrapper.find('.left').css({'display':'none'});
+          self.$wrapper.find('.right').css({'display':'none'});
+      });
+      
       this.$wrapper.find('.left').click(function () { 
         self.stopClock();
         self.shift("prev");
       });
-      
+
       this.$wrapper.find('.right').click(function () {
         self.stopClock();
         self.shift("next")
-      });
+      });          
+
     },
     
     setupDirectionalThumb: function (thumbHeight) {

@@ -15,7 +15,7 @@ class SatellitePlugin {
         'settings' => 'satellite',
         'newgallery' => 'satellite-galleries',
     );
-    var $helpers = array('Db', 'Html', 'Form', 'Metabox', 'Version');
+    var $helpers = array('Ajax', 'Db', 'Html', 'Form', 'Metabox', 'Version');
     var $models = array('Slide','Gallery');
 
     function register_plugin($name, $base) {

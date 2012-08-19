@@ -63,7 +63,26 @@ class Satellite extends SatellitePlugin {
                   register_activation_hook( __FILE__, array( &$satlp, 'prem_activate_plugin' ));
                 }
 		
-	}      
+	}  
+
+        function my_action_javascript() {
+            ?>
+
+            <script type="text/javascript">
+            jQuery(document).ready(function($) {
+                function showSatellite(id) {
+                    var data = {
+                            action: 'my_action',
+                            slideshow: id
+                    };
+                    $.post(ajaxurl, data, function(response) {
+                            alert('Got this from the server: ' + response);
+                    });        
+                }
+            }
+            </script>
+            <?php 
+        }        
 
 	function admin_menu() {
 		add_menu_page(__('Satellite', SATL_PLUGIN_NAME), __('Satellite', SATL_PLUGIN_NAME), $this -> get_option('manager'), "satellite", array($this, 'admin_settings'), SATL_PLUGIN_URL . '/images/icon.png');
@@ -247,14 +266,24 @@ class Satellite extends SatellitePlugin {
 			else { $this -> update_option( 'nolinker', 'N' ); }
 		if ( (!empty($custom)) || (!empty($gallery)) ) { // custom is deprecated as of version 1.2
                     $gallery = ($custom) ? $custom : $gallery;
-                    $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($gallery)), null, array('order', "ASC"));
+                    $multigallery = preg_match("[\,]",$gallery);
+                    if ( $multigallery ) {
+                        $gallery_array = explode(',',$gallery);
+                        $first_gallery = $gallery_array[0];
+                        $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($first_gallery)), null, array('order', "ASC"));
+                    } else {
+                        $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($gallery)), null, array('order', "ASC"));
+                    }
+                                            
                     if( $this -> get_option('random') == "on"){
                         shuffle($slides);
                     }
                     $this->slidenum = count($slides);
-                    if (    $this -> get_option( 'thumbnails_temp') == "FR" || 
+                    if ( SATL_PRO && $multigallery )
+                        $content = $this -> render('galleries', array('slides' => $slides, 'frompost' => false, 'galleries' => $gallery_array), false, 'premium');
+                    elseif ( $this -> get_option( 'thumbnails_temp') == "FR" || 
                             $this -> get_option( 'thumbnails_temp') == "FL" )
-                        $content = $this -> render('fullthumb', array('slides' => $slides, 'frompost' => false), false, 'orbit');
+                        $content = $this -> render('fullthumb', array('slides' => $slides, 'frompost' => false, 'galleries' => $gallery_array), false, 'orbit');
                     else
                         $content = $this -> render('default', array('slides' => $slides, 'frompost' => false), false, 'orbit');
                 } else { // from post

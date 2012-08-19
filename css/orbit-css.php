@@ -125,6 +125,7 @@ div.sorbit-wide img{
         height:auto;
 	vertical-align:middle;
 	display:inline-block;
+        border:0 !important;
         }
 	
 div.sorbit-basic img{
@@ -529,7 +530,25 @@ li > li.has-thumb {
 
 .orbit-thumbnails li.active.has-thumb {
     background-position: 0 0;
-    border-top: 2px solid #000; }	
+    border-top: 2px solid #000; }
+    
+/******* Galleries Display Page ******/
+
+.satl-gal-titles {
+    width:175px;
+    float:left;
+    padding:5px;
+    height: <?php echo $styles['height'] ?>px;
+    }
+.galleries-satl-wrap {
+    margin-left:175px;
+}
+.galleries-satl-wrap .orbit-wrapper {
+    margin-left:0;
+}
+.salt-gal-title {
+    padding:5px 0;
+}
 
 <?php
 

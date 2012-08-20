@@ -31,7 +31,8 @@ class SatelliteAjaxHelper extends SatellitePlugin {
                         slideshow: id
                 };
                 jQuery.post(ajaxurl, data, function(response) {
-                        //alert('Got this from the server: ' + response);
+                        jQuery('.satl-gal-titles .current').removeClass('current');
+                        jQuery('.gal'+id).addClass('current');
                         jQuery('.galleries-satl-wrap').html(response);
                 });        
             }

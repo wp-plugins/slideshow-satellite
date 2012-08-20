@@ -26,6 +26,7 @@ $arrowpush = (int) $styles['navpush'];
 $thumbrow = (int) $styles['thumbspacing'];
 $orbitThumbMargin = 5;
 $sideTextWidth = 250;
+$galleryTitles = 175;
 $fullthumbheight = (int) $styles['thumbheight'] + (2 * $orbitThumbMargin) + (int) (( 2 * $styles['thumbspacing'] )-4);
 IF ($styles['infomin'] == "Y") {
     ?>
@@ -73,7 +74,7 @@ div.orbit-wrapper {
 div.orbit {
     width: 1px;
     height: 1px;
-    position: relative;
+    position: absolute;
     overflow: hidden }
 
 div.orbit>img {
@@ -390,6 +391,7 @@ ul.orbit-thumbnails {
     height: <?php echo($fullthumbheight);?>px;
     overflow:hidden;
     margin: <?php echo $styles['thumbmargin']; ?>px auto 0 auto;
+    padding-top: <?php echo $styles['height']; ?>px;
 }
     
 .orbit-thumbnails li {
@@ -407,6 +409,7 @@ ul.orbit-thumbnails {
 }
 .orbit-thumbnails li img {
     max-width:100%;
+    border:0;
 }
 .orbit-thumbnails li:hover {
     opacity: 1;
@@ -533,15 +536,44 @@ li > li.has-thumb {
     border-top: 2px solid #000; }
     
 /******* Galleries Display Page ******/
-
+.satl-gal-wrap {
+    position: relative;
+    width: <?php echo($styles['width']+$galleryTitles);?>px;
+}
 .satl-gal-titles {
-    width:175px;
+    width:<?php echo $galleryTitles ?>px;
     float:left;
     padding:5px;
     height: <?php echo $styles['height'] ?>px;
     }
+.satl-gal-titles a:hover {
+    text-decoration:underline;
+}
+.satl-gal-titles .current {
+    text-decoration:underline;
+}
 .galleries-satl-wrap {
-    margin-left:175px;
+    margin-left:<?php echo $galleryTitles ?>px;
+}
+.galleries-satl-wrap img {
+    border:0;
+    padding:0;
+}
+.galleries-satl-wrap img.splash {
+    height: <?php echo $styles['height'] ?>px;
+    width: <?php echo $styles['width'] ?>px;
+    position: relative;
+    margin:0;
+    display: block;
+}
+.galleries-satl-wrap img.play {
+    position:absolute;
+    z-index:50;
+    padding-left:<?php echo $galleryTitles ?>px;
+    opacity:.3;
+}
+.galleries-satl-wrap img.play:hover {
+    opacity:.7;
 }
 .galleries-satl-wrap .orbit-wrapper {
     margin-left:0;

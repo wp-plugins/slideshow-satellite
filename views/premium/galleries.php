@@ -15,7 +15,7 @@ if (!empty($slides)) :
                     $firstID = $info->id;
                 ?>
                 <div class='salt-gal-title gal<?php echo($info->id);?>'>
-                    <a href="javascript:void(0);" onclick="showSatellite(<?php echo($info->id);?>);">
+                    <a href="javascript:void(0);" onclick="showGallerySatellite(<?php echo($info->id);?>);">
                         <?php echo ($info->title);?>
                     </a>
                 </div>

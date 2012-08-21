@@ -1,6 +1,5 @@
 <?php
 global $satellite_init_ok;
-echo "tester";
 if (!empty($slides)) :
     $displayFirstSatellite = $this -> render('default', array('slides' => $slides, 'frompost' => false), false, 'orbit');
     ?>

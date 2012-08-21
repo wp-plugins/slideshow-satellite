@@ -543,7 +543,16 @@ li > li.has-thumb {
 .splash-satl-wrap {
     position: relative;
     width: <?php echo($styles['width']);?>px;
-    margin:0 auto;
+    <?php if ($styles['align'] == 'left'){ ?>
+        margin: 0 15px 15px 0;
+        float: left;
+    <?php } elseif ($styles['align'] == 'right'){ ?>
+        margin: 0 0 15px 15px;
+        float: right;
+    <?php } else { ?>
+        margin: 0 auto 15px auto;
+    <?php } ?>
+    
 }
 .satl-gal-titles {
     width:<?php echo $galleryTitles ?>px;
@@ -558,7 +567,8 @@ li > li.has-thumb {
     text-decoration:underline;
 }
 .galleries-satl-wrap {
-    margin-left:<?php echo $galleryTitles ?>px;
+    margin-top: 10px;
+    margin-left:<?php echo $galleryTitles + 10 ?>px;
 }
 .galleries-satl-wrap img, .splash-satl-wrap img {
     border:0;

@@ -4,10 +4,10 @@ class SatelliteAjaxHelper extends SatellitePlugin {
 
     function __construct() {
 
-        add_action('wp_head', array( $this,'my_action_javascript'));
+        add_action('wp_head', array( $this,'gallery_display_javascript'));
         add_action( 'wp_head', array( $this, 'display_ajaxurl'), 9 );
-        add_action('wp_ajax_my_action', array( $this, 'my_action_callback'));
-        add_action('wp_ajax_nopriv_my_action', array( $this, 'my_action_callback'));        
+        add_action('wp_ajax_gallery_display', array( $this, 'gallery_display_callback'));
+        add_action('wp_ajax_nopriv_gallery_display', array( $this, 'gallery_display_callback'));        
 
     }
     
@@ -21,13 +21,13 @@ class SatelliteAjaxHelper extends SatellitePlugin {
     /**
      * For displaying multiple galleries and handling the AJAX calls from their clicks
      */
-    function my_action_javascript() {
+    function gallery_display_javascript() {
         ?>
 
         <script type="text/javascript">
-            function showSatellite(id) {
+            function showGallerySatellite(id) {
                 var data = {
-                        action: 'my_action',
+                        action: 'gallery_display',
                         slideshow: id
                 };
                 jQuery.post(ajaxurl, data, function(response) {
@@ -36,11 +36,20 @@ class SatelliteAjaxHelper extends SatellitePlugin {
                         jQuery('.galleries-satl-wrap').html(response);
                 });        
             }
+            function showSoloSatellite(id,unique) {
+                var data = {
+                        action: 'gallery_display',
+                        slideshow: id
+                };
+                jQuery.post(ajaxurl, data, function(response) {
+                        jQuery('#splash-satl-wrap-'+unique).html(response);
+                });        
+            }
         </script>
         <?php 
     }    
     
-    function my_action_callback() {
+    function gallery_display_callback() {
     	global $wpdb; // this is how you get access to the database
 
 	$slideshow = intval( $_POST['slideshow'] );

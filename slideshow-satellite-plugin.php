@@ -218,6 +218,7 @@ class SatellitePlugin {
         $this->add_option('embedss', "Y");
         $this->add_option('satwiz', "Y");
         $this->add_option('ggljquery', "Y");
+        $this->add_option('splash', "N");
         $this->add_option('stldb_version', "1.0");
         // Orbit Only
         $this->add_option('autospeed2', 5000);

@@ -535,10 +535,15 @@ li > li.has-thumb {
     background-position: 0 0;
     border-top: 2px solid #000; }
     
-/******* Galleries Display Page ******/
+/******* Galleries and Splash Display ******/
 .satl-gal-wrap {
     position: relative;
     width: <?php echo($styles['width']+$galleryTitles);?>px;
+}
+.splash-satl-wrap {
+    position: relative;
+    width: <?php echo($styles['width']);?>px;
+    margin:0 auto;
 }
 .satl-gal-titles {
     width:<?php echo $galleryTitles ?>px;
@@ -555,24 +560,26 @@ li > li.has-thumb {
 .galleries-satl-wrap {
     margin-left:<?php echo $galleryTitles ?>px;
 }
-.galleries-satl-wrap img {
+.galleries-satl-wrap img, .splash-satl-wrap img {
     border:0;
     padding:0;
 }
-.galleries-satl-wrap img.splash {
+.galleries-satl-wrap img.splash, .splash-satl-wrap img.splash {
     height: <?php echo $styles['height'] ?>px;
     width: <?php echo $styles['width'] ?>px;
     position: relative;
     margin:0;
     display: block;
 }
-.galleries-satl-wrap img.play {
+.galleries-satl-wrap img.play, .splash-satl-wrap img.play {
     position:absolute;
     z-index:50;
-    padding-left:<?php echo $galleryTitles ?>px;
     opacity:.3;
 }
-.galleries-satl-wrap img.play:hover {
+.galleries-satl-wrap img.play {
+    padding-left:<?php echo $galleryTitles ?>px;
+}
+.galleries-satl-wrap img.play:hover, .splash-satl-wrap img.play:hover {
     opacity:.7;
 }
 .galleries-satl-wrap .orbit-wrapper {

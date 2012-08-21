@@ -5,10 +5,10 @@ Plugin URI: http://c-pr.es/projects/satellite
 Author: C- Pres
 Author URI: http://c-pr.es/membership-options
 Description: Display photography and content in new ways with this slideshow. Slideshow Satellite uses Orbit to give a multitude of transition options and customizations.
-Version: 1.2
+Version: 1.2.1
 */
 define('DS', '/');
-define( 'SATL_VERSION', '1.2');
+define( 'SATL_VERSION', '1.2.1');
 $uploads = wp_upload_dir();
 if ( ! defined( 'SATL_PLUGIN_BASENAME' ) )
 	define( 'SATL_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -182,7 +182,7 @@ class Satellite extends SatellitePlugin {
                     require SATL_PLUGIN_DIR . '/pro/newinit.php';
                 }
 
-		$defaults = array('post_id' => null, 'exclude' => null, 'include' => null, 'custom' => null, 'gallery' => null, 'caption' => null, 'auto' => null, 'w' => null, 'h' => null, 'nolink' => null, 'slug' => null, 'thumbs' => null, 'align' => null, 'nav' => null, 'transition' => null, 'display' => null, 'random' => null );
+		$defaults = array('post_id' => null, 'exclude' => null, 'include' => null, 'custom' => null, 'gallery' => null, 'caption' => null, 'auto' => null, 'w' => null, 'h' => null, 'nolink' => null, 'slug' => null, 'thumbs' => null, 'align' => null, 'nav' => null, 'transition' => null, 'display' => null, 'random' => null, 'splash' => null );
 		extract( shortcode_atts( $defaults, $atts ) );
 		
 		$this->resetTemp();
@@ -249,6 +249,11 @@ class Satellite extends SatellitePlugin {
 		} elseif ( $this -> get_option( 'autoslide') == 'Y' ) {
 			$this -> update_option( 'autoslide_temp', 'Y' ); 
 		}
+                if ( !empty( $splash )) {
+                        if ($splash == 'on')
+                           $this -> update_option('splash', 'Y');
+                }
+               
 
                 /******** PRO ONLY **************/
 		if ( SATL_PRO ) {
@@ -281,9 +286,10 @@ class Satellite extends SatellitePlugin {
                     $this->slidenum = count($slides);
                     if ( SATL_PRO && $multigallery )
                         $content = $this -> render('galleries', array('slides' => $slides, 'frompost' => false, 'galleries' => $gallery_array), false, 'premium');
-                    elseif ( $this -> get_option( 'thumbnails_temp') == "FR" || 
-                            $this -> get_option( 'thumbnails_temp') == "FL" )
-                        $content = $this -> render('fullthumb', array('slides' => $slides, 'frompost' => false, 'galleries' => $gallery_array), false, 'orbit');
+                    elseif (SATL_PRO && $this -> get_option('splash') == 'Y')
+                        $content = $this -> render('splash', array('slides' => $slides, 'frompost' => false), false, 'orbit');
+                    elseif ( $this -> get_option( 'thumbnails_temp') == "FR" || $this -> get_option( 'thumbnails_temp') == "FL" )
+                        $content = $this -> render('fullthumb', array('slides' => $slides, 'frompost' => false), false, 'orbit');
                     else
                         $content = $this -> render('default', array('slides' => $slides, 'frompost' => false), false, 'orbit');
                 } else { // from post
@@ -347,6 +353,9 @@ class Satellite extends SatellitePlugin {
 		$style = $this -> get_option('styles');
 		$style['align'] = "none";
 		$this -> update_option('styles', $style);
+                
+                // RESET non configurable options
+                $this -> update_option('splash', 'N');
 	}
 	function exclude_ids( $attachments, $exclude, $include ) {
 		if ( ! empty( $exclude )) {

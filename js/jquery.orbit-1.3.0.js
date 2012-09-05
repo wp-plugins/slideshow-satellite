@@ -278,54 +278,48 @@
       }
     },
     
+    removeCaptions: function () {
+        this.setCaption(false);
+    },
+    
     setupCaptions: function () {
       this.$caption = $(this.captionHTML);
       $tcap = $(this.captionHTML);
       this.$wrapper.append(this.$caption);
-        //if (this.options.captionHover) {
-       // this.$wrapper.mouseleave(this.setCaption(false));
-        //this.$wrapper.mouseenter(this.setCaption(true));
-        /*} else {
-            this.setCaption(true);
-        }*/
         $setfalse = this.setCaption(false);
-        this.setCaption($tcap);
-        //this.$wrapper.hover(  this.setCaption(true), this.setCaption(false) );
+        this.setCaption(true);
         
     },
     
-    setCaption: function ($tcap) {
+    setCaption: function (toggle) {
       
-      //if (capshow == true) {
-          var captionLocation = this.currentSlide().attr('data-caption'),
-              captionHTML;     
-      //} else { var captionLocation = null; }
-    		
+      var captionLocation = this.currentSlide().attr('data-caption'),
+        captionHTML;     
       if (!this.options.captions) {
-    		return false; 
+        return false; 
     	} 
     	        		
     	//Set HTML for the caption if it exists
-    	if (captionLocation) {
-    	  captionHTML = $(captionLocation).html(); //get HTML from the matching HTML entity
+    	if (captionLocation && toggle) {
+            captionHTML = $(captionLocation).html(); //get HTML from the matching HTML entity
             this.$caption
             .attr('id', captionLocation) // Add ID caption TODO why is the id being set?
             .html(captionHTML); // Change HTML in Caption 
             //
-        captionClass = $(captionLocation).attr('class');
+            captionClass = $(captionLocation).attr('class');
             this.$caption.attr('class', captionClass); // Add class caption TODO why is the id being set?
-            
-          //Animations for Caption entrances
-          if ( this.options.captionHover ) {
-            $cap = this.$caption;
-            $speed = this.options.captionAnimationSpeed;
-            this.$wrapper.find('.orbit').parent().hover( function() {
-                jQuery($cap).fadeIn($speed)
-            },function() {
-                jQuery($cap).fadeOut($speed)
-            });
-            return;
-          } 
+
+            //Animations for Caption entrances
+            if ( this.options.captionHover ) {
+                $cap = this.$caption;
+                $speed = this.options.captionAnimationSpeed;
+                this.$wrapper.find('.orbit').parent().hover( function() {
+                    jQuery($cap).fadeIn($speed)
+                },function() {
+                    jQuery($cap).fadeOut($speed)
+                });
+                return;
+            } 
               
             switch (this.options.captionAnimation) {
               case 'none':
@@ -464,12 +458,13 @@
         .animate({"opacity": 0}, this.options.animationSpeed);
       this.unlock();
       this.setupClicks();
+      this.setupCaptions();
       this.options.afterSlideChange.call(this, this.$slides.eq(this.prevActiveSlide), this.$slides.eq(this.activeSlide));
     },
     
     shift: function (direction) {
       var slideDirection = direction;
-      
+      this.removeCaptions();
       //remember previous activeSlide
       this.prevActiveSlide = this.activeSlide;
       
@@ -507,8 +502,20 @@
           .eq(this.prevActiveSlide)
           .css({"z-index" : 2});    
             
-        //fade
-        if (this.options.animation == "fade") {            
+        //fade empty
+        if (this.options.animation == "fade-empty") {
+          this.$slides
+            .eq(this.prevActiveSlide)
+            .animate({"opacity" : 0}, this.options.animationSpeed);
+          this.$slides
+            .eq(this.activeSlide)
+            .css({"opacity" : 0, "z-index" : 3})
+            .delay('500')
+            .animate({"opacity" : 1}, this.options.animationSpeed, this.resetAndUnlock);
+        }
+        
+        //fade blend
+        if (this.options.animation == "fade-blend") {
           this.$slides
             .eq(this.activeSlide)
             .css({"opacity" : 0, "z-index" : 3})
@@ -610,6 +617,10 @@
       }
     }
   };
+  $.fn.wait = function (MiliSeconds) {
+      jQuery(this).animate({opacity: '+=0'}, MiliSeconds);
+      return this;
+  }
 
   $.fn.orbit = function (options) {
     return this.each(function () {

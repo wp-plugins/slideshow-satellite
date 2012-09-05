@@ -5,10 +5,10 @@ Plugin URI: http://c-pr.es/projects/satellite
 Author: C- Pres
 Author URI: http://c-pr.es/membership-options
 Description: Display photography and content in new ways with this slideshow. Slideshow Satellite uses Orbit to give a multitude of transition options and customizations.
-Version: 1.2.1
+Version: 1.2.2
 */
 define('DS', '/');
-define( 'SATL_VERSION', '1.2.1');
+define( 'SATL_VERSION', '1.2.2');
 $uploads = wp_upload_dir();
 if ( ! defined( 'SATL_PLUGIN_BASENAME' ) )
 	define( 'SATL_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -228,9 +228,11 @@ class Satellite extends SatellitePlugin {
 		}
 
 		if ( !empty( $transition ) ) {
-			if (($this -> get_option( 'transition' )!='F' ) && ( $transition == 'fade' )) {
-				$this -> update_option('transition_temp', 'F');	
-			} elseif ( $transition == 'vertical-slide' ) {
+			if (($this -> get_option( 'transition' )!='FE' ) && ( $transition == 'fade-empty' )) {
+				$this -> update_option('transition_temp', 'FE');	
+			} elseif (($this -> get_option( 'transition' )!='FB' ) && ( $transition == 'fade-blend' ) ) {
+				$this -> update_option( 'transition_temp', 'FB' );
+			} elseif (($this -> get_option( 'transition' )!='OHS' ) && ( $transition == 'vertical-slide' ) ) {
 				$this -> update_option( 'transition_temp', 'OVS' );
 			} elseif (($this -> get_option( 'transition' )!='OHS' ) && ( $transition == 'horizontal-slide' )) {
 				$this -> update_option( 'transition_temp', 'OHS' );
@@ -251,7 +253,7 @@ class Satellite extends SatellitePlugin {
 		}
                 if ( !empty( $splash )) {
                         if ($splash == 'on')
-                           $this -> update_option('splash', 'Y');
+                           $this -> update_option('splash', true);
                 }
                
 
@@ -286,7 +288,7 @@ class Satellite extends SatellitePlugin {
                     $this->slidenum = count($slides);
                     if ( SATL_PRO && $multigallery )
                         $content = $this -> render('galleries', array('slides' => $slides, 'frompost' => false, 'galleries' => $gallery_array), false, 'premium');
-                    elseif (SATL_PRO && $this -> get_option('splash') == 'Y')
+                    elseif (SATL_PRO && $this -> get_option('splash'))
                         $content = $this -> render('splash', array('slides' => $slides, 'frompost' => false), false, 'orbit');
                     elseif ( $this -> get_option( 'thumbnails_temp') == "FR" || $this -> get_option( 'thumbnails_temp') == "FL" )
                         $content = $this -> render('fullthumb', array('slides' => $slides, 'frompost' => false), false, 'orbit');
@@ -337,7 +339,8 @@ class Satellite extends SatellitePlugin {
 		elseif ($this -> get_option('thumbnails')=='N') { $this -> update_option('thumbnails_temp', 'N'); }
 		if ($this -> get_option('autoslide')=='Y') { $this -> update_option('autoslide_temp', 'Y'); }
 		elseif ($this -> get_option('autoslide')=='N') { $this -> update_option('autoslide_temp', 'N'); }
-		if ($this -> get_option('transition')=='F') { $this -> update_option('transition_temp', 'F'); }
+		if ($this -> get_option('transition')=='FE') { $this -> update_option('transition_temp', 'FE'); }
+		elseif ($this -> get_option('transition')=='FB') { $this -> update_option('transition_temp', 'FB'); }
 		elseif ($this -> get_option('transition')=='OVS') { $this -> update_option('transition_temp', 'OVS'); }
 		elseif ($this -> get_option('transition')=='OHS') { $this -> update_option('transition_temp', 'OHS'); }
 		elseif ($this -> get_option('transition')=='OHP') { $this -> update_option('transition_temp', 'OHP'); }
@@ -355,7 +358,7 @@ class Satellite extends SatellitePlugin {
 		$this -> update_option('styles', $style);
                 
                 // RESET non configurable options
-                $this -> update_option('splash', 'N');
+                $this -> update_option('splash', false);
 	}
 	function exclude_ids( $attachments, $exclude, $include ) {
 		if ( ! empty( $exclude )) {

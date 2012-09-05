@@ -2,7 +2,7 @@
 
 if (!empty($slides)) :
     $displayFirstSatellite = $this -> render('default', array('slides' => $slides, 'frompost' => false), false, 'orbit');
-    $displaySplash = true;
+    $displaySplash = $this -> get_option('splash');
     ?>
     <div class='satl-gal-wrap'>
         <div class='satl-gal-titles'>
@@ -26,10 +26,12 @@ if (!empty($slides)) :
         <div class="galleries-satl-wrap">
             <?php 
             if ($displaySplash) : 
+                echo "<div class=''";
                 echo "<a href='javascript:void(0);' onclick='showGallerySatellite(".$firstID.");'>";
                 echo "<img class='absoluteCenter play' src='".SATL_PLUGIN_URL."/images/playbutton.png' alt='Play Slideshow'/>";
                 echo "<img class='absoluteCenter splash' src='".$this->Html->image_url($slides[0]->image)."' alt='Play Slideshow'/>";
                 echo "</a>";
+                echo "</div>";
             else :
                 echo $displayFirstSatellite; 
             endif;?>

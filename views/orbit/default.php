@@ -9,24 +9,23 @@ if (!empty($slides)) :
     $thumbwidth = (int) $style['thumbheight'] + $style['thumbspacing'] + $style['thumbspacing'];
     if (!$frompost) {
         $sidetext = $this -> Gallery -> capLocation($slides[0]->section);
+        $this -> Gallery -> loadData($slides[0]->section);
     }
+    
     if ($this->get_option('autoslide') == "Y") {
         $autospeed = $this->get_option('autospeed');
         $autospeed2 = $this->get_option('autospeed2');     }
     else { $autospeed = '0'; $autospeed2 = '0'; }
     if ($this->get_option('othumbs') != 'B') { // if thumbs on bullcenter = false
         $this->update_option('bullcenter', 'false'); }
-    if ($this->get_option('transition_temp') == "F") { // fade, horizontal-slide, vertical-slide, horizontal-push
-        $transition = "fade";
-    } elseif ($this->get_option('transition_temp') == "OHS") {
-        $transition = "horizontal-slide";
-    } elseif ($this->get_option('transition_temp') == "OVS") {
-        $transition = "vertical-slide";
-    } elseif ($this->get_option('transition_temp') == "OHP") {
-        $transition = "horizontal-push"; }
+        
+    $transition = $this -> Config -> getTransitionType();
+    
     ?>
+    
 
     <?php if ($frompost) : ?>
+
         <!-- =======================================
         THE ORBIT SLIDER CONTENT 
         ======================================= -->
@@ -65,22 +64,22 @@ if (!empty($slides)) :
         <script type="text/javascript">
             jQuery(document).ready(function($) {
                 $('#featured<?php echo $satellite_init_ok; ?>').orbit({
-                    animation: '<?PHP echo ($transition) ? $transition : $this->get_option('transition'); ?>',                  // fade, horizontal-slide, vertical-slide, horizontal-push
-                    animationSpeed: <?php echo($this->get_option('duration')); ?>,                // how fast animations are
-                    timer: <?PHP echo ($this->get_option("autoslide_temp") == "Y" ) ? 'true' : 'false'; ?>, 	 // true or false to have the timer
-                    advanceSpeed: <?PHP echo ($autospeed2); ?>, 		 // if timer is enabled, time between transitions 
-                    pauseOnHover: false, 		 // if you hover pauses the slider
-                    startClockOnMouseOut: false, 	 // if clock should start on MouseOut
-                    startClockOnMouseOutAfter: 1000, 	 // how long after MouseOut should the timer start again
-                    directionalNav: true, 		 // manual advancing directional navs
+                    animation: '<?PHP echo ($transition) ? $transition : $this->get_option('transition'); ?>',  // fade-blend, fade-empty, horizontal-slide, vertical-slide, horizontal-push
+                    animationSpeed: <?php echo($this->get_option('duration')); ?>,                              // how fast animations are
+                    timer: <?PHP echo ($this->get_option("autoslide_temp") == "Y" ) ? 'true' : 'false'; ?>,     // true or false to have the timer
+                    advanceSpeed: <?PHP echo ($autospeed2); ?>, // if timer is enabled, time between transitions 
+                    pauseOnHover: false,                        // if you hover pauses the slider
+                    startClockOnMouseOut: false,                // if clock should start on MouseOut
+                    startClockOnMouseOutAfter: 1000,            // how long after MouseOut should the timer start again
+                    directionalNav: true,                       // manual advancing directional navs
                     captions: <?php echo($this->get_option('information_temp') == 'Y') ? 'true' : 'false'; ?>,	 // do you want captions?
-                    captionAnimation: 'slideOpen', 		 // fade, slideOpen, none
+                    captionAnimation: <?php echo ($this -> Gallery -> data -> capanimation) ? $this -> Gallery -> data -> capanimation : 'slideOpen';?>, // fade, slideOpen, none
                     captionHover: <?php echo ($this->get_option("showhover") == "H") ? 'true' : 'false';?>, // true means only show caption on mousehover
-                    captionAnimationSpeed: 800, 	 // if so how quickly should they animate in
+                    captionAnimationSpeed: 800, 	// if so how quickly should they animate in
                     bullets: <?php echo($this->get_option('thumbnails_temp') == 'Y') ? 'true' : 'false'; ?>,		 // true or false to activate the bullet navigation
-                    bulletThumbs: true,		 // thumbnails for the bullets
-                    bulletThumbLocation: '',	 // location from this file where thumbs will be
-                    afterSlideChange: function(){},    // empty function 
+                    bulletThumbs: true,                 // thumbnails for the bullets
+                    bulletThumbLocation: '',            // location from this file where thumbs will be
+                    afterSlideChange: function(){},     // empty function 
                     centerBullets: <?php echo $this->get_option('bullcenter'); ?>,
                     thumbWidth: <?php echo $thumbwidth; ?>
                 });				
@@ -88,7 +87,9 @@ if (!empty($slides)) :
         </script> 
         <!--  CUSTOM GALLERY -->
     <?php else : ?>  
-
+<?php echo ("capanimation:");
+    print_r($this -> Gallery -> data -> capanimation);
+?>
         <div class="orbit-default
             <?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' default-thumbs ' : ''; ?>
             <?php echo($sidetext) ? 'text-'.$sidetext : ''; ?>
@@ -155,7 +156,7 @@ if (!empty($slides)) :
                     startClockOnMouseOutAfter: 1000, 	 // how long after MouseOut should the timer start again
                     directionalNav: true, 		 // manual advancing directional navs
                     captions: <?php echo($this->get_option('information_temp') == 'Y') ? 'true' : 'false'; ?>,	 // do you want captions?
-                    captionAnimation: 'slideOpen', 		 // fade, slideOpen, none
+                    captionAnimation: <?php echo ($this -> Gallery -> data -> capanimation) ? '\''.$this -> Gallery -> data -> capanimation.'\'' : '\'slideOpen\'';?>, // fade, slideOpen, none
                     captionHover: <?php echo ($this->get_option("showhover") == "H") ? 'true' : 'false';?>, // true means only show caption on mousehover
                     captionAnimationSpeed: 800, 	 // if so how quickly should they animate in
                     bullets: <?php echo($this->get_option('thumbnails_temp') == 'Y') ? 'true' : 'false'; ?>,	// true or false to activate the bullet navigation

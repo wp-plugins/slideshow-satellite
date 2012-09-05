@@ -575,10 +575,8 @@ li > li.has-thumb {
     padding:0;
 }
 .galleries-satl-wrap img.splash, .splash-satl-wrap img.splash {
-    height: <?php echo $styles['height'] ?>px;
-    width: <?php echo $styles['width'] ?>px;
     position: relative;
-    margin:0;
+    /*margin:0;*/
     display: block;
 }
 .galleries-satl-wrap img.play, .splash-satl-wrap img.play {

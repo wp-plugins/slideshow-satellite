@@ -13,6 +13,7 @@ class SatelliteGallery extends SatelliteDbHelper {
 		'image'			=>	"VARCHAR(75) NOT NULL DEFAULT ''",
 		'type'			=>	"VARCHAR(40) NOT NULL DEFAULT ''",
                 'capdisplay'            =>      "VARCHAR(40) NOT NULL DEFAULT ''",
+                'capanimation'          =>      "VARCHAR(40) NOT NULL DEFAULT ''",
 		'order'			=>	"INT(11) NOT NULL DEFAULT '0'",
 		'created'		=>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
 		'modified'		=>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
@@ -54,9 +55,7 @@ class SatelliteGallery extends SatelliteDbHelper {
 			extract($data, EXTR_SKIP);
 			
 			if (empty($title)) { $this -> errors['title'] = __('Please enter a title', SATL_PLUGIN_NAME); }
-			//if (empty($description)) { $this -> errors['description'] = __('Please fill in a description', SATL_PLUGIN_NAME); }
 			if (empty($type)) { $this -> errors['type'] = __('Please select a gallery type', SATL_PLUGIN_NAME); }
-			//if (empty($section)) { $section = '1'; }
 			
 			elseif ($type == "customslides") {
 			} 
@@ -67,14 +66,24 @@ class SatelliteGallery extends SatelliteDbHelper {
 		}
 		return $this -> errors;
 	}
-        /** Send Nothing - Returns Integer **/
+        
+        /**
+         *
+         * @global type $wpdb
+         * @return type int
+         */
         function latestSection() {
             global $wpdb;
             $this -> table = $wpdb -> prefix . "satl_galleries";
             $latest = $this -> find(null,'id');
             return $latest -> id;
         }
-        /** Send Integer - Returns a string **/
+        
+        /**
+         *
+         * @param type $gallery @integrer
+         * @return type @string
+         */
         public function capLocation($gallery) {
             $location = $this -> find(array('id'=>$gallery), 'capdisplay,id');
             if ($location -> capdisplay == "On Right") :
@@ -83,6 +92,11 @@ class SatelliteGallery extends SatelliteDbHelper {
                 $briefLocation = $location -> capdisplay;
             endif;
             return $briefLocation;
+        }
+        
+        public function loadData($gallery) {
+            return $this -> find(array('id'=>$gallery), 'capanimation, capdisplay, title, description, type, id');
+            //return $animation;
         }
         /** Returns the More Gallery ID **/
         public function getMoreGallery() {

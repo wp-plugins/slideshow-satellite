@@ -10,39 +10,7 @@ $shortname = "satl";
 $ptypes1 = get_post_types(array('public' => true),'names','and');
 $ptypes = array_push($ptypes1, 'resume');
 
-$slideOptions = array(
-array(  "name"      => "Title",
-        "desc"      => "title/name of your slide as it will be displayed to your users.",
-        "id"        => "title",
-        "type"      => "text",
-        "value"     => $this -> Slide -> data -> title,
-        "std"       => "New Slide"),
-array(  "name"      => "Description",
-        "desc"      => "description of your slide as it will be displayed in the caption.",
-        "id"        => "description",
-        "type"      => "textarea",
-        "value"     => $this -> Slide -> data -> description,
-        "std"       => ""),
-array(  "name"      => "Gallery",
-        "desc"      => "The gallery this slide belongs to",
-        "id"        => "section",
-        "type"      => "select",
-        "value"     => $this -> Slide -> data -> section,
-        "std"       => "Select a Gallery",
-        "options"   => $this -> Gallery -> getGalleries()),
-array(  "name"      => "Caption Location",
-        "desc"      => "Default is the bottom caption bar",
-        "id"        => "textlocation",
-        "type"      => "select",
-        "value"     => $this -> Slide -> data -> textlocation,
-        "std"       => "D",
-        "options"   => array(
-                array('id'=>'N', 'title'=>'None'),
-                array('id'=>'D', 'title'=>'Default'),
-                array('id'=>'BR', 'title'=>'Bottom Right'),
-                array('id'=>'TR', 'title'=>'Top Right')))
-        
-);
+$slideOptions = $this -> Config -> displayOption('slide', $this -> Slide);
 
 $useLinkOptions = array (
 array(  "name"      => "Link To",

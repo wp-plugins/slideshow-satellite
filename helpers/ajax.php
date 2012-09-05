@@ -5,7 +5,7 @@ class SatelliteAjaxHelper extends SatellitePlugin {
     function __construct() {
 
         add_action('wp_head', array( $this,'gallery_display_javascript'));
-        add_action( 'wp_head', array( $this, 'display_ajaxurl'), 9 );
+        add_action('wp_head', array( $this, 'display_ajaxurl'), 9 );
         add_action('wp_ajax_gallery_display', array( $this, 'gallery_display_callback'));
         add_action('wp_ajax_nopriv_gallery_display', array( $this, 'gallery_display_callback'));        
 
@@ -20,6 +20,8 @@ class SatelliteAjaxHelper extends SatellitePlugin {
     }
     /**
      * For displaying multiple galleries and handling the AJAX calls from their clicks
+     * @echo javascript into header
+     * 
      */
     function gallery_display_javascript() {
         ?>
@@ -48,7 +50,10 @@ class SatelliteAjaxHelper extends SatellitePlugin {
         </script>
         <?php 
     }    
-    
+    /**
+     *
+     * @global type $wpdb 
+     */
     function gallery_display_callback() {
     	global $wpdb; // this is how you get access to the database
 

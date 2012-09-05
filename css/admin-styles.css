@@ -34,6 +34,9 @@ root {
     background-color:#eef5fb; 
     padding:10px;
 }
+#satl_table .howto {
+    margin-bottom:10px;
+}
 .togbox {
     padding: 0;
     width: 22px;
@@ -98,3 +101,4 @@ root {
 .ui-sortable  .thumb img {
     cursor: pointer;
 }
+#satl_table

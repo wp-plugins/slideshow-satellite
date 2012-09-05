@@ -15,7 +15,7 @@ class SatellitePlugin {
         'settings' => 'satellite',
         'newgallery' => 'satellite-galleries',
     );
-    var $helpers = array('Ajax', 'Db', 'Html', 'Form', 'Metabox', 'Version');
+    var $helpers = array('Ajax', 'Config', 'Db', 'Html', 'Form', 'Metabox', 'Version');
     var $models = array('Slide','Gallery');
 
     function register_plugin($name, $base) {
@@ -203,7 +203,7 @@ class SatellitePlugin {
         $this->add_option('pagelink', "S");
         $this->add_option('wpattach', "N");
         $this->add_option('captionlink', "N");
-        $this->add_option('transition', "F");
+        $this->add_option('transition', "FB");
         $this->add_option('information', "Y");
         $this->add_option('infospeed', 10);
         $this->add_option('showhover', "P");
@@ -538,6 +538,7 @@ class SatellitePlugin {
                         dbDelta($this->table_query, true);
                         $this -> update_option($model.'db_version', SATL_VERSION);
                         $this -> update_option('stldb_version', SATL_VERSION);
+                        error_log("Updated slideshow satellite databases");
                     }
                 } else {
                     //echo "this model db version: ".$this->get_option($model.'db_version');

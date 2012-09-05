@@ -5,11 +5,20 @@ class SatelliteFormHelper extends SatellitePlugin {
     public function display($newfields, $model) {
         foreach ($newfields as $value) {
             switch ( $value['type'] ) {
+                case 'open':
+                    echo $this -> open();
+                    break;
+                case 'close':
+                    echo $this -> close();
+                    break;
                 case 'select':
                     echo $this -> select($model.'.'.$value[id], $value);
                     break;
                 case 'text':
                     echo $this -> text($model.'.'.$value[id], $value);
+                    break;
+                case 'upload':
+                    echo $this -> upload($model.'.'.$value[id], $value);
                     break;
                 case 'textarea':
                     echo $this -> textarea($model.'.'.$value[id], $value);
@@ -31,7 +40,14 @@ class SatelliteFormHelper extends SatellitePlugin {
         $hidden = ob_get_clean();
         return $hidden;
     }
-
+    
+    /**
+     *
+     * @param type $name
+     * @param type $args
+     * @return type $field
+     */
+    
     function text($name = '', $args = array()) {
         $Html = new SatelliteHtmlHelper;
 
@@ -67,6 +83,77 @@ class SatelliteFormHelper extends SatellitePlugin {
         $text = ob_get_clean();
         return $text;
     }
+    
+    function open() { ?>
+        <table width="100%" border="0"id="satl_table" style="">
+    <?php 
+    }
+    
+    /**
+     *
+     * @param type $name
+     * @param type $args
+     * @return type $field
+     */
+    
+    function checkbox($name = '', $args = array()) {
+        $Html = new SatelliteHtmlHelper;
+
+        $defaults = array(
+            'id' => (empty($args['id'])) ? $name : $args['id'],
+            'width' => '100%',
+            'class' => "widefat",
+            'error' => true,
+            'value' => (empty($args['value'])) ? $Html -> field_value($name) : $args['value'],
+            'autocomplete' => "on",
+        );
+
+        $r = wp_parse_args($args, $defaults);
+        extract($r, EXTR_SKIP);
+
+        $this->debug($this);
+        $Html = new SatelliteHtmlHelper;
+
+        ob_start();
+        ?>
+        <?php echo $Html->field_value($name); ?>        
+        	<tr>
+                    <th><label><strong><?php echo $r['name']; ?></strong></label></th>
+                    <td>
+                        
+                        <? if(get_settings($r['id'])){ $checked = "checked=\"checked\""; }else{ $checked = ""; } ?>
+                        <input type="checkbox" name="<?php echo $r['id']; ?>" id="<?php echo $r['id']; ?>" value="true" <?php echo $checked; ?> />
+                        <span class="howto"><?php echo($r['desc']); ?></span>
+                    </td>
+                    
+                </tr>
+
+                <tr>
+                    <td><small><?php echo $value['desc']; ?></small></td>
+                </tr><tr><td colspan="2" style="margin-bottom:5px;border-bottom:1px dotted #000000;">&nbsp;</td></tr><tr><td colspan="2">&nbsp;</td></tr>
+        <?php
+        if ($error == true) {
+            echo $Html->field_error($name);
+        }
+
+        $checkbox = ob_get_clean();
+        return $checkbox;
+    }
+    /**
+     * end form
+     */
+    
+    function close() { ?>
+        </table><br />
+        <?php
+    }
+    
+    /**
+     *
+     * @param type $name
+     * @param type $args
+     * @return type $field
+     */
 
     function textarea($name = '', $args = array()) {
         $defaults = array(
@@ -98,7 +185,12 @@ class SatelliteFormHelper extends SatellitePlugin {
         $textarea = ob_get_clean();
         return $textarea;
     }
-    
+    /**
+     *
+     * @param type $name
+     * @param type $args
+     * @return type $field
+     */
     function select($name = '', $args = array()){
         $Html = new SatelliteHtmlHelper;
         $defaults = array(
@@ -134,9 +226,69 @@ class SatelliteFormHelper extends SatellitePlugin {
     <?php 
         $select = ob_get_clean();
         return $select;
+    } 
+    
+    /**
+     *
+     * @param type $name
+     * @return type $field
+     */
+    
+    function upload($name = '', $args = array()) {
+        $defaults = array(
+            'error' => true,
+            'class' => "widefat",
+            'width' => "140",
+            //'value' => (empty($args['value'])) ? '' : $args['value'],
+        );
+        
+        $r = wp_parse_args($args, $defaults);
+        extract($r, EXTR_SKIP);
+        
+        ob_start();        
+        ?>
+        <tr>
+            <th><label><strong><?php echo $r['name']; ?></strong></label></th>
+        <td>
+            <?php
+            // adjust values here
+            $id = "images"; // this will be the name of form field. Image url(s) will be submitted in $_POST using this key. So if $id == “img1” then $_POST[“img1”] will have all the image urls
+            $svalue = ""; // this will be initial value of the above form field. Image urls.
+            $multiple = true; // allow multiple files upload
+            $width = null; // If you want to automatically resize all uploaded images then provide width here (in pixels)
+            $height = null; // If you want to automatically resize all uploaded images then provide height here (in pixels)
+            ?>
+
+            <label>Upload and Order Images</label>
+            <input type="hidden" name="<?php echo $id; ?>" id="<?php echo $id; ?>" value="<?php echo $svalue; ?>" />
+            <div class="plupload-upload-uic hide-if-no-js <?php if ($multiple): ?>plupload-upload-uic-multiple<?php endif; ?>" id="<?php echo $id; ?>plupload-upload-ui">
+                <input id="<?php echo $id; ?>plupload-browse-button" type="button" value="<?php esc_attr_e('Select Files'); ?>" class="button" />
+                <span class="ajaxnonceplu" id="ajaxnonceplu<?php echo wp_create_nonce($id . 'pluploadan'); ?>"></span>
+                <?php if ($width && $height): ?>
+                        <span class="plupload-resize"></span><span class="plupload-width" id="plupload-width<?php echo $width; ?>"></span>
+                        <span class="plupload-height" id="plupload-height<?php echo $height; ?>"></span>
+                <?php endif; ?>
+                <div class="filelist"></div>
+            </div>
+            <div class="plupload-thumbs <?php if ($multiple): ?>plupload-thumbs-multiple<?php endif; ?>" id="<?php echo $id; ?>plupload-thumbs">
+            </div>
+            <span class="howto"><?php echo($r['desc']); ?></span>
+            <div class="clear"></div>
+
+        </td>
+        </tr>
+
+    <?php 
+        $upload = ob_get_clean();
+        return $upload;
     }    
     
-
+    /**
+     *
+     * @param type $name
+     * @param type $args
+     * @return type $field
+     */
     function submit($name = '', $args = array()) {
         $defaults = array('class' => "button-primary");
         $r = wp_parse_args($args, $defaults);

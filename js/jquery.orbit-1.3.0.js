@@ -277,18 +277,11 @@
           this.stopClock();
       }
     },
-    
-    removeCaptions: function () {
-        this.setCaption(false);
-    },
-    
-    setupCaptions: function () {
-      this.$caption = $(this.captionHTML);
-      $tcap = $(this.captionHTML);
-      this.$wrapper.append(this.$caption);
-        $setfalse = this.setCaption(false);
-        this.setCaption(true);
         
+    setupCaptions: function () {
+        this.$caption = $(this.captionHTML);
+        this.$wrapper.append(this.$caption);
+        this.setCaption(true);
     },
     
     setCaption: function (toggle) {
@@ -336,13 +329,17 @@
             //Animations for Caption exits
             switch (this.options.captionAnimation) {
               case 'none':
-                this.$caption.hide();
+                this.$caption.hide().remove();
                 break;
               case 'fade':
-                this.$caption.fadeOut(this.options.captionAnimationSpeed);
+                this.$caption.fadeOut(this.options.captionAnimationSpeed, function() {
+                    $(this).remove();
+                });
                 break;
               case 'slideOpen':
-                this.$caption.slideUp(this.options.captionAnimationSpeed);
+                this.$caption.slideUp(this.options.captionAnimationSpeed, function() {
+                    $(this).remove();
+                });
                 break;
             }
           }
@@ -464,7 +461,6 @@
     
     shift: function (direction) {
       var slideDirection = direction;
-      this.removeCaptions();
       //remember previous activeSlide
       this.prevActiveSlide = this.activeSlide;
       

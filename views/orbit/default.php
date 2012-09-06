@@ -87,9 +87,6 @@ if (!empty($slides)) :
         </script> 
         <!--  CUSTOM GALLERY -->
     <?php else : ?>  
-<?php echo ("capanimation:");
-    print_r($this -> Gallery -> data -> capanimation);
-?>
         <div class="orbit-default
             <?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' default-thumbs ' : ''; ?>
             <?php echo($sidetext) ? 'text-'.$sidetext : ''; ?>

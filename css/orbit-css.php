@@ -57,20 +57,19 @@ div.orbit-default {
 div.orbit-wrapper {
     width: <?php echo $styles['width'] ?>px;
     height: <?php echo $styles['height'] ?>px;
-    <?php if ($styles['align'] == 'left'){ ?>
-        margin: 0 15px 15px 0;
-        float: left;
-    <?php } elseif ($styles['align'] == 'right'){ ?>
-        margin: 0 0 15px 15px;
-        float: right;
-    <?php } else { ?>
-        margin: 0 auto 15px auto;
-    <?php } ?>
+    margin: 0 auto 15px auto;
     background:<?php echo $styles['background']?>; /* VAR BACKGROUND */
     border:<?php echo $styles['border']; ?>;
     position: relative;
     z-index:55; }
-
+div.satl-align-left .orbit-wrapper{
+    margin: 0 15px 15px 0;
+    float: left;
+}
+div.satl-align-right .orbit-wrapper {
+    margin: 0 0 15px 15px;
+    float: right;
+}
 div.orbit {
     width: 1px;
     height: 1px;

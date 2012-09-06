@@ -359,6 +359,7 @@ class Satellite extends SatellitePlugin {
                 
                 // RESET non configurable options
                 $this -> update_option('splash', false);
+                $this -> update_option('align', false);
 	}
 	function exclude_ids( $attachments, $exclude, $include ) {
 		if ( ! empty( $exclude )) {

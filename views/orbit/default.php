@@ -12,13 +12,13 @@ if (!empty($slides)) :
         $this -> Gallery -> loadData($slides[0]->section);
     }
     
-    if ($this->get_option('autoslide') == "Y") {
+    if ( $this->get_option('autoslide') == "Y" ) {
         $autospeed = $this->get_option('autospeed');
         $autospeed2 = $this->get_option('autospeed2');     }
     else { $autospeed = '0'; $autospeed2 = '0'; }
-    if ($this->get_option('othumbs') != 'B') { // if thumbs on bullcenter = false
+    if ( $this->get_option('othumbs') != 'B' ) { // if thumbs on bullcenter = false
         $this->update_option('bullcenter', 'false'); }
-        
+    $align = $this->get_option('align');
     $transition = $this -> Config -> getTransitionType();
     
     ?>
@@ -29,7 +29,10 @@ if (!empty($slides)) :
         <!-- =======================================
         THE ORBIT SLIDER CONTENT 
         ======================================= -->
-        <div class="orbit-default<?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' default-thumbs' : ''; ?>">
+        <div class="orbit-default
+            <?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' default-thumbs' : ''; ?>
+            <?php echo($align) ? ' satl-align-'.$align : ''; ?>
+             ">
             <div id="featured<?php echo $satellite_init_ok; ?>"> 
                 <?php foreach ($slides as $slider) : ?>  
                     <?php $full_image_href = wp_get_attachment_image_src($slider->ID, 'full', false); ?>
@@ -88,8 +91,9 @@ if (!empty($slides)) :
         <!--  CUSTOM GALLERY -->
     <?php else : ?>  
         <div class="orbit-default
-            <?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' default-thumbs ' : ''; ?>
-            <?php echo($sidetext) ? 'text-'.$sidetext : ''; ?>
+            <?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' default-thumbs' : ''; ?>
+            <?php echo($sidetext) ? ' text-'.$sidetext : ''; ?>
+            <?php echo($align) ? ' satl-align-'.$align : ''; ?>
              ">
             <div id="featured<?php echo $satellite_init_ok; ?>"> 
                 <?php $i = 0; ?>

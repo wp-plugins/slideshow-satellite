@@ -8,6 +8,9 @@ class SatelliteFormHelper extends SatellitePlugin {
                 case 'open':
                     echo $this -> open();
                     break;
+                case 'checkbox':
+                    echo $this -> checkbox($model.'.'.$value[id], $value);
+                    break;
                 case 'close':
                     echo $this -> close();
                     break;
@@ -23,6 +26,8 @@ class SatelliteFormHelper extends SatellitePlugin {
                 case 'textarea':
                     echo $this -> textarea($model.'.'.$value[id], $value);
                     break;
+                default:
+                    error_log("Satellite could not find a form value for ".$value['type']);
             }
         }
         
@@ -64,13 +69,12 @@ class SatelliteFormHelper extends SatellitePlugin {
         extract($r, EXTR_SKIP);
 
         $this->debug($this);
-        $Html = new SatelliteHtmlHelper;
 
         ob_start();
         ?>
         <?php echo $Html->field_value($name); ?>
             <tr>
-                <th><label><strong><?php echo $r['name']; ?></strong></label></th>
+                <th class="verttop"><label><strong><?php echo $r['name']; ?></strong></label></th>
                 <td>
                     <input style="width:400px;" class="<?php echo $r['class']; ?>"name="<?php echo $Html->field_name($name); ?>" id="<?php echo $r['id']; ?>" type="<?php echo $r['type']; ?>" value="<?php echo ($r['value']); ?>" />
                     <?php echo ($error == true) ? '<div style="color:red;">' . $Html->field_error($name) . '</div>' : ''; ?>
@@ -112,25 +116,19 @@ class SatelliteFormHelper extends SatellitePlugin {
         extract($r, EXTR_SKIP);
 
         $this->debug($this);
-        $Html = new SatelliteHtmlHelper;
 
         ob_start();
         ?>
-        <?php echo $Html->field_value($name); ?>        
         	<tr>
-                    <th><label><strong><?php echo $r['name']; ?></strong></label></th>
+                    <th class="verttop"><label><strong><?php echo $r['name']; ?></strong></label></th>
                     <td>
                         
-                        <? if(get_settings($r['id'])){ $checked = "checked=\"checked\""; }else{ $checked = ""; } ?>
-                        <input type="checkbox" name="<?php echo $r['id']; ?>" id="<?php echo $r['id']; ?>" value="true" <?php echo $checked; ?> />
+                        <?php $checked = ($r['value']) ? "checked=\"checked\"" : ""; ?>
+                        <input type="checkbox" name="<?php echo $Html->field_name($name); ?>" id="<?php echo $r['id']; ?>" value="1" <?php echo $checked; ?> />
                         <span class="howto"><?php echo($r['desc']); ?></span>
                     </td>
                     
                 </tr>
-
-                <tr>
-                    <td><small><?php echo $value['desc']; ?></small></td>
-                </tr><tr><td colspan="2" style="margin-bottom:5px;border-bottom:1px dotted #000000;">&nbsp;</td></tr><tr><td colspan="2">&nbsp;</td></tr>
         <?php
         if ($error == true) {
             echo $Html->field_error($name);
@@ -171,9 +169,9 @@ class SatelliteFormHelper extends SatellitePlugin {
         ob_start();
         ?>
             <tr>
-                <th><label><strong><?php echo $r['name']; ?></strong></label></th>
+                <th class="verttop"><label><strong><?php echo $r['name']; ?></strong></label></th>
                 <td>
-                    <textarea class="<?php echo $class; ?>" name="<?php echo $Html->field_name($name); ?>" rows="<?php echo $rows; ?>" style="width:<?php echo $width; ?>;" cols="<?php echo $cols; ?>" id="<?php echo $name; ?>"><?php echo ($r['value']); ?></textarea>
+                    <textarea class="<?php echo $class; ?>" name="<?php echo $Html->field_name($name); ?>" rows="<?php echo $rows; ?>" style="width:<?php echo $width; ?>;" cols="<?php echo $cols; ?>" id="<?php echo ($r['id']); ?>"><?php echo ($r['value']); ?></textarea>
                     <span class="howto"><?php echo($r['desc']); ?></span>
                 </td>
             </tr>
@@ -206,7 +204,7 @@ class SatelliteFormHelper extends SatellitePlugin {
         ob_start();
         ?>
             <tr>
-                <th><label><strong><?php echo $r['name']; ?></strong></label></th>
+                <th class="verttop"><label><strong><?php echo $r['name']; ?></strong></label></th>
                 <td >
                     <select class="<?php echo $class; ?>" style="width:<?php echo $width; ?>px;" name="<?php echo $Html->field_name($name); ?>" id="<?php echo $r['id']; ?>">
                 <?php if ( ! $Html->findInOptions($r['std'],$r['options']) ) : ?>
@@ -248,7 +246,7 @@ class SatelliteFormHelper extends SatellitePlugin {
         ob_start();        
         ?>
         <tr>
-            <th><label><strong><?php echo $r['name']; ?></strong></label></th>
+            <th class="verttop"><label><strong><?php echo $r['name']; ?></strong></label></th>
         <td>
             <?php
             // adjust values here

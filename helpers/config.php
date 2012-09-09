@@ -51,10 +51,10 @@ class SatelliteConfigHelper extends SatellitePlugin {
                         "id"        => "slides",
                         "type"      => "upload"),
 
-                array(  "name"      => "Caption Display",
+                array(  "name"      => "Caption Position",
                         "desc"      => "Where would you like to display the caption?",
-                        "id"        => "capdisplay",
-                        "value"     => $model -> data -> capdisplay,
+                        "id"        => "capposition",
+                        "value"     => $model -> data -> capposition,
                         "type"      => "select",
                         "std"       => "Overlayed",
                         "options"   => array(
@@ -72,6 +72,12 @@ class SatelliteConfigHelper extends SatellitePlugin {
                                         array("id" => "fade", "title" => "Fade"),
                                         array("id" => "slideOpen", "title" => "Slide Open"),
                                         array("id" => "none", "title" => "None"))),
+
+                array(  "name"      => "Caption on Hover",
+                        "desc"      => "This will fade in the caption only when the slideshow is mouse-hovered over",
+                        "id"        => "caphover",
+                        "type"      => "checkbox",
+                        "value"     => $model -> data -> caphover),
 
                 array(  "type"      => "close")
 

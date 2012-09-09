@@ -12,7 +12,8 @@ class SatelliteGallery extends SatelliteDbHelper {
 		'description'		=>	"TEXT",
 		'image'			=>	"VARCHAR(75) NOT NULL DEFAULT ''",
 		'type'			=>	"VARCHAR(40) NOT NULL DEFAULT ''",
-                'capdisplay'            =>      "VARCHAR(40) NOT NULL DEFAULT ''",
+                'capposition'           =>      "VARCHAR(40) NOT NULL DEFAULT ''",
+                'caphover'              =>      "BOOLEAN NOT NULL DEFAULT 0",
                 'capanimation'          =>      "VARCHAR(40) NOT NULL DEFAULT ''",
 		'order'			=>	"INT(11) NOT NULL DEFAULT '0'",
 		'created'		=>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
@@ -84,18 +85,18 @@ class SatelliteGallery extends SatelliteDbHelper {
          * @param type $gallery @integrer
          * @return type @string
          */
-        public function capLocation($gallery) {
-            $location = $this -> find(array('id'=>$gallery), 'capdisplay,id');
-            if ($location -> capdisplay == "On Right") :
+        public function capLocation($position,$gallery) {
+            if ($position == "On Right") :
                 $briefLocation = "right";
             else:
-                $briefLocation = $location -> capdisplay;
+                $briefLocation = $location -> capposition;
             endif;
             return $briefLocation;
         }
         
         public function loadData($gallery) {
-            return $this -> find(array('id'=>$gallery), 'capanimation, capdisplay, title, description, type, id');
+            return $this -> find(array('id'=>$gallery), 'caphover, capanimation, capdisplay, title, description, type, id');
+            //return $this -> find_all(array('id'=>$gallery));
             //return $animation;
         }
         /** Returns the More Gallery ID **/

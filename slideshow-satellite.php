@@ -4,11 +4,11 @@ Plugin Name: Slideshow Satellite
 Plugin URI: http://c-pr.es/projects/satellite
 Author: C- Pres
 Author URI: http://c-pr.es/membership-options
-Description: Display photography and content in new ways with this slideshow. Slideshow Satellite uses Orbit to give a multitude of transition options and customizations.
-Version: 1.2.2
+Description: Display photography and content in highly configurable ways with this slideshow. Pretty pretty pretty.
+Version: 1.3
 */
 define('DS', '/');
-define( 'SATL_VERSION', '1.2.2');
+define( 'SATL_VERSION', '1.3');
 $uploads = wp_upload_dir();
 if ( ! defined( 'SATL_PLUGIN_BASENAME' ) )
 	define( 'SATL_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -348,10 +348,13 @@ class Satellite extends SatellitePlugin {
                 if ($this -> get_option('random') != null) { $this -> update_option('random', null); }
                 
                 // RESET FOR PREMIUM EDITION SINGLE INSTANCE
-                if ($this -> get_option('nav_temp') != null) { $this -> update_option('nav_temp', null); }
-                if ($this -> get_option('align_temp') != null) { $this -> update_option('align_temp', null); }
-                if ($this -> get_option('width_temp') != null) { $this -> update_option('width_temp', null); }
-                if ($this -> get_option('height_temp') != null) { $this -> update_option('height_temp', null); }
+                /** Align, Width, Height, all save on top of itself, and don't need cleared out **/
+                
+                //if ($this -> get_option('align_temp') != null) { $this -> update_option('align_temp', null); }
+                //if ($this -> get_option('nav_temp') != null) { $this -> update_option('nav_temp', null); }
+                //if ($this -> get_option('width_temp') != null) { $this -> update_option('width_temp', null); }
+                //if ($this -> get_option('height_temp') != null) { $this -> update_option('height_temp', null); }
+                
 		$style = array();
 		$style = $this -> get_option('styles');
 		$style['align'] = "none";

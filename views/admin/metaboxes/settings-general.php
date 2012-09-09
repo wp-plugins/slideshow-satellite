@@ -121,38 +121,6 @@
             </tbody>
         </table>
     </div>
-    <!--div id="autoslide_div" style="display:<?php echo ($this->get_option('autoslide') == "Y") ? 'block' : 'none'; ?>;">
-        <table class="form-table">
-            <tbody>
-                <tr>
-                    <th><label for="autospeed"><?php _e('Auto Speed', SATL_PLUGIN_NAME); ?></label></th>
-                    <td>
-                        <input type="text" style="width:45px;" name="autospeed" value="<?php echo $this->get_option('autospeed'); ?>" id="autospeed" /> <?php _e('speed', SATL_PLUGIN_NAME); ?>
-                        <span class="howto"><?php _e('default:10', SATL_PLUGIN_NAME); ?><br/><?php _e('lower number for shorter interval between images', SATL_PLUGIN_NAME); ?></span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div-->
-    <table class="form-table">
-
-        <tbody>
-            <!--tr>
-                <th><label for="fadespeed"><?php _e('Image Fading Speed', SATL_PLUGIN_NAME); ?></label></th>
-                <td>
-                    <input style="width:45px;" type="text" name="fadespeed" value="<?php echo $this->get_option('fadespeed'); ?>" id="fadespeed" />
-                    <span class="howto"><?php _e('default:50 recommended:1-100', SATL_PLUGIN_NAME); ?><br/><?php _e('lower number for quicker fading of images', SATL_PLUGIN_NAME); ?></span>
-                </td>
-            </tr-->
-            <!--tr>
-                <th><label for="informationY"><?php _e('Show Information', SATL_PLUGIN_NAME); ?></label></th>
-                <td>
-                    <label><input onclick="jQuery('#information_div').show();" <?php echo ($this->get_option('information') == "Y") ? 'checked="checked"' : ''; ?> type="radio" name="information" value="Y" id="informationY" /> <?php _e('Yes', SATL_PLUGIN_NAME); ?></label>
-                    <label><input onclick="jQuery('#information_div').hide();" <?php echo ($this->get_option('information') == "N") ? 'checked="checked"' : ''; ?> type="radio" name="information" value="N" id="informationN" /> <?php _e('No', SATL_PLUGIN_NAME); ?></label>
-                </td>
-            </tr>-->
-        </tbody>
-    </table>
     <div id="information_div" style="display:<?php echo ($this->get_option('information') == "Y") ? 'block' : 'none'; ?>;">
         <table class="form-table">
             <tbody>

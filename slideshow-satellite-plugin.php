@@ -88,11 +88,12 @@ class SatellitePlugin {
                 //print_r($wp_query->current_post);
 
                 if (is_array($width_temp)) {
-                    foreach ($width_temp as $skey => $sval) {
-                        if ($skey == $pID) 
+                    foreach ($width_temp as $skey => $sval) {                        
+                        if ($skey == $pID)
                             $satlStyleUrl .= "&amp;width_temp=" . urlencode($sval);
                     }
                 }
+
                 if (is_array($height_temp)) {
                     foreach ($height_temp as $skey => $sval) {
                         if ($skey == $pID)

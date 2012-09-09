@@ -8,7 +8,7 @@ if (!empty($slides)) :
     $textloc = $this->get_option('textlocation');
     $thumbwidth = (int) $style['thumbheight'] + $style['thumbspacing'] + $style['thumbspacing'];
     if (!$frompost) {
-        $sidetext = $this -> Gallery -> capLocation($slides[0]->section);
+        //$sidetext = $this -> Gallery -> capLocation($this->Gallery->data->capposition,$slides[0]->section);
         $this -> Gallery -> loadData($slides[0]->section);
     }
     
@@ -158,7 +158,7 @@ if (!empty($slides)) :
                     directionalNav: true, 		 // manual advancing directional navs
                     captions: <?php echo($this->get_option('information_temp') == 'Y') ? 'true' : 'false'; ?>,	 // do you want captions?
                     captionAnimation: <?php echo ($this -> Gallery -> data -> capanimation) ? '\''.$this -> Gallery -> data -> capanimation.'\'' : '\'slideOpen\'';?>, // fade, slideOpen, none
-                    captionHover: <?php echo ($this->get_option("showhover") == "H") ? 'true' : 'false';?>, // true means only show caption on mousehover
+                    captionHover: <?php echo ($this -> Gallery -> data -> caphover) ? 'true' : 'false';?>, // true means only show caption on mousehover
                     captionAnimationSpeed: 800, 	 // if so how quickly should they animate in
                     bullets: <?php echo($this->get_option('thumbnails_temp') == 'Y') ? 'true' : 'false'; ?>,	// true or false to activate the bullet navigation
                     bulletThumbs: true,		 // thumbnails for the bullets

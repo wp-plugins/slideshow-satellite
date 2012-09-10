@@ -177,6 +177,8 @@ class Satellite extends SatellitePlugin {
 	}
 	function embed($atts = array(), $content = null) {
 		//global variables
+                error_log("EMBED RUNNING");
+                print_r($atts);
 		global $wpdb;
                 if (SATL_PRO) {
                     require SATL_PLUGIN_DIR . '/pro/newinit.php';
@@ -208,6 +210,7 @@ class Satellite extends SatellitePlugin {
 			}
                     }
 		if ( !empty( $thumbs ) ) { 
+                        error_log("thumbs passed: ".$thumbs . " align ".$align);
 			if (($this -> get_option( 'thumbnails')=='Y' ) && ( $thumbs == 'off' )) {
 				$this -> update_option('thumbnails_temp', 'N');	
 			} elseif (($this -> get_option( 'thumbnails')=='N' ) && ( $thumbs == 'on' )) {

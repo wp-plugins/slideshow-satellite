@@ -473,6 +473,7 @@ ul.orbit-thumbnails {
 }
 .full-left .orbit {
     float:right;
+    margin-left:<?php echo ((int)($styles['thumbarea'] + $extrathumbarea)); ?>px;
 }
 .full-right .orbit {
     float:left;
@@ -482,15 +483,14 @@ ul.orbit-thumbnails {
     height: <?php echo ($styles['height']); ?>px;
     overflow-y:auto;
     overflow-x:hidden;
+    padding-top:0;
     }
 .full-right .thumbholder {
-    margin:0 0 0 <?php echo ($extrathumbarea );?>px;
-    float:left;
+    margin:0 0 0 <?php echo ((int)($styles['width'] + $extrathumbarea ));?>px;
     left:0;
 }
 .full-left .thumbholder {
     margin: 0 <?php echo ($extrathumbarea );?>px 0 0;
-    float:right;
     right:0;
 }
 div.full-right .orbit-wrapper div.timer {

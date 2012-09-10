@@ -8,8 +8,8 @@ if (!empty($slides)) :
     $textloc = $this->get_option('textlocation');
     $thumbwidth = (int) $style['thumbheight'] + $style['thumbspacing'] + $style['thumbspacing'];
     if (!$frompost) {
-        //$sidetext = $this -> Gallery -> capLocation($this->Gallery->data->capposition,$slides[0]->section);
         $this->Gallery->loadData($slides[0]->section);
+        $sidetext = $this -> Gallery -> capLocation($this->Gallery->data->capposition,$slides[0]->section);
     }
 
     if ($this->get_option('autoslide') == "Y") {
@@ -92,7 +92,7 @@ if (!empty($slides)) :
             });
         </script> 
         <!--  CUSTOM GALLERY -->
-    <?php else : ?>  
+    <?php else : echo $this->get_option('thumbnails_temp'); ?>  
         <div class="orbit-default
         <?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' default-thumbs' : ''; ?>
                 <?php echo($sidetext) ? ' text-' . $sidetext : ''; ?>

@@ -7,8 +7,8 @@ if (!empty($slides)) :
     $imagesbox = $this->get_option('imagesbox');
     $textloc = $this->get_option('textlocation');
     if (!$frompost) {
-        $sidetext = $this -> Gallery -> capLocation($slides[0]->section);
-        $this -> Gallery -> loadData($slides[0]->section);
+        $this->Gallery->loadData($slides[0]->section);
+        $sidetext = $this -> Gallery -> capLocation($this->Gallery->data->capposition,$slides[0]->section);
     }
     
     if ($this->get_option('autoslide') == "Y") {

@@ -14,7 +14,7 @@ if (!empty($slides)) :
                 if ($i == 0)
                     $firstID = $info->id;
                 ?>
-                <div class='salt-gal-title gal<?php echo($info->id);?>'>
+                <div class='satl-gal-title gal<?php echo($info->id);?>'>
                     <a href="javascript:void(0);" onclick="showGallerySatellite(<?php echo($info->id);?>);">
                         <?php echo ($info->title);?>
                     </a>
@@ -26,7 +26,7 @@ if (!empty($slides)) :
         <div class="galleries-satl-wrap">
             <?php 
             if ($displaySplash) : 
-                echo "<div class=''";
+                echo "<div class='splashstart sorbit-wide absoluteCenter'";
                 echo "<a href='javascript:void(0);' onclick='showGallerySatellite(".$firstID.");'>";
                 echo "<img class='absoluteCenter play' src='".SATL_PLUGIN_URL."/images/playbutton.png' alt='Play Slideshow'/>";
                 echo "<img class='absoluteCenter splash' src='".$this->Html->image_url($slides[0]->image)."' alt='Play Slideshow'/>";

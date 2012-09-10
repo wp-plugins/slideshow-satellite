@@ -542,6 +542,7 @@ li > li.has-thumb {
 .splash-satl-wrap {
     position: relative;
     width: <?php echo($styles['width']);?>px;
+    height: <?php echo($styles['height']);?>px;
     <?php if ($styles['align'] == 'left'){ ?>
         margin: 0 15px 15px 0;
         float: left;
@@ -566,25 +567,31 @@ li > li.has-thumb {
     text-decoration:underline;
 }
 .galleries-satl-wrap {
+    height: <?php echo $styles['height'] ?>px;
+    width: <?php echo $styles['width'] ?>px;
     margin-top: 10px;
     margin-left:<?php echo $galleryTitles + 10 ?>px;
+}
+.galleries-satl-wrap .clickstart {
+    height: 100%;
+    width: 100%; 
 }
 .galleries-satl-wrap img, .splash-satl-wrap img {
     border:0;
     padding:0;
 }
-.galleries-satl-wrap img.splash, .splash-satl-wrap img.splash {
-    position: relative;
-    /*margin:0;*/
-    display: block;
+.galleries-satl-wrap .splashstart.sorbit-wide {
+    left:<?php echo $galleryTitles + 10 ?>px;
+    /*padding-left:<?php echo $galleryTitles ?>px;*/
 }
 .galleries-satl-wrap img.play, .splash-satl-wrap img.play {
     position:absolute;
     z-index:50;
     opacity:.3;
+    cursor:pointer;
 }
 .galleries-satl-wrap img.play {
-    padding-left:<?php echo $galleryTitles ?>px;
+    
 }
 .galleries-satl-wrap img.play:hover, .splash-satl-wrap img.play:hover {
     opacity:.7;
@@ -592,8 +599,30 @@ li > li.has-thumb {
 .galleries-satl-wrap .orbit-wrapper {
     margin-left:0;
 }
-.salt-gal-title {
-    padding:5px 0;
+.satl-gal-title {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.4);
+    border-bottom: 2px solid;
+    border-left: 1px solid;
+    border-top: 1px solid;
+    font-size: 16px;
+    margin-bottom: -1px;
+    padding: 3px 0 3px 5px;
+    color:#EEE;
+    
+}
+.satl-gal-title:hover, .satl-gal-title.current {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.8);
+}
+.satl-gal-title a {
+    text-decoration:none;
+    display:inline-table;
+    width:100%;
+    height:100%;
+    line-height:2em;
+}
+.satl-gal-title a:hover {
+    text-decoration:none;
+    color:#EEE8AA;
 }
 
 <?php

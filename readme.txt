@@ -1,10 +1,10 @@
 === Slideshow Satellite ===
 Contributors: C- Pres
 Donate link: http://c-pr.es/projects/satellite
-Tags: slideshow pro, photographer, galleries, satellite, orbit, zurb, zurb orbit, slideshow gallery, slides, slideshow, image gallery, gallery, slideshow satellite, photography, slideshow orbit
+Tags: slideshow pro, photographer, galleries, satellite, orbit, zurb orbit, slideshow gallery, slides, slideshow, image gallery, gallery, slideshow satellite, photography, slideshow orbit
 Requires at least: 3.0
-Tested up to: 3.4.1
-Stable tag: 1.2
+Tested up to: 3.4.2
+Stable tag: 1.3
 License: GPLv2 or later
 
 Ultra customizable and contemporary photo slideshow. Build photograph galleries or content displays with Slideshow Satellite. 
@@ -81,6 +81,16 @@ You may also want to "Reset Configuration" from the Configuration page
 Two should be enough, we don't want to bog down your install with screenshots. Come to the site for more, and a video tutorial: http://c-pr.es/satellite
 
 == Changelog ==
+= 1.3 =
+* Added More Gallery capability for call to action
+* Navigation hidden to start
+* Added more unique caption functionality to Galleries
+* Added transparency capabilities
+* Added an extra fade capability, "Fade Empty", and changed name of prior to "Fade Blend"
+* Fixed captions to display through animation
+* Added splash and load through AJAX for premium
+* Added multiple gallery options when comma-delimited
+
 = 1.2 =
 * Added Galleries
 * Added Bulk Image Upload

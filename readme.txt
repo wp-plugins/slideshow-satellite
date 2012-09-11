@@ -4,7 +4,7 @@ Donate link: http://c-pr.es/projects/satellite
 Tags: slideshow pro, photographer, galleries, satellite, orbit, zurb orbit, slideshow gallery, slides, slideshow, image gallery, gallery, slideshow satellite, photography, slideshow orbit
 Requires at least: 3.0
 Tested up to: 3.4.2
-Stable tag: 1.3
+Stable tag: 1.3.1
 License: GPLv2 or later
 
 Ultra customizable and contemporary photo slideshow. Build photograph galleries or content displays with Slideshow Satellite. 

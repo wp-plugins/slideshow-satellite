@@ -36,7 +36,7 @@ class SatellitePlugin {
         if ($this->debugging == true) {
             global $wpdb;
             $wpdb->show_errors();
-            error_reporting(E_ALL);
+            error_reporting(E_ALL); 
             @ini_set('display_errors', 1);
         }
         $this->add_action('wp_head', 'enqueue_scripts', 1);

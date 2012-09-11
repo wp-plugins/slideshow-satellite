@@ -26,6 +26,7 @@ $arrowpush = (int) $styles['navpush'];
 $thumbrow = (int) $styles['thumbspacing'];
 $orbitThumbMargin = 5;
 $sideTextWidth = 250;
+$galleryTitles = 175;
 $fullthumbheight = (int) $styles['thumbheight'] + (2 * $orbitThumbMargin) + (int) (( 2 * $styles['thumbspacing'] )-4);
 IF ($styles['infomin'] == "Y") {
     ?>
@@ -56,24 +57,23 @@ div.orbit-default {
 div.orbit-wrapper {
     width: <?php echo $styles['width'] ?>px;
     height: <?php echo $styles['height'] ?>px;
-    <?php if ($styles['align'] == 'left'){ ?>
-        margin: 0 15px 15px 0;
-        float: left;
-    <?php } elseif ($styles['align'] == 'right'){ ?>
-        margin: 0 0 15px 15px;
-        float: right;
-    <?php } else { ?>
-        margin: 0 auto 15px auto;
-    <?php } ?>
+    margin: 0 auto 15px auto;
     background:<?php echo $styles['background']?>; /* VAR BACKGROUND */
     border:<?php echo $styles['border']; ?>;
     position: relative;
     z-index:55; }
-
+div.satl-align-left .orbit-wrapper{
+    margin: 0 15px 15px 0;
+    float: left;
+}
+div.satl-align-right .orbit-wrapper {
+    margin: 0 0 15px 15px;
+    float: right;
+}
 div.orbit {
     width: 1px;
     height: 1px;
-    position: relative;
+    position: absolute;
     overflow: hidden }
 
 div.orbit>img {
@@ -125,6 +125,7 @@ div.sorbit-wide img{
         height:auto;
 	vertical-align:middle;
 	display:inline-block;
+        border:0 !important;
         }
 	
 div.sorbit-basic img{
@@ -291,6 +292,9 @@ div.sattext h5 {
 .orbit-default.default-thumbs .orbit-wrapper {
     height: <?php echo ((int) $styles['height'] + $fullthumbheight); ?>px;
 }
+.more-img {
+    float:right;
+}
 
 /* TEXT ON THE SIDE
    ================================================== */
@@ -313,6 +317,10 @@ div.sattext h5 {
     padding:10px 8px 2px 8px;
     line-height:1.5em;
     font-size:1em;
+}
+.text-right .more-img {
+    clear:both;
+    float:none;
 }
 
 /* DIRECTIONAL NAV
@@ -382,6 +390,7 @@ ul.orbit-thumbnails {
     height: <?php echo($fullthumbheight);?>px;
     overflow:hidden;
     margin: <?php echo $styles['thumbmargin']; ?>px auto 0 auto;
+    padding-top: <?php echo $styles['height']; ?>px;
 }
     
 .orbit-thumbnails li {
@@ -399,6 +408,7 @@ ul.orbit-thumbnails {
 }
 .orbit-thumbnails li img {
     max-width:100%;
+    border:0;
 }
 .orbit-thumbnails li:hover {
     opacity: 1;
@@ -463,6 +473,7 @@ ul.orbit-thumbnails {
 }
 .full-left .orbit {
     float:right;
+    margin-left:<?php echo ((int)($styles['thumbarea'] + $extrathumbarea)); ?>px;
 }
 .full-right .orbit {
     float:left;
@@ -472,15 +483,14 @@ ul.orbit-thumbnails {
     height: <?php echo ($styles['height']); ?>px;
     overflow-y:auto;
     overflow-x:hidden;
+    padding-top:0;
     }
 .full-right .thumbholder {
-    margin:0 0 0 <?php echo ($extrathumbarea );?>px;
-    float:left;
+    margin:0 0 0 <?php echo ((int)($styles['width'] + $extrathumbarea ));?>px;
     left:0;
 }
 .full-left .thumbholder {
     margin: 0 <?php echo ($extrathumbarea );?>px 0 0;
-    float:right;
     right:0;
 }
 div.full-right .orbit-wrapper div.timer {
@@ -522,7 +532,99 @@ li > li.has-thumb {
 
 .orbit-thumbnails li.active.has-thumb {
     background-position: 0 0;
-    border-top: 2px solid #000; }	
+    border-top: 2px solid #000; }
+    
+/******* Galleries and Splash Display ******/
+
+.satl-gal-wrap {
+    position: relative;
+    width: <?php echo($styles['width']+$galleryTitles);?>px;
+}
+.splash-satl-wrap {
+    position: relative;
+    width: <?php echo($styles['width']);?>px;
+    height: <?php echo($styles['height']);?>px;
+    <?php if ($styles['align'] == 'left'){ ?>
+        margin: 0 15px 15px 0;
+        float: left;
+    <?php } elseif ($styles['align'] == 'right'){ ?>
+        margin: 0 0 15px 15px;
+        float: right;
+    <?php } else { ?>
+        margin: 0 auto 15px auto;
+    <?php } ?>
+    
+}
+.satl-gal-titles {
+    width:<?php echo $galleryTitles ?>px;
+    float:left;
+    padding:5px;
+    height: <?php echo $styles['height'] ?>px;
+    }
+.satl-gal-titles a:hover {
+    text-decoration:underline;
+}
+.satl-gal-titles .current {
+    text-decoration:underline;
+}
+.galleries-satl-wrap {
+    height: <?php echo $styles['height'] ?>px;
+    width: <?php echo $styles['width'] ?>px;
+    margin-top: 10px;
+    margin-left:<?php echo $galleryTitles + 10 ?>px;
+}
+.galleries-satl-wrap .clickstart {
+    height: 100%;
+    width: 100%; 
+}
+.galleries-satl-wrap img, .splash-satl-wrap img {
+    border:0;
+    padding:0;
+}
+.galleries-satl-wrap .splashstart.sorbit-wide {
+    left:<?php echo $galleryTitles + 10 ?>px;
+    /*padding-left:<?php echo $galleryTitles ?>px;*/
+}
+.galleries-satl-wrap img.play, .splash-satl-wrap img.play {
+    position:absolute;
+    z-index:50;
+    opacity:.3;
+    cursor:pointer;
+}
+.galleries-satl-wrap img.play {
+    
+}
+.galleries-satl-wrap img.play:hover, .splash-satl-wrap img.play:hover {
+    opacity:.7;
+}
+.galleries-satl-wrap .orbit-wrapper {
+    margin-left:0;
+}
+.satl-gal-title {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.4);
+    border-bottom: 2px solid;
+    border-left: 1px solid;
+    border-top: 1px solid;
+    font-size: 16px;
+    margin-bottom: -1px;
+    padding: 3px 0 3px 5px;
+    color:#EEE;
+    
+}
+.satl-gal-title:hover, .satl-gal-title.current {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.8);
+}
+.satl-gal-title a {
+    text-decoration:none;
+    display:inline-table;
+    width:100%;
+    height:100%;
+    line-height:2em;
+}
+.satl-gal-title a:hover {
+    text-decoration:none;
+    color:#EEE8AA;
+}
 
 <?php
 

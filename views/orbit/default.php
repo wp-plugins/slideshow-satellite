@@ -8,96 +8,101 @@ if (!empty($slides)) :
     $textloc = $this->get_option('textlocation');
     $thumbwidth = (int) $style['thumbheight'] + $style['thumbspacing'] + $style['thumbspacing'];
     if (!$frompost) {
-        $sidetext = $this -> Gallery -> capLocation($slides[0]->section);
+        $this->Gallery->loadData($slides[0]->section);
+        $sidetext = $this -> Gallery -> capLocation($this->Gallery->data->capposition,$slides[0]->section);
     }
+
     if ($this->get_option('autoslide') == "Y") {
         $autospeed = $this->get_option('autospeed');
-        $autospeed2 = $this->get_option('autospeed2');     }
-    else { $autospeed = '0'; $autospeed2 = '0'; }
+        $autospeed2 = $this->get_option('autospeed2');
+    } else {
+        $autospeed = '0';
+        $autospeed2 = '0';
+    }
     if ($this->get_option('othumbs') != 'B') { // if thumbs on bullcenter = false
-        $this->update_option('bullcenter', 'false'); }
-    if ($this->get_option('transition_temp') == "F") { // fade, horizontal-slide, vertical-slide, horizontal-push
-        $transition = "fade";
-    } elseif ($this->get_option('transition_temp') == "OHS") {
-        $transition = "horizontal-slide";
-    } elseif ($this->get_option('transition_temp') == "OVS") {
-        $transition = "vertical-slide";
-    } elseif ($this->get_option('transition_temp') == "OHP") {
-        $transition = "horizontal-push"; }
+        $this->update_option('bullcenter', 'false');
+    }
+    $align = $this->get_option('align');
+    $transition = $this->Config->getTransitionType();
     ?>
 
+
     <?php if ($frompost) : ?>
+
         <!-- =======================================
         THE ORBIT SLIDER CONTENT 
         ======================================= -->
-        <div class="orbit-default<?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' default-thumbs' : ''; ?>">
+        <div class="orbit-default
+                <?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' default-thumbs' : ''; ?>
+                <?php echo($align) ? ' satl-align-' . $align : ''; ?>
+             ">
             <div id="featured<?php echo $satellite_init_ok; ?>"> 
                 <?php foreach ($slides as $slider) : ?>  
                     <?php $full_image_href = wp_get_attachment_image_src($slider->ID, 'full', false); ?>
                     <?php $thumbnail_link = wp_get_attachment_image_src($slider->ID, 'thumbnail', false); ?>
-                    <?php $attachment_link = get_attachment_link( $slider->ID); ?>
+                    <?php $attachment_link = get_attachment_link($slider->ID); ?>
                     <?php
-                    if ($this->get_option('abscenter') == "Y" ) {
+                    if ($this->get_option('abscenter') == "Y") {
                         echo "<div class='sorbit-wide absoluteCenter' data-caption='#post-{$slider->ID}' data-thumb='{$thumbnail_link[0]}'>";
                     } else {
                         echo "<div class='sorbit-basic' data-caption='#post-{$slider->ID}' data-thumb='{$thumbnail_link[0]}'>";
                     }
                     ?>
-                    <?PHP if ($this->get_option('wpattach') == 'Y') { ?>
+                            <?PHP if ($this->get_option('wpattach') == 'Y') { ?>
                         <a href="<?php echo $attachment_link; ?>" rel="" title="<?php echo $slider->post_title; ?>">
-                    <?PHP } elseif ($imagesbox != "N" && $this->get_option('nolinker') != 'Y') { ?>
-                        <a class="thickbox sorbit-link" href="<?php echo $full_image_href[0]; ?>" rel="" title="<?php echo $slider->post_title; ?>">
-                    <?PHP } ?>
-                        <img <?php echo ($this->get_option('abscenter') == "Y") ? "class='absoluteCenter'":"" ?> src="<?php echo $full_image_href[0]; ?>" 
-                             alt="<?php echo $slider->post_title; ?>" />
-                        <?PHP if ($imagesbox != "N" && $this->get_option('nolinker') != 'Y') { ?></a><?PHP } ?>
+            <?PHP } elseif ($imagesbox != "N" && $this->get_option('nolinker') != 'Y') { ?>
+                            <a class="thickbox sorbit-link" href="<?php echo $full_image_href[0]; ?>" rel="" title="<?php echo $slider->post_title; ?>">
+                            <?PHP } ?>
+                            <img <?php echo ($this->get_option('abscenter') == "Y") ? "class='absoluteCenter'" : "" ?> src="<?php echo $full_image_href[0]; ?>" 
+                                                                                                                     alt="<?php echo $slider->post_title; ?>" />
+            <?PHP if ($imagesbox != "N" && $this->get_option('nolinker') != 'Y') { ?></a><?PHP } ?>
                 </div>
-            
+
                 <span class="orbit-caption<?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' thumb-on' : ''; ?>" id="post-<?php echo $slider->ID; ?>">
                     <h5 class="orbit-title<?php echo($style['infotitle']) ?>"><?php echo $slider->post_title; ?></h5>
                     <p><?php echo $slider->post_content; ?></p>
                 </span>
-            <?php endforeach;  ?>
-            </div> <!-- end featured -->
+        <?php endforeach; ?>
+        </div> <!-- end featured -->
 
         </div>
 
         <script type="text/javascript">
             jQuery(document).ready(function($) {
                 $('#featured<?php echo $satellite_init_ok; ?>').orbit({
-                    animation: '<?PHP echo ($transition) ? $transition : $this->get_option('transition'); ?>',                  // fade, horizontal-slide, vertical-slide, horizontal-push
-                    animationSpeed: <?php echo($this->get_option('duration')); ?>,                // how fast animations are
-                    timer: <?PHP echo ($this->get_option("autoslide_temp") == "Y" ) ? 'true' : 'false'; ?>, 	 // true or false to have the timer
-                    advanceSpeed: <?PHP echo ($autospeed2); ?>, 		 // if timer is enabled, time between transitions 
-                    pauseOnHover: false, 		 // if you hover pauses the slider
-                    startClockOnMouseOut: false, 	 // if clock should start on MouseOut
-                    startClockOnMouseOutAfter: 1000, 	 // how long after MouseOut should the timer start again
-                    directionalNav: true, 		 // manual advancing directional navs
+                    animation: '<?PHP echo ($transition) ? $transition : $this->get_option('transition'); ?>',  // fade-blend, fade-empty, horizontal-slide, vertical-slide, horizontal-push
+                    animationSpeed: <?php echo($this->get_option('duration')); ?>,                              // how fast animations are
+                    timer: <?PHP echo ($this->get_option("autoslide_temp") == "Y" ) ? 'true' : 'false'; ?>,     // true or false to have the timer
+                    advanceSpeed: <?PHP echo ($autospeed2); ?>, // if timer is enabled, time between transitions 
+                    pauseOnHover: false,                        // if you hover pauses the slider
+                    startClockOnMouseOut: false,                // if clock should start on MouseOut
+                    startClockOnMouseOutAfter: 1000,            // how long after MouseOut should the timer start again
+                    directionalNav: true,                       // manual advancing directional navs
                     captions: <?php echo($this->get_option('information_temp') == 'Y') ? 'true' : 'false'; ?>,	 // do you want captions?
-                    captionAnimation: 'slideOpen', 		 // fade, slideOpen, none
-                    captionHover: <?php echo ($this->get_option("showhover") == "H") ? 'true' : 'false';?>, // true means only show caption on mousehover
-                    captionAnimationSpeed: 800, 	 // if so how quickly should they animate in
+                    captionAnimation: <?php echo ($this->Gallery->data->capanimation) ? $this->Gallery->data->capanimation : 'slideOpen'; ?>, // fade, slideOpen, none
+                    captionHover: <?php echo ($this->get_option("showhover") == "H") ? 'true' : 'false'; ?>, // true means only show caption on mousehover
+                    captionAnimationSpeed: 800, 	// if so how quickly should they animate in
                     bullets: <?php echo($this->get_option('thumbnails_temp') == 'Y') ? 'true' : 'false'; ?>,		 // true or false to activate the bullet navigation
-                    bulletThumbs: true,		 // thumbnails for the bullets
-                    bulletThumbLocation: '',	 // location from this file where thumbs will be
-                    afterSlideChange: function(){},    // empty function 
+                    bulletThumbs: true,                 // thumbnails for the bullets
+                    bulletThumbLocation: '',            // location from this file where thumbs will be
+                    afterSlideChange: function(){},     // empty function 
                     centerBullets: <?php echo $this->get_option('bullcenter'); ?>,
                     thumbWidth: <?php echo $thumbwidth; ?>
                 });				
             });
         </script> 
         <!--  CUSTOM GALLERY -->
-    <?php else : ?>  
-
+    <?php else : echo $this->get_option('thumbnails_temp'); ?>  
         <div class="orbit-default
-            <?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' default-thumbs ' : ''; ?>
-            <?php echo($sidetext) ? 'text-'.$sidetext : ''; ?>
+        <?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' default-thumbs' : ''; ?>
+                <?php echo($sidetext) ? ' text-' . $sidetext : ''; ?>
+                <?php echo($align) ? ' satl-align-' . $align : ''; ?>
              ">
             <div id="featured<?php echo $satellite_init_ok; ?>"> 
                 <?php $i = 0; ?>
                 <?php foreach ($slides as $slider) : ?>     
                     <?php
-                    if ($this->get_option('abscenter') == "Y" ) {
+                    if ($this->get_option('abscenter') == "Y") {
                         echo "<div class='sorbit-wide absoluteCenter' data-caption='#custom{$satellite_init_ok}-$i'
                             data-thumb='{$this->Html->image_url($this->Html->thumbname($slider->image))}'>";
                     } else {
@@ -105,34 +110,44 @@ if (!empty($slides)) :
                             data-thumb='{$this->Html->image_url($this->Html->thumbname($slider->image))}'>";
                     }
                     ?>					
-                    <?php if ($slider->uselink == "Y" && !empty($slider->link)) : ?>
-                        <a href="<?php echo $slider->link; ?>" title="<?php echo $slider->title; ?>" target="<?php echo ($this->get_option('pagelink') == "S") ? "_self":"_blank" ?>">
-                    <?PHP elseif ($imagesbox != "N" && $this->get_option('nolinker') != 'Y') : ?>
-                        <a class="thickbox sorbit-link" href="<?php echo $this->Html->image_url($slider->image); ?>" rel="" title="<?php echo $slider->title; ?>">
-                    <?PHP endif; ?>
+                            <?php if ($slider->uselink == "Y" && !empty($slider->link)) : ?>
+                        <a href="<?php echo $slider->link; ?>" title="<?php echo $slider->title; ?>" target="<?php echo ($this->get_option('pagelink') == "S") ? "_self" : "_blank" ?>">
+            <?PHP elseif ($imagesbox != "N" && $this->get_option('nolinker') != 'Y') : ?>
+                            <a class="thickbox sorbit-link" href="<?php echo $this->Html->image_url($slider->image); ?>" rel="" title="<?php echo $slider->title; ?>">
+            <?PHP endif; ?>
 
-                    <img <?php echo ($this->get_option('abscenter') == "Y") ? "class='absoluteCenter'":"" ?> 
-                        src="<?php echo $this->Html->image_url($slider->image); ?>" 
-                        alt="<?php echo $slider->title; ?>"                       
-                        />
-                    
-                    <?PHP if ($imagesbox != "N" || $slider->uselink == "Y") : ?></a><?PHP endif; ?>
+                            <img <?php echo ($this->get_option('abscenter') == "Y") ? "class='absoluteCenter'" : "" ?> 
+                                src="<?php echo $this->Html->image_url($slider->image); ?>" 
+                                alt="<?php echo $slider->title; ?>"                       
+                                />
+
+                <?PHP if ($imagesbox != "N" || $slider->uselink == "Y") : ?></a><?PHP endif; ?>
                 </div>
-                <?php
-                if ($sidetext != ( "Disabled" ) ) :
-                    if ($slider->textlocation != "N") : ?>
-                    <span class="orbit-caption<?php echo ($slider->textlocation == 'BR'|| $slider->textlocation == 'TR') ? ' sattext sattext'.$slider->textlocation:''?><?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' thumb-on' : ''; ?>" id='custom<?php echo ($satellite_init_ok.'-'.$i); ?>'>
-                        <h5 class="orbit-title<?php echo($style['infotitle']) ?>"><?php echo $slider->title; ?></h5>
-                        <p><?php echo $slider->description; ?> </p>
-                    </span>   
+            <?php
+            if ($sidetext != ( "Disabled" )) :
+                if ($slider->textlocation != "N") :
+                    ?>
+                        <span class="orbit-caption<?php echo ($slider->textlocation == 'BR' || $slider->textlocation == 'TR') ? ' sattext sattext' . $slider->textlocation : '' ?><?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' thumb-on' : ''; ?>" id='custom<?php echo ($satellite_init_ok . '-' . $i); ?>'>
+                            <h5 class="orbit-title<?php echo($style['infotitle']) ?>"><?php echo $slider->title; ?></h5>
+                            <p><?php echo $slider->description; ?> </p>
+                    <?php if ($slider->uselink == "Y" && !empty($slider->link) && $slider->more) : ?>
+                                <div class="more-img">
+                                    <a href="<?php echo $slider->link; ?>" title="<?php echo $slider->title; ?>" target="<?php echo ($this->get_option('pagelink') == "S") ? "_self" : "_blank" ?>">
+                                        <img src="<?php echo $this->Html->image_id($slider->more); ?>" />
+                                    </a>
+                                </div>
+                        <?php endif; ?>
+                        </span>   
                     <?php else : ?>
-                        <span class="sattext-none" id='custom<?php echo ($satellite_init_ok.'-'.$i); ?>'>
+                        <span class="sattext-none" id='custom<?php echo ($satellite_init_ok . '-' . $i); ?>'>
                         </span>
-                    <?php endif;
+                <?php
                 endif;
-                $i = $i +1;
-                endforeach; ?>
-            </div>
+            endif;
+            $i = $i + 1;
+        endforeach;
+        ?>
+        </div>
 
         </div>
 
@@ -148,8 +163,8 @@ if (!empty($slides)) :
                     startClockOnMouseOutAfter: 1000, 	 // how long after MouseOut should the timer start again
                     directionalNav: true, 		 // manual advancing directional navs
                     captions: <?php echo($this->get_option('information_temp') == 'Y') ? 'true' : 'false'; ?>,	 // do you want captions?
-                    captionAnimation: 'slideOpen', 		 // fade, slideOpen, none
-                    captionHover: <?php echo ($this->get_option("showhover") == "H") ? 'true' : 'false';?>, // true means only show caption on mousehover
+                    captionAnimation: <?php echo ($this->Gallery->data->capanimation) ? '\'' . $this->Gallery->data->capanimation . '\'' : '\'slideOpen\''; ?>, // fade, slideOpen, none
+                    captionHover: <?php echo ($this->Gallery->data->caphover) ? 'true' : 'false'; ?>, // true means only show caption on mousehover
                     captionAnimationSpeed: 800, 	 // if so how quickly should they animate in
                     bullets: <?php echo($this->get_option('thumbnails_temp') == 'Y') ? 'true' : 'false'; ?>,	// true or false to activate the bullet navigation
                     bulletThumbs: true,		 // thumbnails for the bullets
@@ -161,11 +176,12 @@ if (!empty($slides)) :
             });
         </script> 
 
-    <?php endif;
-    /******** PRO ONLY **************/
-    if ( SATL_PRO && $this->get_option('keyboard') == 'Y') {
-            require SATL_PLUGIN_DIR . '/pro/keyboard.html';
-
+    <?php
+    endif;
+    /*     * ****** PRO ONLY ************* */
+    if (SATL_PRO && $this->get_option('keyboard') == 'Y') {
+        require SATL_PLUGIN_DIR . '/pro/keyboard.html';
     }
 
-endif; ?>
+endif;
+?>

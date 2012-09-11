@@ -20,19 +20,32 @@ wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
 	<h2><?php _e('Configuration Settings', SATL_PLUGIN_NAME); ?></h2>
 	
 	<form action="<?php echo $this -> url; ?>" name="post" id="post" method="post">
-		<div id="poststuff" class="metabox-holder has-right-sidebar">			
-			<div id="side-info-column" class="inner-sidebar">		
-				<?php do_action('submitpage_box'); ?>	
-				<?php do_meta_boxes($this -> menus['satellite'], 'side', $post); ?>
-                                <?php do_action('submitpage_box'); ?>
-				<div id="submitdiv" class="postbox">
-                                     <?php if(SATL_PRO) {?>
-                	<h3>Thank you plugin supporter!</h3>
-                                        <?php $satellitebtn = "Get Support";?>
-                                        <?php } else { ?>
-                	<h3>Satellite Premium!</h3>
-                                     <?php $satellitebtn = "Learn More & Get it";?>
-                                     <?php } ?>
+		<div id="poststuff" class="metabox-holder has-right-sidebar">
+                        
+                    <div id="side-info-column" class="inner-sidebar">	
+                        <div id="submitdiv" class="postbox">
+                            <h3 class="hndle">Like the plugin?</h3>
+                            <div class="inside">
+                                <div id="misc-publishing-actions" class="preminfo">
+                                <h4><?php _e('More features with more ratings!', SATL_PLUGIN_NAME); ?></h4>
+                                <a href="http://wordpress.org/extend/plugins/slideshow-satellite/" class="star-rating" target="_blank"></a>
+                                <h4><a href="http://wordpress.org/extend/plugins/slideshow-satellite/" target="_blank"><?php _e('Help our ratings now!', SATL_PLUGIN_NAME); ?></a></h4>
+                                <?php _e('Thank you for your time in rating my plugin. Your positive ratings help make this plugin a success! :)', SATL_PLUGIN_NAME); ?>
+                                </div>
+                            </div>
+                        </div>
+                        
+                            <?php do_action('submitpage_box'); ?>	
+                            <?php do_meta_boxes($this -> menus['satellite'], 'side', $post); ?>
+                            <?php do_action('submitpage_box'); ?>
+                            <div id="submitdiv" class="postbox">
+                                 <?php if(SATL_PRO) {?>
+                    <h3 class="hndle">Thank you plugin supporter!</h3>
+                                    <?php $satellitebtn = "Get Support";?>
+                                    <?php } else { ?>
+                    <h3 class="hndle">Satellite Premium!</h3>
+                                 <?php $satellitebtn = "Learn More & Get it";?>
+                                 <?php } ?>
                     <div class="inside">
                         <div id="minor-publishing">
                             <div id="misc-publishing-actions" class="preminfo">
@@ -42,6 +55,8 @@ wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
                                 <p>Have multiple custom slideshows</p>
                                 <p>Have multiple arrow options</p>
                                 <p>Keyboard navigation</p>
+                                <p>Ajax load the plugin through a splash image</p>
+                                <p>Display a Gallery list of slideshows</p>
 				<p>And more!</p>
                             </div>
                         </div>

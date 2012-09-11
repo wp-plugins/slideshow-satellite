@@ -12,27 +12,27 @@
   var ORBIT = {
     
     defaults: {  
-      animation: 'horizontal-push', 		// fade, horizontal-slide, vertical-slide, horizontal-push, vertical-push
-      animationSpeed: 600, 				// how fast animtions are
-      timer: true, 						// true or false to have the timer
-      advanceSpeed: 4000, 				// if timer is enabled, time between transitions 
-      pauseOnHover: false, 				// if you hover pauses the slider
-      startClockOnMouseOut: false, 		// if clock should start on MouseOut
+      animation: 'horizontal-push', 	// fade, horizontal-slide, vertical-slide, horizontal-push, vertical-push
+      animationSpeed: 600, 		// how fast animtions are
+      timer: true, 			// true or false to have the timer
+      advanceSpeed: 4000, 		// if timer is enabled, time between transitions 
+      pauseOnHover: false, 		// if you hover pauses the slider
+      startClockOnMouseOut: false, 	// if clock should start on MouseOut
       startClockOnMouseOutAfter: 1000, 	// how long after MouseOut should the timer start again
-      directionalNav: true, 				// manual advancing directional navs
-      captions: true, 					// do you want captions?
-      captionAnimation: 'fade', 			// fade, slideOpen, none
-      captionAnimationSpeed: 600, 		// if so how quickly should they animate in
+      directionalNav: true, 		// manual advancing directional navs
+      captions: true, 			// do you want captions?
+      captionAnimation: 'fade', 	// fade, slideOpen, none
+      captionAnimationSpeed: 600, 	// if so how quickly should they animate in
       captionHover: false,
-      bullets: false,						// true or false to activate the bullet navigation
-      bulletThumbs: false,				// thumbnails for the bullets
-      bulletThumbLocation: '',			// location from this file where thumbs will be
+      bullets: false,			// true or false to activate the bullet navigation
+      bulletThumbs: false,		// thumbnails for the bullets
+      bulletThumbLocation: '',		// location from this file where thumbs will be
       afterSlideChange: $.noop,		// empty function 
-      centerBullets: true,    // center bullet nav with js, turn this off if you want to position the bullet nav manually
+      centerBullets: true,              // center bullet nav with js, turn this off if you want to position the bullet nav manually
       thumbWidth: 80
  	  },
  	  
- 	  activeSlide: 0,
+    activeSlide: 0,
     numberSlides: 0,
     orbitWidth: null,
     orbitHeight: null,
@@ -88,9 +88,10 @@
     loaded: function () {
       this.$element
         .addClass('orbit')
-        .width('1px');
+        .width('1px')
+        .css('background','none');
         
-      this.setDimentionsFromLargestSlide(this.options.bullets, this.options.thumbWidth);
+      this.setDimensionsFromLargestSlide(this.options.bullets, this.options.thumbWidth);
       this.updateOptionsIfOnlyOneSlide();
       this.setupFirstSlide();
       this.setupClicks();
@@ -115,13 +116,17 @@
       if (this.options.bulletThumbs && this.options.bullets) {
           this.setupDirectionalThumb(this.options.thumbWidth);
       }
+      //if (this.options.animation == "fade") {
+        this.$slides.css('opacity',0);
+      //}
+
     },
     
     currentSlide: function () {
       return this.$slides.eq(this.activeSlide);
     },
     
-    setDimentionsFromLargestSlide: function (bullet, twidth) {
+    setDimensionsFromLargestSlide: function (bullet, twidth) {
       //Collect all slides and set slider size of largest image
       var self = this;
       this.$slides.each(function () {
@@ -272,55 +277,42 @@
           this.stopClock();
       }
     },
-    
-    setupCaptions: function () {
-      this.$caption = $(this.captionHTML);
-      $tcap = $(this.captionHTML);
-      this.$wrapper.append(this.$caption);
-        //if (this.options.captionHover) {
-       // this.$wrapper.mouseleave(this.setCaption(false));
-        //this.$wrapper.mouseenter(this.setCaption(true));
-        /*} else {
-            this.setCaption(true);
-        }*/
-        $setfalse = this.setCaption(false);
-        this.setCaption($tcap);
-        //this.$wrapper.hover(  this.setCaption(true), this.setCaption(false) );
         
+    setupCaptions: function () {
+        this.$caption = $(this.captionHTML);
+        this.$wrapper.append(this.$caption);
+        this.setCaption(true);
     },
     
-    setCaption: function ($tcap) {
+    setCaption: function (toggle) {
       
-      //if (capshow == true) {
-          var captionLocation = this.currentSlide().attr('data-caption'),
-              captionHTML;     
-      //} else { var captionLocation = null; }
-    		
+      var captionLocation = this.currentSlide().attr('data-caption'),
+        captionHTML;     
       if (!this.options.captions) {
-    		return false; 
+        return false; 
     	} 
     	        		
     	//Set HTML for the caption if it exists
-    	if (captionLocation) {
-    	  captionHTML = $(captionLocation).html(); //get HTML from the matching HTML entity
+    	if (captionLocation && toggle) {
+            captionHTML = $(captionLocation).html(); //get HTML from the matching HTML entity
             this.$caption
             .attr('id', captionLocation) // Add ID caption TODO why is the id being set?
             .html(captionHTML); // Change HTML in Caption 
             //
-        captionClass = $(captionLocation).attr('class');
+            captionClass = $(captionLocation).attr('class');
             this.$caption.attr('class', captionClass); // Add class caption TODO why is the id being set?
-            
-          //Animations for Caption entrances
-          if ( this.options.captionHover ) {
-            $cap = this.$caption;
-            $speed = this.options.captionAnimationSpeed;
-            this.$wrapper.find('.orbit').parent().hover( function() {
-                jQuery($cap).fadeIn($speed)
-            },function() {
-                jQuery($cap).fadeOut($speed)
-            });
-            return;
-          } 
+
+            //Animations for Caption entrances
+            if ( this.options.captionHover ) {
+                $cap = this.$caption;
+                $speed = this.options.captionAnimationSpeed;
+                this.$wrapper.find('.orbit').parent().hover( function() {
+                    jQuery($cap).fadeIn($speed)
+                },function() {
+                    jQuery($cap).fadeOut($speed)
+                });
+                return;
+            } 
               
             switch (this.options.captionAnimation) {
               case 'none':
@@ -337,13 +329,17 @@
             //Animations for Caption exits
             switch (this.options.captionAnimation) {
               case 'none':
-                this.$caption.hide();
+                this.$caption.hide().remove();
                 break;
               case 'fade':
-                this.$caption.fadeOut(this.options.captionAnimationSpeed);
+                this.$caption.fadeOut(this.options.captionAnimationSpeed, function() {
+                    $(this).remove();
+                });
                 break;
               case 'slideOpen':
-                this.$caption.slideUp(this.options.captionAnimationSpeed);
+                this.$caption.slideUp(this.options.captionAnimationSpeed, function() {
+                    $(this).remove();
+                });
                 break;
             }
           }
@@ -352,31 +348,39 @@
     
     setupDirectionalNav: function () {
       var self = this;
-
       this.$wrapper.append(this.directionalNavHTML);
+      this.$wrapper.find('.left').css('display','none');
+      this.$wrapper.find('.right').css('display','none');
       
-      this.$wrapper.find('.left').css('opacity', '0.3');
-        this.$wrapper.find('.left').hover(function () {
-          jQuery('.slider-nav .left').fadeTo("fast",0.75);
-        },function(){
-          jQuery('.slider-nav .left').fadeTo("fast",0.3);
-        });
-      this.$wrapper.find('.right').css('opacity', '0.3');
-        this.$wrapper.find('.right').hover(function () {
-          jQuery('.slider-nav .right').fadeTo("fast",0.75);
-        },function(){
-          jQuery('.slider-nav .right').fadeTo("fast",0.3);
-        });
-        
+      this.$wrapper.hover(function () {
+          self.$wrapper.find('.left').css({'opacity':'0.3','display':'block'});
+            self.$wrapper.find('.left').hover(function () {
+              jQuery('.slider-nav .left').fadeTo("fast",0.75);
+            },function(){
+              jQuery('.slider-nav .left').fadeTo("fast",0.3);
+            });
+          self.$wrapper.find('.right').css({'opacity':'0.3','display':'block'});
+            self.$wrapper.find('.right').hover(function () {
+              jQuery('.slider-nav .right').fadeTo("fast",0.75);
+            },function(){
+              jQuery('.slider-nav .right').fadeTo("fast",0.3);
+            });
+
+      }, function () {
+          self.$wrapper.find('.left').css({'display':'none'});
+          self.$wrapper.find('.right').css({'display':'none'});
+      });
+      
       this.$wrapper.find('.left').click(function () { 
         self.stopClock();
         self.shift("prev");
       });
-      
+
       this.$wrapper.find('.right').click(function () {
         self.stopClock();
         self.shift("next")
-      });
+      });          
+
     },
     
     setupDirectionalThumb: function (thumbHeight) {
@@ -447,15 +451,16 @@
     resetAndUnlock: function () {
       this.$slides
       	.eq(this.prevActiveSlide)
-      	.css({"z-index" : 1});
+      	.css({"z-index" : 1})
+        .animate({"opacity": 0}, this.options.animationSpeed);
       this.unlock();
       this.setupClicks();
+      this.setupCaptions();
       this.options.afterSlideChange.call(this, this.$slides.eq(this.prevActiveSlide), this.$slides.eq(this.activeSlide));
     },
     
     shift: function (direction) {
       var slideDirection = direction;
-      
       //remember previous activeSlide
       this.prevActiveSlide = this.activeSlide;
       
@@ -493,8 +498,20 @@
           .eq(this.prevActiveSlide)
           .css({"z-index" : 2});    
             
-        //fade
-        if (this.options.animation == "fade") {
+        //fade empty
+        if (this.options.animation == "fade-empty") {
+          this.$slides
+            .eq(this.prevActiveSlide)
+            .animate({"opacity" : 0}, this.options.animationSpeed);
+          this.$slides
+            .eq(this.activeSlide)
+            .css({"opacity" : 0, "z-index" : 3})
+            .delay('500')
+            .animate({"opacity" : 1}, this.options.animationSpeed, this.resetAndUnlock);
+        }
+        
+        //fade blend
+        if (this.options.animation == "fade-blend") {
           this.$slides
             .eq(this.activeSlide)
             .css({"opacity" : 0, "z-index" : 3})
@@ -520,13 +537,14 @@
           if (slideDirection == "next") {
             this.$slides
               .eq(this.activeSlide)
-              .css({"left": this.orbitWidth, "z-index" : 3})
+              .css({"opacity": 1, "left": this.orbitWidth, "z-index" : 3})
               .animate({"left" : 0}, this.options.animationSpeed, this.resetAndUnlock);
           }
+          
           if (slideDirection == "prev") {
             this.$slides
               .eq(this.activeSlide)
-              .css({"left": -this.orbitWidth, "z-index" : 3})
+              .css({"opacity" : 1, "left": -this.orbitWidth, "z-index" : 3})
               .animate({"left" : 0}, this.options.animationSpeed, this.resetAndUnlock);
           }
         }
@@ -536,13 +554,13 @@
           if (slideDirection == "prev") {
             this.$slides
               .eq(this.activeSlide)
-              .css({"top": this.orbitHeight, "z-index" : 3})
+              .css({"top": this.orbitHeight, "z-index" : 3, "opacity":1})
               .animate({"top" : 0}, this.options.animationSpeed, this.resetAndUnlock);
           }
           if (slideDirection == "next") {
             this.$slides
               .eq(this.activeSlide)
-              .css({"top": -this.orbitHeight, "z-index" : 3})
+              .css({"top": -this.orbitHeight, "z-index" : 3, "opacity":1})
               .animate({"top" : 0}, this.options.animationSpeed, this.resetAndUnlock);
           }
         }
@@ -552,18 +570,18 @@
           if (slideDirection == "next") {
             this.$slides
               .eq(this.activeSlide)
-              .css({"left": this.orbitWidth, "z-index" : 3})
+              .css({"left": this.orbitWidth, "z-index" : 3, "opacity":1})
               .animate({"left" : 0}, this.options.animationSpeed, this.resetAndUnlock);
             this.$slides
               .eq(this.prevActiveSlide)
-              .animate({"left" : -this.orbitWidth}, this.options.animationSpeed);
+              .animate({"left" : -this.orbitWidth*2}, this.options.animationSpeed);
           }
           if (slideDirection == "prev") {
             this.$slides
               .eq(this.activeSlide)
-              .css({"left": -this.orbitWidth, "z-index" : 3})
+              .css({"left": -this.orbitWidth*4, "z-index" : 3, "opacity":1})
               .animate({"left" : 0}, this.options.animationSpeed, this.resetAndUnlock);
-		        this.$slides
+            this.$slides
               .eq(this.prevActiveSlide)
               .animate({"left" : this.orbitWidth}, this.options.animationSpeed);
           }
@@ -574,7 +592,7 @@
           if (slideDirection == "next") {
             this.$slides
               .eq(this.activeSlide)
-              .css({top: -this.orbitHeight, "z-index" : 3})
+              .css({top: -this.orbitHeight, "z-index" : 3, "opacity":1})
               .animate({top : 0}, this.options.animationSpeed, this.resetAndUnlock);
             this.$slides
               .eq(this.prevActiveSlide)
@@ -583,7 +601,7 @@
           if (slideDirection == "prev") {
             this.$slides
               .eq(this.activeSlide)
-              .css({top: this.orbitHeight, "z-index" : 3})
+              .css({top: this.orbitHeight, "z-index" : 3, "opacity":1})
               .animate({top : 0}, this.options.animationSpeed, this.resetAndUnlock);
 		        this.$slides
               .eq(this.prevActiveSlide)
@@ -595,6 +613,10 @@
       }
     }
   };
+  $.fn.wait = function (MiliSeconds) {
+      jQuery(this).animate({opacity: '+=0'}, MiliSeconds);
+      return this;
+  }
 
   $.fn.orbit = function (options) {
     return this.each(function () {
@@ -622,31 +644,31 @@
       options = data || options;
     },
 		
-		add: function (handleObj) {
-		  var $this = $(this),
-		      src;
+        add: function (handleObj) {
+          var $this = $(this),
+              src;
 		      
 	    if ( this.nodeType === 1 && this.tagName.toLowerCase() === 'img' && this.src !== '' ) {
-  			if (options.forceLoad) {
-  			  src = $this.attr('src');
-  			  $this.attr('src', '');
-  			  bindToLoad(this, handleObj.handler);
-          $this.attr('src', src);
-  			} else if ( this.complete || this.readyState === 4 ) {
-          handleObj.handler.apply(this, arguments);
-  			} else {
-  			  bindToLoad(this, handleObj.handler);
-  			}
+                if (options.forceLoad) {
+                  src = $this.attr('src');
+                  $this.attr('src', '');
+                  bindToLoad(this, handleObj.handler);
+                  $this.attr('src', src);
+                } else if ( this.complete || this.readyState === 4 ) {
+                    handleObj.handler.apply(this, arguments);
+  		} else {
+                    bindToLoad(this, handleObj.handler);
   		}
-		},
+            }
+	},
 		
-		teardown: function (namespaces) {
-		  $(this).unbind('.imageready');
-		}
-	};
-	
-	function bindToLoad(element, callback) {
-	  var $this = $(element);
+        teardown: function (namespaces) {
+          $(this).unbind('.imageready');
+        }
+    };
+
+    function bindToLoad(element, callback) {
+      var $this = $(element);
 
     $this.bind('load.imageready', function () {
        callback.apply(element, arguments);

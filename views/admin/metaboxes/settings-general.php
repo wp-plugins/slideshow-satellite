@@ -3,22 +3,14 @@
         <tr>
             <th><label for="transition"><?php _e('Transition Style', SATL_PLUGIN_NAME); ?></label></th>
             <td>
-                <?php if (SATL_PRO) { ?>
                     <select name="transition" class="satellite_trans">
-                        <option <?php echo ($this->get_option('transition') == "F") ? 'selected' : ''; ?> value="F"><?php _e('Fade', SATL_PLUGIN_NAME); ?></option> 
+                        <option <?php echo ($this->get_option('transition') == "FB") ? 'selected' : ''; ?> value="FB"><?php _e('Fade Blend', SATL_PLUGIN_NAME); ?></option> 
+                        <option <?php echo ($this->get_option('transition') == "FE") ? 'selected' : ''; ?> value="FE"><?php _e('Fade Empty', SATL_PLUGIN_NAME); ?></option> 
                         <option <?php echo ($this->get_option('transition') == "OHS") ? 'selected' : ''; ?> value="OHS"><?php _e('Orbit Horizontal-Slide', SATL_PLUGIN_NAME); ?></option> 
                         <option <?php echo ($this->get_option('transition') == "OVS") ? 'selected' : ''; ?> value="OVS"><?php _e('Orbit Vertical-Slide', SATL_PLUGIN_NAME); ?></option> 
                         <option <?php echo ($this->get_option('transition') == "OHP") ? 'selected' : ''; ?> value="OHP"><?php _e('Orbit Horizontal-Push', SATL_PLUGIN_NAME); ?></option> 
-                        <!--<option <?php echo ($this->get_option('transition') == "OM") ? 'selected' : ''; ?> value="OM"><?php _e('Orbit Multi-Image Slider', SATL_PLUGIN_NAME); ?></option> -->
+                        <option <?php echo ($this->get_option('transition') == "OVP") ? 'selected' : ''; ?> value="OVP"><?php _e('Orbit Vertical-Push', SATL_PLUGIN_NAME); ?></option> 
                     </select>
-                <? } else { ?>
-                    <select name="transition" class="satellite_trans">
-                        <option <?php echo ($this->get_option('transition') == "F") ? 'selected' : ''; ?> value="F"><?php _e('Fade', SATL_PLUGIN_NAME); ?></option> 
-                        <option <?php echo ($this->get_option('transition') == "OHS") ? 'selected' : ''; ?> value="OHS"><?php _e('Orbit Horizontal-Slide', SATL_PLUGIN_NAME); ?></option> 
-                        <option <?php echo ($this->get_option('transition') == "OVS") ? 'selected' : ''; ?> value="OVS"><?php _e('Orbit Vertical-Slide', SATL_PLUGIN_NAME); ?></option> 
-                        <option <?php echo ($this->get_option('transition') == "OHP") ? 'selected' : ''; ?> value="OHP"><?php _e('Orbit Horizontal-Push', SATL_PLUGIN_NAME); ?></option> 
-                    </select>
-                <?php } ?>
                 <span class="howto"><?php _e('Orbits do not allow thumbnails', SATL_PLUGIN_NAME); ?></span>
             </td>
         </tr>
@@ -129,38 +121,6 @@
             </tbody>
         </table>
     </div>
-    <!--div id="autoslide_div" style="display:<?php echo ($this->get_option('autoslide') == "Y") ? 'block' : 'none'; ?>;">
-        <table class="form-table">
-            <tbody>
-                <tr>
-                    <th><label for="autospeed"><?php _e('Auto Speed', SATL_PLUGIN_NAME); ?></label></th>
-                    <td>
-                        <input type="text" style="width:45px;" name="autospeed" value="<?php echo $this->get_option('autospeed'); ?>" id="autospeed" /> <?php _e('speed', SATL_PLUGIN_NAME); ?>
-                        <span class="howto"><?php _e('default:10', SATL_PLUGIN_NAME); ?><br/><?php _e('lower number for shorter interval between images', SATL_PLUGIN_NAME); ?></span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div-->
-    <table class="form-table">
-
-        <tbody>
-            <!--tr>
-                <th><label for="fadespeed"><?php _e('Image Fading Speed', SATL_PLUGIN_NAME); ?></label></th>
-                <td>
-                    <input style="width:45px;" type="text" name="fadespeed" value="<?php echo $this->get_option('fadespeed'); ?>" id="fadespeed" />
-                    <span class="howto"><?php _e('default:50 recommended:1-100', SATL_PLUGIN_NAME); ?><br/><?php _e('lower number for quicker fading of images', SATL_PLUGIN_NAME); ?></span>
-                </td>
-            </tr-->
-            <!--tr>
-                <th><label for="informationY"><?php _e('Show Information', SATL_PLUGIN_NAME); ?></label></th>
-                <td>
-                    <label><input onclick="jQuery('#information_div').show();" <?php echo ($this->get_option('information') == "Y") ? 'checked="checked"' : ''; ?> type="radio" name="information" value="Y" id="informationY" /> <?php _e('Yes', SATL_PLUGIN_NAME); ?></label>
-                    <label><input onclick="jQuery('#information_div').hide();" <?php echo ($this->get_option('information') == "N") ? 'checked="checked"' : ''; ?> type="radio" name="information" value="N" id="informationN" /> <?php _e('No', SATL_PLUGIN_NAME); ?></label>
-                </td>
-            </tr>-->
-        </tbody>
-    </table>
     <div id="information_div" style="display:<?php echo ($this->get_option('information') == "Y") ? 'block' : 'none'; ?>;">
         <table class="form-table">
             <tbody>

@@ -7,6 +7,7 @@ class SatellitePlugin {
     var $pre = 'Satellite';
     var $debugging = false;
     var $menus = array();
+    //var $latestorbit = 'jquery.orbit-1.3.1.js';
     var $latestorbit = 'orbit-min.js';
     var $cssfile = 'orbit-css.php';
     var $cssadmin = 'admin-styles.css';
@@ -15,7 +16,7 @@ class SatellitePlugin {
         'settings' => 'satellite',
         'newgallery' => 'satellite-galleries',
     );
-    var $helpers = array('Db', 'Html', 'Form', 'Metabox', 'Version');
+    var $helpers = array('Ajax', 'Config', 'Db', 'Html', 'Form', 'Metabox', 'Version');
     var $models = array('Slide','Gallery');
 
     function register_plugin($name, $base) {
@@ -88,11 +89,12 @@ class SatellitePlugin {
                 //print_r($wp_query->current_post);
 
                 if (is_array($width_temp)) {
-                    foreach ($width_temp as $skey => $sval) {
-                        if ($skey == $pID) 
+                    foreach ($width_temp as $skey => $sval) {                        
+                        if ($skey == $pID)
                             $satlStyleUrl .= "&amp;width_temp=" . urlencode($sval);
                     }
                 }
+
                 if (is_array($height_temp)) {
                     foreach ($height_temp as $skey => $sval) {
                         if ($skey == $pID)
@@ -203,7 +205,7 @@ class SatellitePlugin {
         $this->add_option('pagelink', "S");
         $this->add_option('wpattach', "N");
         $this->add_option('captionlink', "N");
-        $this->add_option('transition', "F");
+        $this->add_option('transition', "FB");
         $this->add_option('information', "Y");
         $this->add_option('infospeed', 10);
         $this->add_option('showhover', "P");
@@ -218,6 +220,7 @@ class SatellitePlugin {
         $this->add_option('embedss', "Y");
         $this->add_option('satwiz', "Y");
         $this->add_option('ggljquery', "Y");
+        $this->add_option('splash', "N");
         $this->add_option('stldb_version', "1.0");
         // Orbit Only
         $this->add_option('autospeed2', 5000);
@@ -472,7 +475,7 @@ class SatellitePlugin {
 
     function update_option($name = '', $value = '') {
         if (update_option($this->pre . $name, $value)) {
-            return true;
+             return true;
         }
         return false;
     }
@@ -537,6 +540,7 @@ class SatellitePlugin {
                         dbDelta($this->table_query, true);
                         $this -> update_option($model.'db_version', SATL_VERSION);
                         $this -> update_option('stldb_version', SATL_VERSION);
+                        error_log("Updated slideshow satellite databases");
                     }
                 } else {
                     //echo "this model db version: ".$this->get_option($model.'db_version');

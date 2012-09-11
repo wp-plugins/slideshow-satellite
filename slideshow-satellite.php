@@ -4,11 +4,11 @@ Plugin Name: Slideshow Satellite
 Plugin URI: http://c-pr.es/projects/satellite
 Author: C- Pres
 Author URI: http://c-pr.es/membership-options
-Description: Display photography and content in new ways with this slideshow. Slideshow Satellite uses Orbit to give a multitude of transition options and customizations.
-Version: 1.2
+Description: Display photography and content in highly configurable ways with this slideshow. Pretty pretty pretty.
+Version: 1.3
 */
 define('DS', '/');
-define( 'SATL_VERSION', '1.2');
+define( 'SATL_VERSION', '1.3');
 $uploads = wp_upload_dir();
 if ( ! defined( 'SATL_PLUGIN_BASENAME' ) )
 	define( 'SATL_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -63,7 +63,26 @@ class Satellite extends SatellitePlugin {
                   register_activation_hook( __FILE__, array( &$satlp, 'prem_activate_plugin' ));
                 }
 		
-	}      
+	}  
+
+        function my_action_javascript() {
+            ?>
+
+            <script type="text/javascript">
+            jQuery(document).ready(function($) {
+                function showSatellite(id) {
+                    var data = {
+                            action: 'my_action',
+                            slideshow: id
+                    };
+                    $.post(ajaxurl, data, function(response) {
+                            alert('Got this from the server: ' + response);
+                    });        
+                }
+            }
+            </script>
+            <?php 
+        }        
 
 	function admin_menu() {
 		add_menu_page(__('Satellite', SATL_PLUGIN_NAME), __('Satellite', SATL_PLUGIN_NAME), $this -> get_option('manager'), "satellite", array($this, 'admin_settings'), SATL_PLUGIN_URL . '/images/icon.png');
@@ -163,7 +182,7 @@ class Satellite extends SatellitePlugin {
                     require SATL_PLUGIN_DIR . '/pro/newinit.php';
                 }
 
-		$defaults = array('post_id' => null, 'exclude' => null, 'include' => null, 'custom' => null, 'gallery' => null, 'caption' => null, 'auto' => null, 'w' => null, 'h' => null, 'nolink' => null, 'slug' => null, 'thumbs' => null, 'align' => null, 'nav' => null, 'transition' => null, 'display' => null, 'random' => null );
+		$defaults = array('post_id' => null, 'exclude' => null, 'include' => null, 'custom' => null, 'gallery' => null, 'caption' => null, 'auto' => null, 'w' => null, 'h' => null, 'nolink' => null, 'slug' => null, 'thumbs' => null, 'align' => null, 'nav' => null, 'transition' => null, 'display' => null, 'random' => null, 'splash' => null );
 		extract( shortcode_atts( $defaults, $atts ) );
 		
 		$this->resetTemp();
@@ -209,9 +228,11 @@ class Satellite extends SatellitePlugin {
 		}
 
 		if ( !empty( $transition ) ) {
-			if (($this -> get_option( 'transition' )!='F' ) && ( $transition == 'fade' )) {
-				$this -> update_option('transition_temp', 'F');	
-			} elseif ( $transition == 'vertical-slide' ) {
+			if (($this -> get_option( 'transition' )!='FE' ) && ( $transition == 'fade-empty' )) {
+				$this -> update_option('transition_temp', 'FE');	
+			} elseif (($this -> get_option( 'transition' )!='FB' ) && ( $transition == 'fade-blend' ) ) {
+				$this -> update_option( 'transition_temp', 'FB' );
+			} elseif (($this -> get_option( 'transition' )!='OHS' ) && ( $transition == 'vertical-slide' ) ) {
 				$this -> update_option( 'transition_temp', 'OVS' );
 			} elseif (($this -> get_option( 'transition' )!='OHS' ) && ( $transition == 'horizontal-slide' )) {
 				$this -> update_option( 'transition_temp', 'OHS' );
@@ -230,6 +251,11 @@ class Satellite extends SatellitePlugin {
 		} elseif ( $this -> get_option( 'autoslide') == 'Y' ) {
 			$this -> update_option( 'autoslide_temp', 'Y' ); 
 		}
+                if ( !empty( $splash )) {
+                        if ($splash == 'on')
+                           $this -> update_option('splash', true);
+                }
+               
 
                 /******** PRO ONLY **************/
 		if ( SATL_PRO ) {
@@ -247,13 +273,24 @@ class Satellite extends SatellitePlugin {
 			else { $this -> update_option( 'nolinker', 'N' ); }
 		if ( (!empty($custom)) || (!empty($gallery)) ) { // custom is deprecated as of version 1.2
                     $gallery = ($custom) ? $custom : $gallery;
-                    $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($gallery)), null, array('order', "ASC"));
+                    $multigallery = preg_match("[\,]",$gallery);
+                    if ( $multigallery ) {
+                        $gallery_array = explode(',',$gallery);
+                        $first_gallery = $gallery_array[0];
+                        $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($first_gallery)), null, array('order', "ASC"));
+                    } else {
+                        $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($gallery)), null, array('order', "ASC"));
+                    }
+                                            
                     if( $this -> get_option('random') == "on"){
                         shuffle($slides);
                     }
                     $this->slidenum = count($slides);
-                    if (    $this -> get_option( 'thumbnails_temp') == "FR" || 
-                            $this -> get_option( 'thumbnails_temp') == "FL" )
+                    if ( SATL_PRO && $multigallery )
+                        $content = $this -> render('galleries', array('slides' => $slides, 'frompost' => false, 'galleries' => $gallery_array), false, 'premium');
+                    elseif (SATL_PRO && $this -> get_option('splash'))
+                        $content = $this -> render('splash', array('slides' => $slides, 'frompost' => false), false, 'orbit');
+                    elseif ( $this -> get_option( 'thumbnails_temp') == "FR" || $this -> get_option( 'thumbnails_temp') == "FL" )
                         $content = $this -> render('fullthumb', array('slides' => $slides, 'frompost' => false), false, 'orbit');
                     else
                         $content = $this -> render('default', array('slides' => $slides, 'frompost' => false), false, 'orbit');
@@ -302,7 +339,8 @@ class Satellite extends SatellitePlugin {
 		elseif ($this -> get_option('thumbnails')=='N') { $this -> update_option('thumbnails_temp', 'N'); }
 		if ($this -> get_option('autoslide')=='Y') { $this -> update_option('autoslide_temp', 'Y'); }
 		elseif ($this -> get_option('autoslide')=='N') { $this -> update_option('autoslide_temp', 'N'); }
-		if ($this -> get_option('transition')=='F') { $this -> update_option('transition_temp', 'F'); }
+		if ($this -> get_option('transition')=='FE') { $this -> update_option('transition_temp', 'FE'); }
+		elseif ($this -> get_option('transition')=='FB') { $this -> update_option('transition_temp', 'FB'); }
 		elseif ($this -> get_option('transition')=='OVS') { $this -> update_option('transition_temp', 'OVS'); }
 		elseif ($this -> get_option('transition')=='OHS') { $this -> update_option('transition_temp', 'OHS'); }
 		elseif ($this -> get_option('transition')=='OHP') { $this -> update_option('transition_temp', 'OHP'); }
@@ -310,14 +348,21 @@ class Satellite extends SatellitePlugin {
                 if ($this -> get_option('random') != null) { $this -> update_option('random', null); }
                 
                 // RESET FOR PREMIUM EDITION SINGLE INSTANCE
-                if ($this -> get_option('nav_temp') != null) { $this -> update_option('nav_temp', null); }
-                if ($this -> get_option('align_temp') != null) { $this -> update_option('align_temp', null); }
-                if ($this -> get_option('width_temp') != null) { $this -> update_option('width_temp', null); }
-                if ($this -> get_option('height_temp') != null) { $this -> update_option('height_temp', null); }
+                /** Align, Width, Height, all save on top of itself, and don't need cleared out **/
+                
+                //if ($this -> get_option('align_temp') != null) { $this -> update_option('align_temp', null); }
+                //if ($this -> get_option('nav_temp') != null) { $this -> update_option('nav_temp', null); }
+                //if ($this -> get_option('width_temp') != null) { $this -> update_option('width_temp', null); }
+                //if ($this -> get_option('height_temp') != null) { $this -> update_option('height_temp', null); }
+                
 		$style = array();
 		$style = $this -> get_option('styles');
 		$style['align'] = "none";
 		$this -> update_option('styles', $style);
+                
+                // RESET non configurable options
+                $this -> update_option('splash', false);
+                $this -> update_option('align', false);
 	}
 	function exclude_ids( $attachments, $exclude, $include ) {
 		if ( ! empty( $exclude )) {

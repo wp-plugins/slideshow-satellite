@@ -34,6 +34,9 @@ root {
     background-color:#eef5fb; 
     padding:10px;
 }
+#satl_table .howto {
+    margin-bottom:10px;
+}
 .togbox {
     padding: 0;
     width: 22px;
@@ -97,4 +100,16 @@ root {
 }
 .ui-sortable  .thumb img {
     cursor: pointer;
+}
+.verttop {
+    vertical-align: top;
+}
+.star-rating {
+    background: transparent url('../images/5star.jpg') bottom;
+    height:20px;
+    width:102px;
+    display:block;
+}
+.star-rating:hover {
+    background-position: top;
 }

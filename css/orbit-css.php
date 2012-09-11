@@ -535,6 +535,7 @@ li > li.has-thumb {
     border-top: 2px solid #000; }
     
 /******* Galleries and Splash Display ******/
+
 .satl-gal-wrap {
     position: relative;
     width: <?php echo($styles['width']+$galleryTitles);?>px;

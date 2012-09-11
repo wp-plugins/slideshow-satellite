@@ -475,7 +475,6 @@ class SatellitePlugin {
 
     function update_option($name = '', $value = '') {
         if (update_option($this->pre . $name, $value)) {
-            error_log("update: ".$name." to ".$value);
              return true;
         }
         return false;

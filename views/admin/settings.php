@@ -27,10 +27,10 @@ wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
                             <h3 class="hndle">Like the plugin?</h3>
                             <div class="inside">
                                 <div id="misc-publishing-actions" class="preminfo">
-                                <h4>More features with more ratings!</h4>
+                                <h4><?php _e('More features with more ratings!', SATL_PLUGIN_NAME); ?></h4>
                                 <a href="http://wordpress.org/extend/plugins/slideshow-satellite/" class="star-rating" target="_blank"></a>
-                                <h4><a href="http://wordpress.org/extend/plugins/slideshow-satellite/" target="_blank">Help our ratings now!</a></h4>
-                                Thank you for your time in rating my plugin, each positive rating reinforces my work ethic.
+                                <h4><a href="http://wordpress.org/extend/plugins/slideshow-satellite/" target="_blank"><?php _e('Help our ratings now!', SATL_PLUGIN_NAME); ?></a></h4>
+                                <?php _e('Thank you for your time in rating my plugin. Your positive ratings help make this plugin a success! :)', SATL_PLUGIN_NAME); ?>
                                 </div>
                             </div>
                         </div>
@@ -55,6 +55,8 @@ wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
                                 <p>Have multiple custom slideshows</p>
                                 <p>Have multiple arrow options</p>
                                 <p>Keyboard navigation</p>
+                                <p>Ajax load the plugin through a splash image</p>
+                                <p>Display a Gallery list of slideshows</p>
 				<p>And more!</p>
                             </div>
                         </div>

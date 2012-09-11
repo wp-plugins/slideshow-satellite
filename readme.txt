@@ -41,10 +41,16 @@ Installing the WordPress Slideshow Satellite plugin manually is very easy. Simpl
 = I am having some issues with my plugin, whats a good first look? =
 Start with 'Reset to Defaults' on the top of your plugin configuration page.
 
+= Still having some major issues, next? =
+You may be dealing with a conflict with your theme or other plugins. To really test, if it works with Twenty-Eleven theme and no other plugins active it's a conflict.
+
+= It's not that serious, just a little funky=
+Oh, well have you checked out the Manual? http://bit.ly/stlmanual
+
 = How can I display the slideshow in a sidebar as a widget? =
 Install the plugin Advanced Text Widget and put the embed code in there. We would suggest using the Premium Edition as you can specify width and height in the embed.
 
-= All the images show up on the page, this ain't no slideshow!!! =
+= All the images show up on the page, this ain't no slideshow!!! Oh, and I'm running the slideshow through the template in PHP or through another plugin =
 The slideshow isn't loading your JS or CSS most likely! That's because the plugin doesn't know it's being called. It's looking for the `[satellite` reference and not seeing it. `[satellite display=off]` in an area being called by the loop on that page or just going to Advanced Settings and turn 'Shortcode Requirement' to off.
 
 = I'm seeing a non-stop loading icon on the page =
@@ -54,16 +60,21 @@ You're most likely dealing with some javascript weirdness. Check using Firebug a
 Yes you can, but you have to have the Premium Edition
 
 = What if I only want captions on some of my pages
-Set your default captions to off; for any slideshow you put on your page use `[satellite caption="on"]`
-
-= What if my configuration isn't showing up? =
-You're most likely not running PHP5. Talk to your host to upgrade or switch your hosting provider. PHP5 is eleventy years old.
+Set your default captions to off; for any slideshow you put on your page use `[satellite caption=on]` - Captions can also be set at the Gallery level
 
 = How do I find the numbers to exclude (or include)? =
 Not as easy as it used to be! Go into the Media Library. Choose an image you want to exclude and click on it and notice your address bar: "/wp-admin/media.php?action=edit&attachment_id=353". Therefore, `[satellite exclude=353]`
 
 = What sizes can my thumbnails be? =
 For Wordpress Image Gallery the max is 100, for the Custom Galleries the max is 150 pixels. The thumbnail must be at least 10 pixels.
+
+= How do I show multiple galleries on a single page in a tabbed view? =
+If you have the premium edition and multiple custom galleries setup do this `[satellite gallery=5,3,4,8]` and they will display in that order
+
+= The slideshow loads a little funky, I fear it's the theme =
+With premium edition, you can load the plugin after the theme loads by using the splash screen `[satellite gallery=2 splash=on]`
+
+= 
 
 Premium Questions
 
@@ -72,7 +83,6 @@ Many times this has to do with how it was uploaded... Delete all the slideshow-s
 
 You may also want to "Reset Configuration" from the Configuration page
 
-= Will I be able to use my 1 time download on a future version? If you're lucky copying the /pro/ folder from your initial install to your next you will keep your updates. If new premium updates were made this may not work.
 
 == Screenshots ==
 1. Slideshow Satellite with bottom thumbnails

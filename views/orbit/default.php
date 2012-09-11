@@ -79,8 +79,8 @@ if (!empty($slides)) :
                     startClockOnMouseOutAfter: 1000,            // how long after MouseOut should the timer start again
                     directionalNav: true,                       // manual advancing directional navs
                     captions: <?php echo($this->get_option('information_temp') == 'Y') ? 'true' : 'false'; ?>,	 // do you want captions?
-                    captionAnimation: <?php echo ($this->Gallery->data->capanimation) ? $this->Gallery->data->capanimation : 'slideOpen'; ?>, // fade, slideOpen, none
-                    captionHover: <?php echo ($this->get_option("showhover") == "H") ? 'true' : 'false'; ?>, // true means only show caption on mousehover
+                    captionAnimation: 'slideOpen', 		 // fade, slideOpen, none
+                    captionHover: <?php echo ($this->get_option("showhover") == "H") ? 'true' : 'false';?>, // true means only show caption on mousehover
                     captionAnimationSpeed: 800, 	// if so how quickly should they animate in
                     bullets: <?php echo($this->get_option('thumbnails_temp') == 'Y') ? 'true' : 'false'; ?>,		 // true or false to activate the bullet navigation
                     bulletThumbs: true,                 // thumbnails for the bullets

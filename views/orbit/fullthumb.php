@@ -133,8 +133,8 @@ if (!empty($slides)) :
                     animationSpeed: <?php echo($this->get_option('duration')); ?>,                // how fast animations are
                     timer: <?PHP echo ($this->get_option("autoslide_temp") == "Y" ) ? 'true' : 'false'; ?>, 	 // true or false to have the timer
                     advanceSpeed: <?PHP echo ($autospeed2); ?>, 		 // if timer is enabled, time between transitions 
-                    pauseOnHover: false, 		 // if you hover pauses the slider
-                    startClockOnMouseOut: false, 	 // if clock should start on MouseOut
+                    pauseOnHover: <?php echo ($this->Gallery->data->pausehover) ? 'true' : 'false'; ?>, 		 // if you hover pauses the slider
+                    startClockOnMouseOut: <?php echo ($this->Gallery->data->pausehover) ? 'true' : 'false'; ?>, 	 // if clock should start on MouseOut
                     startClockOnMouseOutAfter: 1000, 	 // how long after MouseOut should the timer start again
                     directionalNav: true, 		 // manual advancing directional navs
                     captions: <?php echo($this->get_option('information_temp') == 'Y') ? 'true' : 'false'; ?>,	 // do you want captions?

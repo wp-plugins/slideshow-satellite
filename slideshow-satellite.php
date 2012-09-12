@@ -5,10 +5,10 @@ Plugin URI: http://c-pr.es/projects/satellite
 Author: C- Pres
 Author URI: http://c-pr.es/membership-options
 Description: Display photography and content in highly configurable ways with this slideshow. Pretty pretty pretty.
-Version: 1.3.1
+Version: 1.3.2
 */
 define('DS', '/');
-define( 'SATL_VERSION', '1.3');
+define( 'SATL_VERSION', '1.3.2');
 $uploads = wp_upload_dir();
 if ( ! defined( 'SATL_PLUGIN_BASENAME' ) )
 	define( 'SATL_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );

@@ -79,6 +79,12 @@ class SatelliteConfigHelper extends SatellitePlugin {
                         "type"      => "checkbox",
                         "value"     => $model -> data -> caphover),
 
+                array(  "name"      => "Pause on Hover",
+                        "desc"      => "Pause the advancement of the slideshow on hover? Only works with auto being on",
+                        "id"        => "pausehover",
+                        "type"      => "checkbox",
+                        "value"     => $model -> data -> pausehover),
+
                 array(  "type"      => "close")
 
                 );	

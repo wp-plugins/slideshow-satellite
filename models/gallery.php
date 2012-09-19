@@ -96,7 +96,14 @@ class SatelliteGallery extends SatelliteDbHelper {
         }
         
         public function loadData($gallery) {
-            return $this -> find(array('id'=>$gallery), 'caphover, pausehover, capanimation, capdisplay, title, description, type, id');
+            return $this -> find(array('id'=>$gallery),'caphover, 
+                                                        pausehover, 
+                                                        capposition, 
+                                                        capanimation, 
+                                                        title, 
+                                                        description, 
+                                                        type, 
+                                                        id');
             //return $this -> find_all(array('id'=>$gallery));
             //return $animation;
         }

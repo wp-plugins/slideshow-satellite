@@ -555,6 +555,28 @@ li > li.has-thumb {
     <?php } ?>
     
 }
+.splash-satl-wrap.default-thumbs {
+    margin-bottom: <?php echo ((int) $fullthumbheight); ?>px;
+}
+.splash-satl-wrap.default-thumbs .splash-thumbs {
+    margin-top: <?php echo ($styles['height']); ?>px;
+    height: <?php echo ((int) $fullthumbheight); ?>px;
+    width: 1000px; )
+}
+.splash-thumb-wrap {
+    width: <?php echo($styles['width']);?>px;
+    overflow:hidden;
+}
+.splash-satl-wrap .splash-thumbs .the-thumb {
+    height:<?php echo $styles['thumbheight']; ?>px;
+    width:<?php echo $styles['thumbheight']; ?>px;
+    -moz-border-radius:4px;
+    -webkit-border-radius:4px;
+    border-radius:4px;
+    border: 2px solid <?php echo($styles['background'])?>;
+    float:left;
+    margin:<?php echo ((int) $styles['thumbspacing'] -2) ?>px;
+}
 .satl-gal-titles {
     width:<?php echo $galleryTitles ?>px;
     float:left;

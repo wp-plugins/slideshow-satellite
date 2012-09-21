@@ -1,14 +1,15 @@
 <?php
 
-class SatellitePlugin {
+class SatellitePlugin 
+{
 
     var $plugin_name;
     var $plugin_base;
     var $pre = 'Satellite';
     var $debugging = false;
     var $menus = array();
-    //var $latestorbit = 'jquery.orbit-1.3.1.js';
-    var $latestorbit = 'orbit-min.js';
+    var $latestorbit = 'jquery.orbit-1.3.1.js';
+    //var $latestorbit = 'orbit-min.js';
     var $cssfile = 'orbit-css.php';
     var $cssadmin = 'admin-styles.css';
     var $sections = array(
@@ -531,7 +532,7 @@ class SatellitePlugin {
                     if (SATL_PRO) {
                         if ( class_exists( 'SatellitePremium' ) ) {
                             $satlprem = new SatellitePremium;
-                            $satlprem->checkProDirs();
+                            $satlprem->check_pro_dirs();
                         }
                     }
                     

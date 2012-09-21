@@ -29,6 +29,7 @@
       bulletThumbLocation: '',		// location from this file where thumbs will be
       afterSlideChange: $.noop,		// empty function 
       centerBullets: true,              // center bullet nav with js, turn this off if you want to position the bullet nav manually
+      navOpacity: .2,
       thumbWidth: 80
  	  },
  	  
@@ -349,26 +350,23 @@
     setupDirectionalNav: function () {
       var self = this;
       this.$wrapper.append(this.directionalNavHTML);
-      this.$wrapper.find('.left').css('display','none');
-      this.$wrapper.find('.right').css('display','none');
+      this.$wrapper.find('.left').css('opacity',self.options.navOpacity);
+      this.$wrapper.find('.right').css('opacity',self.options.navOpacity);
       
       this.$wrapper.hover(function () {
-          self.$wrapper.find('.left').css({'opacity':'0.3','display':'block'});
+          self.$wrapper.find('.left').css({'opacity':self.options.navOpacity,'display':'block'});
             self.$wrapper.find('.left').hover(function () {
               jQuery('.slider-nav .left').fadeTo("fast",0.75);
             },function(){
-              jQuery('.slider-nav .left').fadeTo("fast",0.3);
+              jQuery('.slider-nav .left').fadeTo("fast",self.options.navOpacity);
             });
-          self.$wrapper.find('.right').css({'opacity':'0.3','display':'block'});
+          self.$wrapper.find('.right').css({'opacity':self.options.navOpacity,'display':'block'});
             self.$wrapper.find('.right').hover(function () {
               jQuery('.slider-nav .right').fadeTo("fast",0.75);
             },function(){
-              jQuery('.slider-nav .right').fadeTo("fast",0.3);
+              jQuery('.slider-nav .right').fadeTo("fast",self.options.navOpacity);
             });
 
-      }, function () {
-          self.$wrapper.find('.left').css({'display':'none'});
-          self.$wrapper.find('.right').css({'display':'none'});
       });
       
       this.$wrapper.find('.left').click(function () { 

@@ -1,9 +1,11 @@
 <?php
 
 
-class SatellitePremium extends SatellitePlugin {
+class SatellitePremium extends SatellitePlugin 
+{
     
-    function __construct() {
+    function __construct() 
+    {
 
         add_action('admin_init', array( $this, 'prem_upgrade_plugin' ));        
 
@@ -58,7 +60,7 @@ class SatellitePremium extends SatellitePlugin {
         }
     }
 
-    function checkProDirs() {
+    function check_pro_dirs() {
         if ($this->folderSize(SATL_UPLOADPRO_DIR) != $this->folderSize(SATL_PLUGINPRO_DIR) ) {
             $this->remove_dir(SATL_UPLOADPRO_DIR);
             $this->copy_directory(SATL_PLUGINPRO_DIR, SATL_UPLOADPRO_DIR);

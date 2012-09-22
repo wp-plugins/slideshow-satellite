@@ -102,10 +102,12 @@ if (!empty($slides)) :
                 <?php foreach ($slides as $slider) : ?>     
                     <?php
                     if ($this->get_option('abscenter') == "Y") {
-                        echo "<div class='sorbit-wide absoluteCenter' data-caption='#custom{$satellite_init_ok}-$i'
+                        echo "<div id='satl-custom-{$satellite_init_ok}-$i' class='sorbit-wide absoluteCenter' 
+                            data-caption='#custom{$satellite_init_ok}-$i'
                             data-thumb='{$this->Html->image_url($this->Html->thumbname($slider->image))}'>";
                     } else {
-                        echo "<div class='sorbit-basic' data-caption='#custom{$satellite_init_ok}-$i'
+                        echo "<div id='satl-custom-{$satellite_init_ok}-$i' class='sorbit-basic' 
+                            data-caption='#custom{$satellite_init_ok}-$i'
                             data-thumb='{$this->Html->image_url($this->Html->thumbname($slider->image))}'>";
                     }
                     ?>					

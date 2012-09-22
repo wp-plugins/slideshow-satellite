@@ -199,7 +199,7 @@ class SatellitePlugin
         $this->add_option('styles', $styles);
         //General Settings
         $this->add_option('fadespeed', 10);
-        $this->add_option('navopacity', 25);
+        $this->add_option('nav_opacity', .2);
         $this->add_option('navhover', 70);
         $this->add_option('nolinker', "N");
         $this->add_option('nolinkpage', 0);

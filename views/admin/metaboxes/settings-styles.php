@@ -24,6 +24,13 @@
                             <span class="howto"><?php _e('How far your navigational arrows are pushed away from the slideshow, 0 or 78 are most popular', SATL_PLUGIN_NAME); ?></span>
 			</td>
                 </tr>
+                <tr class="nav_opacity">
+                    <th><label for="styles.nav_opacity"><?php _e('Navigation Opacity', SATL_PLUGIN_NAME); ?></label></th>
+			<td>
+                            <input style="width:45px;" id="styles.navpush" type="text" name="styles[nav_opacity]" value="<?php echo $styles['nav_opacity']; ?>" /> <?php _e('px', SATL_PLUGIN_NAME); ?>
+                            <span class="howto"><?php _e('What opacity does the navigation buttons start at?', SATL_PLUGIN_NAME); ?></span>
+			</td>
+                </tr>
  		<tr class="gal-width">
 			<th><label for="styles.width"><?php _e('Gallery Width', SATL_PLUGIN_NAME); ?></label></th>
 			<td>

@@ -8,8 +8,15 @@
         $autospeed = '0';
         $autospeed2 = '0';
     }
+    if (!$this->get_option('nav_opacity')) {$this->update_option('nav_opacity',.1);}
     $thumbwidth = (int) $style['thumbheight'] + $style['thumbspacing'] + $style['thumbspacing'];
     $transition = $this->Config->getTransitionType();
+    if ($fullthumb)
+    { $bullets = true; }
+    elseif ($this->get_option('thumbnails_temp') == "Y")
+    { $bullets = true; }
+    else 
+    { $bullets = false; }
     ?>
     <script type="text/javascript">
         jQuery(document).ready(function($) {
@@ -26,12 +33,12 @@
                 captionAnimation: <?php echo ($gallery->data->capanimation) ? '\'' . $this->Gallery->data->capanimation . '\'' : '\'slideOpen\''; ?>, // fade, slideOpen, none
                 captionHover: <?php echo ($gallery->data->caphover) ? 'true' : 'false'; ?>, // true means only show caption on mousehover
                 captionAnimationSpeed: 800, 	 // if so how quickly should they animate in
-                bullets: <?php echo($this->get_option('thumbnails_temp') == 'Y') ? 'true' : 'false'; ?>,	// true or false to activate the bullet navigation
+                bullets: <?php echo($bullets) ? 'true' : 'false'; ?>,	// true or false to activate the bullet navigation
                 bulletThumbs: true,		 // thumbnails for the bullets
                 bulletThumbLocation: '',	 // location from this file where thumbs will be
                 afterSlideChange: function(){},    // empty function 
                 centerBullets: <?php echo $this->get_option('bullcenter'); ?>,
-                navOpacity: .1,
+                navOpacity: <?php echo $this->get_option('nav_opacity'); ?>,
                 thumbWidth: <?php echo $thumbwidth; ?>
             });				
         });

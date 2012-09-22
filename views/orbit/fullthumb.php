@@ -126,8 +126,8 @@ if (!empty($slides)) :
             
         </div>
 
-    <?php $this -> render('jsinit', array('frompost' => false), true, 'orbit');?>   
-        
+    <?php $this -> render('jsinit', array('frompost' => false, 'fullthumb' => true), true, 'orbit');?>   
+
     <?php endif; 
     /******** PRO ONLY **************/
     if ( SATL_PRO && $this->get_option('keyboard') == 'Y') {

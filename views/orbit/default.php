@@ -6,24 +6,7 @@ if (!empty($slides)) :
     $style = $this->get_option('styles');
     $imagesbox = $this->get_option('imagesbox');
     $textloc = $this->get_option('textlocation');
-    $thumbwidth = (int) $style['thumbheight'] + $style['thumbspacing'] + $style['thumbspacing'];
-    if (!$frompost) {
-        $this->Gallery->loadData($slides[0]->section);
-        $sidetext = $this -> Gallery -> capLocation($this->Gallery->data->capposition,$slides[0]->section);
-    }
-
-    if ($this->get_option('autoslide') == "Y") {
-        $autospeed = $this->get_option('autospeed');
-        $autospeed2 = $this->get_option('autospeed2');
-    } else {
-        $autospeed = '0';
-        $autospeed2 = '0';
-    }
-    if ($this->get_option('othumbs') != 'B') { // if thumbs on bullcenter = false
-        $this->update_option('bullcenter', 'false');
-    }
     $align = $this->get_option('align');
-    $transition = $this->Config->getTransitionType();
     ?>
 
 
@@ -66,30 +49,8 @@ if (!empty($slides)) :
         </div> <!-- end featured -->
 
         </div>
-        <script type="text/javascript">
-            jQuery(document).ready(function($) {
-                $('#featured<?php echo $satellite_init_ok; ?>').orbit({
-                    animation: '<?PHP echo ($transition) ? $transition : $this->get_option('transition'); ?>',  // fade-blend, fade-empty, horizontal-slide, vertical-slide, horizontal-push
-                    animationSpeed: <?php echo($this->get_option('duration')); ?>,                              // how fast animations are
-                    timer: <?PHP echo ($this->get_option("autoslide_temp") == "Y" ) ? 'true' : 'false'; ?>,     // true or false to have the timer
-                    advanceSpeed: <?PHP echo ($autospeed2); ?>, // if timer is enabled, time between transitions 
-                    pauseOnHover: false,                        // if you hover pauses the slider
-                    startClockOnMouseOut: false,                // if clock should start on MouseOut
-                    startClockOnMouseOutAfter: 1000,            // how long after MouseOut should the timer start again
-                    directionalNav: true,                       // manual advancing directional navs
-                    captions: <?php echo($this->get_option('information_temp') == 'Y') ? 'true' : 'false'; ?>,	 // do you want captions?
-                    captionAnimation: 'slideOpen', 		 // fade, slideOpen, none
-                    captionHover: <?php echo ($this->get_option("showhover") == "H") ? 'true' : 'false';?>, // true means only show caption on mousehover
-                    captionAnimationSpeed: 800, 	// if so how quickly should they animate in
-                    bullets: <?php echo($this->get_option('thumbnails_temp') == 'Y') ? 'true' : 'false'; ?>,		 // true or false to activate the bullet navigation
-                    bulletThumbs: true,                 // thumbnails for the bullets
-                    bulletThumbLocation: '',            // location from this file where thumbs will be
-                    afterSlideChange: function(){},     // empty function 
-                    centerBullets: <?php echo $this->get_option('bullcenter'); ?>,
-                    thumbWidth: <?php echo $thumbwidth; ?>
-                });				
-            });
-        </script> 
+        <?php $this -> render('jsinit', array('gallery'=>false,'frompost' => true), true, 'orbit');?>
+
         <!--  CUSTOM GALLERY -->
     <?php else : ?>  
         <div class="orbit-default
@@ -102,11 +63,11 @@ if (!empty($slides)) :
                 <?php foreach ($slides as $slider) : ?>     
                     <?php
                     if ($this->get_option('abscenter') == "Y") {
-                        echo "<div id='satl-custom-{$satellite_init_ok}-$i' class='sorbit-wide absoluteCenter' 
+                        echo "<div id='satl-custom-{$this->Gallery->data->id}{$slider->id}' class='sorbit-wide absoluteCenter' 
                             data-caption='#custom{$satellite_init_ok}-$i'
                             data-thumb='{$this->Html->image_url($this->Html->thumbname($slider->image))}'>";
                     } else {
-                        echo "<div id='satl-custom-{$satellite_init_ok}-$i' class='sorbit-basic' 
+                        echo "<div id='satl-custom-{$this->Gallery->data->id}{$slider->id}' class='sorbit-basic' 
                             data-caption='#custom{$satellite_init_ok}-$i'
                             data-thumb='{$this->Html->image_url($this->Html->thumbname($slider->image))}'>";
                     }
@@ -151,7 +112,7 @@ if (!empty($slides)) :
         </div>
 
         </div>
-        <?php $this -> render('jsinit', array('frompost' => false), true, 'orbit');?>
+        <?php $this -> render('jsinit', array('gallery'=>$slides[0]->section,'frompost' => false), true, 'orbit');?>
     <?php
     endif;
     /*     * ****** PRO ONLY ************* */

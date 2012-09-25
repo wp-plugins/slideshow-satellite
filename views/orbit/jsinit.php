@@ -1,6 +1,11 @@
 <?php
     global $satellite_init_ok;
     $style = $this->get_option('styles');
+    if (!$frompost) {
+        $this->Gallery->loadData($gallery);
+        $sidetext = $this -> Gallery -> capLocation($this->Gallery->data->capposition,$slides[0]->section);
+    }
+    
     if ($this->get_option('autoslide') == "Y") {
         $autospeed = $this->get_option('autospeed');
         $autospeed2 = $this->get_option('autospeed2');
@@ -8,6 +13,9 @@
         $autospeed = '0';
         $autospeed2 = '0';
     }
+    if ($this->get_option('othumbs') != 'B') { // if thumbs on bullcenter = false
+        $this->update_option('bullcenter', 'false');
+    }    
     if (!$this->get_option('nav_opacity')) {$this->update_option('nav_opacity',.1);}
     $thumbwidth = (int) $style['thumbheight'] + $style['thumbspacing'] + $style['thumbspacing'];
     $transition = $this->Config->getTransitionType();
@@ -25,13 +33,13 @@
                 animationSpeed: <?php echo($this->get_option('duration')); ?>,                // how fast animations are
                 timer: <?PHP echo ($this->get_option("autoslide_temp") == "Y" ) ? 'true' : 'false'; ?>, 	 // true or false to have the timer
                 advanceSpeed: <?PHP echo ($autospeed2); ?>, 		 // if timer is enabled, time between transitions 
-                pauseOnHover: <?php echo ($gallery->data->pausehover) ? 'true' : 'false'; ?>, 		 // if you hover pauses the slider
-                startClockOnMouseOut: <?php echo ($gallery->data->pausehover) ? 'true' : 'false'; ?>, 	 // if clock should start on MouseOut
+                pauseOnHover: <?php echo ($this->Gallery->data->pausehover) ? 'true' : 'false'; ?>, 		 // if you hover pauses the slider
+                startClockOnMouseOut: <?php echo ($this->Gallery->data->pausehover) ? 'true' : 'false'; ?>, 	 // if clock should start on MouseOut
                 startClockOnMouseOutAfter: 1000, 	 // how long after MouseOut should the timer start again
                 directionalNav: true, 		 // manual advancing directional navs
                 captions: <?php echo($this->get_option('information_temp') == 'Y') ? 'true' : 'false'; ?>,	 // do you want captions?
-                captionAnimation: <?php echo ($gallery->data->capanimation) ? '\'' . $this->Gallery->data->capanimation . '\'' : '\'slideOpen\''; ?>, // fade, slideOpen, none
-                captionHover: <?php echo ($gallery->data->caphover) ? 'true' : 'false'; ?>, // true means only show caption on mousehover
+                captionAnimation: <?php echo ($this->Gallery->data->capanimation) ? '\'' . $this->Gallery->data->capanimation . '\'' : '\'slideOpen\''; ?>, // fade, slideOpen, none
+                captionHover: <?php echo ($this->Gallery->data->caphover) ? 'true' : 'false'; ?>, // true means only show caption on mousehover
                 captionAnimationSpeed: 800, 	 // if so how quickly should they animate in
                 bullets: <?php echo($bullets) ? 'true' : 'false'; ?>,	// true or false to activate the bullet navigation
                 bulletThumbs: true,		 // thumbnails for the bullets

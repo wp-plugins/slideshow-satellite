@@ -45,7 +45,6 @@ ul.orbit-thumbnails, ul.orbit-thumbnails li, {
     width: <?php echo $styles['width'] ?>px;
     height: <?php echo $styles['height'] ?>px;
     background:<?php echo($loadbg)?> no-repeat center center;
-    overflow: hidden; 
     }
 #featured>div, #featured1>div, #featured2>div, #featured3>div, #featured4>div, #featured5>div, #featured6>div, #featured7>div { 
     display: none; 
@@ -61,7 +60,7 @@ div.orbit-wrapper {
     background:<?php echo $styles['background']?>; /* VAR BACKGROUND */
     border:<?php echo $styles['border']; ?>;
     position: relative;
-    z-index:55; }
+    }
 div.satl-align-left .orbit-wrapper{
     margin: 0 15px 15px 0;
     float: left;
@@ -74,7 +73,8 @@ div.orbit {
     width: 1px;
     height: 1px;
     position: absolute;
-    overflow: hidden }
+    overflow: hidden;
+    z-index:40;}
 
 div.orbit>img {
     position: absolute;
@@ -287,7 +287,7 @@ div.sattext h5 {
     }
     
 .orbit-default .thumb-on {
-    margin-bottom: <?php echo ($fullthumbheight); ?>px; 
+    bottom: <?php echo ($fullthumbheight); ?>px; 
 }
 .orbit-default.default-thumbs .orbit-wrapper {
     height: <?php echo ((int) $styles['height'] + $fullthumbheight); ?>px;
@@ -326,7 +326,8 @@ div.sattext h5 {
 /* DIRECTIONAL NAV
    ================================================== */
 div.slider-nav {
-    display: block }
+    display: block;
+    z-index: 50; }
 div.slider-nav span {
     width: 78px;
     height: 100px;

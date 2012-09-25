@@ -577,7 +577,7 @@
           if (slideDirection == "prev") {
             this.$slides
               .eq(this.activeSlide)
-              .css({"left": -this.orbitWidth*4, "z-index" : 3, "opacity":1})
+              .css({"left": -this.orbitWidth*2, "z-index" : 3, "opacity":1})
               .animate({"left" : 0}, this.options.animationSpeed, this.resetAndUnlock);
             this.$slides
               .eq(this.prevActiveSlide)

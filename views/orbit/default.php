@@ -7,6 +7,10 @@ if (!empty($slides)) :
     $imagesbox = $this->get_option('imagesbox');
     $textloc = $this->get_option('textlocation');
     $align = $this->get_option('align');
+    if (!$frompost) {
+        $this->Gallery->loadData($slides[0]->section);
+        $sidetext = $this -> Gallery -> capLocation($this->Gallery->data->capposition,$slides[0]->section);
+    }
     ?>
 
 

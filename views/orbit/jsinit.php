@@ -3,9 +3,7 @@
     $style = $this->get_option('styles');
     if (!$frompost) {
         $this->Gallery->loadData($gallery);
-        $sidetext = $this -> Gallery -> capLocation($this->Gallery->data->capposition,$slides[0]->section);
-    }
-    
+    }    
     //if ($this->get_option('autoslide') == "Y") {
         $autospeed = $this->get_option('autospeed');
         $autospeed2 = $this->get_option('autospeed2');

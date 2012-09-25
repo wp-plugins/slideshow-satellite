@@ -6,13 +6,9 @@
         $sidetext = $this -> Gallery -> capLocation($this->Gallery->data->capposition,$slides[0]->section);
     }
     
-    if ($this->get_option('autoslide') == "Y") {
+    //if ($this->get_option('autoslide') == "Y") {
         $autospeed = $this->get_option('autospeed');
         $autospeed2 = $this->get_option('autospeed2');
-    } else {
-        $autospeed = '0';
-        $autospeed2 = '0';
-    }
     if ($this->get_option('othumbs') != 'B') { // if thumbs on bullcenter = false
         $this->update_option('bullcenter', 'false');
     }    
@@ -47,7 +43,8 @@
                 afterSlideChange: function(){},    // empty function 
                 centerBullets: <?php echo $this->get_option('bullcenter'); ?>,
                 navOpacity: <?php echo $this->get_option('nav_opacity'); ?>,
-                thumbWidth: <?php echo $thumbwidth; ?>
+                thumbWidth: <?php echo $thumbwidth; ?>,
+                alwaysPlayBtn: <?php echo ($style['playshow'] == "A") ? 'true' : 'false'; ?>
             });				
         });
     </script> 

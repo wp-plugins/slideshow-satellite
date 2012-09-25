@@ -191,7 +191,7 @@ class SatellitePlugin
             'infotitle' => "2",
             'infobackground' => "#000000",
             'infocolor' => "#FFFFFF",
-            'playshow'  => "Y",
+            'playshow'  => "A",
             'navpush'   => "0",
             'infomin' => "Y"
         );

@@ -184,11 +184,11 @@
     </table>
     <table class="form-table">
                     <tr>
-                    <th><label for="abscenter"><?php _e('Turn on Absolute Centering?', SATL_PLUGIN_NAME); ?></label></th>
+                    <th><label for="abscenter"><?php _e('Resize Images to Fit', SATL_PLUGIN_NAME); ?></label></th>
                     <td>
                             <label><input <?php echo ($this->get_option('abscenter') == "Y") ? 'checked="checked"' : ''; ?> type="radio" name="abscenter" value="Y"  /> <?php _e('Yes', SATL_PLUGIN_NAME); ?></label>
                             <label><input <?php echo ($this->get_option('abscenter') == "N") ? 'checked="checked"' : ''; ?> type="radio" name="abscenter" value="N" class="<?php echo ($this->get_option('abscenter'))?>"/> <?php _e('No', SATL_PLUGIN_NAME); ?></label>
-                            <span class="howto"><?php _e('Absolute centering will resize the image and center it neatly within your slideshow window', SATL_PLUGIN_NAME); ?></span>
+                            <span class="howto"><?php _e('This will resize the image and center it neatly within your slideshow window', SATL_PLUGIN_NAME); ?></span>
                     </td>
             </tr>
     </table>

@@ -71,7 +71,7 @@ root {
 #misc-publishing-actions.preminfo {
     padding: 2px 15px;
 }
-.metabox-holder lable {
+.metabox-holder label {
     width:auto;
 }
 .metabox-holder input, .metabox-holder textarea, .metabox-holder select, .metabox-holder .uneditable-input {

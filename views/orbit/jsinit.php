@@ -40,7 +40,7 @@
                 bulletThumbLocation: '',	 // location from this file where thumbs will be
                 afterSlideChange: function(){},    // empty function 
                 centerBullets: <?php echo $this->get_option('bullcenter'); ?>,
-                navOpacity: <?php echo $style['nav_opacity']; ?>,
+                navOpacity: <?php echo ($style['nav_opacity']) ? $style['nav_opacity'] : '0.3'; ?>,
                 thumbWidth: <?php echo $thumbwidth; ?>,
                 alwaysPlayBtn: <?php echo ($style['playshow'] == "A") ? 'true' : 'false'; ?>
             });				

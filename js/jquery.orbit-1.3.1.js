@@ -344,26 +344,34 @@
     },
     
     setupDirectionalNav: function () {
-      var self = this;
-      this.$wrapper.append(this.directionalNavHTML);
-      this.$wrapper.find('.left').css('opacity',self.options.navOpacity);
-      this.$wrapper.find('.right').css('opacity',self.options.navOpacity);
-      
-      this.$wrapper.hover(function () {
-          self.$wrapper.find('.left').css({'opacity':self.options.navOpacity,'display':'block'});
-            self.$wrapper.find('.left').hover(function () {
-              jQuery('.slider-nav .left').fadeTo("fast",0.75);
-            },function(){
-              jQuery('.slider-nav .left').fadeTo("fast",self.options.navOpacity);
+        var self = this;
+        this.$wrapper.append(this.directionalNavHTML);
+        if ( this.options.captionHover ) {
+            this.$wrapper.find('.left').css('display','none');
+            this.$wrapper.find('.right').css('display','none');
+            this.$wrapper.hover(function () {
+              self.$wrapper.find('.left').css({'opacity':self.options.navOpacity,'display':'block'});
+              self.$wrapper.find('.right').css({'opacity':self.options.navOpacity,'display':'block'});
+            },function() {
+              self.$wrapper.find('.left').css('display','none');
+              self.$wrapper.find('.right').css('display','none');
             });
-          self.$wrapper.find('.right').css({'opacity':self.options.navOpacity,'display':'block'});
-            self.$wrapper.find('.right').hover(function () {
-              jQuery('.slider-nav .right').fadeTo("fast",0.75);
-            },function(){
-              jQuery('.slider-nav .right').fadeTo("fast",self.options.navOpacity);
-            });
+        } else {
+          this.$wrapper.find('.left').css('opacity',self.options.navOpacity);
+          this.$wrapper.find('.right').css('opacity',self.options.navOpacity);
+        }
 
-      });
+        self.$wrapper.find('.left').hover(function () {
+          jQuery('.slider-nav .left').fadeTo("fast",0.75);
+        },function(){
+          jQuery('.slider-nav .left').fadeTo("fast",self.options.navOpacity);
+        });
+        self.$wrapper.find('.right').hover(function () {
+          jQuery('.slider-nav .right').fadeTo("fast",0.75);
+        },function(){
+          jQuery('.slider-nav .right').fadeTo("fast",self.options.navOpacity);
+        });
+
       
       this.$wrapper.find('.left').click(function () { 
         self.stopClock();

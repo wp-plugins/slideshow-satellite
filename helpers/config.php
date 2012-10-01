@@ -73,8 +73,8 @@ class SatelliteConfigHelper extends SatellitePlugin {
                                         array("id" => "slideOpen", "title" => "Slide Open"),
                                         array("id" => "none", "title" => "None"))),
 
-                array(  "name"      => "Caption on Hover",
-                        "desc"      => "This will fade in the caption only when the slideshow is mouse-hovered over",
+                array(  "name"      => "Clean Start",
+                        "desc"      => "Caption and Navigation Arrows display on mouse hover",
                         "id"        => "caphover",
                         "type"      => "checkbox",
                         "value"     => $model -> data -> caphover),

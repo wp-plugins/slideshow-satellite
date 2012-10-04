@@ -58,15 +58,19 @@ class SatellitePlugin
             if (empty($posts)) return $posts;
 
             $shortcode_found = false; // use this flag to see if styles and scripts need to be enqueued
-            foreach ($posts as $post) {
-                    if (( stripos($post->post_content, '[gpslideshow') !== false ) ||
-                    ( stripos($post->post_content, '[satellite') !== false) ||
-                    ( stripos($post->post_content, '[slideshow') !== false && $this->get_option('embedss') == "Y" )
+            
+            if ($this->get_option('shortreq') == 'N') { $shortcode_found = true; }
+            else {
+                foreach ($posts as $post) {
+                    if (    ( stripos($post->post_content, '[gpslideshow') !== false ) ||
+                            ( stripos($post->post_content, '[satellite') !== false) ||
+                            ( stripos($post->post_content, '[slideshow') !== false && $this->get_option('embedss') == "Y" )
                     ) {
                             $shortcode_found = true; // bingo!
                             $pID = $post->ID;
                             break;
                     }
+                }
             }
 
             if ($shortcode_found) {
@@ -220,6 +224,7 @@ class SatellitePlugin
         $this->add_option('abscenter', "Y");
         $this->add_option('embedss', "Y");
         $this->add_option('satwiz', "Y");
+        $this->add_option('shortreq', "Y");
         $this->add_option('ggljquery', "Y");
         $this->add_option('splash', "N");
         $this->add_option('stldb_version', "1.0");

@@ -33,6 +33,17 @@
             </td>
         </tr>
         <tr>
+            <th><label for="shortreq"><?php _e('Shortcode Requirement: ', SATL_PLUGIN_NAME); ?></label></th>
+            <td>
+                <select name="shortreq" class="satellite_trans">
+                    <option <?php echo ($this->get_option('shortreq') == "Y") ? 'selected' : ''; ?> value="Y"><?php _e('On', SATL_PLUGIN_NAME); ?></option> 
+                    <option <?php echo ($this->get_option('shortreq') == "N") ? 'selected' : ''; ?> value="N"><?php _e('Off', SATL_PLUGIN_NAME); ?></option> 
+                </select>
+
+            	<span class="howto"><?php _e('Load the CSS and Javascript on every page, not just when using this plugin.', SATL_PLUGIN_NAME); ?></span>
+            </td>
+        </tr>
+        <tr>
             <th><label for="ggljquery"><?php _e('Run Jquery Through Google? ', SATL_PLUGIN_NAME); ?></label></th>
             <td>
                 <select name="ggljquery" class="satellite_trans">

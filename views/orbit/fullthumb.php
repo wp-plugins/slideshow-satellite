@@ -44,7 +44,7 @@ if (!empty($slides)) :
 
         </div>
 
-         <?php $this -> render('jsinit', array('gallery'=>false,'frompost' => true), true, 'orbit');?>
+         <?php $this -> render('jsinit', array('gallery'=>false,'frompost' => true, 'fullthumb' => true), true, 'orbit');?>
         <!--  CUSTOM GALLERY -->
     <?php else : ?>  
 

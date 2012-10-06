@@ -13,12 +13,9 @@
     if (!$this->get_option('nav_opacity')) {$this->update_option('nav_opacity',.1);}
     $thumbwidth = (int) $style['thumbheight'] + $style['thumbspacing'] + $style['thumbspacing'];
     $transition = $this->Config->getTransitionType();
-    if ($fullthumb)
-    { $bullets = true; }
-    elseif ($this->get_option('thumbnails_temp') == "Y")
-    { $bullets = true; }
-    else 
-    { $bullets = false; }
+    if ($fullthumb) { $bullets = true; }
+    elseif ($this->get_option('thumbnails_temp') == "Y") { $bullets = true; }
+    else { $bullets = false; }
     ?>
     <script type="text/javascript">
         jQuery(document).ready(function($) {

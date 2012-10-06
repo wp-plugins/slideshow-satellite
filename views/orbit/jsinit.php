@@ -10,7 +10,8 @@
     if ($this->get_option('othumbs') != 'B') { // if thumbs on bullcenter = false
         $this->update_option('bullcenter', 'false');
     }    
-    if (!$this->get_option('nav_opacity')) {$this->update_option('nav_opacity',.1);}
+    if (!$this->get_option('nav_opacity')) {$this->update_option('nav_opacity',30);}
+    $navOpacity = $this->get_option('nav_opacity') / 100;
     $thumbwidth = (int) $style['thumbheight'] + $style['thumbspacing'] + $style['thumbspacing'];
     $transition = $this->Config->getTransitionType();
     if ($fullthumb) { $bullets = true; }
@@ -37,7 +38,7 @@
                 bulletThumbLocation: '',	 // location from this file where thumbs will be
                 afterSlideChange: function(){},    // empty function 
                 centerBullets: <?php echo $this->get_option('bullcenter'); ?>,
-                navOpacity: <?php echo ($style['nav_opacity']) ? $style['nav_opacity'] : '0.3'; ?>,
+                navOpacity: <?php echo ($navOpacity); ?>,
                 thumbWidth: <?php echo $thumbwidth; ?>,
                 alwaysPlayBtn: <?php echo ($style['playshow'] == "A") ? 'true' : 'false'; ?>
             });				

@@ -27,8 +27,8 @@
                 <tr class="nav_opacity">
                     <th><label for="styles.nav_opacity"><?php _e('Navigation Opacity', SATL_PLUGIN_NAME); ?></label></th>
 			<td>
-                            <input style="width:45px;" id="styles.navpush" type="text" name="styles[nav_opacity]" value="<?php echo $styles['nav_opacity']; ?>" /> <?php _e('px', SATL_PLUGIN_NAME); ?>
-                            <span class="howto"><?php _e('What opacity does the navigation buttons start at?', SATL_PLUGIN_NAME); ?></span>
+                            <input style="width:45px;" id="styles.navpush" type="text" name="styles[nav_opacity]" value="<?php echo $styles['nav_opacity']; ?>" /> <?php _e('%', SATL_PLUGIN_NAME); ?>
+                            <span class="howto"><?php _e('What opacity does the navigation buttons start at? (\'0\' to \'70\', Default: 30)', SATL_PLUGIN_NAME); ?></span>
 			</td>
                 </tr>
  		<tr class="gal-width">

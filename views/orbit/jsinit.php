@@ -10,8 +10,8 @@
     if ($this->get_option('othumbs') != 'B') { // if thumbs on bullcenter = false
         $this->update_option('bullcenter', 'false');
     }    
-    if (!$this->get_option('nav_opacity')) {$this->update_option('nav_opacity',30);}
-    $navOpacity = $this->get_option('nav_opacity') / 100;
+    $navOpacity = ($style['nav_opacity']) ? $style['nav_opacity'] : 30;
+    $navOpacity = $navOpacity / 100;
     $thumbwidth = (int) $style['thumbheight'] + $style['thumbspacing'] + $style['thumbspacing'];
     $transition = $this->Config->getTransitionType();
     if ($fullthumb) { $bullets = true; }

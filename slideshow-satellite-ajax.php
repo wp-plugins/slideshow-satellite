@@ -19,7 +19,7 @@ class SatelliteAjax extends SatellitePlugin {
 	function slides_order() {
 		if (!empty($_REQUEST['item'])) {
 			foreach ($_REQUEST['item'] as $order => $slide_id) {
-				$this -> Slide -> save_field('order', $order, array('id' => $slide_id));
+				$this -> Slide -> save_field('slide_order', $order, array('id' => $slide_id));
 			}
 		
 			?><br/><div style="color:red;"><?php _e('Slides have been ordered', SATL_PLUGIN_NAME); ?></div><?php

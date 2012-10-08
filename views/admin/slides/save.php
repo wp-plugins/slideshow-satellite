@@ -32,7 +32,7 @@ array(  "name"      => "More Image",
 	
 	<form action="<?php echo $this -> url; ?>&amp;method=save" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="Slide[id]" value="<?php echo $this -> Slide -> data -> id; ?>" />
-		<input type="hidden" name="Slide[order]" value="<?php echo $this -> Slide -> data -> order; ?>" />
+		<input type="hidden" name="Slide[slide_order]" value="<?php echo $this -> Slide -> data -> slide_order; ?>" />
 		<table class="form-table">
                     <tbody>
                         <?php $this -> Form -> display($slideOptions, 'Slide'); ?>

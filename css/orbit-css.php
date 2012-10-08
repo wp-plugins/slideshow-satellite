@@ -81,6 +81,12 @@ div.orbit>img {
     top: 0;
     left: 0;
     display: none; }
+    
+/*** IE 8 and 9 Hack ***/    
+div.orbit img {
+margin:0 auto\0/;
+position:relative\0/;
+}    
 
 div.orbit>a {
     border: none;

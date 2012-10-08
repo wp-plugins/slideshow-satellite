@@ -8,8 +8,8 @@ class SatelliteSlide extends SatelliteDbHelper {
 	var $errors = array();
 	var $fields = array(
 		'id'			=>	"INT(11) NOT NULL AUTO_INCREMENT",
-		'title'			=>	"VARCHAR(150) NOT NULL DEFAULT ''",
-		'description'		=>	"TEXT",
+		'title'			=>	"VARCHAR(150) CHARACTER SET utf8 NOT NULL DEFAULT ''",
+		'description'		=>	"TEXT CHARACTER SET utf8",
 		'image'			=>	"VARCHAR(75) NOT NULL DEFAULT ''",
 		'type'			=>	"ENUM('file','url') NOT NULL DEFAULT 'file'",
 		'section'		=>	"INT(5) NOT NULL DEFAULT '1'",
@@ -18,7 +18,7 @@ class SatelliteSlide extends SatelliteDbHelper {
 		'link'			=>	"VARCHAR(200) NOT NULL DEFAULT ''",
                 'textlocation'		=>	"VARCHAR(5) NOT NULL DEFAULT 'D'",
 		'more'			=>	"INT(11) NULL",
-		'order'			=>	"INT(11) NOT NULL DEFAULT '0'",
+		'slide_order'		=>	"INT(11) NOT NULL DEFAULT '0'",
 		'created'		=>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
 		'modified'		=>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
 		'key'			=>	"PRIMARY KEY  (`id`)",
@@ -39,7 +39,7 @@ class SatelliteSlide extends SatelliteDbHelper {
 	}
 	function defaults() {
 		$defaults = array(
-                    'order'		=>	0,
+                    'slide_order'		=>	0,
                     'created'		=>	SatelliteHtmlHelper::gen_date(),
                     'modified'          =>	SatelliteHtmlHelper::gen_date(),
 		);
@@ -175,7 +175,7 @@ class SatelliteSlide extends SatelliteDbHelper {
             foreach ($imgarray as $image) {
                 $file = basename($image);
                 $name = SatelliteHtmlHelper::strip_ext($file, 'filename');
-                $data = array(title=>$name,section=>$section,type=>'url',image_url=>$image,use_link=>'N',order=>$i);
+                $data = array(title=>$name,section=>$section,type=>'url',image_url=>$image,use_link=>'N',slide_order=>$i);
                 $slidedata = array('Slide' => $data);
                 
                 if ($this -> save($data, true)) {
@@ -203,9 +203,10 @@ class SatelliteSlide extends SatelliteDbHelper {
             $moreId = $Gallery -> getMoreGallery();
             $more = $this -> find_all(array('section'=> $moreId), 'title,section,id');
             $morearray = null;
-            foreach ($more as $moreimg )
-                $morearray[] = array('title'=>$moreimg -> title,'id' => $moreimg -> id);
-            
+            if (isset ($more)) {
+                foreach ($more as $moreimg )
+                    $morearray[] = array('title'=>$moreimg -> title,'id' => $moreimg -> id);
+            }
             if ($morearray)
                 return $morearray;
             else

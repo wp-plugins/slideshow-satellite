@@ -11,7 +11,7 @@
         <?php 
         if (!empty($_GET['single'])) {
             $single = $_GET['single'];
-            $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($single)), null, array('order', "ASC"));
+            $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($single)), null, array('slide_order', "ASC"));
         } else { $single = false; }
         
         ?>
@@ -26,7 +26,7 @@
                         <select name="section">
                             <option value="All">All</option>
                             <?php $single = ($_GET['single']) ? $_GET['single'] : null;?>
-                            <?php $gals = $this -> Gallery -> find_all(null, array('id','title'), array('order', "ASC") ); ?>
+                            <?php $gals = $this -> Gallery -> find_all(null, array('id','title'), array('gal_order', "ASC") ); ?>
 
                                 <?php if (!empty($gals)) : ?>
                                     <?php foreach ( $gals as $gallery ) {?>
@@ -109,7 +109,7 @@
                                                     </td>
                                                     <td><abbr title="<?php echo $slide -> modified; ?>"><?php echo date("Y-m-d", strtotime($slide -> modified)); ?></abbr></td>
                                                     <td><?php echo ((int) $slide -> section); ?></td>
-                                                    <td><?php echo ((int) $slide -> order + 1); ?></td>
+                                                    <td><?php echo ((int) $slide -> slide_order + 1); ?></td>
                                             </tr>
                                                     
 					<?php 

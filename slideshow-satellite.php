@@ -5,10 +5,10 @@ Plugin URI: http://c-pr.es/projects/satellite
 Author: C- Pres
 Author URI: http://c-pr.es/membership-options
 Description: Display photography and content in highly configurable ways with this slideshow. Pretty pretty pretty.
-Version: 1.3.2
+Version: 1.3.3
 */
 define('DS', '/');
-define( 'SATL_VERSION', '1.3.2');
+define( 'SATL_VERSION', '1.3.3');
 $uploads = wp_upload_dir();
 if ( ! defined( 'SATL_PLUGIN_BASENAME' ) )
 	define( 'SATL_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -163,7 +163,7 @@ class Satellite extends SatellitePlugin {
                     }			
 		}
 		else {
-			$slides = $this -> Slide -> find_all(null, null, array('order', "ASC"));
+			$slides = $this -> Slide -> find_all(null, null, array('slide_order', "ASC"));
                         $this->slidenum = count($slides);
 
 			if ( $this -> get_option('transition_temp') == "OM") {
@@ -277,9 +277,9 @@ class Satellite extends SatellitePlugin {
                     if ( $multigallery ) {
                         $gallery_array = explode(',',$gallery);
                         $first_gallery = $gallery_array[0];
-                        $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($first_gallery)), null, array('order', "ASC"));
+                        $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($first_gallery)), null, array('slide_order', "ASC"));
                     } else {
-                        $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($gallery)), null, array('order', "ASC"));
+                        $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($gallery)), null, array('slide_order', "ASC"));
                     }
                                             
                     if( $this -> get_option('random') == "on"){
@@ -417,7 +417,7 @@ class Satellite extends SatellitePlugin {
                                         $single = $_POST['section'];
                                         $message = __('You have successfully updated your view to '.$single, SATL_PLUGIN_NAME);
                                         if ( $single != "All") {
-                                            $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($single)), null, array('order', "ASC"));
+                                            $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($single)), null, array('slide_order', "ASC"));
                                             $this -> url = $this -> url . "&single={$single}";
                                         } else {
                                             $this -> url = $this -> url;
@@ -465,7 +465,7 @@ class Satellite extends SatellitePlugin {
 				}
 				break;
 			case 'order'			:
-				$slides = $this -> Slide -> find_all(null, null, array('order', "ASC"));
+				$slides = $this -> Slide -> find_all(null, null, array('slide_order', "ASC"));
 				$this -> render('slides' . DS . 'order', array('slides' => $slides), true, 'admin');
 				break;
                         case 'copysgpro'                :

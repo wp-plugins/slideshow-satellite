@@ -4,7 +4,7 @@ Donate link: http://c-pr.es/projects/satellite
 Tags: slideshow pro, photographer, galleries, satellite, orbit, zurb orbit, slideshow gallery, slides, slideshow, image gallery, gallery, slideshow satellite, photography, slideshow orbit
 Requires at least: 3.0
 Tested up to: 3.4.2
-Stable tag: 1.3.2
+Stable tag: 1.3.3
 License: GPLv2 or later
 
 Ultra customizable and contemporary photo slideshow. Build photograph galleries or content displays with Slideshow Satellite. 
@@ -91,6 +91,14 @@ You may also want to "Reset Configuration" from the Configuration page
 Two should be enough, we don't want to bog down your install with screenshots. Come to the site for more, and a video tutorial: http://c-pr.es/satellite
 
 == Changelog ==
+= 1.3.3 =
+* Adding back in Shortcode Requirement
+* Fixing Captions on the Right
+* Adding Navigation Opacity
+* Adding "Clean Start" for hover effects
+* Adding always show play/pause button
+* Kanji & Russian & Multilingual Support! UTF8 titles and descriptions
+
 = 1.3.2 =
 * Added More Gallery capability for call to action
 * Navigation hidden to start
@@ -139,6 +147,5 @@ Two should be enough, we don't want to bog down your install with screenshots. C
 
 == Upgrade Notice ==
 
-= 1.2 =
-Safe to use old premium 'pro' folders
-Transitioning from Slideshow Gallery Pro? Notice the top yellow bar to copy your old files over.
+= 1.3.3 =
+There may be some ordering of custom gallery slides you'll want to reconfirm. We had to rename the order column of the slides table for MySQL requirements.

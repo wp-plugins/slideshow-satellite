@@ -168,7 +168,7 @@ class SatelliteDbHelper extends SatellitePlugin {
 			}
 			
 			//the MySQL query
-			$query = (empty($this -> data -> id)) ? $this -> insert_query($this -> model) : $this -> update_query($this -> model);			
+			$query = (empty($this -> data -> id)) ? $this -> insert_query($this -> model) : $this -> update_query($this -> model);
 			
 			if ($wpdb -> query($query)) {
 				$this -> insertid = $insertid = (empty($this -> data -> id)) ? $wpdb -> insert_id : $this -> data -> id;				

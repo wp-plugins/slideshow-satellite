@@ -24,6 +24,13 @@
                             <span class="howto"><?php _e('How far your navigational arrows are pushed away from the slideshow, 0 or 78 are most popular', SATL_PLUGIN_NAME); ?></span>
 			</td>
                 </tr>
+                <tr class="nav_opacity">
+                    <th><label for="styles.nav_opacity"><?php _e('Navigation Opacity', SATL_PLUGIN_NAME); ?></label></th>
+			<td>
+                            <input style="width:45px;" id="styles.nav_opacity" type="text" name="styles[nav_opacity]" value="<?php echo $styles['nav_opacity']; ?>" /> <?php _e('%', SATL_PLUGIN_NAME); ?>
+                            <span class="howto"><?php _e('What opacity does the navigation buttons start at? (\'0\' to \'70\', Default: 30)', SATL_PLUGIN_NAME); ?></span>
+			</td>
+                </tr>
  		<tr class="gal-width">
 			<th><label for="styles.width"><?php _e('Gallery Width', SATL_PLUGIN_NAME); ?></label></th>
 			<td>
@@ -77,12 +84,15 @@
 			</td>
 		</tr>
 		<tr>
-			<th><label for="styles.playshow"><?php _e('Allow Play/Pause to Show?', SATL_PLUGIN_NAME); ?></label></th>
+			<th><label for="styles.playshow"><?php _e('Show Play Button', SATL_PLUGIN_NAME); ?></label></th>
 			<td>
-				<label><input <?php echo (empty($styles['playshow']) || $styles['infomin'] == "Y") ? 'checked="checked"' : ''; ?> type="radio" name="styles[playshow]" value="Y" id="styles.playshow_Y" /> <?php _e('Yes', SATL_PLUGIN_NAME); ?></label>
-				<label><input <?php echo ($styles['playshow'] == "N") ? 'checked="checked"' : ''; ?> type="radio" name="styles[playshow]" value="N" id="styles.playshow_N" /> <?php _e('No', SATL_PLUGIN_NAME); ?></label>
-				<span class="howto"><?php _e('If auto is off, play/pause won\'t show. Here you can hide it while auto is on.', SATL_PLUGIN_NAME); ?></span>
-			</td>
+                            <select name="styles[playshow]">
+
+                                <option <?php echo (empty($styles['playshow']) || $styles['playshow'] == "A") ? 'selected="selected"' : ''; ?> value="A" /><?php _e('Always', SATL_PLUGIN_NAME); ?></option> 
+                                <option <?php echo ($styles['playshow'] == "P") ? 'selected="selected"' : ''; ?> value="P" /> <?php _e('Only on Auto Play', SATL_PLUGIN_NAME); ?></option>
+                                <option <?php echo ($styles['playshow'] == "N") ? 'selected="selected"' : ''; ?> value="N" /><?php _e('Never', SATL_PLUGIN_NAME); ?></option> 
+                            </select>			
+                        </td>
 		</tr>
 		<tr>
 			<th><label for="styles.infomin"><?php _e('Minimize Caption Bar Height?', SATL_PLUGIN_NAME); ?></label></th>

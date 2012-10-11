@@ -1,14 +1,15 @@
 <?php
 
-class SatellitePlugin {
+class SatellitePlugin 
+{
 
     var $plugin_name;
     var $plugin_base;
     var $pre = 'Satellite';
     var $debugging = false;
     var $menus = array();
-    //var $latestorbit = 'jquery.orbit-1.3.1.js';
-    var $latestorbit = 'orbit-min.js';
+    var $latestorbit = 'jquery.orbit-1.3.1.js';
+    //var $latestorbit = 'orbit-min.js';
     var $cssfile = 'orbit-css.php';
     var $cssadmin = 'admin-styles.css';
     var $sections = array(
@@ -57,15 +58,19 @@ class SatellitePlugin {
             if (empty($posts)) return $posts;
 
             $shortcode_found = false; // use this flag to see if styles and scripts need to be enqueued
-            foreach ($posts as $post) {
-                    if (( stripos($post->post_content, '[gpslideshow') !== false ) ||
-                    ( stripos($post->post_content, '[satellite') !== false) ||
-                    ( stripos($post->post_content, '[slideshow') !== false && $this->get_option('embedss') == "Y" )
+            
+            if ($this->get_option('shortreq') == 'N') { $shortcode_found = true; }
+            else {
+                foreach ($posts as $post) {
+                    if (    ( stripos($post->post_content, '[gpslideshow') !== false ) ||
+                            ( stripos($post->post_content, '[satellite') !== false) ||
+                            ( stripos($post->post_content, '[slideshow') !== false && $this->get_option('embedss') == "Y" )
                     ) {
                             $shortcode_found = true; // bingo!
                             $pID = $post->ID;
                             break;
                     }
+                }
             }
 
             if ($shortcode_found) {
@@ -190,7 +195,7 @@ class SatellitePlugin {
             'infotitle' => "2",
             'infobackground' => "#000000",
             'infocolor' => "#FFFFFF",
-            'playshow'  => "Y",
+            'playshow'  => "A",
             'navpush'   => "0",
             'infomin' => "Y"
         );
@@ -198,7 +203,7 @@ class SatellitePlugin {
         $this->add_option('styles', $styles);
         //General Settings
         $this->add_option('fadespeed', 10);
-        $this->add_option('navopacity', 25);
+        $this->add_option('nav_opacity', 30);
         $this->add_option('navhover', 70);
         $this->add_option('nolinker', "N");
         $this->add_option('nolinkpage', 0);
@@ -219,6 +224,7 @@ class SatellitePlugin {
         $this->add_option('abscenter', "Y");
         $this->add_option('embedss', "Y");
         $this->add_option('satwiz', "Y");
+        $this->add_option('shortreq', "Y");
         $this->add_option('ggljquery', "Y");
         $this->add_option('splash', "N");
         $this->add_option('stldb_version', "1.0");
@@ -531,7 +537,7 @@ class SatellitePlugin {
                     if (SATL_PRO) {
                         if ( class_exists( 'SatellitePremium' ) ) {
                             $satlprem = new SatellitePremium;
-                            $satlprem->checkProDirs();
+                            $satlprem->check_pro_dirs();
                         }
                     }
                     

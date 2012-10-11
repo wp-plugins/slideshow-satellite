@@ -29,7 +29,9 @@
       bulletThumbLocation: '',		// location from this file where thumbs will be
       afterSlideChange: $.noop,		// empty function 
       centerBullets: true,              // center bullet nav with js, turn this off if you want to position the bullet nav manually
-      thumbWidth: 80
+      navOpacity: .2,
+      thumbWidth: 80,
+      alwaysPlayBtn: false
  	  },
  	  
     activeSlide: 0,
@@ -98,7 +100,10 @@
       
       if (this.options.timer) {
         this.setupTimer();
-        this.startClock();
+        this.startClock();        
+      } else if (this.options.alwaysPlayBtn) {
+        this.setupTimer();
+        this.stopClock();        
       }
       
       if (this.options.captions) {
@@ -191,10 +196,6 @@
     startClock: function () {
       var self = this;
       
-      if(!this.options.timer) { 
-    		return false;
-    	} 
-
     	if (this.$timer.is(':hidden')) {
         this.clock = setInterval(function () {
 		      self.shift("next");  
@@ -227,13 +228,9 @@
     },
     
     stopClock: function () {
-      if (!this.options.timer) { 
-        return false; 
-      } else {
         this.timerRunning = false;
         clearInterval(this.clock);
         this.$pause.addClass('active');
-      }
     },
     
     setupTimer: function () {
@@ -243,7 +240,7 @@
       this.$rotator = this.$timer.find('.rotator');
       this.$mask = this.$timer.find('.mask');
       this.$pause = this.$timer.find('.pause');
-      
+
       this.$timer.click(this.clickTimer);
 
       if (this.options.startClockOnMouseOut) {
@@ -347,29 +344,34 @@
     },
     
     setupDirectionalNav: function () {
-      var self = this;
-      this.$wrapper.append(this.directionalNavHTML);
-      this.$wrapper.find('.left').css('display','none');
-      this.$wrapper.find('.right').css('display','none');
-      
-      this.$wrapper.hover(function () {
-          self.$wrapper.find('.left').css({'opacity':'0.3','display':'block'});
-            self.$wrapper.find('.left').hover(function () {
-              jQuery('.slider-nav .left').fadeTo("fast",0.75);
-            },function(){
-              jQuery('.slider-nav .left').fadeTo("fast",0.3);
+        var self = this;
+        this.$wrapper.append(this.directionalNavHTML);
+        if ( this.options.captionHover ) {
+            this.$wrapper.find('.left').css('display','none');
+            this.$wrapper.find('.right').css('display','none');
+            this.$wrapper.hover(function () {
+              self.$wrapper.find('.left').css({'opacity':self.options.navOpacity,'display':'block'});
+              self.$wrapper.find('.right').css({'opacity':self.options.navOpacity,'display':'block'});
+            },function() {
+              self.$wrapper.find('.left').css('display','none');
+              self.$wrapper.find('.right').css('display','none');
             });
-          self.$wrapper.find('.right').css({'opacity':'0.3','display':'block'});
-            self.$wrapper.find('.right').hover(function () {
-              jQuery('.slider-nav .right').fadeTo("fast",0.75);
-            },function(){
-              jQuery('.slider-nav .right').fadeTo("fast",0.3);
-            });
+        } else {
+          this.$wrapper.find('.left').css('opacity',self.options.navOpacity);
+          this.$wrapper.find('.right').css('opacity',self.options.navOpacity);
+        }
 
-      }, function () {
-          self.$wrapper.find('.left').css({'display':'none'});
-          self.$wrapper.find('.right').css({'display':'none'});
-      });
+        self.$wrapper.find('.left').hover(function () {
+          jQuery('.slider-nav .left').fadeTo("fast",0.75);
+        },function(){
+          jQuery('.slider-nav .left').fadeTo("fast",self.options.navOpacity);
+        });
+        self.$wrapper.find('.right').hover(function () {
+          jQuery('.slider-nav .right').fadeTo("fast",0.75);
+        },function(){
+          jQuery('.slider-nav .right').fadeTo("fast",self.options.navOpacity);
+        });
+
       
       this.$wrapper.find('.left').click(function () { 
         self.stopClock();

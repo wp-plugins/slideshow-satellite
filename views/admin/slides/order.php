@@ -18,7 +18,7 @@
             echo "<h3>".$gallery -> title . "(#".$gallery -> id.")</h3>";
             ?>
             <ul id="slidelist<?php echo $i;?>">
-                <?php $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($gallery -> id)), null, array('order', "ASC")); ?>
+                <?php $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($gallery -> id)), null, array('slide_order', "ASC")); ?>
                     <?php if (is_array($slides)) : ?>
                     <?php foreach ($slides as $slide) : ?>
                             <li class="lineitem" id="item_<?php echo $slide -> id; ?>">

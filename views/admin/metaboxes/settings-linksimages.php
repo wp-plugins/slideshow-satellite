@@ -10,13 +10,13 @@
             	<span class="howto"><?php _e('Thickbox comes standard with your Wordpress install. Shadowbox and Prettyphoto are great custom options, they come with themes or plugins', SATL_PLUGIN_NAME); ?></span>
             </td>
         </tr>
-        <tr>
+        <!--tr>
             <th><?php _e('Recommendations', SATL_PLUGIN_NAME);?> </th>
             <td>
                     <div><a href="http://wordpress.org/extend/plugins/shadowbox-js/" target="_blank">Shadowbox Plugin</a></div>
                     <div><a href="http://wordpress.org/extend/plugins/wp-prettyphoto/" target="_blank">PrettyPhoto Plugin</a></div>
             </td>
-        </tr>
+        </tr-->
         <tr>
             <th><label for="pagelink"><?php _e('Page Link Target', SATL_PLUGIN_NAME); ?></label></th>
             <td>

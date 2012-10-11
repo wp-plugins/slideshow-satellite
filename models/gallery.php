@@ -8,15 +8,15 @@ class SatelliteGallery extends SatelliteDbHelper {
 	var $errors = array();
 	var $fields = array(
 		'id'			=>	"INT(11) NOT NULL AUTO_INCREMENT",
-		'title'			=>	"VARCHAR(150) NOT NULL DEFAULT ''",
-		'description'		=>	"TEXT",
+		'title'			=>	"VARCHAR(150) CHARACTER SET utf8 NOT NULL DEFAULT ''",
+		'description'		=>	"TEXT CHARACTER SET utf8",
 		'image'			=>	"VARCHAR(75) NOT NULL DEFAULT ''",
 		'type'			=>	"VARCHAR(40) NOT NULL DEFAULT ''",
                 'capposition'           =>      "VARCHAR(40) NOT NULL DEFAULT ''",
                 'caphover'              =>      "BOOLEAN NOT NULL DEFAULT 0",
                 'pausehover'            =>      "BOOLEAN NOT NULL DEFAULT 0",
                 'capanimation'          =>      "VARCHAR(40) NOT NULL DEFAULT ''",
-		'order'			=>	"INT(11) NOT NULL DEFAULT '0'",
+		'gal_order'		=>	"INT(11) NOT NULL DEFAULT '0'",
 		'created'		=>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
 		'modified'		=>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
 		'key'			=>	"PRIMARY KEY  (`id`)",
@@ -37,7 +37,7 @@ class SatelliteGallery extends SatelliteDbHelper {
 	}
 	function defaults() {
 		$defaults = array(
-                    'order'		=>	0,
+                    'gal_order'		=>	0,
                     'created'		=>	SatelliteHtmlHelper::gen_date(),
                     'modified'          =>	SatelliteHtmlHelper::gen_date(),
 		);
@@ -96,7 +96,14 @@ class SatelliteGallery extends SatelliteDbHelper {
         }
         
         public function loadData($gallery) {
-            return $this -> find(array('id'=>$gallery), 'caphover, pausehover, capanimation, capdisplay, title, description, type, id');
+            return $this -> find(array('id'=>$gallery),'caphover, 
+                                                        pausehover, 
+                                                        capposition, 
+                                                        capanimation, 
+                                                        title, 
+                                                        description, 
+                                                        type, 
+                                                        id');
             //return $this -> find_all(array('id'=>$gallery));
             //return $animation;
         }

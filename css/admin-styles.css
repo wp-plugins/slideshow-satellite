@@ -71,6 +71,12 @@ root {
 #misc-publishing-actions.preminfo {
     padding: 2px 15px;
 }
+.metabox-holder label {
+    width:auto;
+}
+.metabox-holder input, .metabox-holder textarea, .metabox-holder select, .metabox-holder .uneditable-input {
+    padding:2px;
+}
 
 .filelist {
     width: 60%;
@@ -112,4 +118,7 @@ root {
 }
 .star-rating:hover {
     background-position: top;
+}
+#toplevel_page_satellite ul {
+    list-style:none;
 }

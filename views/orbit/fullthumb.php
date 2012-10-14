@@ -27,12 +27,12 @@ if (!empty($slides)) :
                     ?>
                     <?PHP if ($this->get_option('wpattach') == 'Y') { ?>
                         <a href="<?php echo $attachment_link; ?>" rel="" title="<?php echo $slider->post_title; ?>">
-                    <?PHP } elseif ($imagesbox != "N" && $this->get_option('nolinker') != 'Y') { ?>
+                    <?PHP } elseif ($imagesbox != "N" && ! $this->get_option( 'nolinker' )) { ?>
                         <a class="thickbox sorbit-link" href="<?php echo $full_image_href[0]; ?>" rel="" title="<?php echo $slider->post_title; ?>">
                     <?PHP } ?>
                         <img <?php echo ($this->get_option('abscenter') == "Y") ? "class='absoluteCenter'":"" ?> src="<?php echo $full_image_href[0]; ?>" 
                              alt="<?php echo $imagesbox . $slider->post_title; ?>" />
-                        <?PHP if ($imagesbox != "N" && $this->get_option('nolinker') != 'Y') { ?></a><?PHP } ?>
+                        <?PHP if ($imagesbox != "N" && ! $this->get_option( 'nolinker' )) { ?></a><?PHP } ?>
                 </div>
             
                 <span class="orbit-caption" id="post-<?php echo $slider->ID; ?>">
@@ -63,7 +63,7 @@ if (!empty($slides)) :
                     ?>					
                     <?php if ($slider->uselink == "Y" && !empty($slider->link)) : ?>
                         <a href="<?php echo $slider->link; ?>" title="<?php echo $slider->title; ?>" target="<?php echo ($this->get_option('pagelink') == "S") ? "_self":"_blank" ?>">
-                    <?PHP elseif ($imagesbox != "N" && $this->get_option('nolinker') != 'Y') : ?>
+                    <?PHP elseif ($imagesbox != "N" && ! $this->get_option('nolinker')) : ?>
                         <a class="thickbox sorbit-link" href="<?php echo $this->Html->image_url($slider->image); ?>" rel="" title="<?php echo $slider->title; ?>">
                     <?PHP endif; ?>
 
@@ -73,7 +73,7 @@ if (!empty($slides)) :
                         alt="<?php echo $slider->title; ?>"                       
                         />
                     
-                    <?PHP if (( $imagesbox != "N" && $this->get_option('nolinker') != 'Y' ) || $slider->uselink == "Y") : ?></a><?PHP endif; ?>
+                    <?PHP if (( $imagesbox != "N" && ! $this->get_option('nolinker') ) || $slider->uselink == "Y") : ?></a><?PHP endif; ?>
                 </div>
                 <?php if ($slider->textlocation != "N") { ?>
                 <span class="orbit-caption <?php echo ($slider->textlocation == 'BR'|| $slider->textlocation == 'TR') ? ' sattext sattext'.$slider->textlocation:''?>" id="custom-<?php echo $i; ?>">

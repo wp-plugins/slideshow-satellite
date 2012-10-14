@@ -175,6 +175,13 @@ class Satellite extends SatellitePlugin {
 		$post -> ID = $post_id_orig;
 		if ($output) { echo $content; } else { return $content; }
 	}
+        function parseSimpleEmbed( $embed, $option, $need, $get ) {
+                if ( !empty( $embed )) {
+                        if ($embed == $need)
+                           $this -> update_option($option, $get);
+                }
+            
+        }
 	function embed($atts = array(), $content = null) {
 		//global variables
 		global $wpdb;
@@ -182,7 +189,7 @@ class Satellite extends SatellitePlugin {
                     require SATL_PLUGIN_DIR . '/pro/newinit.php';
                 }
 
-		$defaults = array('post_id' => null, 'exclude' => null, 'include' => null, 'custom' => null, 'gallery' => null, 'caption' => null, 'auto' => null, 'w' => null, 'h' => null, 'nolink' => null, 'slug' => null, 'thumbs' => null, 'align' => null, 'nav' => null, 'transition' => null, 'display' => null, 'random' => null, 'splash' => null );
+		$defaults = array('post_id' => null, 'exclude' => null, 'include' => null, 'custom' => null, 'gallery' => null, 'caption' => null, 'auto' => null, 'w' => null, 'h' => null, 'nolink' => null, 'slug' => null, 'thumbs' => null, 'align' => null, 'nav' => null, 'transition' => null, 'display' => null, 'random' => null, 'splash' => null, 'background' => null, 'infobackground' => null );
 		extract( shortcode_atts( $defaults, $atts ) );
 		
 		$this->resetTemp();
@@ -251,11 +258,8 @@ class Satellite extends SatellitePlugin {
 		} elseif ( $this -> get_option( 'autoslide') == 'Y' ) {
 			$this -> update_option( 'autoslide_temp', 'Y' ); 
 		}
-                if ( !empty( $splash )) {
-                        if ($splash == 'on')
-                           $this -> update_option('splash', true);
-                }
-               
+                $this->parseSimpleEmbed($splash, 'splash', 'on', true);
+                $this->parseSimpleEmbed($nolink, 'nolinker', true, true);
 
                 /******** PRO ONLY **************/
 		if ( SATL_PRO ) {
@@ -265,12 +269,10 @@ class Satellite extends SatellitePlugin {
 		}
 		//$this -> add_action(array($this, 'pro_custom_wh'));
 		/******** END PRO ONLY **************/
-		if ( !empty($nocaption) ) { 
+		if ( !empty( $nocaption )) { 
                     $this -> update_option('information', 'N' ); 
                     $this -> update_option('orbitinfo', 'N' ); 
                     }
-		if ( !empty($nolink) ) { $this -> update_option( 'nolinker', 'Y' ); }
-			else { $this -> update_option( 'nolinker', 'N' ); }
 		if ( (!empty($custom)) || (!empty($gallery)) ) { // custom is deprecated as of version 1.2
                     $gallery = ($custom) ? $custom : $gallery;
                     $multigallery = preg_match("[\,]",$gallery);
@@ -362,6 +364,7 @@ class Satellite extends SatellitePlugin {
                 
                 // RESET non configurable options
                 $this -> update_option('splash', false);
+                $this -> update_option('nolinker', false);
                 $this -> update_option('align', false);
 	}
 	function exclude_ids( $attachments, $exclude, $include ) {

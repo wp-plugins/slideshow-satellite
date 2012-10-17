@@ -185,7 +185,7 @@ class SatelliteHtmlHelper extends SatellitePlugin {
 	}
         function findInOptions($needle, $haystacks = array()) {
             foreach ( $haystacks as $stack) {
-                if (in_array($needle, $stack)) {
+                if (is_array($stack) && in_array($needle, $stack)) {
                     return true;
                 }
             }

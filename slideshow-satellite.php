@@ -5,10 +5,10 @@ Plugin URI: http://c-pr.es/projects/satellite
 Author: C- Pres
 Author URI: http://c-pr.es/membership-options
 Description: Display photography and content in highly configurable ways with this slideshow. Pretty pretty pretty.
-Version: 1.3.3
+Version: 1.3.4
 */
 define('DS', '/');
-define( 'SATL_VERSION', '1.3.3');
+define( 'SATL_VERSION', '1.3.4');
 $uploads = wp_upload_dir();
 if ( ! defined( 'SATL_PLUGIN_BASENAME' ) )
 	define( 'SATL_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -188,8 +188,13 @@ class Satellite extends SatellitePlugin {
                 if (SATL_PRO) {
                     require SATL_PLUGIN_DIR . '/pro/newinit.php';
                 }
-
-		$defaults = array('post_id' => null, 'exclude' => null, 'include' => null, 'custom' => null, 'gallery' => null, 'caption' => null, 'auto' => null, 'w' => null, 'h' => null, 'nolink' => null, 'slug' => null, 'thumbs' => null, 'align' => null, 'nav' => null, 'transition' => null, 'display' => null, 'random' => null, 'splash' => null, 'background' => null, 'infobackground' => null );
+                $defaults=array();
+                $setDefault = array('post_id','exclude','include','custom','gallery','caption','auto','w','h','nolink',
+                                    'slug','thumbs','align','nav','transition','display','random','splash','background',
+                                    'infobackground');
+                foreach ($setDefault as $d) {
+                    $defaults[$d] = null;
+                }
 		extract( shortcode_atts( $defaults, $atts ) );
 		
 		$this->resetTemp();

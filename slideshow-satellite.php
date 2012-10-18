@@ -191,7 +191,7 @@ class Satellite extends SatellitePlugin {
                 $defaults=array();
                 $setDefault = array('post_id','exclude','include','custom','gallery','caption','auto','w','h','nolink',
                                     'slug','thumbs','align','nav','transition','display','random','splash','background',
-                                    'infobackground');
+                                    'infobackground','autospeed');
                 foreach ($setDefault as $d) {
                     $defaults[$d] = null;
                 }

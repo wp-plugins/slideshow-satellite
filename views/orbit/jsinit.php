@@ -1,12 +1,10 @@
 <?php
-    global $satellite_init_ok;
+    global $satellite_init_ok, $post;
+    $postID = $post -> ID;
     $style = $this->get_option('styles');
     if (!$frompost) {
         $this->Gallery->loadData($gallery);
-    }    
-    //if ($this->get_option('autoslide') == "Y") {
-        $autospeed = $this->get_option('autospeed');
-        $autospeed2 = $this->get_option('autospeed2');
+    }
     if ($this->get_option('othumbs') != 'B') { // if thumbs on bullcenter = false
         $this->update_option('bullcenter', 'false');
     }    
@@ -14,6 +12,9 @@
     $navOpacity = $navOpacity / 100;
     $thumbwidth = (int) $style['thumbheight'] + $style['thumbspacing'] + $style['thumbspacing'];
     $transition = $this->Config->getTransitionType();
+    
+    $autospeed = ($autoTemp = $this->Config->getProOption($this->get_option('autospeed_temp'),$postID)) ? $autoTemp : $this->get_option('autospeed2');
+    
     if ($fullthumb) { $bullets = true; }
     elseif ($this->get_option('thumbnails_temp') == "Y") { $bullets = true; }
     else { $bullets = false; }
@@ -24,7 +25,7 @@
                 animation: '<?PHP echo ($transition) ? $transition : $this->get_option('transition'); ?>',                  // fade, horizontal-slide, vertical-slide, horizontal-push
                 animationSpeed: <?php echo($this->get_option('duration')); ?>,                // how fast animations are
                 timer: <?PHP echo ($this->get_option("autoslide_temp") == "Y" ) ? 'true' : 'false'; ?>, 	 // true or false to have the timer
-                advanceSpeed: <?PHP echo ($autospeed2); ?>, 		 // if timer is enabled, time between transitions 
+                advanceSpeed: <?PHP echo ($autospeed); ?>, 		 // if timer is enabled, time between transitions 
                 pauseOnHover: <?php echo ($this->Gallery->data->pausehover) ? 'true' : 'false'; ?>, 		 // if you hover pauses the slider
                 startClockOnMouseOut: <?php echo ($this->Gallery->data->pausehover) ? 'true' : 'false'; ?>, 	 // if clock should start on MouseOut
                 startClockOnMouseOutAfter: 1000, 	 // how long after MouseOut should the timer start again

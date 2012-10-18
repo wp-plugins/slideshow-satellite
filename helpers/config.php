@@ -154,6 +154,17 @@ class SatelliteConfigHelper extends SatellitePlugin {
         
         return $transition;
     }
+    
+    function getProOption($option,$pID) {
+        if (is_array($option)) {
+            foreach ($option as $skey => $sval) {                        
+                if ($skey == $pID)
+                    return $sval;
+            }
+        }
+        return null;
+    }
+    
 
 }
 ?>

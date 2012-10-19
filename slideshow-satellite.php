@@ -191,7 +191,7 @@ class Satellite extends SatellitePlugin {
                 $defaults=array();
                 $setDefault = array('post_id','exclude','include','custom','gallery','caption','auto','w','h','nolink',
                                     'slug','thumbs','align','nav','transition','display','random','splash','background',
-                                    'infobackground','autospeed');
+                                    'infobackground','autospeed', 'animspeed');
                 foreach ($setDefault as $d) {
                     $defaults[$d] = null;
                 }
@@ -370,7 +370,6 @@ class Satellite extends SatellitePlugin {
                 // RESET non configurable options
                 $this -> update_option('splash', false);
                 $this -> update_option('nolinker', false);
-                $this -> update_option('align', false);
 	}
 	function exclude_ids( $attachments, $exclude, $include ) {
 		if ( ! empty( $exclude )) {

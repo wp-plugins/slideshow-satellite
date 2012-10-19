@@ -13,7 +13,8 @@
     $thumbwidth = (int) $style['thumbheight'] + $style['thumbspacing'] + $style['thumbspacing'];
     $transition = $this->Config->getTransitionType();
     
-    $autospeed = ($autoTemp = $this->Config->getProOption($this->get_option('autospeed_temp'),$postID)) ? $autoTemp : $this->get_option('autospeed2');
+    $autospeed = ($autoTemp = $this->Config->getProOption('autospeed_temp',$postID)) ? $autoTemp : $this->get_option('autospeed2');
+    $animspeed = ($animTemp = $this->Config->getProOption('animspeed_temp',$postID)) ? $animTemp : $this->get_option('duration');
     
     if ($fullthumb) { $bullets = true; }
     elseif ($this->get_option('thumbnails_temp') == "Y") { $bullets = true; }
@@ -22,9 +23,9 @@
     <script type="text/javascript">
         jQuery(document).ready(function($) {
             $('#featured<?php echo $satellite_init_ok; ?>').orbit({
-                animation: '<?PHP echo ($transition) ? $transition : $this->get_option('transition'); ?>',                  // fade, horizontal-slide, vertical-slide, horizontal-push
-                animationSpeed: <?php echo($this->get_option('duration')); ?>,                // how fast animations are
-                timer: <?PHP echo ($this->get_option("autoslide_temp") == "Y" ) ? 'true' : 'false'; ?>, 	 // true or false to have the timer
+                animation: '<?PHP echo ($transition) ? $transition : $this->get_option('transition'); ?>',  // fade, horizontal-slide, vertical-slide, horizontal-push
+                animationSpeed: <?php echo($animspeed); ?>,  // how fast animations are
+                timer: <?PHP echo ($this->get_option("autoslide_temp") == "Y" ) ? 'true' : 'false'; ?>,  // true or false to have the timer
                 advanceSpeed: <?PHP echo ($autospeed); ?>, 		 // if timer is enabled, time between transitions 
                 pauseOnHover: <?php echo ($this->Gallery->data->pausehover) ? 'true' : 'false'; ?>, 		 // if you hover pauses the slider
                 startClockOnMouseOut: <?php echo ($this->Gallery->data->pausehover) ? 'true' : 'false'; ?>, 	 // if clock should start on MouseOut

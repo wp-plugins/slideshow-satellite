@@ -156,6 +156,7 @@ class SatelliteConfigHelper extends SatellitePlugin {
     }
     
     function getProOption($option,$pID) {
+        $option = $this->get_option($option);
         if (is_array($option)) {
             foreach ($option as $skey => $sval) {                        
                 if ($skey == $pID)

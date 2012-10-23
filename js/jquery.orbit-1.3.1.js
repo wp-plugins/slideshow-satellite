@@ -230,7 +230,8 @@
     stopClock: function () {
         this.timerRunning = false;
         clearInterval(this.clock);
-        this.$pause.addClass('active');
+        if (this.$pause)
+            this.$pause.addClass('active');
     },
     
     setupTimer: function () {

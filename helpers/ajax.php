@@ -60,7 +60,7 @@ class SatelliteAjaxHelper extends SatellitePlugin {
 	$slideshow = intval( $_POST['slideshow'] );
 
 	$Satellite = new Satellite();
-        $slides = $Satellite -> Slide -> find_all(array('section'=>(int) stripslashes($slideshow)), null, array('order', "ASC"));
+        $slides = $Satellite -> Slide -> find_all(array('section'=>(int) stripslashes($slideshow)), null, array('slide_order', "ASC"));
         $displayAjaxSatellite = $Satellite -> render('default', array('slides' => $slides, 'frompost' => false), false, 'orbit');
         echo $displayAjaxSatellite;
 

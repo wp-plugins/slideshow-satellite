@@ -9,7 +9,7 @@
 
 (function($) {
   
-  var ORBIT = {
+  var SATLORBIT = {
     
     defaults: {  
       animation: 'horizontal-push', 	// fade, horizontal-slide, vertical-slide, horizontal-push, vertical-push
@@ -41,11 +41,11 @@
     locked: null,
     timerRunning: null,
     degrees: 0,
-    wrapperHTML: '<div class="orbit-wrapper" />',
+    wrapperHTML: '<div class="satl-wrapper" />',
     wrapThumbHTML: '<div class="thumbholder" />',
     timerHTML: '<div class="timer"><span class="mask"><span class="rotator"></span></span><span class="pause"></span></div>',
     captionHTML: '<div class="orbit-caption"></div>',
-    directionalNavHTML: '<div class="slider-nav"><span class="right">Right</span><span class="left">Left</span></div>',
+    directionalNavHTML: '<div class="satl-nav"><span class="right">Right</span><span class="left">Left</span></div>',
     directionalThumbHTML: '<span id="slideleft">Left</span><span id="slideright">Right</span>',
     bulletHTML: '<ul class="orbit-bullets"></ul>',
     thumbHTML: '<ul class="orbit-thumbnails"></ul>',
@@ -363,14 +363,14 @@
         }
 
         self.$wrapper.find('.left').hover(function () {
-          jQuery('.slider-nav .left').fadeTo("fast",0.75);
+          jQuery('.satl-nav .left').fadeTo("fast",0.75);
         },function(){
-          jQuery('.slider-nav .left').fadeTo("fast",self.options.navOpacity);
+          jQuery('.satl-nav .left').fadeTo("fast",self.options.navOpacity);
         });
         self.$wrapper.find('.right').hover(function () {
-          jQuery('.slider-nav .right').fadeTo("fast",0.75);
+          jQuery('.satl-nav .right').fadeTo("fast",0.75);
         },function(){
-          jQuery('.slider-nav .right').fadeTo("fast",self.options.navOpacity);
+          jQuery('.satl-nav .right').fadeTo("fast",self.options.navOpacity);
         });
 
       
@@ -621,10 +621,10 @@
       return this;
   }
 
-  $.fn.orbit = function (options) {
+  $.fn.satlorbit = function (options) {
     return this.each(function () {
-      var orbit = $.extend({}, ORBIT);
-      orbit.init(this, options);
+      var satlorbit = $.extend({}, SATLORBIT);
+      satlorbit.init(this, options);
     });
   };
 

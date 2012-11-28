@@ -8,9 +8,10 @@ class SatellitePlugin
     var $pre = 'Satellite';
     var $debugging = false;
     var $menus = array();
-    //var $latestorbit = 'jquery.orbit-1.3.1.js';
-    var $latestorbit = 'orbit-min.js';
+    var $latestorbit = 'jquery.orbit-1.3.1.js';
+    //var $latestorbit = 'orbit-min.js';
     var $cssfile = 'orbit-css.php';
+    var $staticCSSFile = 'orbit-1.3.1.css';
     var $cssadmin = 'admin-styles.css';
     var $sections = array(
         'satellite' => 'satellite-slides',
@@ -78,6 +79,8 @@ class SatellitePlugin
                         
             $satlStyleFile = SATL_PLUGIN_DIR . '/css/' . $this -> cssfile;
             $satlStyleUrl = SATL_PLUGIN_URL . '/css/' . $this -> cssfile . '?v=' . SATL_VERSION . '&amp;pID=' . $pID;
+            $satlStyleStaticUrl = SATL_PLUGIN_URL . '/css/' . $this -> staticCSSFile . '?v=' . SATL_VERSION;
+            
             if ($_SERVER['HTTPS']) {
                 $satlStyleUrl = str_replace("http:", "https:", $satlStyleUrl);
             }
@@ -106,9 +109,12 @@ class SatellitePlugin
                 }
                 
                 wp_register_style(SATL_PLUGIN_NAME . "_style", $satlStyleUrl);
+                wp_register_style(SATL_PLUGIN_NAME . "_styleStatic", $satlStyleStaticUrl);
+                
             }
 
                     // enqueue here
+                wp_enqueue_style(SATL_PLUGIN_NAME . "_styleStatic");
                 wp_enqueue_style(SATL_PLUGIN_NAME . "_style");
                 
                 wp_enqueue_script(SATL_PLUGIN_NAME . "_script", '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/' . $this->latestorbit,

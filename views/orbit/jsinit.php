@@ -22,7 +22,7 @@
     ?>
     <script type="text/javascript">
         jQuery(document).ready(function($) {
-            $('#featured<?php echo $satellite_init_ok; ?>').orbit({
+            $('#featured<?php echo $satellite_init_ok; ?>').satlorbit({
                 animation: '<?PHP echo ($transition) ? $transition : $this->get_option('transition'); ?>',  // fade, horizontal-slide, vertical-slide, horizontal-push
                 animationSpeed: <?php echo($animspeed); ?>,  // how fast animations are
                 timer: <?PHP echo ($this->get_option("autoslide_temp") == "Y" ) ? 'true' : 'false'; ?>,  // true or false to have the timer

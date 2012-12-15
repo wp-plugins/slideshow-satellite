@@ -58,6 +58,7 @@ class SatellitePlugin
 
     function conditionally_add_scripts_and_styles($posts){
             if (empty($posts)) return $posts;
+            $loadGoogleFonts = true;
 
             $shortcode_found = false; // use this flag to see if styles and scripts need to be enqueued
             
@@ -114,6 +115,10 @@ class SatellitePlugin
             }
             if ($loadGoogleFonts) {
                 $this->load_fonts();
+                //wp_register_style(SATL_PLUGIN_NAME.'_googleFonts', 'http://fonts.googleapis.com/css?family=Cabin:400,600,400italic,600italic|Cabin+Condensed|Scada:400,700');
+                //wp_register_style(SATL_PLUGIN_NAME.'_googleFonts', 'http://fonts.googleapis.com/css?family=Cabin+Condensed');
+                //wp_enqueue_style( SATL_PLUGIN_NAME.'_googleFonts');
+
             }
 
                     // enqueue here
@@ -129,8 +134,8 @@ class SatellitePlugin
     }
     
     function load_fonts() {
-        wp_register_style('googleFonts', 'http://fonts.googleapis.com/css?family=Cabin:400,600,400italic,600italic|Cabin+Condensed|Scada:400,700');
-        wp_enqueue_style( 'googleFonts');
+        wp_register_style(SATL_PLUGIN_NAME.'_googleFonts', 'http://fonts.googleapis.com/css?family=Cabin:400,600,400italic,600italic|Cabin+Condensed|Scada:400,700');
+        wp_enqueue_style( SATL_PLUGIN_NAME.'_googleFonts' );
     }
 
 

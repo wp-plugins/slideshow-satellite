@@ -9,6 +9,7 @@ wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
 $shortname = "satl";
 $ptypes1 = get_post_types(array('public' => true),'names','and');
 $ptypes = array_push($ptypes1, 'resume');
+$slide = $this -> Slide -> data;
 
 $slideOptions = $this -> Config -> displayOption('slide', $this -> Slide);
 
@@ -17,13 +18,13 @@ array(  "name"      => "Link To",
         "desc"      => "link/URL to go to when a user clicks the slide eg. http://www.domain.com/mypage/",
         "id"        => "link",
         "type"      => "text",
-        "value"     => $this -> Slide -> data -> link,
+        "value"     => $slide -> link,
         "std"       => "http://"),
 array(  "name"      => "More Image",
         "desc"      => "From here you can select an image if you have a Gallery with the title 'More'",
         "id"        => "more",
         "type"      => "select",
-        "value"     => $this -> Slide -> data -> more,    
+        "value"     => $slide -> more,    
         "std"       => "Select an Image",
         "options"   => $this -> Slide -> getAllMoreImages())
 );	
@@ -31,26 +32,33 @@ array(  "name"      => "More Image",
 	<h2><?php _e('Save a Slide', SATL_PLUGIN_NAME); ?></h2>
 	
 	<form action="<?php echo $this -> url; ?>&amp;method=save" method="post" enctype="multipart/form-data">
-		<input type="hidden" name="Slide[id]" value="<?php echo $this -> Slide -> data -> id; ?>" />
-		<input type="hidden" name="Slide[slide_order]" value="<?php echo $this -> Slide -> data -> slide_order; ?>" />
+		<input type="hidden" name="Slide[id]" value="<?php echo $slide -> id; ?>" />
+		<input type="hidden" name="Slide[slide_order]" value="<?php echo $slide -> slide_order; ?>" />
 		<table class="form-table">
                     <tbody>
+                        <?php if ($slide->image) : ?>
+                        <tr><td></td>
+                            <td><a href="<?php echo $this -> Html -> image_url($slide -> image); ?>" 
+                                   title="<?php echo $slide -> title; ?>" class="thickbox">
+                                    <img src="<?php echo $this->Html->image_url($this->Html->thumbname($slide->image)); ?>" alt="<?php echo $this -> Html -> sanitize($slide -> title); ?>" />
+                                </a>
+                            </td>
+                        </tr>
+                        <?php endif;?>
                         <?php $this -> Form -> display($slideOptions, 'Slide'); ?>
-                        
-                <tr>
-                	<th><label for="Slide.type.file"><?php _e('Image Type', SATL_PLUGIN_NAME); ?></label></th>
-                    <td>
-                    	<label><input onclick="jQuery('#typediv_file').show(); jQuery('#typediv_url').hide();" <?php echo (empty($this -> Slide -> data -> type) || $this -> Slide -> data -> type == "file") ? 'checked="checked"' : ''; ?> type="radio" name="Slide[type]" value="file" id="Slide.type.file" /> <?php _e('Upload File (recommended)', SATL_PLUGIN_NAME); ?></label>
-                        <label><input onclick="jQuery('#typediv_url').show(); jQuery('#typediv_file').hide();" <?php echo ($this -> Slide -> data -> type == "url") ? 'checked="checked"' : ''; ?> type="radio" name="Slide[type]" value="url" id="Slide.type.url" /> <?php _e('Specify URL', SATL_PLUGIN_NAME); ?></label>
-                        <?php echo (!empty($this -> Slide -> errors['type'])) ? '<div style="color:red;">' . $this -> Slide -> errors['type'] . '</div>' : ''; ?>
-                        <span class="howto"><?php _e('do you want to upload an image or specify a local/remote image URL?', SATL_PLUGIN_NAME); ?></span>
-                    </td>
-                </tr>
-				
-            </tbody>
-        </table>
+                        <tr>
+                            <th><label for="Slide.type.file"><?php _e('Image Type', SATL_PLUGIN_NAME); ?></label></th>
+                        <td>
+                            <label><input onclick="jQuery('#typediv_file').show(); jQuery('#typediv_url').hide();" <?php echo (empty($this -> Slide -> data -> type) || $this -> Slide -> data -> type == "file") ? 'checked="checked"' : ''; ?> type="radio" name="Slide[type]" value="file" id="Slide.type.file" /> <?php _e('Upload File (recommended)', SATL_PLUGIN_NAME); ?></label>
+                            <label><input onclick="jQuery('#typediv_url').show(); jQuery('#typediv_file').hide();" <?php echo ($this -> Slide -> data -> type == "url") ? 'checked="checked"' : ''; ?> type="radio" name="Slide[type]" value="url" id="Slide.type.url" /> <?php _e('Specify URL', SATL_PLUGIN_NAME); ?></label>
+                            <?php echo (!empty($this -> Slide -> errors['type'])) ? '<div style="color:red;">' . $this -> Slide -> errors['type'] . '</div>' : ''; ?>
+                            <span class="howto"><?php _e('do you want to upload an image or specify a local/remote image URL?', SATL_PLUGIN_NAME); ?></span>
+                        </td>
+                        </tr>
+                    </tbody>
+                </table>
         
-        <div id="typediv_file" style="display:<?php echo (empty($this -> Slide -> data -> type) || $this -> Slide -> data -> type == "file") ? 'block' : 'none'; ?>;">
+        <div id="typediv_file" style="display:<?php echo (empty($slide -> type) || $slide -> type == "file") ? 'block' : 'none'; ?>;">
         	<table class="form-table">
             	<tbody>
                 	<tr>

@@ -8,10 +8,6 @@ ul.orbit-thumbnails, ul.orbit-thumbnails li {
     list-style-type:none;
 }
 
-font-family: 'Cabin', sans-serif;
-font-family: 'Cabin Condensed', sans-serif;
-font-family: 'Scada', sans-serif;
-
 #featured, #featured1, #featured2, #featured3, #featured4, #featured5, #featured6, #featured7 {
     width: 450px;
     height: 300px;
@@ -187,6 +183,9 @@ span.pause.active {
 .orbit-caption {
     display: none;
     font-family: "HelveticaNeue", "Helvetica-Neue", Helvetica, Arial, sans-serif; }
+.orbit-caption .font-cabinc{
+    font-family: 'Cabin Condensed', sans-serif;
+}
     
 .satl-wrapper .orbit-caption {
     background: rgba(0,0,0,.6);
@@ -209,7 +208,6 @@ span.pause.active {
     font-size:1.4em; 
     font-weight:bold;
     line-height:1em;
-    font-family: 'Cabin Condensed', sans-serif;
     }
 .satl-wrapper .orbit-caption h5.size-2 {
     font-size:2em;
@@ -234,16 +232,15 @@ span.pause.active {
     font-weight:bold;
     line-height:1.3em;
     padding:8px 4px 2px 4px;
-    font-family: 'Cabin Condensed', sans-serif;
 }
 .orbit-caption p.size-2 {
-    font-size:2em;
+    font-size:1.5em;
 }
 .orbit-caption p.size-3 {
     font-size:2em;
 }
 .orbit-caption p.size-4 {
-    font-size:2em;
+    font-size:2.5em;
 }
 div.satl-wrapper .sattext {
     bottom: auto !important;

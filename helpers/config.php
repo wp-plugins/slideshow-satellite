@@ -38,18 +38,30 @@ class SatelliteConfigHelper extends SatellitePlugin {
                         "value"     => $model -> data -> type,
                         "std"       => "custom slides",
                         "options"   => array(
-                                           array('id' => 'custom slides', 'title' => 'Custom Slides'))),
+                                       array('id' => 'custom slides', 'title' => 'Custom Slides'))),
 
                 array(  "name"      => "Description",
                         "desc"      => "This will be used in future slideshow versions to describe the slideshow before someone selects to view it.",
                         "id"        => "description",
                         "value"     => $model -> data -> description,
                         "type"      => "textarea"),
-
+                    
                 array(  "name"      => "Upload Images",
                         "desc"      => "Select multiple images using the uploader, then drag the thumbs to order them right here before saving the gallery",
                         "id"        => "slides",
                         "type"      => "upload"),
+
+                array(  "name"      => "Caption sizing",
+                        "desc"      => "Large is In Charge for a reason. Default is how you have it set in General Configuration",
+                        "id"        => "font",
+                        "type"      => "select",
+                        "value"     => $model -> data -> font,
+                        "std"       => "Default",
+                        "options"   => array(
+                                       array('id' => '1', 'title' => 'Default'),
+                                       array('id' => '2', 'title' => 'Mid-Sized'),
+                                       array('id' => '3', 'title' => 'Big Boy'),
+                                       array('id' => '4', 'title' => 'In Charge'))),
 
                 array(  "name"      => "Caption Position",
                         "desc"      => "Where would you like to display the caption?",

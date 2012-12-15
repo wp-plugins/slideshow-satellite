@@ -112,18 +112,27 @@ class SatellitePlugin
                 wp_register_style(SATL_PLUGIN_NAME . "_styleStatic", $satlStyleStaticUrl);
                 
             }
+            if ($loadGoogleFonts) {
+                $this->load_fonts();
+            }
 
                     // enqueue here
-                wp_enqueue_style(SATL_PLUGIN_NAME . "_styleStatic");
-                wp_enqueue_style(SATL_PLUGIN_NAME . "_style");
+            wp_enqueue_style(SATL_PLUGIN_NAME . "_styleStatic");
+            wp_enqueue_style(SATL_PLUGIN_NAME . "_style");
+
+            wp_enqueue_script(SATL_PLUGIN_NAME . "_script", '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/' . $this->latestorbit,
+                    array('jquery'),
+                    SATL_VERSION);
                 
-                wp_enqueue_script(SATL_PLUGIN_NAME . "_script", '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/' . $this->latestorbit,
-                        array('jquery'),
-                        SATL_VERSION);
-                
-            }
-            return $posts;
+        }
+        return $posts;
     }
+    
+    function load_fonts() {
+        wp_register_style('googleFonts', 'http://fonts.googleapis.com/css?family=Cabin:400,600,400italic,600italic|Cabin+Condensed|Scada:400,700');
+        wp_enqueue_style( 'googleFonts');
+    }
+
 
     function init_class($name = null, $params = array()) {
         if (!empty($name)) {

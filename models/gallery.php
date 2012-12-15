@@ -15,6 +15,7 @@ class SatelliteGallery extends SatelliteDbHelper {
                 'capposition'           =>      "VARCHAR(40) NOT NULL DEFAULT ''",
                 'caphover'              =>      "BOOLEAN NOT NULL DEFAULT 0",
                 'pausehover'            =>      "BOOLEAN NOT NULL DEFAULT 0",
+                'font'                  =>      "VARCHAR(200) CHARACTER SET utf8 NOT NULL DEFAULT ''",
                 'capanimation'          =>      "VARCHAR(40) NOT NULL DEFAULT ''",
 		'gal_order'		=>	"INT(11) NOT NULL DEFAULT '0'",
 		'created'		=>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
@@ -102,6 +103,7 @@ class SatelliteGallery extends SatelliteDbHelper {
                                                         capanimation, 
                                                         title, 
                                                         description, 
+                                                        font,
                                                         type, 
                                                         id');
             //return $this -> find_all(array('id'=>$gallery));

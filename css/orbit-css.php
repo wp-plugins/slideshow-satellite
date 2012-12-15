@@ -6,6 +6,8 @@ foreach ($_GET as $skey => $sval) :
 endforeach;
 IF (isset($styles['width_temp']) && ($styles['width_temp'] > 1)) { $styles['width'] = $styles['width_temp']; }
 IF (isset($styles['height_temp']) && ($styles['height_temp'] > 1)) { $styles['height'] = $styles['height_temp']; }
+$height = (is_int($styles['height'])) ? $styles['height'] ."px" : $styles['height']."px";
+$width = (is_int($styles['width'])) ? $styles['width'] ."px" : $styles['width']."px";
 IF (!$styles['thumbheight']) { $styles['thumbheight'] = "75"; }
 if ($styles['background'] == '#000000') { $loadbg = $styles['background']." url('../images/loading.gif')";
 } else { $loadbg = $styles['background']." url('../images/spinner.gif')"; }
@@ -17,6 +19,7 @@ IF ($styles['navbuttons'] == 1) { $navright = 'url("../pro/images/right-sq.png")
 IF ($styles['navbuttons'] == 2) { $navright = 'url(../pro/images/right-rd.png) no-repeat 30px 0';$navleft = 'url(../pro/images/left-rd.png) no-repeat 0 0'; $arrowheight= 60;}
 IF ($styles['navbuttons'] == 3) { $navright = 'url(../pro/images/right-pl.png) no-repeat 30px 0';$navleft = 'url(../pro/images/left-pl.png) no-repeat 0 0'; $arrowheight= 50;}
 IF ($styles['nav'] == 'off') { $navright = 'none'; $navleft = 'none'; $arrowheight = 0; }
+
 
 $extrathumbarea = (int) $styles['thumbareamargin'];
 $brtopspace = (int) $styles['height'] *.69;
@@ -34,13 +37,13 @@ IF ($styles['infomin'] == "Y") {
 <?php } ?>
     
 #featured, #featured1, #featured2, #featured3, #featured4, #featured5, #featured6, #featured7 {
-    width: <?php echo $styles['width'] ?>px;
-    height: <?php echo $styles['height'] ?>px;
+    width: <?php echo $width ?>;
+    height: <?php echo $height ?>;
     background:<?php echo($loadbg)?> no-repeat center center;
     }
 div.satl-wrapper {
-    width: <?php echo $styles['width'] ?>px;
-    height: <?php echo $styles['height'] ?>px;
+    width: <?php echo $width ?>;
+    height: <?php echo $height ?>;
     <?php if ($styles['align'] == 'left'){ ?>
         margin: 0 15px 15px 0;
         float: left;
@@ -54,23 +57,21 @@ div.satl-wrapper {
     border:<?php echo $styles['border']; ?>;
     }
 
-.orbit>div {
-    width: <?php echo $styles['width'] ?>px;
-    height: <?php echo $styles['height'] ?>px; 
-}
+<?php 
 /* Note: If your slider only uses content or anchors, you're going to want to put the width and height declarations on the ".orbit>div" and "div.orbit>a" tags in addition to just the .satl-wrapper */
 /* SPECIAL IMAGES */
-
+?>
+    
 div.sorbit-tall, div.sorbit-wide, div.sorbit-basic {
 	background:<?php echo $styles['background']?>; /* VAR BACKGROUND */
 }
 div.sorbit-tall img {
-	height: <?php echo $styles['height'] ?>px; /* VAR HEIGHT */
+	/*height: <?php echo $styles['height'] ?>px; /* VAR HEIGHT */
 	}
 	
 div.sorbit-wide {
-	height: <?php echo $styles['height'] ?>px; /* VAR HEIGHT */
-        width: <?php echo $styles['width'] ?>px; 
+	height: <?php echo $height ?>; /* VAR HEIGHT */
+        width: <?php echo $width ?>; 
         }
 
 a.sorbit-link {
@@ -121,8 +122,6 @@ a.sorbit-link:hover {
     }
 .orbit-default .satl-wrapper div.sattext h5 {
     color:<?php echo $styles['infocolor']; ?>; 
-    padding:4px 8px 3px; 
-    font-size:1.2em; 
     }
     
 .orbit-default .thumb-on {

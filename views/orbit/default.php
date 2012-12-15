@@ -45,12 +45,15 @@ if (!empty($slides)) :
             <?PHP if ($imagesbox != "N" && ! $this->get_option('nolinker')) { ?></a><?PHP } ?>
                 </div>
 
-                <span class="orbit-caption<?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' thumb-on' : ''; ?>" id="post-<?php echo $slider->ID; ?>">
-                    <h5 class="orbit-title<?php echo($style['infotitle']) ?>"><?php echo $slider->post_title; ?></h5>
-                    <p><?php echo $slider->post_content; ?></p>
-                </span>
-        <?php endforeach; ?>
-        </div> <!-- end featured -->
+                <?php $this -> render('display-caption', array('frompost'   => true, 
+                                                               'slider'     => $slider, 
+                                                               'fontsize'   => null,
+                                                               'style'      => $style,
+                                                               'i'          => null
+                                                               ), true, 'orbit');?>
+
+            <?php endforeach; ?>
+            </div> <!-- end featured -->
 
         </div>
         <?php $this -> render('jsinit', array('gallery'=>false,'frompost' => true), true, 'orbit');?>
@@ -93,17 +96,13 @@ if (!empty($slides)) :
             if ($sidetext != ( "Disabled" )) :
                 if ($slider->textlocation != "N") :
                     ?>
-                        <span class="orbit-caption<?php echo ($slider->textlocation == 'BR' || $slider->textlocation == 'TR') ? ' sattext sattext' . $slider->textlocation : '' ?><?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' thumb-on' : ''; ?>" id='custom<?php echo ($satellite_init_ok . '-' . $i); ?>'>
-                            <h5 class="orbit-title<?php echo($style['infotitle']) ?>"><?php echo $slider->title; ?></h5>
-                            <p><?php echo $slider->description; ?> </p>
-                    <?php if ($slider->uselink == "Y" && !empty($slider->link) && $slider->more) : ?>
-                                <div class="more-img">
-                                    <a href="<?php echo $slider->link; ?>" title="<?php echo $slider->title; ?>" target="<?php echo ($this->get_option('pagelink') == "S") ? "_self" : "_blank" ?>">
-                                        <img src="<?php echo $this->Html->image_id($slider->more); ?>" />
-                                    </a>
-                                </div>
-                        <?php endif; ?>
-                        </span>   
+                        <?php $this -> render('display-caption', array('frompost'   => false, 
+                                                                       'slider'     => $slider, 
+                                                                       'fontsize'   => $this->Gallery->data->font,
+                                                                       'style'      => $style,
+                                                                       'i'          => $i
+                                                                       ), true, 'orbit');?>
+ 
                     <?php else : ?>
                         <span class="sattext-none" id='custom<?php echo ($satellite_init_ok . '-' . $i); ?>'>
                         </span>

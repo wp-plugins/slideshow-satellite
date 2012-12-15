@@ -8,6 +8,10 @@ ul.orbit-thumbnails, ul.orbit-thumbnails li {
     list-style-type:none;
 }
 
+font-family: 'Cabin', sans-serif;
+font-family: 'Cabin Condensed', sans-serif;
+font-family: 'Scada', sans-serif;
+
 #featured, #featured1, #featured2, #featured3, #featured4, #featured5, #featured6, #featured7 {
     width: 450px;
     height: 300px;
@@ -66,8 +70,8 @@ div.orbit>a {
     position: absolute;
     top: 0;
     left: 0;
-    width: 450px;
-    height: 300px; 
+    width: 100%;
+    height: 100%;
     border: 0;
     }
 /* Note: If your slider only uses content or anchors, you're going to want to put the width and height declarations on the ".orbit>div" and "div.orbit>a" tags in addition to just the .satl-wrapper */
@@ -199,12 +203,24 @@ span.pause.active {
 }
 
 
-.orbit-caption h5 {
-    color:<?php echo $styles['infocolor']; ?>; 
+.satl-wrapper .orbit-caption h5 {
+    color:#FFF; 
     padding:4px 8px 3px; 
     font-size:1.4em; 
     font-weight:bold;
+    line-height:1em;
+    font-family: 'Cabin Condensed', sans-serif;
     }
+.satl-wrapper .orbit-caption h5.size-2 {
+    font-size:2em;
+}
+.satl-wrapper .orbit-caption h5.size-3 {
+    font-size:3em;
+}
+.satl-wrapper .orbit-caption h5.size-4 {
+    font-size:4em;
+}
+
 .orbit-caption h5.orbit-title0 { display:none; }
 .orbit-caption h5.orbit-title1 { font-size:1.0em; }
 .orbit-caption h5.orbit-title2 { font-size:1.2em; }
@@ -218,6 +234,16 @@ span.pause.active {
     font-weight:bold;
     line-height:1.3em;
     padding:8px 4px 2px 4px;
+    font-family: 'Cabin Condensed', sans-serif;
+}
+.orbit-caption p.size-2 {
+    font-size:2em;
+}
+.orbit-caption p.size-3 {
+    font-size:2em;
+}
+.orbit-caption p.size-4 {
+    font-size:2em;
 }
 div.satl-wrapper .sattext {
     bottom: auto !important;
@@ -241,21 +267,21 @@ a.sorbit-link:hover {
     
 .orbit-default .satl-wrapper div.sattext p { 
     color:#FFF; padding:0 8px 3px;
-    }
-.orbit-default .satl-wrapper div.sattext h5 {
-    color:#FFF; 
-    padding:4px 8px 3px; 
-    font-size:1.2em; 
-    }
-    
+}    
 .orbit-default .thumb-on {
     bottom: 91px; 
 }
 .orbit-default.default-thumbs .satl-wrapper {
     height: 391px;
 }
-.more-img {
+
+/* MORE IMAGE
+   ================================================== */
+div.more-img {
     float:right;
+}
+div.more-img a img {
+    border:0;
 }
 
 /* TEXT ON THE SIDE
@@ -427,9 +453,6 @@ ul.orbit-thumbnails {
 }
 .full-left .orbit-thumbnails {
     float: left;
-}
-.full-right div.sorbit-wide img, .full-left div.sorbit-wide img {
-/*    margin-top: <?php echo ((int)($styles['thumbspacing'])); ?>px;*/
 }
 .full-left .orbit {
     float:right;

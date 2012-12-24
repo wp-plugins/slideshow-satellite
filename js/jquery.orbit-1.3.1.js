@@ -61,6 +61,8 @@
       this.resetAndUnlock = $.proxy(this.resetAndUnlock, this);
       this.stopClock = $.proxy(this.stopClock, this);
       this.startTimerAfterMouseLeave = $.proxy(this.startTimerAfterMouseLeave, this);
+      this.clearCaptionAfterMouseLeave = $.proxy(this.clearCaptionAfterMouseLeave, this);
+      this.setCaptionAfterMouseHover = $.proxy(this.setCaptionAfterMouseHover, this);
       this.clearClockMouseLeaveTimer = $.proxy(this.clearClockMouseLeaveTimer, this);
       this.rotateTimer = $.proxy(this.rotateTimer, this);
       
@@ -90,8 +92,8 @@
     loaded: function () {
       this.$element
         .addClass('orbit')
-        .width('1px')
         .css('background','none');
+        //.width('1px')
         
       this.setDimensionsFromLargestSlide(this.options.bullets, this.options.thumbWidth);
       this.updateOptionsIfOnlyOneSlide();
@@ -134,14 +136,19 @@
     setDimensionsFromLargestSlide: function (bullet, twidth) {
       //Collect all slides and set slider size of largest image
       var self = this;
+      var lastWidth = 0;
       this.$slides.each(function () {
         var slide = $(this),
             slideWidth = slide.width(),
             slideHeight = slide.height();
+            var currwidth = self.$element.width();
+            
+            //alert("1: "+slideWidth +" 2: " + slideWidth2);
         
-        if (slideWidth > self.$element.width()) {
+        if (slideWidth > lastWidth) {
           self.$element.add(self.$wrapper).width(slideWidth);
-          self.orbitWidth = self.$element.width();	       			
+          self.orbitWidth = self.$element.width();
+          lastWidth = self.orbitWidth;
         }
         if (slideHeight > self.$element.height()) {
           /*if (bullet) {
@@ -155,6 +162,10 @@
           }
         self.numberSlides += 1;
       });
+      var containWidth = self.$wrapper.parent().parent().width();
+      if (lastWidth > containWidth) {
+          self.$element.add(self.$wrapper).width(containWidth);
+      }
     },
     
     //Animation locking functions
@@ -282,6 +293,14 @@
         this.setCaption(true);
     },
     
+    clearCaptionAfterMouseLeave: function() {
+        jQuery(this.$caption).fadeOut(this.options.captionAnimationSpeed);
+    },
+    
+    setCaptionAfterMouseHover: function() {
+        jQuery(this.$caption).fadeIn(this.options.captionAnimationSpeed);
+    },
+    
     setCaption: function (toggle) {
       
       var captionLocation = this.currentSlide().attr('data-caption'),
@@ -299,18 +318,17 @@
             //
             captionClass = $(captionLocation).attr('class');
             this.$caption.attr('class', captionClass); // Add class caption TODO why is the id being set?
+            $hovering = this.$wrapper.is(':hover');
 
             //Animations for Caption entrances
-            if ( this.options.captionHover ) {
-                $cap = this.$caption;
-                $speed = this.options.captionAnimationSpeed;
-                this.$wrapper.find('.orbit').parent().hover( function() {
-                    jQuery($cap).fadeIn($speed)
-                },function() {
-                    jQuery($cap).fadeOut($speed)
-                });
-                return;
-            } 
+            if (this.options.captionHover) {
+                this.$wrapper.mouseleave(this.clearCaptionAfterMouseLeave);
+                this.$wrapper.mouseenter(this.setCaptionAfterMouseHover);
+                if (!$hovering){
+                    return;
+                }
+                
+            }
               
             switch (this.options.captionAnimation) {
               case 'none':

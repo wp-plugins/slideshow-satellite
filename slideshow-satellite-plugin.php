@@ -212,6 +212,9 @@ class SatellitePlugin
 
         $this->add_option('styles', $styles);
         //General Settings
+        $this->add_option('autospeed', 10);
+        $this->add_option('autoslide', "Y");
+        $this->add_option('abscenter', "Y");
         $this->add_option('fadespeed', 10);
         $this->add_option('nav_opacity', 30);
         $this->add_option('navhover', 70);
@@ -223,21 +226,18 @@ class SatellitePlugin
         $this->add_option('transition', "FB");
         $this->add_option('information', "Y");
         $this->add_option('infospeed', 10);
+        $this->add_option('imagesbox', "T");
+        $this->add_option('embedss', "Y");
+        $this->add_option('ggljquery', "Y");
+        $this->add_option('responsive', 1);
+        $this->add_option('satwiz', "Y");
+        $this->add_option('shortreq', "Y");
         $this->add_option('showhover', "P");
+        $this->add_option('splash', "N");
+        $this->add_option('stldb_version', "1.0");
         $this->add_option('thumbnails', "N");
         $this->add_option('thumbposition', "bottom");
         $this->add_option('thumbscrollspeed', 5);
-        $this->add_option('autoslide', "Y");
-        $this->add_option('autoslide_temp', "Y");
-        $this->add_option('imagesbox', "T");
-        $this->add_option('autospeed', 10);
-        $this->add_option('abscenter', "Y");
-        $this->add_option('embedss', "Y");
-        $this->add_option('satwiz', "Y");
-        $this->add_option('shortreq', "Y");
-        $this->add_option('ggljquery', "Y");
-        $this->add_option('splash', "N");
-        $this->add_option('stldb_version', "1.0");
         // Orbit Only
         $this->add_option('autospeed2', 5000);
         $this->add_option('duration', 700);

@@ -5,6 +5,7 @@ if (!empty($slides)) :
 
     $style = $this->get_option('styles');
     $imagesbox = $this->get_option('imagesbox');
+    $responsive = false;//$this->get_option('responsive');
     $textloc = $this->get_option('textlocation');
     ?>
 
@@ -12,7 +13,7 @@ if (!empty($slides)) :
         <!-- =======================================
         THE ORBIT SLIDER CONTENT 
         ======================================= -->
-        <div class="<?php echo ( $this->get_option('thumbnails_temp') == 'FR') ? 'full-right' : 'full-left';?>">
+        <div class="<?php echo ( $this->get_option('thumbnails_temp') == 'FR') ? 'full-right' : 'full-left';?><?php echo($responsive) ? ' resp' : ''; ?>">
             <div id="featured<?php echo $satellite_init_ok; ?>"> 
                 <?php foreach ($slides as $slider) : ?>  
                     <?php $full_image_href = wp_get_attachment_image_src($slider->ID, 'full', false); ?>
@@ -48,7 +49,7 @@ if (!empty($slides)) :
         <!--  CUSTOM GALLERY -->
     <?php else : ?>  
 
-        <div class="<?php echo ( $this->get_option('thumbnails_temp') == 'FR') ? 'full-right' : 'full-left';?>">
+        <div class="<?php echo ( $this->get_option('thumbnails_temp') == 'FR') ? 'full-right' : 'full-left';?><?php echo($responsive) ? ' resp' : ''; ?>">
             <div id="featured<?php echo $satellite_init_ok; ?>"> 
                 <?php $i = 0; ?>
                 <?php foreach ($slides as $slider) : ?>     

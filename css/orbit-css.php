@@ -14,10 +14,10 @@ if ($styles['background'] == '#000000') { $loadbg = $styles['background']." url(
 if (!isset($styles['navbuttons'])) { $styles['navbuttons'] = 0;}
 if (!isset($styles['nav'])) { $styles['nav'] = 'on';}
 if (!isset($styles['align'])) { $styles['align'] = null;}
-IF ($styles['navbuttons'] == 0) { $navright = 'url(../images/right-arrow.png) no-repeat 0 0';$navleft = 'url(../images/left-arrow.png) no-repeat 0 0'; $arrowheight = 100; }
-IF ($styles['navbuttons'] == 1) { $navright = 'url("../pro/images/right-sq.png") no-repeat 30px 0';$navleft = 'url(../pro/images/left-sq.png) no-repeat 0 0'; $arrowheight= 60;}
-IF ($styles['navbuttons'] == 2) { $navright = 'url(../pro/images/right-rd.png) no-repeat 30px 0';$navleft = 'url(../pro/images/left-rd.png) no-repeat 0 0'; $arrowheight= 60;}
-IF ($styles['navbuttons'] == 3) { $navright = 'url(../pro/images/right-pl.png) no-repeat 30px 0';$navleft = 'url(../pro/images/left-pl.png) no-repeat 0 0'; $arrowheight= 50;}
+IF ($styles['navbuttons'] == 0) { $navright = 'url(../images/right-arrow.png) no-repeat 0 0';$navleft = 'url(../images/left-arrow.png) no-repeat 0 0'; $arrowheight = 100; $arrowwidth = 78;}
+IF ($styles['navbuttons'] == 1) { $navright = 'url("../pro/images/right-sq.png") no-repeat 30px 0';$navleft = 'url(../pro/images/left-sq.png) no-repeat 0 0'; $arrowheight= 60;$arrowwidth = 60;}
+IF ($styles['navbuttons'] == 2) { $navright = 'url(../pro/images/right-rd.png) no-repeat 30px 0';$navleft = 'url(../pro/images/left-rd.png) no-repeat 0 0'; $arrowheight= 60;$arrowwidth = 60;}
+IF ($styles['navbuttons'] == 3) { $navright = 'url(../pro/images/right-pl.png) no-repeat 30px 0';$navleft = 'url(../pro/images/left-pl.png) no-repeat 0 0'; $arrowheight= 50;$arrowwidth = 60;}
 IF ($styles['nav'] == 'off') { $navright = 'none'; $navleft = 'none'; $arrowheight = 0; }
 
 
@@ -72,8 +72,8 @@ div.sorbit-tall img {
 div.sorbit-wide {
 	height: <?php echo $height ?>; /* VAR HEIGHT */
         width: <?php echo $width ?>; 
+        max-width: <?php echo $width ?>; 
         }
-
 a.sorbit-link {
     height: <?php echo $styles['height'] ?>px; /* VAR HEIGHT */
     display: block;
@@ -271,6 +271,9 @@ div.full-right .satl-wrapper div.timer {
 }
 .full-left .satl-nav span.left {
     left:<?php echo ((int)($styles['thumbarea'] + $extrathumbarea)); ?>px
+}
+.full-left .satl-nav span.right {
+    left:<?php echo ((int)($styles['thumbarea'] + $extrathumbarea + $width - $arrowwidth)); ?>px;
 }
 
 li > li.has-thumb {

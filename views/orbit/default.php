@@ -6,6 +6,7 @@ if (!empty($slides)) :
     $style = $this->get_option('styles');
     $imagesbox = $this->get_option('imagesbox');
     $textloc = $this->get_option('textlocation');
+    $responsive = $this->get_option('responsive');
     $align = $this->get_option('align');
     if (!$frompost) {
         $this->Gallery->loadData($slides[0]->section);
@@ -22,6 +23,7 @@ if (!empty($slides)) :
         <div class="orbit-default
                 <?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' default-thumbs' : ''; ?>
                 <?php echo($align) ? ' satl-align-' . $align : ''; ?>
+                <?php echo($responsive) ? ' resp' : ''; ?>
              ">
             <div id="featured<?php echo $satellite_init_ok; ?>"> 
                 <?php foreach ($slides as $slider) : ?>  
@@ -64,6 +66,7 @@ if (!empty($slides)) :
         <?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' default-thumbs' : ''; ?>
                 <?php echo($sidetext) ? ' text-' . $sidetext : ''; ?>
                 <?php echo($align) ? ' satl-align-' . $align : ''; ?>
+                <?php echo($responsive) ? ' resp' : ''; ?>
              ">
             <div id="featured<?php echo $satellite_init_ok; ?>"> 
                 <?php $i = 0; ?>

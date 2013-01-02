@@ -103,7 +103,7 @@ div.sorbit-wide img{
     width:auto;
     height:auto;
     vertical-align:middle;
-    display:inline-block;
+    display:inline-block !important;
     border:0 !important;
     }
 	
@@ -120,7 +120,7 @@ a.sorbit-link {
 }
 /* Don't Change - Positioning */
 .absoluteCenter {
-    margin:auto;
+    margin:auto !important;
     position:absolute;
     top:0;
     bottom:0;
@@ -396,10 +396,11 @@ ul.orbit-thumbnails {
     opacity: .70;
     overflow:hidden;
     margin: 3px !important;
+    list-style-type:none !important;
 }
-.orbit-thumbnails li img {
+.thumbholder .orbit-thumbnails li img {
     max-width:100%;
-    border:0;
+    border:0 none !important;
     padding: 0 !important;
     margin: 0 !important;
 }

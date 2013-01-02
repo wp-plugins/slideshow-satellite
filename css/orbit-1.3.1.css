@@ -374,10 +374,11 @@ ul.orbit-bullets {
 ul.orbit-thumbnails {
     height:auto;
     margin: 5px auto;
+    padding: 0 20px;
     list-style-type:none
 }
 .thumbholder {
-    width: 410px; /* 40px for the #slideleft and #slideright*/
+    width: 100%; /* 40px for the #slideleft and #slideright*/
     height: 91px;
     overflow:hidden;
     margin: 2px auto 0 auto;
@@ -512,6 +513,7 @@ div.full-right .satl-wrapper div.timer {
 }
 .full-right div.satl-wrapper, .full-left div.satl-wrapper {
     border:0;
+    position:relative !important;
 }
 .full-right #slideleft, .full-right #slideright, .full-left #slideleft, .full-left #slideright {
     display:none;

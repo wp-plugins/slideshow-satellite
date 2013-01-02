@@ -179,7 +179,6 @@ ul.orbit-thumbnails {
     margin: <?php echo( $orbitThumbMargin ); ?>px auto;
 }
 .thumbholder {
-    width: <?php echo (int) ($styles['width'] - 40) ?>px; /* 40px for the #slideleft and #slideright*/
     height: <?php echo($fullthumbheight);?>px;
     margin: <?php echo $styles['thumbmargin']; ?>px auto 0 auto;
     padding-top: <?php echo $styles['height']; ?>px;

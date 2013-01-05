@@ -137,34 +137,31 @@
       //Collect all slides and set slider size of largest image
       var self = this;
       var lastWidth = 0;
+      var lastHeight = 0;
+      var percent = 1;
       this.$slides.each(function () {
         var slide = $(this),
             slideWidth = slide.width(),
             slideHeight = slide.height();
-            var currwidth = self.$element.width();
-            
-            //alert("1: "+slideWidth +" 2: " + slideWidth2);
-        
+
         if (slideWidth > lastWidth) {
-          self.$element.add(self.$wrapper).width(slideWidth);
-          self.orbitWidth = self.$element.width();
-          lastWidth = self.orbitWidth;
+            self.$element.add(self.$wrapper).width(slideWidth);
+            self.orbitWidth = self.$element.width();
+            lastWidth = self.orbitWidth;
         }
-        if (slideHeight > self.$element.height()) {
-          /*if (bullet) {
-                fullHeight = slideHeight + twidth + 5;
-                self.$element.add(self.$wrapper).height(slideHeight);
-                self.$wrapper.css('height', fullHeight);
-          } else {*/
-               //self.$element.add(self.$wrapper).height(slideHeight);
-          //}
-          self.orbitHeight = slideHeight;
-          }
+        if (slideHeight > lastHeight) {
+            self.$element.add(self.$wrapper).height(slideHeight * (percent));
+            self.orbitHeight = self.$element.height();
+            lastHeight = self.orbitHeight;
+        }
         self.numberSlides += 1;
       });
       var containWidth = self.$wrapper.parent().parent().width();
+      /* RESPONSIVE SECTION*/
       if (lastWidth > containWidth) {
+          percent = (containWidth / lastWidth);
           self.$element.add(self.$wrapper).width(containWidth);
+          self.$element.add(self.$wrapper).height(lastHeight * (percent));
       }
     },
     
@@ -426,6 +423,8 @@
         this.$bullets.css('width', this.$thumbwidth);
     	this.$wrapper.append(this.$bullets);
         this.$bullets.wrap(this.wrapThumbHTML);
+        this.$wrapper.find('.thumbholder').css('padding-top',this.$wrapper.height()+'px');
+        
       } else {
         this.$bullets = $(this.bulletHTML);
     	this.$wrapper.append(this.$bullets);

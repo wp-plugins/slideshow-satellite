@@ -10,7 +10,7 @@ ul.orbit-thumbnails, ul.orbit-thumbnails li {
 
 #featured, #featured1, #featured2, #featured3, #featured4, #featured5, #featured6, #featured7 {
     width: 100%;
-    background: url('../images/loading.gif') no-repeat center center;
+    background: #000 url('../images/loading.gif') no-repeat center center;
     }
 #featured>div, #featured1>div, #featured2>div, #featured3>div, #featured4>div, #featured5>div, #featured6>div, #featured7>div { 
     display: none; 
@@ -18,16 +18,18 @@ ul.orbit-thumbnails, ul.orbit-thumbnails li {
 .resp div.satl-wrapper .orbit {
     width:100%;
     height:auto;
+    
 }
 
 div.orbit-default {
     margin-top:20px;
 }
 div.orbit-default.resp div.satl-wrapper {
-/*    max-width: 450px;
-    max-height: 300px;*/
     margin: 0 auto 15px auto;
     position: relative;
+    }
+div.orbit-default.default-thumbs div.satl-wrapper {
+    margin: 0 auto 100px auto;
     }
 div.orbit-default.resp div.satl-wrapper {
     width:auto;
@@ -242,6 +244,7 @@ span.pause.active {
     font-weight:bold;
     line-height:1.3em;
     padding:8px 4px 2px 4px;
+    text-align:center;
 }
 .orbit-caption p.size-2 {
     font-size:1.5em;
@@ -275,9 +278,6 @@ a.sorbit-link:hover {
 .orbit-default .satl-wrapper div.sattext p { 
     color:#FFF; padding:0 8px 3px;
 }    
-.orbit-default .thumb-on {
-    bottom: 91px; 
-}
 .orbit-default.default-thumbs .satl-wrapper {
     height: 391px;
 }
@@ -331,9 +331,7 @@ div.satl-nav span {
     z-index: 50;
     top: 50%;
     margin-top: -50px;
-    cursor: pointer; }
-.default-thumbs div.satl-nav span {
-   margin-top: -91px;
+    cursor: pointer; 
 }
 div.satl-nav span.right {
     background: url(../images/right-arrow.png) no-repeat 0 0;
@@ -370,7 +368,9 @@ ul.orbit-bullets {
 
 /* THUMBNAIL NAV
    ================================================== */
-
+div.orbit-default.resp .satl-wrapper, div.orbit-default .satl-wrapper {
+    margin-bottom:100px;
+}
 ul.orbit-thumbnails {
     height:auto;
     margin: 5px auto;
@@ -383,6 +383,7 @@ ul.orbit-thumbnails {
     overflow:hidden;
     margin: 2px auto 0 auto;
     padding-top: 300px;
+    background: #000;
 }
     
 .orbit-thumbnails li {
@@ -444,15 +445,11 @@ ul.orbit-thumbnails {
     clear:both;
     margin-top:20px;
 }
-.full-right .satl-wrapper, .full-left .satl-wrapper {
-    margin: 0 !important;
-    width:755px !important;
-    height:300px !important;
+.full-right .satl-wrapper {
+    margin-right: 305px !important;
 }
-.full-right .orbit-thumbnails li, .full-left .orbit-thumbnails li {
-    height:75px;
-    width:75px;
-    margin:3px;
+.full-left .satl-wrapper {
+    margin-left:0px !important;
 }
 .full-right .orbit-thumbnails, .full-left .orbit-thumbnails {
     margin: 0 !important;
@@ -475,25 +472,28 @@ ul.orbit-thumbnails {
 }
 .full-right .thumbholder, .full-left .thumbholder {
     width: 275px;
-    height: 300px;
+    height: 100%;
     overflow-y:auto;
     overflow-x:hidden;
-    padding-top:0;
+    padding-top:0 !important;
     }
 .full-right .thumbholder {
-    margin:0 0 0 480px;
+    margin:0 0 0 450px;
+    padding-left: 20px;
     left:0;
 }
 .full-left .thumbholder {
     margin: 0 30px 0 0;
     right:0;
 }
+.full-left .orbit-thumbnails {
+    padding: 0;
+}
 div.full-right .satl-wrapper div.timer {
     right:305px;
 }
 .full-right div.orbit-caption {
     width:450px;
-    right:305px;
 }
 .full-left div.orbit-caption {
     width:450px;
@@ -504,9 +504,6 @@ div.full-right .satl-wrapper div.timer {
 }
 .full-left div.sattext, .full-right div.sattext {
     width:216px; 
-}
-.full-right .satl-nav span.right {
-    right:305px
 }
 .full-left .satl-nav span.left {
     left:305px
@@ -538,9 +535,9 @@ div.full-right .satl-wrapper div.timer {
     margin: 0 auto 15px auto;
     
 }
-.splash-satl-wrap.default-thumbs {
+/*.splash-satl-wrap.default-thumbs {
     margin-bottom: 91px;
-}
+}*/
 .splash-satl-wrap.default-thumbs .splash-thumbs {
     margin-top: 300px;
     height: 91px;

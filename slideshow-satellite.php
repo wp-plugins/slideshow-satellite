@@ -8,7 +8,7 @@ Description: Display photography and content in highly configurable ways with th
 Version: 1.3.4
 */
 define('DS', '/');
-define( 'SATL_VERSION', '1.3.4');
+define( 'SATL_VERSION', '1.3.5');
 $uploads = wp_upload_dir();
 if ( ! defined( 'SATL_PLUGIN_BASENAME' ) )
 	define( 'SATL_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );

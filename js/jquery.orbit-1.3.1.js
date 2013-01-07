@@ -138,7 +138,6 @@
       var self = this;
       var lastWidth = 0;
       var lastHeight = 0;
-      var percent = 1;
       this.$slides.each(function () {
         var slide = $(this),
             slideWidth = slide.width(),
@@ -146,23 +145,37 @@
 
         if (slideWidth > lastWidth) {
             self.$element.add(self.$wrapper).width(slideWidth);
+            self.$element.add(self.$wrapper).css('max-width', slideWidth);
             self.orbitWidth = self.$element.width();
             lastWidth = self.orbitWidth;
         }
         if (slideHeight > lastHeight) {
-            self.$element.add(self.$wrapper).height(slideHeight * (percent));
+            self.$element.add(self.$wrapper).height(slideHeight);
             self.orbitHeight = self.$element.height();
             lastHeight = self.orbitHeight;
         }
         self.numberSlides += 1;
       });
+      this.beResponsive(lastWidth,lastHeight);
+    },
+    
+    beResponsive: function (width,height) {
+      var self = this;
+      var percent = 1;
       var containWidth = self.$wrapper.parent().parent().width();
-      /* RESPONSIVE SECTION*/
-      if (lastWidth > containWidth) {
-          percent = (containWidth / lastWidth);
-          self.$element.add(self.$wrapper).width(containWidth);
-          self.$element.add(self.$wrapper).height(lastHeight * (percent));
+      var maxWidth = parseInt(self.$wrapper.css('max-width'));
+      var newWidth = false;
+      if (width > containWidth || (width < maxWidth && containWidth < maxWidth)) {
+          newWidth = containWidth;
+      } else if (width < maxWidth && width < containWidth) {
+          newWidth = maxWidth
       }
+      if (newWidth) {
+          percent = (newWidth / width);
+          self.$element.add(self.$wrapper).width(newWidth);
+          self.$element.add(self.$wrapper).height(height * (percent));
+          self.$wrapper.find('.thumbholder').css('padding-top',height * (percent)+'px');
+      } 
     },
     
     //Animation locking functions
@@ -199,6 +212,19 @@
         slide.click(function () { 
             self.stopClock();
         });
+    },
+    
+    handleResize: function(element, options) {
+        this.$element = $(element);
+        this.$wrapper = this.$element.parent();
+        if(this.$element.hasClass('processing'))
+              return;
+        this.$element.addClass('processing');
+        var w = parseInt(this.$wrapper.css('width'));
+        var h = parseInt(this.$wrapper.css('height'));
+        this.beResponsive(w,h);
+        this.$element.removeClass('processing');
+        
     },
     
     startClock: function () {
@@ -643,6 +669,13 @@
       var satlorbit = $.extend({}, SATLORBIT);
       satlorbit.init(this, options);
     });
+  };
+  
+  $.fn.satlresponse = function(options) {
+      return this.each(function() {
+          var satlorbit = $.extend({},SATLORBIT);
+          satlorbit.handleResize(this, options);
+      });
   };
 
 })(jQuery);

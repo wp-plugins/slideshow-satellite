@@ -1,13 +1,13 @@
 === Slideshow Satellite ===
 Contributors: C- Pres
 Donate link: http://c-pr.es/projects/satellite
-Tags: slideshow pro, photographer, galleries, satellite, orbit, zurb orbit, slideshow gallery, slides, slideshow, image gallery, gallery, slideshow satellite, photography, slideshow orbit
-Requires at least: 3.0
-Tested up to: 3.4.2
-Stable tag: 1.3.4
+Tags: responsive slideshow, photography, galleries, satellite, orbit, zurb orbit, slideshow gallery, responsive, slideshow, content slider, gallery, slideshow satellite, photography, slideshow orbit
+Requires at least: 3.1
+Tested up to: 3.5
+Stable tag: 1.3.5 Beta
 License: GPLv2 or later
 
-Ultra customizable and contemporary photo slideshow. Build photograph galleries or content displays with Slideshow Satellite. 
+Ultra customizable and responsive slideshow for image and text. Build image galleries or content displays with Slideshow Satellite. 
 
 == Description ==
 The goal of this slideshow is to create beautiful ways of displaying content in ways that suit the content you are providing.
@@ -91,6 +91,10 @@ You may also want to "Reset Configuration" from the Configuration page
 Two should be enough, we don't want to bog down your install with screenshots. Come to the site for more, and a video tutorial: http://c-pr.es/satellite
 
 == Changelog ==
+= 1.4 =
+* The Responsive release!!
+* Making PHP not "necessary" for CSS
+
 = 1.3.3 =
 * Adding back in Shortcode Requirement
 * Fixing Captions on the Right

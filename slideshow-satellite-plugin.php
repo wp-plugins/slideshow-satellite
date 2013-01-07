@@ -8,8 +8,8 @@ class SatellitePlugin
     var $pre = 'Satellite';
     var $debugging = false;
     var $menus = array();
-    var $latestorbit = 'jquery.orbit-1.3.1.js';
-    //var $latestorbit = 'orbit-min.js';
+    //var $latestorbit = 'jquery.orbit-1.3.1.js';
+    var $latestorbit = 'orbit-min.js';
     var $cssfile = 'orbit-css.php';
     var $staticCSSFile = 'orbit-1.3.1.css';
     var $cssadmin = 'admin-styles.css';

@@ -45,4 +45,10 @@
                 alwaysPlayBtn: <?php echo ($style['playshow'] == "A") ? 'true' : 'false'; ?>
             });				
         });
+        
+        jQuery(window).resize(function($) {
+            jQuery('#featured<?php echo $satellite_init_ok; ?>').satlresponse({
+                fullcaption : <?php echo($fullthumb) ? 'true' : 'false'; ?>	// true or false to activate the full margins
+            });
+        });
     </script> 

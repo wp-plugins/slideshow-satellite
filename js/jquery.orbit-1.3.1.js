@@ -165,10 +165,19 @@
       var containWidth = self.$wrapper.parent().parent().width();
       var maxWidth = parseInt(self.$wrapper.css('max-width'));
       var newWidth = false;
+      
       if (width > containWidth || (width < maxWidth && containWidth < maxWidth)) {
           newWidth = containWidth;
+          if(!self.$wrapper.parent().hasClass('shrunk')) {
+              self.$wrapper.parent().addClass('shrunk');
+              self.$wrapper.parent().parent().parent().addClass('shrunk');
+          }
       } else if (width < maxWidth && width < containWidth) {
           newWidth = maxWidth
+          if(self.$wrapper.parent().hasClass('shrunk')) {
+              self.$wrapper.parent().removeClass('shrunk');
+              self.$wrapper.parent().parent().parent().removeClass('shrunk');
+          }
       }
       if (newWidth) {
           percent = (newWidth / width);

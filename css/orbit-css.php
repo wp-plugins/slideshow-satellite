@@ -275,7 +275,6 @@ li > li.has-thumb {
 
 .satl-gal-wrap {
     position: relative;
-    width: <?php echo($styles['width']+$galleryTitles);?>px;
 }
 .splash-satl-wrap {
     position: relative;
@@ -308,15 +307,6 @@ li > li.has-thumb {
     width:<?php echo $styles['thumbheight']; ?>px;
     border: 2px solid <?php echo($styles['background'])?>;
     margin:<?php echo ((int) $styles['thumbspacing'] -2) ?>px;
-}
-.satl-gal-titles {
-    width:<?php echo $galleryTitles ?>px;
-    height: <?php echo $styles['height'] ?>px;
-    }
-.galleries-satl-wrap {
-    height: <?php echo $styles['height'] ?>px;
-    width: <?php echo $styles['width'] ?>px;
-    margin-left:<?php echo $galleryTitles + 5 ?>px;
 }
 .galleries-satl-wrap .splashstart.sorbit-wide {
     left:<?php echo $galleryTitles + 5 ?>px;

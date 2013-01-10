@@ -526,7 +526,6 @@ div.full-right .satl-wrapper div.timer {
 
 .satl-gal-wrap {
     position: relative;
-    width: 620px;
 }
 .splash-satl-wrap {
     position: relative;
@@ -554,15 +553,18 @@ div.full-right .satl-wrapper div.timer {
     -webkit-border-radius:4px;
     border-radius:4px;
     border: 2px solid #000000;
-    float:left;
     margin:3px;
 }
+
 .satl-gal-titles {
-    width:175px;
     float:left;
     padding:0 0 5px 5px;
-    height: 300px;
+    height: 100%;
+    width:175px;
     }
+.satl-gal-wrap.shrunk .satl-gal-titles {
+    width:100%;
+}
 .satl-gal-titles a:hover {
     text-decoration:underline;
 }
@@ -570,10 +572,16 @@ div.full-right .satl-wrapper div.timer {
     text-decoration:underline;
 }
 .galleries-satl-wrap {
-    height: 300px;
-    width: 450px;
+    height:100%;
+    width:100%;
     margin-top: 10px;
+}
+.galleries-satl-wrap .orbit-default {
     margin-left:180px;
+}
+.galleries-satl-wrap .orbit-default.shrunk {
+    margin-left:0;
+    clear:both;
 }
 .galleries-satl-wrap .clickstart {
     height: 100%;
@@ -595,8 +603,8 @@ div.full-right .satl-wrapper div.timer {
 .galleries-satl-wrap img.play:hover, .splash-satl-wrap img.play:hover {
     opacity:.7;
 }
-.galleries-satl-wrap .satl-wrapper {
-    margin-left:0;
+.galleries-satl-wrap .orbit-default .satl-wrapper {
+    margin-left:0 !important;
 }
 .satl-gal-title {
     border-bottom: 2px solid;
@@ -606,13 +614,21 @@ div.full-right .satl-wrapper div.timer {
     margin-bottom: -1px;
     padding: 3px 0 3px 5px;
     color:#EEE;
-    -webkit-border-top-left-radius: 15px;
+/*    -webkit-border-top-left-radius: 15px;
     -webkit-border-bottom-left-radius: 15px;
     -moz-border-radius-topleft: 15px;
     -moz-border-radius-bottomleft: 15px;
     border-top-left-radius: 15px;
-    border-bottom-left-radius: 15px;
+    border-bottom-left-radius: 15px;*/
+    -webkit-border-radius:15px;
+    -moz-border-radius:15px;
+    border-radius:15px;
     text-align:center;
+    max-width:175px;
+    min-width:100px;
+    width:100%;
+    float:left;
+    position:relative;
 }
 .satl-gal-title:hover, .satl-gal-title.current {
     background: none repeat scroll 0 0 rgba(0, 0, 0, 0.6);

@@ -42,12 +42,14 @@
                 centerBullets: <?php echo $this->get_option('bullcenter'); ?>,
                 navOpacity: <?php echo ($navOpacity); ?>,
                 thumbWidth: <?php echo $thumbwidth; ?>,
+                respExtra: <?php echo $respExtra; ?>, // the width beyond the slide image
                 alwaysPlayBtn: <?php echo ($style['playshow'] == "A") ? 'true' : 'false'; ?>
             });				
         });
         
         jQuery(window).resize(function($) {
             jQuery('#featured<?php echo $satellite_init_ok; ?>').satlresponse({
+                respExtra: <?php echo $respExtra; ?>, // the width beyond the slide image
                 fullcaption : <?php echo($fullthumb) ? 'true' : 'false'; ?>	// true or false to activate the full margins
             });
         });

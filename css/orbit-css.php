@@ -241,9 +241,6 @@ ul.orbit-thumbnails {
 div.full-left div.timer {
     right: -<?php echo (int)($styles['thumbarea']- $extrathumbarea ); ?>px;
 }
-div.full-right .satl-wrapper div.timer {
-    right:<?php echo ((int)($styles['thumbarea'] + $extrathumbarea )); ?>px;
-}
 .full-right div.orbit-caption {
     width:<?php echo ((int) ($styles['width'])) ?>px;
 }

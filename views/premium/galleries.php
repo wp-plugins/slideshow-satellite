@@ -1,7 +1,7 @@
 <?php
 
 if (!empty($slides)) :
-    $displayFirstSatellite = $this -> render('default', array('slides' => $slides, 'frompost' => false), false, 'orbit');
+    $displayFirstSatellite = $this -> render('default', array('slides' => $slides, 'frompost' => false, 'respExtra' => 175), false, 'orbit');
     $displaySplash = $this -> get_option('splash');
     ?>
     <div class='satl-gal-wrap'>

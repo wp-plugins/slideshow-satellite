@@ -7,6 +7,7 @@ if (!empty($slides)) :
     $imagesbox = $this->get_option('imagesbox');
     $textloc = $this->get_option('textlocation');
     $responsive = $this->get_option('responsive');
+    $respExtra = ($respExtra) ? $respExtra : 0;
     $align = $this->get_option('align');
     if (!$frompost) {
         $this->Gallery->loadData($slides[0]->section);
@@ -58,7 +59,7 @@ if (!empty($slides)) :
             </div> <!-- end featured -->
 
         </div>
-        <?php $this -> render('jsinit', array('gallery'=>false,'frompost' => true), true, 'orbit');?>
+        <?php $this -> render('jsinit', array('gallery'=>false,'frompost' => true,'respExtra' => 0), true, 'orbit');?>
 
         <!--  CUSTOM GALLERY -->
     <?php else : ?>  
@@ -118,7 +119,7 @@ if (!empty($slides)) :
         </div>
 
         </div>
-        <?php $this -> render('jsinit', array('gallery'=>$slides[0]->section,'frompost' => false), true, 'orbit');?>
+        <?php $this -> render('jsinit', array('gallery'=>$slides[0]->section,'frompost' => false, 'respExtra' => $respExtra), true, 'orbit');?>
     <?php
     endif;
     /*     * ****** PRO ONLY ************* */

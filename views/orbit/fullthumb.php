@@ -6,6 +6,8 @@ if (!empty($slides)) :
     $style = $this->get_option('styles');
     $imagesbox = $this->get_option('imagesbox');
     $responsive = false;//$this->get_option('responsive');
+    $respExtra = ($respExtra) ? $respExtra : $style['thumbarea'];
+    
     $textloc = $this->get_option('textlocation');
     ?>
 
@@ -45,7 +47,7 @@ if (!empty($slides)) :
 
         </div>
 
-         <?php $this -> render('jsinit', array('gallery'=>false,'frompost' => true, 'fullthumb' => true), true, 'orbit');?>
+         <?php $this -> render('jsinit', array('gallery'=>false,'frompost' => true, 'fullthumb' => true, 'respExtra' => $respExtra), true, 'orbit');?>
         <!--  CUSTOM GALLERY -->
     <?php else : ?>  
 
@@ -88,7 +90,7 @@ if (!empty($slides)) :
             
         </div>
 
-    <?php $this -> render('jsinit', array('gallery'=>$slides[0]->section, 'frompost' => false, 'fullthumb' => true), true, 'orbit');?>
+    <?php $this -> render('jsinit', array('gallery'=>$slides[0]->section, 'frompost' => false, 'fullthumb' => true, 'respExtra' => $respExtra), true, 'orbit');?>
 
     <?php endif; 
     /******** PRO ONLY **************/

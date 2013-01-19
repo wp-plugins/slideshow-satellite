@@ -31,6 +31,7 @@
       centerBullets: true,              // center bullet nav with js, turn this off if you want to position the bullet nav manually
       navOpacity: .2,
       thumbWidth: 80,
+      respExtra: 0,
       alwaysPlayBtn: false
  	  },
  	  
@@ -162,17 +163,23 @@
     beResponsive: function (width,height) {
       var self = this;
       var percent = 1;
+      var extraWidth = self.options.respExtra;
       var containWidth = self.$wrapper.parent().parent().width();
       var maxWidth = parseInt(self.$wrapper.css('max-width'));
       var newWidth = false;
-      
-      if (width > containWidth || (width < maxWidth && containWidth < maxWidth)) {
-          newWidth = containWidth;
+      // Zero out extra width so slideshow can start to be resized
+      if (width >= containWidth || containWidth <= maxWidth) {
+        extraWidth = 0;
+      }
+      if (width + extraWidth > containWidth || (width < maxWidth && containWidth < maxWidth)) {
+          if (!extraWidth) {
+            newWidth = containWidth;
+          }
           if(!self.$wrapper.parent().hasClass('shrunk')) {
               self.$wrapper.parent().addClass('shrunk');
               self.$wrapper.parent().parent().parent().addClass('shrunk');
           }
-      } else if (width < maxWidth && width < containWidth) {
+      } else if (width <= maxWidth && width + extraWidth < containWidth) {
           newWidth = maxWidth
           if(self.$wrapper.parent().hasClass('shrunk')) {
               self.$wrapper.parent().removeClass('shrunk');
@@ -224,6 +231,7 @@
     },
     
     handleResize: function(element, options) {
+        this.options = $.extend({}, this.defaults, options);
         this.$element = $(element);
         this.$wrapper = this.$element.parent();
         if(this.$element.hasClass('processing'))
@@ -443,11 +451,11 @@
         this.$wrapper.append(this.directionalThumbHTML);
         
         this.$wrapper.find('#slideleft').click(function () { 
-            $('.thumbholder').animate({scrollLeft: "-="+scrollsize}, 'slow'); 
+            self.$wrapper.find('.thumbholder').animate({scrollLeft: "-="+scrollsize}, 'slow'); 
         });
 
         this.$wrapper.find('#slideright').click(function () {
-            $('.thumbholder').animate({scrollLeft: "+="+scrollsize}, 'slow'); 
+            self.$wrapper.find('.thumbholder').animate({scrollLeft: "+="+scrollsize}, 'slow'); 
         });
     },
     

@@ -58,7 +58,7 @@ class SatellitePlugin
 
     function conditionally_add_scripts_and_styles($posts){
             if (empty($posts)) return $posts;
-            $loadGoogleFonts = true;
+            $loadGoogleFonts = false;
 
             $shortcode_found = false; // use this flag to see if styles and scripts need to be enqueued
             

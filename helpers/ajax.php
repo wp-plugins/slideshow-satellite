@@ -36,6 +36,7 @@ class SatelliteAjaxHelper extends SatellitePlugin {
                         jQuery('.satl-gal-titles .current').removeClass('current');
                         jQuery('.gal'+id).addClass('current');
                         jQuery('.galleries-satl-wrap').html(response);
+//                        initslideshow();
                 });        
             }
             function showSoloSatellite(id,unique) {
@@ -61,7 +62,7 @@ class SatelliteAjaxHelper extends SatellitePlugin {
 
 	$Satellite = new Satellite();
         $slides = $Satellite -> Slide -> find_all(array('section'=>(int) stripslashes($slideshow)), null, array('slide_order', "ASC"));
-        $displayAjaxSatellite = $Satellite -> render('default', array('slides' => $slides, 'frompost' => false), false, 'orbit');
+        $displayAjaxSatellite = $Satellite -> render('default', array('slides' => $slides, 'frompost' => false, 'respExtra' => 175), false, 'orbit');
         echo $displayAjaxSatellite;
 
 	die(); // this is required to return a proper result

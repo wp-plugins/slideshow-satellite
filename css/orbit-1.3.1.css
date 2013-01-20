@@ -454,12 +454,19 @@ ul.orbit-thumbnails {
 .full-right.shrunk .satl-wrapper {
     margin-left: 0px !important;
 }
+.full-right .satl-wrapper .orbit {
+    margin-left: 0px !important;
+}
 .full-right .orbit-thumbnails, .full-left .orbit-thumbnails {
     margin: 0 !important;
     left:0;
     /*width:255px !important;*/
     width:100%;
     position:relative;
+    padding-bottom: 25px !important;
+}
+.full-left.shrunk .orbit-thumbnails {
+    padding-left:5px;
 }
 .full-right .orbit-thumbnails {
     float: right;
@@ -494,6 +501,9 @@ ul.orbit-thumbnails {
     margin: 0 30px 0 0;
     right:0;
 }
+.full-left .thumbholder {
+    margin-left:0px !important;
+}
 .full-left .orbit-thumbnails {
     padding: 0;
 }
@@ -512,6 +522,9 @@ ul.orbit-thumbnails {
 }
 .full-left .satl-nav span.left {
     left:305px
+}
+.full-right .satl-nav span.left {
+    left:0px !important;
 }
 .full-right div.satl-wrapper, .full-left div.satl-wrapper {
     border:0;

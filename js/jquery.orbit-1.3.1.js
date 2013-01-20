@@ -148,6 +148,10 @@
       else if (extraWidth < self.options.respExtra) {
         self.$wrapper.find('.thumbholder').css('width',extraWidth+10);
         self.$wrapper.find('.thumbholder').css('margin-left',width);
+        this.$element.css('margin-left',extraWidth);
+        self.$wrapper.find('.left').css('left',extraWidth);
+        var distance = parseInt(self.$wrapper.find('.left').css('left'))+self.$element.width()-self.$wrapper.find('.right').width();
+        self.$wrapper.find('.right').css('left',distance);
         return extraWidth;
       }
       return self.options.respExtra;  
@@ -497,7 +501,14 @@
         this.$wrapper.find('.thumbholder').css('padding-top',this.$wrapper.height()+'px');
         if (this.options.sideThumbs) {
             this.setSideThumbSize(null,null);
+            this.$wrapper.find('.thumbholder').hover(function() {
+                $("body").css("overflow", "hidden");
+            }, function(){
+                jQuery("body").css("overflow", "visible");
+            });
         }
+      
+
         
       } else {
         this.$bullets = $(this.bulletHTML);
@@ -737,6 +748,26 @@
   };
 
 })(jQuery);
+
+function block_scroll(key){
+// lock scroll position, but retain settings for later
+      var scrollPosition = [
+        self.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft,
+        self.pageYOffset || document.documentElement.scrollTop  || document.body.scrollTop
+      ];
+      var html = jQuery('html'); // it would make more sense to apply this to body, but IE7 won't have that
+      html.data('scroll-position', scrollPosition);
+      html.data('previous-overflow', html.css('overflow'));
+      html.css('overflow', 'hidden');
+      window.scrollTo(scrollPosition[0], scrollPosition[1]);
+
+
+      // un-lock scroll position
+      var html = jQuery('html');
+      var scrollPosition = html.data('scroll-position');
+      html.css('overflow', html.data('previous-overflow'));
+      window.scrollTo(scrollPosition[0], scrollPosition[1])
+  }
         
 /*!
  * jQuery imageready Plugin

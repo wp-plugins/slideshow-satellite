@@ -54,4 +54,5 @@
                 sideThumbs: <?php echo ($fullthumb) ? 'true' : 'false'; ?>
             });
         });
+        
     </script> 

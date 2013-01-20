@@ -159,8 +159,10 @@ class SatelliteConfigHelper extends SatellitePlugin {
         } elseif ($this->get_option('transition_temp') == "OVS") {
             $transition = "vertical-slide";
         } elseif ($this->get_option('transition_temp') == "OHP") {
-            $transition = "horizontal-push"; }
-        else {
+            $transition = "horizontal-push";
+        } elseif ($this->get_option('transition_temp') == "N") {
+            $transition = "none";
+        } else {
             $transition = "fade-blend";
         }
         

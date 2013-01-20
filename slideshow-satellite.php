@@ -252,6 +252,8 @@ class Satellite extends SatellitePlugin {
 				$this -> update_option( 'transition_temp', 'OHP' );
 			} elseif (($this -> get_option( 'transition' )!='OM' ) && ( $transition == 'orbit-multi' )) {
 				$this -> update_option( 'transition_temp', 'OM' );
+			} elseif (($this -> get_option( 'transition' )!='N' ) && ( $transition == 'none' )) {
+				$this -> update_option( 'transition_temp', 'N' );
 			}
 		}
 		if ( !empty( $auto ) ) { 
@@ -351,6 +353,7 @@ class Satellite extends SatellitePlugin {
 		elseif ($this -> get_option('transition')=='OVS') { $this -> update_option('transition_temp', 'OVS'); }
 		elseif ($this -> get_option('transition')=='OHS') { $this -> update_option('transition_temp', 'OHS'); }
 		elseif ($this -> get_option('transition')=='OHP') { $this -> update_option('transition_temp', 'OHP'); }
+		elseif ($this -> get_option('transition')=='N') { $this -> update_option('transition_temp', 'N'); }
 		elseif ($this -> get_option('transition')=='OM') { $this -> update_option('transition_temp', 'OM'); }
                 if ($this -> get_option('random') != null) { $this -> update_option('random', null); }
                 

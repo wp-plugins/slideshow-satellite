@@ -30,6 +30,7 @@
       afterSlideChange: $.noop,		// empty function 
       centerBullets: true,              // center bullet nav with js, turn this off if you want to position the bullet nav manually
       navOpacity: .2,
+      sideThumbs: false,
       thumbWidth: 80,
       respExtra: 0,
       alwaysPlayBtn: false
@@ -134,6 +135,24 @@
       return this.$slides.eq(this.activeSlide);
     },
     
+    setSideThumbSize: function(width,containWidth) {
+      var self = this;
+      if (!width) { width = self.$element.width(); }
+      if (!containWidth) { containWidth = self.$wrapper.parent().parent().width(); }
+      var extraWidth = containWidth - width;
+      if (extraWidth < this.options.thumbWidth) {
+        self.$wrapper.find('.thumbholder').css('width',this.options.thumbWidth+10);
+        self.$wrapper.find('.thumbholder').css('margin-left',width);
+        return this.options.thumbWidth;
+      }
+      else if (extraWidth < self.options.respExtra) {
+        self.$wrapper.find('.thumbholder').css('width',extraWidth+10);
+        self.$wrapper.find('.thumbholder').css('margin-left',width);
+        return extraWidth;
+      }
+      return self.options.respExtra;  
+    },
+    
     setDimensionsFromLargestSlide: function (bullet, twidth) {
       //Collect all slides and set slider size of largest image
       var self = this;
@@ -167,12 +186,17 @@
       var containWidth = self.$wrapper.parent().parent().width();
       var maxWidth = parseInt(self.$wrapper.css('max-width'));
       var newWidth = false;
+      if (this.options.sideThumbs) {
+        extraWidth = this.setSideThumbSize(width,containWidth);
+      }
       // Zero out extra width so slideshow can start to be resized
       if (width >= containWidth || containWidth <= maxWidth) {
         extraWidth = 0;
       }
       if (width + extraWidth > containWidth || (width < maxWidth && containWidth < maxWidth)) {
-          if (!extraWidth) {
+          if (this.options.sideThumbs) {
+            newWidth = containWidth - (self.options.thumbWidth + 5);              
+          } else if (!extraWidth) {
             newWidth = containWidth;
           }
           if(!self.$wrapper.parent().hasClass('shrunk')) {
@@ -462,11 +486,18 @@
     setupBulletNav: function () {
       if (this.options.bulletThumbs) {
         this.$bullets = $(this.thumbHTML);
-        this.$thumbwidth = (this.$slides.length * this.options.thumbWidth);
-        this.$bullets.css('width', this.$thumbwidth);
+        if (!this.options.sideThumbs) {
+            this.$thumbwidth = (this.$slides.length * this.options.thumbWidth);
+            this.$bullets.css('width', this.$thumbwidth);
+        } else {
+            this.$bullets.css('min-width', this.options.thumbWidth);
+        }
     	this.$wrapper.append(this.$bullets);
         this.$bullets.wrap(this.wrapThumbHTML);
         this.$wrapper.find('.thumbholder').css('padding-top',this.$wrapper.height()+'px');
+        if (this.options.sideThumbs) {
+            this.setSideThumbSize(null,null);
+        }
         
       } else {
         this.$bullets = $(this.bulletHTML);
@@ -561,8 +592,18 @@
           .eq(this.prevActiveSlide)
           .css({"z-index" : 2});    
             
+        //no transition
+        if (this.options.animation == "none") {
+          this.$slides
+            .eq(this.prevActiveSlide)
+            .css({"opacity" : 0, "z-index" : 0});
+          this.$slides
+            .eq(this.activeSlide)
+            .animate({"opacity" : 1}, 0, this.resetAndUnlock);
+          this.resetAndUnlock;
+        }
         //fade empty
-        if (this.options.animation == "fade-empty") {
+        else if (this.options.animation == "fade-empty") {
           this.$slides
             .eq(this.prevActiveSlide)
             .animate({"opacity" : 0}, this.options.animationSpeed);
@@ -574,7 +615,7 @@
         }
         
         //fade blend
-        if (this.options.animation == "fade-blend") {
+        else if (this.options.animation == "fade-blend") {
           this.$slides
             .eq(this.activeSlide)
             .css({"opacity" : 0, "z-index" : 3})
@@ -582,7 +623,7 @@
         }
         
         //pull out - transition effects
-        if (this.options.animation == "pullout") {
+        else if (this.options.animation == "pullout") {
           //this.$slides
             //.eq(this.activeSlide)
             //.css({"opacity" : 0, "z-index" : 3})
@@ -596,7 +637,7 @@
         }
         
         //horizontal-slide
-        if (this.options.animation == "horizontal-slide") {
+        else if (this.options.animation == "horizontal-slide") {
           if (slideDirection == "next") {
             this.$slides
               .eq(this.activeSlide)
@@ -613,7 +654,7 @@
         }
             
         //vertical-slide
-        if (this.options.animation == "vertical-slide") { 
+        else if (this.options.animation == "vertical-slide") { 
           if (slideDirection == "prev") {
             this.$slides
               .eq(this.activeSlide)
@@ -629,7 +670,7 @@
         }
         
         //horizontal-push
-        if (this.options.animation == "horizontal-push") {
+        else if (this.options.animation == "horizontal-push") {
           if (slideDirection == "next") {
             this.$slides
               .eq(this.activeSlide)
@@ -651,7 +692,7 @@
         }
         
         //vertical-push
-        if (this.options.animation == "vertical-push") {
+        else if (this.options.animation == "vertical-push") {
           if (slideDirection == "next") {
             this.$slides
               .eq(this.activeSlide)

@@ -70,8 +70,8 @@ div.sorbit-tall img {
 	}
 	
 div.sorbit-wide {
-	height: <?php echo $height ?>; /* VAR HEIGHT */
-        width: <?php echo $width ?>; 
+	/*height: <?php echo $height ?>;
+        width: <?php echo $width ?>; */
         max-width: <?php echo $width ?>; 
         }
 a.sorbit-link {
@@ -216,7 +216,7 @@ ul.orbit-thumbnails {
     margin-right:<?php echo ((int) $styles['thumbspacing'] -2) ?>px;
 }
 .full-right .orbit-thumbnails, .full-left .orbit-thumbnails {
-    width:<?php echo ((int)($styles['thumbarea']-20)); ?>px !important;
+    /*width:<?php echo ((int)($styles['thumbarea']-20)); ?>px !important;*/
 }
 .full-right div.sorbit-wide img, .full-left div.sorbit-wide img {
 /*    margin-top: <?php echo ((int)($styles['thumbspacing'])); ?>px;*/
@@ -229,7 +229,7 @@ ul.orbit-thumbnails {
     float:left;
 }
 .full-right .thumbholder, .full-left .thumbholder {
-    width: <?php echo (int)($styles['thumbarea']); ?>px;
+    max-width: <?php echo (int)($styles['thumbarea']); ?>px;
     }
 .full-right .thumbholder {
     margin-left:<?php echo ((int)($styles['width'] ));?>px;

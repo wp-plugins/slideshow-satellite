@@ -4,12 +4,13 @@
             <th><label for="transition"><?php _e('Default Transition', SATL_PLUGIN_NAME); ?></label></th>
             <td>
                     <select name="transition" class="satellite_trans">
+                        <option <?php echo ($this->get_option('transition') == "N") ? 'selected' : ''; ?> value="N"><?php _e('None', SATL_PLUGIN_NAME); ?></option> 
                         <option <?php echo ($this->get_option('transition') == "FB") ? 'selected' : ''; ?> value="FB"><?php _e('Fade Blend', SATL_PLUGIN_NAME); ?></option> 
                         <option <?php echo ($this->get_option('transition') == "FE") ? 'selected' : ''; ?> value="FE"><?php _e('Fade Empty', SATL_PLUGIN_NAME); ?></option> 
-                        <option <?php echo ($this->get_option('transition') == "OHS") ? 'selected' : ''; ?> value="OHS"><?php _e('Orbit Horizontal-Slide', SATL_PLUGIN_NAME); ?></option> 
-                        <option <?php echo ($this->get_option('transition') == "OVS") ? 'selected' : ''; ?> value="OVS"><?php _e('Orbit Vertical-Slide', SATL_PLUGIN_NAME); ?></option> 
-                        <option <?php echo ($this->get_option('transition') == "OHP") ? 'selected' : ''; ?> value="OHP"><?php _e('Orbit Horizontal-Push', SATL_PLUGIN_NAME); ?></option> 
-                        <option <?php echo ($this->get_option('transition') == "OVP") ? 'selected' : ''; ?> value="OVP"><?php _e('Orbit Vertical-Push', SATL_PLUGIN_NAME); ?></option> 
+                        <option <?php echo ($this->get_option('transition') == "OHS") ? 'selected' : ''; ?> value="OHS"><?php _e('Horizontal-Slide', SATL_PLUGIN_NAME); ?></option> 
+                        <option <?php echo ($this->get_option('transition') == "OVS") ? 'selected' : ''; ?> value="OVS"><?php _e('Vertical-Slide', SATL_PLUGIN_NAME); ?></option> 
+                        <option <?php echo ($this->get_option('transition') == "OHP") ? 'selected' : ''; ?> value="OHP"><?php _e('Horizontal-Push', SATL_PLUGIN_NAME); ?></option> 
+                        <option <?php echo ($this->get_option('transition') == "OVP") ? 'selected' : ''; ?> value="OVP"><?php _e('Vertical-Push', SATL_PLUGIN_NAME); ?></option> 
                     </select>
                 <span class="howto"><?php _e('Orbits do not allow thumbnails', SATL_PLUGIN_NAME); ?></span>
             </td>

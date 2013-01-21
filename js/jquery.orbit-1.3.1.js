@@ -149,9 +149,7 @@
         self.$wrapper.find('.thumbholder').css('width',extraWidth+10);
         self.$wrapper.find('.thumbholder').css('margin-left',width);
         this.$element.css('margin-left',extraWidth);
-        self.$wrapper.find('.left').css('left',extraWidth);
-        var distance = parseInt(self.$wrapper.find('.left').css('left'))+self.$element.width()-self.$wrapper.find('.right').width();
-        self.$wrapper.find('.right').css('left',distance);
+        this.setLeftMargin(extraWidth);
         return extraWidth;
       }
       return self.options.respExtra;  
@@ -447,6 +445,9 @@
           this.$wrapper.find('.left').css('opacity',self.options.navOpacity);
           this.$wrapper.find('.right').css('opacity',self.options.navOpacity);
         }
+        if (this.options.sideThumbs) {
+            this.setLeftMargin(self.$wrapper.find('.thumbholder').width());
+        }
 
         self.$wrapper.find('.left').hover(function () {
           jQuery('.satl-nav .left').fadeTo("fast",0.75);
@@ -470,6 +471,18 @@
         self.shift("next")
       });          
 
+    },
+
+    setLeftMargin: function(extraWidth) {
+        var self = this;
+        var distance = parseInt(self.$wrapper.find('.left').css('left'))+self.$element.width();
+        // Navigation
+        self.$wrapper.find('.left').css('left',extraWidth);
+        self.$wrapper.find('.right').css('left',distance - self.$wrapper.find('.right').width());
+        // Caption
+        this.$wrapper.find('.orbit-caption').css('left',extraWidth);
+        // Timer
+        self.$wrapper.find('.timer').css('left',distance - self.$wrapper.find('.timer').width());
     },
     
     setupDirectionalThumb: function (thumbHeight) {
@@ -605,16 +618,18 @@
             
         //no transition
         if (this.options.animation == "none") {
+          //this.options.animationSpeed = 0;
+          //this.options.captionAnimation = "none";
+          //this.options.animation = "fade-empty";
           this.$slides
             .eq(this.prevActiveSlide)
-            .css({"opacity" : 0, "z-index" : 0});
+            .animate({"opacity" : 0}, 3);
           this.$slides
             .eq(this.activeSlide)
-            .animate({"opacity" : 1}, 0, this.resetAndUnlock);
-          this.resetAndUnlock;
+            .animate({"opacity" : 1}, 3, this.resetAndUnlock);
         }
         //fade empty
-        else if (this.options.animation == "fade-empty") {
+        if (this.options.animation == "fade-empty") {
           this.$slides
             .eq(this.prevActiveSlide)
             .animate({"opacity" : 0}, this.options.animationSpeed);

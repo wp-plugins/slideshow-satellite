@@ -237,15 +237,16 @@ ul.orbit-thumbnails {
 }
 .full-left .thumbholder {
     padding-right: <?php echo ($extrathumbarea );?>px;
+    width: <?php echo (int)($styles['thumbarea']); ?>px;
 }
 div.full-left div.timer {
     right: -<?php echo (int)($styles['thumbarea']- $extrathumbarea ); ?>px;
 }
-.full-right div.orbit-caption {
+/*.full-right div.orbit-caption {
     width:<?php echo ((int) ($styles['width'])) ?>px;
-}
+}*/
 .full-left div.orbit-caption {
-    width:<?php echo ((int) ($styles['width'])) ?>px;
+    /*width:<?php echo ((int) ($styles['width'])) ?>px;*/
     left:<?php echo ((int)($styles['thumbarea'] + $extrathumbarea)); ?>px;
 }
 .full-left div.sattext {

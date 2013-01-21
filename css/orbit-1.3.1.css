@@ -466,7 +466,7 @@ ul.orbit-thumbnails {
     padding-bottom: 25px !important;
 }
 .full-left.shrunk .orbit-thumbnails {
-    padding-left:5px;
+    /*padding-left:5px;*/
 }
 .full-right .orbit-thumbnails {
     float: right;
@@ -500,6 +500,7 @@ ul.orbit-thumbnails {
 .full-left .thumbholder {
     margin: 0 30px 0 0;
     right:0;
+    width: 275px;
 }
 .full-left .thumbholder {
     margin-left:0px !important;
@@ -508,10 +509,11 @@ ul.orbit-thumbnails {
     padding: 0;
 }
 .full-right div.orbit-caption {
-    width:450px;
+    width:100%;
+    left:0px !important;
 }
 .full-left div.orbit-caption {
-    width:450px;
+    width:100%;
     left:305px;
 }
 .full-left div.sattext {

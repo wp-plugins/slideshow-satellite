@@ -5,6 +5,10 @@
             else {
                 $galleries = $this -> Gallery -> find_all();
             }
+            if (!empty($_GET['order'])) { $order = $_GET['order']; }
+            else { $order = 'slide_order'; }
+            if (!empty($_GET['dir'])) { $dir = $_GET['dir']; }
+            else { $dir = 'ASC'; }
 ?>
 ﻿<div class="wrap"> 
         
@@ -16,9 +20,15 @@
 	<?php if (!empty($slides)) :
             foreach ($galleries as $gallery ) {
             echo "<h3>".$gallery -> title . "(#".$gallery -> id.")</h3>";
+            echo "Order <a href=?page=satellite-slides&method=order&single=".$gallery -> id."&order=title>Alphabetically</a> | ";
+            echo "<a href=?page=satellite-slides&method=order&single=".$gallery -> id."&order=title&dir=DESC>Reverse-Alph</a> | ";
+            echo "<a href=?page=satellite-slides&method=order&single=".$gallery -> id."&order=created>Created By</a> | ";
+            echo "<a href=?page=satellite-slides&method=order&single=".$gallery -> id."&order=created&dir=DESC>Reverse-Created</a> | ";
+            echo "<a href=?page=satellite-slides&method=order&single=".$gallery -> id."&order=slide_order>Slide Order</a><br />";
+            echo "Drag any slide to save!"
             ?>
             <ul id="slidelist<?php echo $i;?>">
-                <?php $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($gallery -> id)), null, array('slide_order', "ASC")); ?>
+                <?php $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($gallery -> id)), null, array($order, $dir)); ?>
                     <?php if (is_array($slides)) : ?>
                     <?php foreach ($slides as $slide) : ?>
                             <li class="lineitem" id="item_<?php echo $slide -> id; ?>">

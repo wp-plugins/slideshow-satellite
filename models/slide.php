@@ -131,6 +131,9 @@ class SatelliteSlide extends SatelliteDbHelper {
 							$name = SatelliteHtmlHelper::strip_ext($filename, 'filename');
 							$ext = SatelliteHtmlHelper::strip_ext($filename, 'ext');
                                                         $ext = strtolower($ext);
+                                                        
+                                                        $this -> applyWatermark($filename, $ext);
+                                                        
 							$thumbfull = $filepath . $name . '-thumb.' . $ext;
 							$smallfull = $filepath . $name . '-small.' . $ext;
 							image_resize($filefull, $width = 100, $height = 100, $crop = true, $append = 'thumb', $dest = null, $quality = 100);
@@ -221,6 +224,9 @@ class SatelliteSlide extends SatelliteDbHelper {
 
         protected function applyWatermark($image, $ext) {
             if (!SATL_PRO) { return; }
+            // TODO - Return if current gallery is "WaterMark" or "More"
+            $gallery = $this -> data -> section;
+            error_log("Applying watermark to new image in gallery: ". $gallery);
             $watermark = $this->get_option('Watermark');
             $Html = new SatelliteHtmlHelper;
             $imageurl = SATL_UPLOAD_URL . DS. $image;

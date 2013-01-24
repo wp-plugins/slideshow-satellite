@@ -26,7 +26,7 @@ array(  "name"      => "More Image",
         "type"      => "select",
         "value"     => $slide -> more,    
         "std"       => "Select an Image",
-        "options"   => $this -> Slide -> getAllMoreImages())
+        "options"   => $this -> Slide -> getGalleryImages("More"))
 );	
 ?>  <div class="wrap">
 	<h2><?php _e('Save a Slide', SATL_PLUGIN_NAME); ?></h2>

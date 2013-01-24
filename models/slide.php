@@ -80,9 +80,11 @@ class SatelliteSlide extends SatelliteDbHelper {
 						elseif (!move_uploaded_file($_FILES['image_file']['tmp_name'], $imagefull)) { $this -> errors['image_file'] = __('Image could not be moved from TMP to '. SATL_UPLOAD_URL .', please check permissions', SATL_PLUGIN_NAME); }
 						else {
 							$this -> data -> image = $imagename;
-                                                        
 							$name = SatelliteHtmlHelper::strip_ext($imagename, 'filename');
 							$ext = SatelliteHtmlHelper::strip_ext($imagename, 'ext');
+                                                        
+                                                        $this -> applyWatermark($imagename, $ext);
+                                                        
 							$thumbfull = $imagepath . $name . '-thumb.' . strtolower($ext);
 							$smallfull = $imagepath . $name . '-small.' . strtolower($ext);
 						
@@ -145,6 +147,7 @@ class SatelliteSlide extends SatelliteDbHelper {
 		}
 		return $this -> errors;
 	}
+        
         function full_copy( $source, $target ) {
             if ( is_dir( $source ) ) {
                     //@mkdir( $target );
@@ -198,21 +201,63 @@ class SatelliteSlide extends SatelliteDbHelper {
             }
             
         }
-        public function getAllMoreImages() {
+        /*
+         * $gal : @string name of Gallery, i.e. "More"
+         */
+        public function getGalleryImages($gal) {
             $Gallery = new SatelliteGallery;
-            $more = ($moreId = $Gallery -> getMoreGallery()) ? $this -> find_all(array('section'=> $moreId), 'title,section,id') : null;
-            $morearray = null;
+            
+            $more = ($galID = $Gallery -> getGalleryIDByTitle($gal)) ? $this -> find_all(array('section'=> $galID), 'title,section,id') : null;
+            $imgarray = null;
             if (is_array($more)) {
                 foreach ($more as $moreimg )
-                    $morearray[] = array('title'=>$moreimg -> title,'id' => $moreimg -> id);
+                    $imgarray[] = array('title'=>$moreimg -> title,'id' => $moreimg -> id);
+            } else {
+                $msg =  __('Gallery not yet created', SATL_PLUGIN_NAME);
+                $imgarray[] = array('title'=>$msg);
             }
-            if ($morearray)
-                return $morearray;
-            else
-                return array("No Images Uploaded");
-            
+            return $imgarray;            
+        }
+
+        protected function applyWatermark($image, $ext) {
+            if (!SATL_PRO) { return; }
+            $watermark = $this->get_option('Watermark');
+            $Html = new SatelliteHtmlHelper;
+            $imageurl = SATL_UPLOAD_URL . DS. $image;
+            $imagedir = SATL_UPLOAD_DIR . DS. $image;
+            $waterImg = $Html -> image_id($watermark['image']);
+            if ($watermark['enabled']) {
+                $stamp = $this->buildImage($waterImg, 'png');
+                $upload = $this->buildImage($imageurl, $ext);
+                $marge_right = 10;
+                $marge_bottom = 10;
+                $sx = imagesx($stamp);
+                $sy = imagesy($stamp);
+                // Copy the stamp image onto our photo using the margin offsets and the photo 
+                // width to calculate positioning of the stamp. 
+                imagecopy($upload, $stamp, imagesx($upload) - $sx - $marge_right, imagesy($upload) - $sy - $marge_bottom, 0, 0, imagesx($stamp), imagesy($stamp));
+
+                // Output and free memory
+                error_log("imaging");
+                //imagepng($upload);
+                imagejpeg($upload,$imagedir);
+                error_log("imag destroying");
+                imagedestroy($upload);
+            }
         }
         
+        protected function buildImage($image , $ext) {
+                error_log('building '.$ext.' image '.$image);
+                if ($ext == "jpg" || $ext == "jpeg") {
+                    error_log('JPG build');
+                    return imagecreatefromjpeg($image);
+                } else if ( $ext == "png" ) {
+                    error_log('PNG build');
+                    return imagecreatefrompng($image);
+                } else {
+                    return null;
+                }
+        }
         
 
 }

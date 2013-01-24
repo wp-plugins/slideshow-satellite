@@ -1,21 +1,25 @@
 <?php
 
 class SatelliteFormHelper extends SatellitePlugin {
-
     public function display($newfields, $model) {
+
+        // when called from the Configuration page the class isn't set
+        if (!class_exists('SatelliteFormHelper')) {
+            $form = new SatelliteFormHelper;
+        } else { $form = $this; }
         foreach ($newfields as $value) {
             switch ( $value['type'] ) {
                 case 'open':
                     echo $this -> open();
                     break;
                 case 'checkbox':
-                    echo $this -> checkbox($model.'.'.$value[id], $value);
+                    echo SatelliteFormHelper::checkbox($model.'.'.$value[id], $value);
                     break;
                 case 'close':
                     echo $this -> close();
                     break;
                 case 'select':
-                    echo $this -> select($model.'.'.$value[id], $value);
+                    echo SatelliteFormHelper::select($model.'.'.$value[id], $value);
                     break;
                 case 'text':
                     echo $this -> text($model.'.'.$value[id], $value);

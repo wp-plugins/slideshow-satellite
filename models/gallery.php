@@ -117,6 +117,16 @@ class SatelliteGallery extends SatelliteDbHelper {
             else
                 return null;
         }
+        /*
+         * $gal : @string eg "More"
+         */
+        public function getGalleryIDByTitle($gal){
+            $gallery = $this -> find(array('title'=>$gal), 'title,id');
+            if ($gallery->id)
+                return $gallery->id;
+            else
+                return null;            
+        }
         public function getGalleries() {
             $galleries = $this -> find_all('','title,id');
             foreach ($galleries as $gallery )

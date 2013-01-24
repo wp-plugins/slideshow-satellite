@@ -209,8 +209,12 @@ class SatellitePlugin
             'navpush'   => "0",
             'infomin' => "Y"
         );
-
+        $watermark = array(
+            'watermarkloc' => 'TR'
+        );
+        $this->add_option('Watermark', $watermark);
         $this->add_option('styles', $styles);
+        
         //General Settings
         $this->add_option('autospeed', 10);
         $this->add_option('autoslide', "Y");

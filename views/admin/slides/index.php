@@ -6,15 +6,18 @@
                             <?php echo $version['message']; ?>
                     </div>
                 </div>
-	<?php } ?>
-	<h2><?php _e('Manage Slides', SATL_PLUGIN_NAME); ?> <?php echo $this -> Html -> link(__('Add New'), $this -> url . '&amp;method=save', array('class' => "button add-new-h2")); ?></h2>
-        <?php 
+	<?php }
+
         if (!empty($_GET['single'])) {
             $single = $_GET['single'];
             $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($single)), null, array('slide_order', "ASC"));
         } else { $single = false; }
         
         ?>
+
+    <h2><?php _e('Manage Slides', SATL_PLUGIN_NAME); ?> <?php echo $this -> Html -> link(__('Add New'), 
+                    $this -> url . '&amp;method=save&single='.$single, 
+                    array('class' => "button add-new-h2")); ?></h2>
 	<?php if (!empty($slides)) : ?>	
 		<form id="posts-filter" action="<?php echo $this -> url; ?>" method="post">
 			<ul class="subsubsub">

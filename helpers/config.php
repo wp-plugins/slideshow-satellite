@@ -106,6 +106,7 @@ class SatelliteConfigHelper extends SatellitePlugin {
             case 'slide':
                 
                 $Gallery = new SatelliteGallery();
+                $section = ($_GET['single']) ? $_GET['single'] : $model -> data -> section;
                 
                 $optionsArray = array(
                 array(  "name"      => "Title",
@@ -124,7 +125,7 @@ class SatelliteConfigHelper extends SatellitePlugin {
                         "desc"      => "The gallery this slide belongs to",
                         "id"        => "section",
                         "type"      => "select",
-                        "value"     => $model -> data -> section,
+                        "value"     => $section,
                         "std"       => "Select a Gallery",
                         "options"   => $Gallery -> getGalleries()),
                 array(  "name"      => "Caption Location",
@@ -138,6 +139,40 @@ class SatelliteConfigHelper extends SatellitePlugin {
                                 array('id'=>'D', 'title'=>'Default'),
                                 array('id'=>'BR', 'title'=>'Bottom Right'),
                                 array('id'=>'TR', 'title'=>'Top Right')))
+
+                );                
+                break;
+            case 'watermark':
+                
+                $Gallery = new SatelliteGallery();
+                $Slide = new SatelliteSlide();
+                $watermark = $this->get_option('Watermark');
+                
+                $optionsArray = array(
+                array(  "name"      => "Watermark",
+                        "desc"      => "With this checked - On your image uploads we will apply your chosen watermark",
+                        "id"        => "enabled",
+                        "type"      => "select",
+                        "value"     => $watermark['enabled'],
+                        "options"   => array(
+                            array('id'=>1, 'title'=>'Enabled'),
+                            array('id'=>0, 'title'=>'Disabled'))),
+                array(  "name"      => "Watermark Image",
+                        "desc"      => "Create a gallery entitled \"Watermark\" if enabled.",
+                        "id"        => "image",
+                        "type"      => "select",
+                        "value"     => $watermark['image'],
+                        "std"       => "Select a Watermark",
+                        "options"   => $Slide -> getGalleryImages("Watermark")),
+                array(  "name"      => "Watermark Location",
+                        "desc"      => "Cross X is inspired by istockphoto",
+                        "id"        => "location",
+                        "type"      => "select",
+                        "value"     => $watermark['location'],
+                        "std"       => "BR",
+                        "options"   => array(
+                                array('id'=>'BR', 'title'=>'Bottom Right'),
+                                array('id'=>'CX', 'title'=>'Cross X')))
 
                 );                
                 break;

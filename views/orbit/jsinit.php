@@ -47,12 +47,13 @@
                 alwaysPlayBtn: <?php echo ($style['playshow'] == "A") ? 'true' : 'false'; ?>
             });				
         });
-        
+        <?php if ($this->get_option('responsive')) : ?>
         jQuery(window).resize(function($) {
             jQuery('#featured<?php echo $satellite_init_ok; ?>').satlresponse({
                 respExtra: <?php echo $respExtra; ?>, // the width beyond the slide image
                 sideThumbs: <?php echo ($fullthumb) ? 'true' : 'false'; ?>
             });
         });
+        <?php endif; ?>
         
     </script> 

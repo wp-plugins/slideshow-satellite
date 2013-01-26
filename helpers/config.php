@@ -142,6 +142,7 @@ class SatelliteConfigHelper extends SatellitePlugin {
 
                 );                
                 break;
+            
             case 'watermark':
                 
                 $Gallery = new SatelliteGallery();
@@ -158,7 +159,7 @@ class SatelliteConfigHelper extends SatellitePlugin {
                             array('id'=>1, 'title'=>'Enabled'),
                             array('id'=>0, 'title'=>'Disabled'))),
                 array(  "name"      => "Watermark Image",
-                        "desc"      => "Create a gallery entitled \"Watermark\" if enabled.",
+                        "desc"      => "Create a gallery entitled \"Watermark\" if enabled. Upload PNG images you'd like to use as the watermark there.",
                         "id"        => "image",
                         "type"      => "select",
                         "value"     => $watermark['image'],
@@ -171,8 +172,9 @@ class SatelliteConfigHelper extends SatellitePlugin {
                         "value"     => $watermark['location'],
                         "std"       => "BR",
                         "options"   => array(
-                                array('id'=>'BR', 'title'=>'Bottom Right'),
-                                array('id'=>'CX', 'title'=>'Cross X')))
+                                array('id'=>'BR', 'title'=>'Bottom Right')
+                            //    array('id'=>'CX', 'title'=>'Cross X')
+                            ))
 
                 );                
                 break;

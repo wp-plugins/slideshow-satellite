@@ -102,6 +102,47 @@ class SatelliteConfigHelper extends SatellitePlugin {
                 );	
                 
                 break;  
+              
+            case 'images':
+              
+              $image = $this->get_option('Images');
+              $optionsArray = array (
+                array(  "name"      => "Image resizing",
+                        "desc"      => "Newly uploaded images will be resized to fit within this size if larger",
+                        "id"        => "resize",
+                        "type"      => "select",
+                        "value"     => $image['resize'],
+                        "std"       => 1024,
+                        "options"   => array(
+                                       array('id' => 0, 'title' => 'No Resizing'),
+                                       array('id' => 1024, 'title' => '1024 px'),
+                                       array('id' => 800, 'title' => '800 px'),
+                                       array('id' => 600, 'title' => '600 px'))),
+                array(  "name"      => "Open Images in...",
+                        "desc"      => "Thickbox is the standard, built into wordpress, but if you use another plugin choose custom",
+                        "id"        => "imagesbox",
+                        "type"      => "select",
+                        "value"     => $image['imagesbox'],
+                        "std"       => 'T',
+                        "options"   => array(
+                               array('id' => 'N', 'title' => __('No link', SATL_PLUGIN_NAME)),
+                               array('id' => 'W', 'title' => __('Window', SATL_PLUGIN_NAME)),
+                               array('id' => 'T', 'title' => __('Thickbox', SATL_PLUGIN_NAME)),
+                               array('id' => 'C', 'title' => __('Custom', SATL_PLUGIN_NAME))
+                               )
+                        ),
+                array(  "name"      => __('Page Link Target', SATL_PLUGIN_NAME),
+                        "desc"      => __("This is setting your link target, in HTML it would be '_self' or '_blank'", SATL_PLUGIN_NAME),
+                        "id"        => "pagelink",
+                        "type"      => "select",
+                        "value"     => $image['pagelink'],
+                        "std"       => 'S',
+                        "options"   => array(
+                               array('id' => 'S', 'title' => __('Current Tab', SATL_PLUGIN_NAME)),
+                               array('id' => 'B', 'title' => __('New Tab', SATL_PLUGIN_NAME))
+                               )
+                    ));
+                break;
             
             case 'slide':
                 
@@ -139,8 +180,7 @@ class SatelliteConfigHelper extends SatellitePlugin {
                                 array('id'=>'D', 'title'=>'Default'),
                                 array('id'=>'BR', 'title'=>'Bottom Right'),
                                 array('id'=>'TR', 'title'=>'Top Right')))
-
-                );                
+                    );                
                 break;
             
             case 'watermark':

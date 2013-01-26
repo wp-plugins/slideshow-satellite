@@ -214,11 +214,12 @@ class SatelliteDbHelper extends SatellitePlugin {
 	
 	function delete($record_id = '') {
 		global $wpdb;
+    $Image = new SatelliteImageHelper;
 		
 		if (!empty($record_id) && $record = $this -> find(array('id' => $record_id))) {
 			$query = "DELETE FROM `" . $this -> table . "` WHERE `id` = '" . $record_id . "' LIMIT 1";
 			error_log("running query: ".$query);
-			$this->deleteImages($record);
+			$Image->deleteImages($record);
 			if ($wpdb -> query($query)) {
 				return true;
 			}
@@ -227,22 +228,6 @@ class SatelliteDbHelper extends SatellitePlugin {
 		return false;
 	}
         
-        function deleteImages($record) {
-            error_log("deleting all sizes of image files: ".$record->image);
-            $imagepath = SATL_UPLOAD_DIR . DS;
-            $name = SatelliteHtmlHelper::strip_ext($record->image, 'filename');
-            $ext = SatelliteHtmlHelper::strip_ext($record->image, 'ext');
-
-            $imagefull = $imagepath . $record->image;
-            $thumbfull = $imagepath . $name . '-thumb.' . strtolower($ext);
-            $smallfull = $imagepath . $name . '-small.' . strtolower($ext);
-            $todelete = array($imagefull,$thumbfull,$smallfull);
-            
-            foreach ($todelete as $delete) {
-                unlink($delete);
-            }
-        }
-	
 	function insert_query($model = '') {	
 		if (!empty($model)) {
 			global $wpdb;

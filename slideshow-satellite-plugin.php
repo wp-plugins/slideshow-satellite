@@ -19,7 +19,7 @@ class SatellitePlugin
         'settings' => 'satellite',
         'newgallery' => 'satellite-galleries',
     );
-    var $helpers = array('Ajax', 'Config', 'Db', 'Html', 'Form', 'Metabox', 'Version', 'Premium');
+    var $helpers = array('Ajax','Config','Db','Form','Html','Image','Metabox','Premium','Version');
     var $models = array('Slide','Gallery');
 
     function register_plugin($name, $base) {
@@ -190,6 +190,9 @@ class SatellitePlugin
     }
 
     function initialize_options() {
+      
+        // Before the configuration page has ever been saved, slideshow relies on these
+      
         $styles = array(
             'width' => "450",
             'height' => "300",
@@ -211,9 +214,15 @@ class SatellitePlugin
             'infomin' => "Y"
         );
         $watermark = array(
-            'watermarkloc' => 'TR'
+            'watermarkloc' => 'BR'
+        );
+        $images = array(
+            'imagesbox'   => 'T',
+            'resize'      => 1024,
+            'pagelink'    =>  'S'
         );
         $this->add_option('Watermark', $watermark);
+        $this->add_option('Images', $images);
         $this->add_option('styles', $styles);
         
         //General Settings
@@ -225,13 +234,11 @@ class SatellitePlugin
         $this->add_option('navhover', 70);
         $this->add_option('nolinker', false);
         $this->add_option('nolinkpage', 0);
-        $this->add_option('pagelink', "S");
         $this->add_option('wpattach', "N");
         $this->add_option('captionlink', "N");
         $this->add_option('transition', "FB");
         $this->add_option('information', "Y");
         $this->add_option('infospeed', 10);
-        $this->add_option('imagesbox', "T");
         $this->add_option('embedss', "Y");
         $this->add_option('ggljquery', "Y");
         $this->add_option('responsive', 1);

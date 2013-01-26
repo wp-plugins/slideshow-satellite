@@ -82,8 +82,13 @@ class SatelliteSlide extends SatelliteDbHelper {
 							$this -> data -> image = $imagename;
 							$name = SatelliteHtmlHelper::strip_ext($imagename, 'filename');
 							$ext = SatelliteHtmlHelper::strip_ext($imagename, 'ext');
-                                                        
-                                                        $this -> applyWatermark($imagename, $ext);
+              
+              $Image = new SatelliteImageHelper;
+              $images = $this->get_option('Images');
+              $Image -> load($imagefull);
+              $Image -> resizeToBox($images[resize]);
+              $Image -> save($imagefull);
+              $Image -> applyWatermark($imagename, $ext);                                          
                                                         
 							$thumbfull = $imagepath . $name . '-thumb.' . strtolower($ext);
 							$smallfull = $imagepath . $name . '-small.' . strtolower($ext);
@@ -130,9 +135,10 @@ class SatelliteSlide extends SatelliteDbHelper {
 							@fclose($fh);
 							$name = SatelliteHtmlHelper::strip_ext($filename, 'filename');
 							$ext = SatelliteHtmlHelper::strip_ext($filename, 'ext');
-                                                        $ext = strtolower($ext);
+              $ext = strtolower($ext);
                                                         
-                                                        $this -> applyWatermark($filename, $ext);
+              $Image = new SatelliteImageHelper;
+              $Image -> applyWatermark($filename, $ext);                                          
                                                         
 							$thumbfull = $filepath . $name . '-thumb.' . $ext;
 							$smallfull = $filepath . $name . '-small.' . $ext;
@@ -208,63 +214,18 @@ class SatelliteSlide extends SatelliteDbHelper {
          * $gal : @string name of Gallery, i.e. "More"
          */
         public function getGalleryImages($gal) {
-            $Gallery = new SatelliteGallery;
-            
-            $more = ($galID = $Gallery -> getGalleryIDByTitle($gal)) ? $this -> find_all(array('section'=> $galID), 'title,section,id') : null;
-            $imgarray = null;
-            if (is_array($more)) {
-                foreach ($more as $moreimg )
-                    $imgarray[] = array('title'=>$moreimg -> title,'id' => $moreimg -> id);
-            } else {
-                $msg =  __('Gallery not yet created', SATL_PLUGIN_NAME);
-                $imgarray[] = array('title'=>$msg);
-            }
-            return $imgarray;            
-        }
+          $Gallery = new SatelliteGallery;
 
-        protected function applyWatermark($image, $ext) {
-            if (!SATL_PRO) { return; }
-            // TODO - Return if current gallery is "WaterMark" or "More"
-            $gallery = $this -> data -> section;
-            error_log("Applying watermark to new image in gallery: ". $gallery);
-            $watermark = $this->get_option('Watermark');
-            $Html = new SatelliteHtmlHelper;
-            $imageurl = SATL_UPLOAD_URL . DS. $image;
-            $imagedir = SATL_UPLOAD_DIR . DS. $image;
-            $waterImg = $Html -> image_id($watermark['image']);
-            if ($watermark['enabled']) {
-                $stamp = $this->buildImage($waterImg, 'png');
-                $upload = $this->buildImage($imageurl, $ext);
-                $marge_right = 10;
-                $marge_bottom = 10;
-                $sx = imagesx($stamp);
-                $sy = imagesy($stamp);
-                // Copy the stamp image onto our photo using the margin offsets and the photo 
-                // width to calculate positioning of the stamp. 
-                imagecopy($upload, $stamp, imagesx($upload) - $sx - $marge_right, imagesy($upload) - $sy - $marge_bottom, 0, 0, imagesx($stamp), imagesy($stamp));
-
-                // Output and free memory
-                error_log("imaging");
-                //imagepng($upload);
-                imagejpeg($upload,$imagedir);
-                error_log("imag destroying");
-                imagedestroy($upload);
-            }
+          $more = ($galID = $Gallery -> getGalleryIDByTitle($gal)) ? $this -> find_all(array('section'=> $galID), 'title,section,id') : null;
+          $imgarray = null;
+          if (is_array($more)) {
+            foreach ($more as $moreimg )
+              $imgarray[] = array('title'=>$moreimg -> title,'id' => $moreimg -> id);
+          } else {
+            $msg =  __('Gallery not yet created', SATL_PLUGIN_NAME);
+            $imgarray[] = array('title'=>$msg);
+          }
+          return $imgarray;            
         }
-        
-        protected function buildImage($image , $ext) {
-                error_log('building '.$ext.' image '.$image);
-                if ($ext == "jpg" || $ext == "jpeg") {
-                    error_log('JPG build');
-                    return imagecreatefromjpeg($image);
-                } else if ( $ext == "png" ) {
-                    error_log('PNG build');
-                    return imagecreatefrompng($image);
-                } else {
-                    return null;
-                }
-        }
-        
-
 }
 ?>

@@ -4,7 +4,9 @@ global $satellite_init_ok;
 if (!empty($slides)) :
 
     $style = $this->get_option('styles');
-    $imagesbox = $this->get_option('imagesbox');
+    $images = $this->get_option('Images');
+    $imagesbox = $images['imagesbox'];
+    $pagelink = $images['pagelink'];
     $textloc = $this->get_option('textlocation');
     $responsive = $this->get_option('responsive');
     $respExtra = ($respExtra) ? $respExtra : 0;
@@ -84,7 +86,7 @@ if (!empty($slides)) :
                     }
                     ?>					
                             <?php if ($slider->uselink == "Y" && !empty($slider->link)) : ?>
-                        <a href="<?php echo $slider->link; ?>" title="<?php echo $slider->title; ?>" target="<?php echo ($this->get_option('pagelink') == "S") ? "_self" : "_blank" ?>">
+                        <a href="<?php echo $slider->link; ?>" title="<?php echo $slider->title; ?>" target="<?php echo ($pagelink == "S") ? "_self" : "_blank" ?>">
             <?PHP elseif ($imagesbox != "N" && ! $this->get_option('nolinker')) : ?>
                             <a class="thickbox sorbit-link" href="<?php echo $this->Html->image_url($slider->image); ?>" rel="" title="<?php echo $slider->title; ?>">
             <?PHP endif; ?>

@@ -1,5 +1,6 @@
 ﻿<?php
-    $options = SatelliteConfigHelper::displayOption('watermark', 'Watermark');
+    $Config = new SatelliteConfigHelper;
+    $options = $Config -> displayOption('watermark', 'Watermark');
 ?>
 <table class="form-table">
     <tbody>

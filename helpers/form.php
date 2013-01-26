@@ -253,12 +253,13 @@ class SatelliteFormHelper extends SatellitePlugin {
             <th class="verttop"><label><strong><?php echo $r['name']; ?></strong></label></th>
         <td>
             <?php
+            $resize = true;
             // adjust values here
             $id = "images"; // this will be the name of form field. Image url(s) will be submitted in $_POST using this key. So if $id == “img1” then $_POST[“img1”] will have all the image urls
             $svalue = ""; // this will be initial value of the above form field. Image urls.
             $multiple = true; // allow multiple files upload
-            $width = null; // If you want to automatically resize all uploaded images then provide width here (in pixels)
-            $height = null; // If you want to automatically resize all uploaded images then provide height here (in pixels)
+            $width = ($resize) ? 1024 : null; // If you want to automatically resize all uploaded images then provide width here (in pixels)
+            $height = ($resize) ? 1024 : null; // If you want to automatically resize all uploaded images then provide height here (in pixels)
             ?>
 
             <label>Upload and Order Images</label>

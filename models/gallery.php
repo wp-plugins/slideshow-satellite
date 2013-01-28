@@ -2,6 +2,7 @@
 class SatelliteGallery extends SatelliteDbHelper {
 	var $table;
 	var $model = 'Gallery';
+  var $specials = array('More','Watermark');
 	var $controller = "galleries";
 	var $plugin_name = SATL_PLUGIN_NAME;
 	var $data = array();
@@ -109,14 +110,6 @@ class SatelliteGallery extends SatelliteDbHelper {
             //return $this -> find_all(array('id'=>$gallery));
             //return $animation;
         }
-        /** Returns the More Gallery ID **/
-        public function getMoreGallery() {
-            $more = $this -> find(array('title'=>"More"), 'title,id');
-            if ($more->id)
-                return $more->id;
-            else
-                return null;
-        }
         /*
          * $gal : @string eg "More"
          */
@@ -127,6 +120,9 @@ class SatelliteGallery extends SatelliteDbHelper {
             else
                 return null;            
         }
+        /*
+         * return @array of all galleries
+         */
         public function getGalleries() {
             $galleries = $this -> find_all('','title,id');
             foreach ($galleries as $gallery )
@@ -137,6 +133,35 @@ class SatelliteGallery extends SatelliteDbHelper {
             
             return null;
             
+        }
+        /*
+         * Returns true if gallery is special like "More or Watermark"
+         * @return bool
+         */
+        public function isSpecialGallery($galId) {
+          $specials = $this->get_option('specials');
+          if (empty($specials)) {
+            $specials = $this->registerSpecials(true);
+          }
+          if (!empty($specials)) {
+            foreach ($specials as $special) {
+              error_log("checking special gallery ".$special." against galId".$galId);
+              if ($galId == $special) {
+                error_log("uploading to a special gallery : ".$galId);
+                return true;
+              }
+            }
+          } else { return false; }
+        }
+        public function registerSpecials($ret = false) {
+          // TODO : on gallery creation run registerSpecials
+          error_log("Registering special galleries");
+          $specarray = array();
+          foreach ($this -> specials as $special) {
+            $specarray[] = $this->getGalleryIDByTitle($special);
+          }
+          $this->update_option('specials',$specarray);
+          if ($ret) {return $specarray; }
         }
         
 }

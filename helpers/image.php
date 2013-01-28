@@ -113,11 +113,13 @@ class SatelliteImageHelper extends SatellitePlugin {
       $this->image = $new_image;
     }      
     
-    function applyWatermark($image, $ext) {
+    function applyWatermark($image, $galId) {
         if (!SATL_PRO) { return; }
-        // TODO - Return if current gallery is "WaterMark" or "More"
-        $gallery = $this -> data -> section;
-        error_log("Applying watermark to new image in gallery: ". $gallery);
+        $Gallery = new SatelliteGallery;
+        error_log( "gallery id is ". $galId);
+        if ($Gallery -> isSpecialGallery($galId)) {
+          return;
+        }
         $watermark = $this->get_option('Watermark');
         $Html = new SatelliteHtmlHelper;
         $imageurl = SATL_UPLOAD_URL . DS. $image;

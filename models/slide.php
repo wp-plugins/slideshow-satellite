@@ -88,7 +88,7 @@ class SatelliteSlide extends SatelliteDbHelper {
               $Image -> load($imagefull);
               $Image -> resizeToBox($images[resize]);
               $Image -> save($imagefull);
-              $Image -> applyWatermark($imagename, $ext);                                          
+              $Image -> applyWatermark($imagename, $this -> data -> section);                                          
                                                         
 							$thumbfull = $imagepath . $name . '-thumb.' . strtolower($ext);
 							$smallfull = $imagepath . $name . '-small.' . strtolower($ext);

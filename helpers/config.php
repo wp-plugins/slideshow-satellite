@@ -190,7 +190,7 @@ class SatelliteConfigHelper extends SatellitePlugin {
                 $watermark = $this->get_option('Watermark');
                 
                 $optionsArray = array(
-                array(  "name"      => "Watermark",
+                array(  "name"      => "Watermarking",
                         "desc"      => "With this checked - On your image uploads we will apply your chosen watermark",
                         "id"        => "enabled",
                         "type"      => "select",
@@ -199,14 +199,14 @@ class SatelliteConfigHelper extends SatellitePlugin {
                             array('id'=>1, 'title'=>'Enabled'),
                             array('id'=>0, 'title'=>'Disabled'))),
                 array(  "name"      => "Watermark Image",
-                        "desc"      => "Create a gallery entitled \"Watermark\" if enabled. Upload PNG images you'd like to use as the watermark there.",
+                        "desc"      => "Create a gallery entitled \"Watermark\" if enabled. Upload transparent PNG images you'd like to use as the watermark there.",
                         "id"        => "image",
                         "type"      => "select",
                         "value"     => $watermark['image'],
                         "std"       => "Select a Watermark",
                         "options"   => $Slide -> getGalleryImages("Watermark")),
                 array(  "name"      => "Watermark Location",
-                        "desc"      => "Cross X is inspired by istockphoto",
+                        "desc"      => "Only bottom right for now",
                         "id"        => "location",
                         "type"      => "select",
                         "value"     => $watermark['location'],

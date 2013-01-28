@@ -160,9 +160,13 @@ class SatelliteDbHelper extends SatellitePlugin {
 					}
 					break;
 				case 'Gallery':	
-					if ( $this -> data -> title == "More" ) {
-						//$this -> data -> link = "";
-					}
+          $Gallery = new SatelliteGallery;
+          $specials = $Gallery -> specials;
+          foreach ($specials as $special) {
+            if ( $this -> data -> title == $special ) {
+              $Gallery -> registerSpecials();
+            }
+          }
 					break;                                     
                                      
 			}

@@ -121,28 +121,11 @@ class SatelliteImageHelper extends SatellitePlugin {
           return;
         }
         $watermark = $this->get_option('Watermark');
-        $Html = new SatelliteHtmlHelper;
-        $imageurl = SATL_UPLOAD_URL . DS. $image;
-        $imagedir = SATL_UPLOAD_DIR . DS. $image;
-        $waterImg = $Html -> image_id($watermark['image']);
-        if ($watermark['enabled']) {
-            $stamp = $this->load($waterImg, true);
-            $this->load($imageurl);
-            $marge_right = 10;
-            $marge_bottom = 10;
-            $sx = imagesx($stamp);
-            $sy = imagesy($stamp);
-            // Copy the stamp image onto our photo using the margin offsets and the photo 
-            // width to calculate positioning of the stamp. 
-            imagecopy($this->image, $stamp, $this->getWidth() - $sx - $marge_right, $this->getHeight() - $sy - $marge_bottom, 0, 0, imagesx($stamp), imagesy($stamp));
-
-            // Output and free memory
-            error_log("imaging");
-            //imagepng($upload);
-            $this->save($imagedir);
-            error_log("imag destroying");
-            imagedestroy($this->image);
+        if (!$watermark['enabled']) {
+          error_log("Watermarking is not enabled");
+          return;
         }
+        SatellitePremiumHelper::doWatermark($image, $watermark);
     }
     
     function deleteImages($record) {

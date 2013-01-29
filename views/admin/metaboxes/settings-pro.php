@@ -4,7 +4,11 @@
 ?>
 <table class="form-table">
     <tbody>
-        <?php SatelliteFormHelper::display($options, 'Watermark'); ?>
+        <?php 
+        if (method_exists(SatellitePremiumHelper,'doWatermark')) {
+          SatelliteFormHelper::display($options, 'Watermark'); 
+        }
+        ?>
         <tr>
             <th><label for="preload"><?php _e('Preloader', SATL_PLUGIN_NAME); ?></label></th>
             <td>

@@ -197,7 +197,8 @@ class SatelliteConfigHelper extends SatellitePlugin {
                         "value"     => $watermark['enabled'],
                         "options"   => array(
                             array('id'=>1, 'title'=>'Enabled'),
-                            array('id'=>0, 'title'=>'Disabled'))),
+                            array('id'=>0, 'title'=>'Disabled')
+                            )),
                 array(  "name"      => "Watermark Image",
                         "desc"      => "Create a gallery entitled \"Watermark\" if enabled. Upload transparent PNG images you'd like to use as the watermark there.",
                         "id"        => "image",
@@ -205,6 +206,20 @@ class SatelliteConfigHelper extends SatellitePlugin {
                         "value"     => $watermark['image'],
                         "std"       => "Select a Watermark",
                         "options"   => $Slide -> getGalleryImages("Watermark")),
+                array(  "name"      => "Watermark Opacity",
+                        "desc"      => "Only bottom right for now",
+                        "id"        => "opacity",
+                        "type"      => "select",
+                        "value"     => $watermark['opacity'],
+                        "std"       => "70",
+                        "options"   => array(
+                            array('id'=>50, 'title'=>50),
+                            array('id'=>60, 'title'=>60),
+                            array('id'=>70, 'title'=>70),
+                            array('id'=>80, 'title'=>80),
+                            array('id'=>90, 'title'=>90),
+                            array('id'=>100, 'title'=>100)
+                            )),
                 array(  "name"      => "Watermark Location",
                         "desc"      => "Only bottom right for now",
                         "id"        => "location",
@@ -212,8 +227,8 @@ class SatelliteConfigHelper extends SatellitePlugin {
                         "value"     => $watermark['location'],
                         "std"       => "BR",
                         "options"   => array(
-                                array('id'=>'BR', 'title'=>'Bottom Right')
-                            //    array('id'=>'CX', 'title'=>'Cross X')
+                            array('id'=>'BR', 'title'=>'Bottom Right')
+                            //array('id'=>'CX', 'title'=>'Cross X')
                             ))
 
                 );                

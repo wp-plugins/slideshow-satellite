@@ -80,24 +80,25 @@ class SatelliteSlide extends SatelliteDbHelper {
 						elseif (!move_uploaded_file($_FILES['image_file']['tmp_name'], $imagefull)) { $this -> errors['image_file'] = __('Image could not be moved from TMP to '. SATL_UPLOAD_URL .', please check permissions', SATL_PLUGIN_NAME); }
 						else {
 							$this -> data -> image = $imagename;
-							$name = SatelliteHtmlHelper::strip_ext($imagename, 'filename');
-							$ext = SatelliteHtmlHelper::strip_ext($imagename, 'ext');
-              
-              $Image = new SatelliteImageHelper;
-              $images = $this->get_option('Images');
-              $Image -> load($imagefull);
-              $Image -> resizeToBox($images[resize]);
-              $Image -> save($imagefull);
-              $Image -> applyWatermark($imagename, $this -> data -> section);                                          
-                                                        
-							$thumbfull = $imagepath . $name . '-thumb.' . strtolower($ext);
-							$smallfull = $imagepath . $name . '-small.' . strtolower($ext);
-						
-							image_resize($imagefull, $width = 100, $height = 100, $crop = true, $append = 'thumb', $dest = null, $quality = 100);
-							image_resize($imagefull, $width = 50, $height = 50, $crop = true, $append = 'small', $dest = null, $quality = 100);
-							@chmod($thumbfull, 0777);
-							@chmod($smallfull, 0777);
-							
+              $Gallery = new SatelliteGallery();
+              if (!$Gallery -> isSpecialGallery($this -> data -> section)) {
+                $name = SatelliteHtmlHelper::strip_ext($imagename, 'filename');
+                $ext = SatelliteHtmlHelper::strip_ext($imagename, 'ext');
+                $Image = new SatelliteImageHelper;
+                $images = $this->get_option('Images');
+                $Image -> load($imagefull);
+                $Image -> resizeToBox($images[resize]);
+                $Image -> save($imagefull);
+                $Image -> applyWatermark($imagename, $this -> data -> section);                                          
+
+                $thumbfull = $imagepath . $name . '-thumb.' . strtolower($ext);
+                $smallfull = $imagepath . $name . '-small.' . strtolower($ext);
+
+                image_resize($imagefull, $width = 100, $height = 100, $crop = true, $append = 'thumb', $dest = null, $quality = 100);
+                image_resize($imagefull, $width = 50, $height = 50, $crop = true, $append = 'small', $dest = null, $quality = 100);
+                @chmod($thumbfull, 0777);
+                @chmod($smallfull, 0777);
+              }
 							@chmod($imagefull, 0777);
 						}
 					} else {					
@@ -133,19 +134,23 @@ class SatelliteSlide extends SatelliteDbHelper {
 							$fh = @fopen($filefull, "w");
 							@fwrite($fh, $image);
 							@fclose($fh);
-							$name = SatelliteHtmlHelper::strip_ext($filename, 'filename');
-							$ext = SatelliteHtmlHelper::strip_ext($filename, 'ext');
-              $ext = strtolower($ext);
-                                                        
-              $Image = new SatelliteImageHelper;
-              $Image -> applyWatermark($filename, $ext);                                          
-                                                        
-							$thumbfull = $filepath . $name . '-thumb.' . $ext;
-							$smallfull = $filepath . $name . '-small.' . $ext;
-							image_resize($filefull, $width = 100, $height = 100, $crop = true, $append = 'thumb', $dest = null, $quality = 100);
-							image_resize($filefull, $width = 50, $height = 50, $crop = true, $append = 'small', $dest = null, $quality = 100);
-							@chmod($filefull, 0777);
-							@chmod($thumbfull, 0777);
+              $Gallery = new SatelliteGallery();
+              if (!$Gallery -> isSpecialGallery($this -> data -> section)) {
+
+                $name = SatelliteHtmlHelper::strip_ext($filename, 'filename');
+                $ext = SatelliteHtmlHelper::strip_ext($filename, 'ext');
+                $ext = strtolower($ext);
+
+                $Image = new SatelliteImageHelper;
+                $Image -> applyWatermark($filename, $this -> data -> section);                                          
+
+                $thumbfull = $filepath . $name . '-thumb.' . $ext;
+                $smallfull = $filepath . $name . '-small.' . $ext;
+                image_resize($filefull, $width = 100, $height = 100, $crop = true, $append = 'thumb', $dest = null, $quality = 100);
+                image_resize($filefull, $width = 50, $height = 50, $crop = true, $append = 'small', $dest = null, $quality = 100);
+                @chmod($filefull, 0777);
+                @chmod($thumbfull, 0777);
+              }
 							@chmod($smallfull, 0777);
 						}
 					}

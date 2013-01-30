@@ -280,6 +280,7 @@ class SatellitePlugin
 
     function redirect($location = '', $msgtype = '', $message = '') {
         $url = $location;
+        $url = ($_GET['single']) ? $url."&single=".$_GET['single'] : $url;
         if ($msgtype == "message") {
             $url .= '&' . $this->pre . 'updated=true';
         } elseif ($msgtype == "error") {

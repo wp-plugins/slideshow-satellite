@@ -137,7 +137,12 @@ class SatelliteImageHelper extends SatellitePlugin {
       $imagefull = $imagepath . $record->image;
       $thumbfull = $imagepath . $name . '-thumb.' . strtolower($ext);
       $smallfull = $imagepath . $name . '-small.' . strtolower($ext);
-      $todelete = array($imagefull,$thumbfull,$smallfull);
+      $urlfull = ($record -> image_url) ? $record -> image_url : null;
+      error_log('url to delete:'.$urlfull);
+      
+      $url = preg_replace('/^.*wp-content/', null, $urlfull);
+      $urlfull = SATL_UPLOAD_DIR.'/../..'.$url;
+      $todelete = array($urlfull,$imagefull,$thumbfull,$smallfull);
 
       foreach ($todelete as $delete) {
         try {
@@ -146,6 +151,7 @@ class SatelliteImageHelper extends SatellitePlugin {
           }
         } catch (Exception $e) {
           echo 'Caught exception: ',  $e->getMessage(), "\n";
+          error_log('Caught exception'. $e->getMessage()); 
         }
       }
     }

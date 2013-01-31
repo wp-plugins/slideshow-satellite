@@ -77,17 +77,15 @@
       this.$wrapper = this.$element.wrap(this.wrapperHTML).parent();
       this.$slides = this.$element.children('img, a, div');
       
-      $imageSlides = this.$slides.filter('img');
-      
-      if ($imageSlides.length === 0) {
+      var imageSlides = new Array();
+      this.$slides.each(function() {
+        imageSlides.push($(this).find('img').attr('src'));
+      });
+
+      if (imageSlides.length === 0) {
         this.loaded();
       } else {
-        $imageSlides.bind('imageready', function () {
-          imagesLoadedCount += 1;
-          if (imagesLoadedCount === $imageSlides.length) {
-            self.loaded();
-          }
-        });
+        this.preload(imageSlides,self.loaded());
       }
     },
     
@@ -577,6 +575,38 @@
       this.options.afterSlideChange.call(this, this.$slides.eq(this.prevActiveSlide), this.$slides.eq(this.activeSlide));
     },
     
+    preload: function (imageList,callback) {
+      var pic = [], i, total, loaded = 0;
+      if (typeof imageList != 'undefined') {
+          if ($.isArray(imageList)) {
+              total = imageList.length; // used later
+                  for (i=0; i < total; i++) {
+                      pic[i] = new Image();
+                      pic[i].onload = function() {
+                          loaded++; // should never hit a race condition due to JS's non-threaded nature
+                          if (loaded == total) {
+                              if ($.isFunction(callback)) {
+                                  callback();
+                              }
+                          }
+                      };
+                      pic[i].src = imageList[i];
+                  }
+          } else {
+              pic[0] = new Image();
+              if ($.isFunction(callback)) {
+                  pic[0].onload = callback;
+              }
+              pic[0].src = imageList;
+          }
+      } else if ($.isFunction(callback)) {
+          //nothing passed but we have a callback.. so run this now
+          //thanks to Evgeni Nobokov
+          callback();
+      }
+      pic = undefined;
+    },
+    
     shift: function (direction) {
       var slideDirection = direction;
       //remember previous activeSlide
@@ -783,54 +813,3 @@ function block_scroll(key){
       html.css('overflow', html.data('previous-overflow'));
       window.scrollTo(scrollPosition[0], scrollPosition[1])
   }
-        
-/*!
- * jQuery imageready Plugin
- * http://www.zurb.com/playground/
- *
- * Copyright 2011, ZURB
- * Released under the MIT License
- */
-(function ($) {
-  
-  var options = {};
-  
-  $.event.special.imageready = {
-    
-    setup: function (data, namespaces, eventHandle) {
-      options = data || options;
-    },
-		
-        add: function (handleObj) {
-          var $this = $(this),
-              src;
-		      
-	    if ( this.nodeType === 1 && this.tagName.toLowerCase() === 'img' && this.src !== '' ) {
-                if (options.forceLoad) {
-                  src = $this.attr('src');
-                  $this.attr('src', '');
-                  bindToLoad(this, handleObj.handler);
-                  $this.attr('src', src);
-                } else if ( this.complete || this.readyState === 4 ) {
-                    handleObj.handler.apply(this, arguments);
-  		} else {
-                    bindToLoad(this, handleObj.handler);
-  		}
-            }
-	},
-		
-        teardown: function (namespaces) {
-          $(this).unbind('.imageready');
-        }
-    };
-
-    function bindToLoad(element, callback) {
-      var $this = $(element);
-
-    $this.bind('load.imageready', function () {
-       callback.apply(element, arguments);
-       $this.unbind('load.imageready');
-     });
-	}
-
-}(jQuery));

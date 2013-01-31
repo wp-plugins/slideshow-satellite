@@ -207,19 +207,13 @@ class SatelliteConfigHelper extends SatellitePlugin {
                         "std"       => "Select a Watermark",
                         "options"   => $Slide -> getGalleryImages("Watermark")),
                 array(  "name"      => "Watermark Opacity",
-                        "desc"      => "Only bottom right for now",
+                        "desc"      => "At 100% opacity, all of the watermark will show. The lower the percentage the more blended it will be with your photo",
                         "id"        => "opacity",
                         "type"      => "select",
                         "value"     => $watermark['opacity'],
                         "std"       => "70",
-                        "options"   => array(
-                            array('id'=>50, 'title'=>50),
-                            array('id'=>60, 'title'=>60),
-                            array('id'=>70, 'title'=>70),
-                            array('id'=>80, 'title'=>80),
-                            array('id'=>90, 'title'=>90),
-                            array('id'=>100, 'title'=>100)
-                            )),
+                        "options"   => $this->showNumberConfig(20,100,10,"%")
+                        ),
                 array(  "name"      => "Watermark Location",
                         "desc"      => "Only bottom right for now",
                         "id"        => "location",
@@ -238,7 +232,17 @@ class SatelliteConfigHelper extends SatellitePlugin {
     }
     /**
      *
-     * @return string 
+     * @return array for configs to use 
+     */
+    function showNumberConfig($start = 0,$end = 100,$skip = 10,$extra = null) {
+     for ($i = $start;$i <= $end; $i = $i + $skip ) {
+       error_log($i . "skip:". $skip);
+       $return[] = array("id" => $i, "title" => $i." ".$extra);
+     }
+     return $return;
+    }
+    /*
+     * @return @string for sending to satellite orbit js
      */
     function getTransitionType() {
         

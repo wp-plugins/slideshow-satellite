@@ -8,8 +8,8 @@ class SatelliteConfigHelper extends SatellitePlugin {
     
     /**
      *
-     * @param type $option ie 'slide' or 'gallery'
-     * @param type $model ie $this -> Slide
+     * @param string $option ie 'slide' or 'watermark'
+     * @param object $model ie $this -> Slide
      * @return array 
      */
     
@@ -236,7 +236,6 @@ class SatelliteConfigHelper extends SatellitePlugin {
      */
     function showNumberConfig($start = 0,$end = 100,$skip = 10,$extra = null) {
      for ($i = $start;$i <= $end; $i = $i + $skip ) {
-       error_log($i . "skip:". $skip);
        $return[] = array("id" => $i, "title" => $i." ".$extra);
      }
      return $return;

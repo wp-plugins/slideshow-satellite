@@ -16,9 +16,7 @@ if (!empty($slides)) :
         $sidetext = $this -> Gallery -> capLocation($this->Gallery->data->capposition,$slides[0]->section);
     }
     ?>
-<script type="text/javascript">
-  jQuery.preLoadImages()
-</script>
+
 
     <?php if ($frompost) : ?>
 

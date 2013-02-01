@@ -83,9 +83,9 @@
       });
 
       if (imageSlides.length === 0) {
-        this.loaded();
+        self.loaded();
       } else {
-        this.preload(imageSlides,self.loaded());
+        self.preload(imageSlides);
       }
     },
     
@@ -575,36 +575,29 @@
       this.options.afterSlideChange.call(this, this.$slides.eq(this.prevActiveSlide), this.$slides.eq(this.activeSlide));
     },
     
-    preload: function (imageList,callback) {
-      var pic = [], i, total, loaded = 0;
+    preload: function (imageList) {
+      var self = this;
+      
+      var pic = [], i, total, loader = 0;
       if (typeof imageList != 'undefined') {
           if ($.isArray(imageList)) {
               total = imageList.length; // used later
                   for (i=0; i < total; i++) {
                       pic[i] = new Image();
                       pic[i].onload = function() {
-                          loaded++; // should never hit a race condition due to JS's non-threaded nature
-                          if (loaded == total) {
-                              if ($.isFunction(callback)) {
-                                  callback();
-                              }
+                          loader++; // should never hit a race condition due to JS's non-threaded nature
+                          if (loader == total) {
+                            self.loaded();
                           }
                       };
                       pic[i].src = imageList[i];
                   }
           } else {
               pic[0] = new Image();
-              if ($.isFunction(callback)) {
-                  pic[0].onload = callback;
-              }
               pic[0].src = imageList;
+              self.loaded();
           }
-      } else if ($.isFunction(callback)) {
-          //nothing passed but we have a callback.. so run this now
-          //thanks to Evgeni Nobokov
-          callback();
       }
-      pic = undefined;
     },
     
     shift: function (direction) {

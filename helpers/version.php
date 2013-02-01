@@ -10,7 +10,7 @@ class SatelliteVersionHelper extends SatellitePlugin {
             $latestVersionAvailable = $this->readFile($this->versionCheckUrl); // check current version available
             $messageLatest          = "New Premium edition available!! Release version ".$latestVersionAvailable.". Automatic Update may cause problems with your installation, instead go to C-Pres <a href='".$this->membersPageUrl."' target='_blank'>Members Page</a> to download the latest version.";
 
-            if($thisVersion >= $latestVersionAvailable && $latestVersionAvailable != ''){ // check if the current version is latest
+            if($thisVersion >= $latestVersionAvailable && $latestVersionAvailable != '' && $latestVersionAvailable){ // check if the current version is latest
                     $arr['latest']  = true;
                     $arr['version'] =  $thisVersion;
             } else {

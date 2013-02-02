@@ -2,6 +2,8 @@
     global $satellite_init_ok, $post;
     $postID = $post -> ID;
     $style = $this->get_option('styles');
+    $preloader = $this->get_option('Preloader');
+    $preload = $preloader['quantity'];
     if (!$frompost) {
         $this->Gallery->loadData($gallery);
     }
@@ -42,6 +44,7 @@
                 centerBullets: <?php echo $this->get_option('bullcenter'); ?>,
                 navOpacity: <?php echo ($navOpacity); ?>,
                 sideThumbs: <?php echo ($fullthumb) ? 'true' : 'false'; ?>,
+                preloader: <?php echo ($preload) ? $preload : 5 ?>,
                 thumbWidth: <?php echo $thumbwidth; ?>,
                 respExtra: <?php echo $respExtra; ?>, // the width beyond the slide image
                 alwaysPlayBtn: <?php echo ($style['playshow'] == "A") ? 'true' : 'false'; ?>

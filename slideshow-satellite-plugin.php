@@ -221,9 +221,13 @@ class SatellitePlugin
             'resize'      => 1024,
             'pagelink'    =>  'S'
         );
+        $preloader = array(
+            'quantity'    => 5,
+        );
         $this->add_option('Watermark', $watermark);
         $this->add_option('Images', $images);
         $this->add_option('styles', $styles);
+        $this->add_option('Preloader', $preloader);
         
         //General Settings
         $this->add_option('autospeed', 10);
@@ -262,7 +266,6 @@ class SatellitePlugin
         $this->add_option('thumbarea', 250);
         //Premium
         $this->add_option('custslide', 10);
-        $this->add_option('preload', 'N');
         $this->add_option('keyboard', 'N');
         $this->add_option('manager', 'manage_options');
         $this->add_option('nav', "on");

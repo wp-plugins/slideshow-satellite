@@ -31,6 +31,7 @@
       centerBullets: true,              // center bullet nav with js, turn this off if you want to position the bullet nav manually
       navOpacity: .2,
       sideThumbs: false,
+      preloader: 5,
       thumbWidth: 80,
       respExtra: 0,
       alwaysPlayBtn: false
@@ -85,7 +86,14 @@
       if (imageSlides.length === 0) {
         self.loaded();
       } else {
-        self.preload(imageSlides);
+        if (this.options.bulletThumbs) {
+          var imageThumbs = new Array();
+          this.$slides.each(function() {
+            imageThumbs.push($(this).attr('data-thumb'));
+          });
+          self.preload(imageThumbs, 30, false);
+        }
+        self.preload(imageSlides, this.options.preloader, true);
       }
     },
     
@@ -574,24 +582,26 @@
       this.setupCaptions();
       this.options.afterSlideChange.call(this, this.$slides.eq(this.prevActiveSlide), this.$slides.eq(this.activeSlide));
     },
-    
-    preload: function (imageList) {
+    // load is weather to load plugin right away
+    preload: function (imageList, max, load) {
       var self = this;
       
       var pic = [], i, total, loader = 0;
       if (typeof imageList != 'undefined') {
           if ($.isArray(imageList)) {
               total = imageList.length; // used later
-                  for (i=0; i < total; i++) {
-                      pic[i] = new Image();
-                      pic[i].onload = function() {
-                          loader++; // should never hit a race condition due to JS's non-threaded nature
-                          if (loader == total) {
-                            self.loaded();
-                          }
-                      };
-                      pic[i].src = imageList[i];
+              if (total > max)
+                total = max;
+              for (i=0; i < total; i++) {
+                pic[i] = new Image();
+                pic[i].onload = function() {
+                  loader++; // should never hit a race condition due to JS's non-threaded nature
+                  if (loader == total && load) {
+                    self.loaded();
                   }
+                };
+                pic[i].src = imageList[i];
+              }
           } else {
               pic[0] = new Image();
               pic[0].src = imageList;

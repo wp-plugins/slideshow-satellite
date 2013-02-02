@@ -1,21 +1,16 @@
 ﻿<?php
     $Config = new SatelliteConfigHelper;
-    $options = $Config -> displayOption('watermark', 'Watermark');
+    $waterOptions = $Config -> displayOption('watermark', 'Watermark');
+    $preloadOptions = $Config -> displayOption('preloader', 'Preloader');
 ?>
 <table class="form-table">
     <tbody>
         <?php 
         if (method_exists(SatellitePremiumHelper,'doWatermark')) {
-          SatelliteFormHelper::display($options, 'Watermark'); 
+          SatelliteFormHelper::display($waterOptions, 'Watermark'); 
         }
+        SatelliteFormHelper::display($preloadOptions, 'Preloader'); 
         ?>
-        <tr>
-            <th><label for="preload"><?php _e('Preloader', SATL_PLUGIN_NAME); ?></label></th>
-            <td>
-                <label><input <?php echo ($this->get_option('preload') == "Y") ? 'checked="checked"' : ''; ?> type="radio" name="preload" value="Y" /> <?php _e('On', SATL_PLUGIN_NAME); ?></label>
-                <label><input <?php echo ($this->get_option('preload') == "N") ? 'checked="checked"' : ''; ?> type="radio" name="preload" value="N" /> <?php _e('Off', SATL_PLUGIN_NAME); ?></label>
-            </td>
-        </tr>        
         <tr>
             <th><label for="keyboard"><?php _e('Keyboard Recognition', SATL_PLUGIN_NAME); ?></label></th>
             <td>

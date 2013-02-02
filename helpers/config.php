@@ -182,6 +182,19 @@ class SatelliteConfigHelper extends SatellitePlugin {
                                 array('id'=>'TR', 'title'=>'Top Right')))
                     );                
                 break;
+              
+            case 'preloader':
+                $preloader = $this->get_option('Preloader');
+                $optionsArray = array(
+                array(  "name"      => "Preload # of Images",
+                        "desc"      => "How many images should load before the slideshow loads?",
+                        "id"        => "quantity",
+                        "type"      => "select",
+                        "std"       => "5",
+                        "value"     => $preloader['quantity'],
+                        "options"   => $this->showNumberConfig(5,50,5,"images"))
+                    );
+                break;
             
             case 'watermark':
                 

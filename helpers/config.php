@@ -116,8 +116,11 @@ class SatelliteConfigHelper extends SatellitePlugin {
                         "options"   => array(
                                        array('id' => 0, 'title' => 'No Resizing'),
                                        array('id' => 1024, 'title' => '1024 px'),
+                                       array('id' => 900, 'title' => '900 px'),
                                        array('id' => 800, 'title' => '800 px'),
-                                       array('id' => 600, 'title' => '600 px'))),
+                                       array('id' => 600, 'title' => '600 px'))
+                        ),
+                  
                 array(  "name"      => "Open Images in...",
                         "desc"      => "Thickbox is the standard, built into wordpress, but if you use another plugin choose custom",
                         "id"        => "imagesbox",
@@ -220,11 +223,11 @@ class SatelliteConfigHelper extends SatellitePlugin {
                         "std"       => "Select a Watermark",
                         "options"   => $Slide -> getGalleryImages("Watermark")),
                 array(  "name"      => "Watermark Opacity",
-                        "desc"      => "At 100% opacity, all of the watermark will show. The lower the percentage the more blended it will be with your photo",
+                        "desc"      => "At 100% opacity you can use advanced PNG-24 transparency, utilizing the percentage is best for PNG-8",
                         "id"        => "opacity",
                         "type"      => "select",
                         "value"     => $watermark['opacity'],
-                        "std"       => "70",
+                        "std"       => "100",
                         "options"   => $this->showNumberConfig(20,100,10,"%")
                         ),
                 array(  "name"      => "Watermark Location",

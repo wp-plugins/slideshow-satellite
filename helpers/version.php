@@ -6,6 +6,7 @@ class SatelliteVersionHelper extends SatellitePlugin {
     private $membersPageUrl     =   "http://c-pr.es/members";
     
     function checkLatestVersion(){
+      /*
             $thisVersion            = $this->get_option('stldb_version'); // check installed version
             $latestVersionAvailable = $this->readFile($this->versionCheckUrl); // check current version available
             $messageLatest          = "New Premium edition available!! Release version ".$latestVersionAvailable.". Automatic Update may cause problems with your installation, instead go to C-Pres <a href='".$this->membersPageUrl."' target='_blank'>Members Page</a> to download the latest version.";
@@ -21,6 +22,9 @@ class SatelliteVersionHelper extends SatellitePlugin {
             //DEBUG
             //print_r($thisVersion." = ".$latestVersionAvailable);
             return $arr;
+
+    }*/
+      return false;
 	}
 	
 	function readFile($url){

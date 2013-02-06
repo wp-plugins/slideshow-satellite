@@ -1,6 +1,7 @@
 ﻿<div class="wrap">
 	 <?php $version = $this->Version->checkLatestVersion();
-            if(!$version['latest'] && SATL_PRO){ ?>
+        if (!$version['latest'] && $version['message'] && SATL_PRO) 
+          { ?>
                 <div class="plugin-update-tr">
                     <div class="update-message">
                             <?php echo $version['message']; ?>
@@ -48,7 +49,7 @@
         
 	
 	<?php if (!empty($slides)) : ?>
-		<form onsubmit="if (!confirm('<?php _e('Are you sure you wish to execute this action on the selected slides?', SATL_PLUGIN_NAME); ?>')) { return false; }" action="<?php echo $this -> url; ?>&amp;method=mass" method="post">
+		<form onsubmit="if (!confirm('<?php _e('Are you sure you wish to execute this action on the selected slides?', SATL_PLUGIN_NAME); ?>')) { return false; }" action="<?php echo $this -> url; ?>&amp;method=mass&amp;single=<?php echo($single);?>" method="post">
 			<div class="tablenav">
 				<div class="alignleft actions">
 					<a href="<?php echo $this -> url; ?>&amp;method=order&single=<?php echo $_GET['single']; ?>" title="<?php _e('Order all your slides', SATL_PLUGIN_NAME); ?>" class="button"><?php _e('Order Slides', SATL_PLUGIN_NAME); ?></a>
@@ -56,6 +57,10 @@
 					<select name="action" class="action">
 						<option value="">- <?php _e('Bulk Actions', SATL_PLUGIN_NAME); ?> -</option>
 						<option value="delete"><?php _e('Delete', SATL_PLUGIN_NAME); ?></option>
+						<option value="resize"><?php _e('Resize', SATL_PLUGIN_NAME); ?></option>
+						<?php if ($this->canPremiumDoThis('watermark')) :?>
+              <option value="watermark"><?php _e('Watermark', SATL_PLUGIN_NAME); ?></option>
+            <?php endif; ?>
 					</select>
 					<input type="submit" class="button" value="<?php _e('Apply', SATL_PLUGIN_NAME); ?>" name="execute" />
 				</div>

@@ -112,7 +112,9 @@ class SatelliteImageHelper extends SatellitePlugin {
       imagecopyresampled($new_image, $this->image, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
       $this->image = $new_image;
     }      
-    
+    /*
+     * @image is 
+     */
     function applyWatermark($image, $galId) {
         if (!SATL_PRO) { return; }
         $Gallery = new SatelliteGallery;
@@ -128,8 +130,7 @@ class SatelliteImageHelper extends SatellitePlugin {
         SatellitePremiumHelper::doWatermark($image, $watermark);
     }
     
-    function deleteImages($record) {
-      error_log("deleting all sizes of image files: ".$record->image);
+    function deleteImages($record, $deleteall) {
       $imagepath = SATL_UPLOAD_DIR . DS;
       $name = SatelliteHtmlHelper::strip_ext($record->image, 'filename');
       $ext = SatelliteHtmlHelper::strip_ext($record->image, 'ext');
@@ -142,7 +143,13 @@ class SatelliteImageHelper extends SatellitePlugin {
       
       $url = preg_replace('/^.*wp-content/', null, $urlfull);
       $urlfull = SATL_UPLOAD_DIR.'/../..'.$url;
-      $todelete = array($urlfull,$imagefull,$thumbfull,$smallfull);
+      if ($deleteall) {
+        error_log("deleting all sizes of image files: ".$record->image);
+        $todelete = array($urlfull,$imagefull,$thumbfull,$smallfull);
+      } else {
+        error_log("deleting large size of image files: ".$record->image);
+        $todelete = array($imagefull);
+      }
 
       foreach ($todelete as $delete) {
         try {

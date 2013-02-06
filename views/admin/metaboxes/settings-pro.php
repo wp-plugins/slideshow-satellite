@@ -6,7 +6,7 @@
 <table class="form-table">
     <tbody>
         <?php 
-        if (method_exists(SatellitePremiumHelper,'doWatermark')) {
+        if ($this->canPremiumDoThis('watermark')) {
           SatelliteFormHelper::display($waterOptions, 'Watermark'); 
         }
         SatelliteFormHelper::display($preloadOptions, 'Preloader'); 

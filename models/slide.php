@@ -162,75 +162,105 @@ class SatelliteSlide extends SatelliteDbHelper {
 		return $this -> errors;
 	}
         
-        function full_copy( $source, $target ) {
-            if ( is_dir( $source ) ) {
-                    //@mkdir( $target );
-                    $d = dir( $source );
-                    while ( FALSE !== ( $entry = $d->read() ) ) {
-                            if ( $entry == '.' || $entry == '..' ) {
-                                    continue;
-                            }
-                            $Entry = $source . '/' . $entry; 
-                            if ( is_dir( $Entry ) ) {
-                                    full_copy( $Entry, $target . '/' . $entry );
-                                    continue;
-                            }
-                            copy( $Entry, $target . '/' . $entry );
-                    }
+  function full_copy( $source, $target ) {
+      if ( is_dir( $source ) ) {
+              //@mkdir( $target );
+              $d = dir( $source );
+              while ( FALSE !== ( $entry = $d->read() ) ) {
+                      if ( $entry == '.' || $entry == '..' ) {
+                              continue;
+                      }
+                      $Entry = $source . '/' . $entry; 
+                      if ( is_dir( $Entry ) ) {
+                              full_copy( $Entry, $target . '/' . $entry );
+                              continue;
+                      }
+                      copy( $Entry, $target . '/' . $entry );
+              }
 
-                    $d->close();
-            } else {
-                    copy( $source, $target );
-            }
-        }
-        public function processImages($images, $section = false) {
-            $imgarray = explode(",",$images);
-            if (! $section) {
-                $section = $this -> latestSection();
-            }
-            $i = 0;
-            foreach ($imgarray as $image) {
-                $file = basename($image);
-                $name = SatelliteHtmlHelper::strip_ext($file, 'filename');
-                $data = array(title=>$name,section=>$section,type=>'url',image_url=>$image,use_link=>'N',slide_order=>$i);
-                $slidedata = array('Slide' => $data);
-                
-                if ($this -> save($data, true)) {
-                    error_log($name . " has successfully saved");
-                    continue;
-                } else { 
-                    error_log("processImages has failed"); 
-                    return false;
-                }
-                $i++;
-            }
-            return true;
-        }
-        public function slideCount($gallery) {
-            $images = $this->find_all(array('section' => $gallery ), array('id','section'));
-            if (is_array($images)) {
-                return count($images);
-            } else {
-                return 0;
-            }
-            
-        }
-        /*
-         * $gal : @string name of Gallery, i.e. "More"
-         */
-        public function getGalleryImages($gal) {
-          $Gallery = new SatelliteGallery;
+              $d->close();
+      } else {
+              copy( $source, $target );
+      }
+  }
+  public function processImages($images, $section = false) {
+      $imgarray = explode(",",$images);
+      if (! $section) {
+          $section = $this -> latestSection();
+      }
+      $i = 0;
+      foreach ($imgarray as $image) {
+          $file = basename($image);
+          $name = SatelliteHtmlHelper::strip_ext($file, 'filename');
+          $data = array(title=>$name,section=>$section,type=>'url',image_url=>$image,use_link=>'N',slide_order=>$i);
+          $slidedata = array('Slide' => $data);
 
-          $more = ($galID = $Gallery -> getGalleryIDByTitle($gal)) ? $this -> find_all(array('section'=> $galID), 'title,section,id') : null;
-          $imgarray = null;
-          if (is_array($more)) {
-            foreach ($more as $moreimg )
-              $imgarray[] = array('title'=>$moreimg -> title,'id' => $moreimg -> id);
-          } else {
-            $msg =  __('Gallery not yet created', SATL_PLUGIN_NAME);
-            $imgarray[] = array('title'=>$msg);
+          if ($this -> save($data, true)) {
+              error_log($name . " has successfully saved");
+              continue;
+          } else { 
+              error_log("processImages has failed"); 
+              return false;
           }
-          return $imgarray;            
-        }
+          $i++;
+      }
+      return true;
+  }
+  public function slideCount($gallery) {
+      $images = $this->find_all(array('section' => $gallery ), array('id','section'));
+      if (is_array($images)) {
+          return count($images);
+      } else {
+          return 0;
+      }
+
+  }
+  /*
+   * $gal : @string name of Gallery, i.e. "More"
+   */
+  public function getGalleryImages($gal) {
+    $Gallery = new SatelliteGallery;
+
+    $more = ($galID = $Gallery -> getGalleryIDByTitle($gal)) ? $this -> find_all(array('section'=> $galID), 'title,section,id') : null;
+    $imgarray = null;
+    if (is_array($more)) {
+      foreach ($more as $moreimg )
+        $imgarray[] = array('title'=>$moreimg -> title,'id' => $moreimg -> id);
+    } else {
+      $msg =  __('Gallery not yet created', SATL_PLUGIN_NAME);
+      $imgarray[] = array('title'=>$msg);
+    }
+    return $imgarray;            
+  }
+  
+  public function resizeById($record_id) {
+    if (!empty($record_id) && $record = $this -> find(array('id' => $record_id))) {
+      $images = $this->get_option('Images');
+      $Image = new SatelliteImageHelper;
+      $imagepath = SATL_UPLOAD_DIR . DS;
+      $imagefull = $imagepath . $record->image;
+      //run normal resize process
+      $Image -> load($imagefull);
+      //delete the photo here?)
+      error_log("Resizing by id ". $record->image. " to the size of ".$images[resize] );
+      $Image -> resizeToBox($images[resize]);
+      error_log("Starting Delete of ". $record_id);
+      $this->delete($record_id,false);
+      error_log("Starting Post-Delete save of ". $record_id);
+      $Image -> save($imagefull); 
+    }
+  }
+  
+  public function watermarkById($record_id) {
+    if (!empty($record_id) && $record = $this -> find(array('id' => $record_id))) {
+      $Image = new SatelliteImageHelper;
+      error_log("watermarking name ".$record->image." section of: ".$record->section);
+      $imagepath = SATL_UPLOAD_DIR . DS;
+			$imagefull = $imagepath . $record->image;
+      $Image -> load($imagefull);
+      $Image->applyWatermark($record->image, $record->section);
+    }
+  }
+
 }
 ?>

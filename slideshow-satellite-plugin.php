@@ -717,5 +717,13 @@ class SatellitePlugin
         }
         return $links;
     }
+    
+    public function canPremiumDoThis($action) {
+      switch ($action) {
+        case 'watermark':
+          return method_exists(SatellitePremiumHelper,'doWatermark');
+          break;
+      }
+    }
 }
 ?>

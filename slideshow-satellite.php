@@ -464,6 +464,23 @@ class Satellite extends SatellitePlugin {
 								$message = __('Selected slides have been removed', SATL_PLUGIN_NAME);
 								$this -> redirect($this -> url, 'message', $message);
 								break;
+              case 'resize' :
+                $slide_ids = $this -> getSlideFromPost($_POST['Slide']['checklist']);
+                foreach ($slide_ids as $slide_id) {
+                  $this -> Slide -> resizeById($slide_id);
+                }
+                $message = __('Selected slides have been resized', SATL_PLUGIN_NAME);
+                $this -> redirect($this -> url, 'message', $message);
+                break;
+              case 'watermark' :
+                $slide_ids = $this -> getSlideFromPost($_POST['Slide']['checklist']);
+                foreach ($slide_ids as $slide_id) {
+                  $this -> Slide -> watermarkById($slide_id);
+                }
+                $message = __('Selected slides have been watermarked', SATL_PLUGIN_NAME);
+                $this -> redirect($this -> url, 'message', $message);                
+                break;
+
 						}
 					} else {
 						$message = __('No slides were selected', SATL_PLUGIN_NAME);
@@ -478,23 +495,36 @@ class Satellite extends SatellitePlugin {
 				$slides = $this -> Slide -> find_all(null, null, array('slide_order', "ASC"));
 				$this -> render('slides' . DS . 'order', array('slides' => $slides), true, 'admin');
 				break;
-                        case 'copysgpro'                :
-                                $sgprodir = SATL_UPLOAD_DIR.'/../slideshow-gallery-pro/';
-                                SatelliteSlide::full_copy($sgprodir, SATL_UPLOAD_DIR);
-                                if ($this -> is_empty_folder(SATL_UPLOAD_DIR)) {
-                                    $message = __('Sorry! Your files weren\'t able to be copied over.', SATL_PLUGIN_NAME);
-                                    $this -> redirect($this -> url, "error", $message);
-                                } else {
-                                    $message = __('Your files have been successfully copied!', SATL_PLUGIN_NAME);
-                                    $this -> redirect($this -> url, "message", $message);
-                                }
-                                break;
-			default					:
+      case 'copysgpro'                :
+        $sgprodir = SATL_UPLOAD_DIR.'/../slideshow-gallery-pro/';
+        SatelliteSlide::full_copy($sgprodir, SATL_UPLOAD_DIR);
+        if ($this -> is_empty_folder(SATL_UPLOAD_DIR)) {
+            $message = __('Sorry! Your files weren\'t able to be copied over.', SATL_PLUGIN_NAME);
+            $this -> redirect($this -> url, "error", $message);
+        } else {
+            $message = __('Your files have been successfully copied!', SATL_PLUGIN_NAME);
+            $this -> redirect($this -> url, "message", $message);
+        }
+        break;
+      default					:
 				$data = $this -> paginate('Slide');				
 				$this -> render('slides' . DS . 'index', array('slides' => $data[$this -> Slide -> model], 'paginate' => $data['Paginate']), true, 'admin');
 				break;
 		}
 	}
+  /*
+   * @return array
+   * $post is array or string
+   */
+  function getSlideFromPost($post) {
+    if (is_array($post)) {
+      foreach ($post as $slide_id) {
+        $slide_array[] = $slide_id;
+      }} else {
+        $slide_array[] = $slide_id;
+    }
+    return $slide_array;
+  }
         
 	function admin_galleries() {	
                 $galleries = $this->Gallery->find_all(null, null, array('id', "ASC"));

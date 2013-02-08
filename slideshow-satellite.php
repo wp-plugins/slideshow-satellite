@@ -4,8 +4,8 @@ Plugin Name: Slideshow Satellite
 Plugin URI: http://c-pr.es/projects/satellite
 Author: C- Pres
 Author URI: http://c-pr.es/membership-options
-Description: Display photography and content in highly configurable ways with this slideshow. Pretty pretty pretty.
-Version: 1.3.4
+Description: Responsive display for all your photo needs. Customize to your hearts content.
+Version: 2.0
 */
 define('DS', '/');
 define( 'SATL_VERSION', '1.3.5');
@@ -47,21 +47,22 @@ class Satellite extends SatellitePlugin {
 		$this -> add_action('admin_notices');
 		
 		//WordPress filter hooks
-              if ( $this -> get_option('satwiz') != "N") {
-		$this -> add_filter('mce_buttons');
-		$this -> add_filter('mce_external_plugins');
-              }
+    if ( $this -> get_option('satwiz') != "N") {
+      $this -> add_filter('mce_buttons');
+      $this -> add_filter('mce_external_plugins');
+      $this -> add_action( 'admin_print_footer_scripts', 'htmlmce_add_quicktags', 100 );
+    }
 		$this -> add_filter('plugin_action_links', 'add_satl_settings_link', 10, 2 );			
 		
 		add_shortcode('satellite', array($this, 'embed'));
 		add_shortcode('gpslideshow', array($this, 'embed'));
-                if ($this->get_option('embedss') == "Y") {
-        		add_shortcode('slideshow', array($this, 'embed'));
-                }
-                if ( class_exists( 'SatellitePremium' ) ) {
-                  $satlp = new SatellitePremium;
-                  register_activation_hook( __FILE__, array( &$satlp, 'prem_activate_plugin' ));
-                }
+    if ($this->get_option('embedss') == "Y") {
+      add_shortcode('slideshow', array($this, 'embed'));
+    }
+    if ( class_exists( 'SatellitePremium' ) ) {
+      $satlp = new SatellitePremium;
+      register_activation_hook( __FILE__, array( &$satlp, 'prem_activate_plugin' ));
+    }
 		
 	}  
 
@@ -132,6 +133,16 @@ class Satellite extends SatellitePlugin {
 		$plugins['gallery'] = SATL_PLUGIN_URL . '/js/tinymce/editor_plugin.js';
 		return $plugins;
 	}
+  
+  function htmlmce_add_quicktags() {
+  ?>
+      <script type="text/javascript">
+        if ( typeof QTags != 'undefined' ) { 
+          QTags.addButton( 'content_gallery', 'satellite', '\n[satellite gallery=1 caption=on auto=on thumbs=on]' );
+        }
+      </script>
+  <?php
+  }
 	
 	function slideshow($output = true, $post_id = null, $exclude = null, $include = null, $custom = null, $gallery = null,$width = null, $height = null) {
                 if (SATL_PRO) {

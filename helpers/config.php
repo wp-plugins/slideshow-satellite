@@ -195,7 +195,7 @@ class SatelliteConfigHelper extends SatellitePlugin {
                         "type"      => "select",
                         "std"       => "5",
                         "value"     => $preloader['quantity'],
-                        "options"   => $this->showNumberConfig(5,50,5,"images"))
+                        "options"   => $this->showNumberConfig(0,50,5,"images"))
                     );
                 break;
             

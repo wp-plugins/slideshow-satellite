@@ -8,8 +8,8 @@ class SatelliteConfigHelper extends SatellitePlugin {
     
     /**
      *
-     * @param type $option ie 'slide' or 'gallery'
-     * @param type $model ie $this -> Slide
+     * @param string $option ie 'slide' or 'watermark'
+     * @param object $model ie $this -> Slide
      * @return array 
      */
     
@@ -38,18 +38,30 @@ class SatelliteConfigHelper extends SatellitePlugin {
                         "value"     => $model -> data -> type,
                         "std"       => "custom slides",
                         "options"   => array(
-                                           array('id' => 'custom slides', 'title' => 'Custom Slides'))),
+                                       array('id' => 'custom slides', 'title' => 'Custom Slides'))),
 
                 array(  "name"      => "Description",
                         "desc"      => "This will be used in future slideshow versions to describe the slideshow before someone selects to view it.",
                         "id"        => "description",
                         "value"     => $model -> data -> description,
                         "type"      => "textarea"),
-
+                    
                 array(  "name"      => "Upload Images",
                         "desc"      => "Select multiple images using the uploader, then drag the thumbs to order them right here before saving the gallery",
                         "id"        => "slides",
                         "type"      => "upload"),
+
+                array(  "name"      => "Caption sizing",
+                        "desc"      => "Large is In Charge for a reason. Default is how you have it set in General Configuration",
+                        "id"        => "font",
+                        "type"      => "select",
+                        "value"     => $model -> data -> font,
+                        "std"       => "Default",
+                        "options"   => array(
+                                       array('id' => '1', 'title' => 'Default'),
+                                       array('id' => '2', 'title' => 'Mid-Sized'),
+                                       array('id' => '3', 'title' => 'Big Boy'),
+                                       array('id' => '4', 'title' => 'In Charge'))),
 
                 array(  "name"      => "Caption Position",
                         "desc"      => "Where would you like to display the caption?",
@@ -90,10 +102,55 @@ class SatelliteConfigHelper extends SatellitePlugin {
                 );	
                 
                 break;  
+              
+            case 'images':
+              
+              $image = $this->get_option('Images');
+              $optionsArray = array (
+                array(  "name"      => "Image resizing",
+                        "desc"      => "Newly uploaded images will be resized to fit within this size if larger",
+                        "id"        => "resize",
+                        "type"      => "select",
+                        "value"     => $image['resize'],
+                        "std"       => 1024,
+                        "options"   => array(
+                                       array('id' => 0, 'title' => 'No Resizing'),
+                                       array('id' => 1024, 'title' => '1024 px'),
+                                       array('id' => 900, 'title' => '900 px'),
+                                       array('id' => 800, 'title' => '800 px'),
+                                       array('id' => 600, 'title' => '600 px'))
+                        ),
+                  
+                array(  "name"      => "Open Images in...",
+                        "desc"      => "Thickbox is the standard, built into wordpress, but if you use another plugin choose custom",
+                        "id"        => "imagesbox",
+                        "type"      => "select",
+                        "value"     => $image['imagesbox'],
+                        "std"       => 'T',
+                        "options"   => array(
+                               array('id' => 'N', 'title' => __('No link', SATL_PLUGIN_NAME)),
+                               array('id' => 'W', 'title' => __('Window', SATL_PLUGIN_NAME)),
+                               array('id' => 'T', 'title' => __('Thickbox', SATL_PLUGIN_NAME)),
+                               array('id' => 'C', 'title' => __('Custom', SATL_PLUGIN_NAME))
+                               )
+                        ),
+                array(  "name"      => __('Page Link Target', SATL_PLUGIN_NAME),
+                        "desc"      => __("This is setting your link target, in HTML it would be '_self' or '_blank'", SATL_PLUGIN_NAME),
+                        "id"        => "pagelink",
+                        "type"      => "select",
+                        "value"     => $image['pagelink'],
+                        "std"       => 'S',
+                        "options"   => array(
+                               array('id' => 'S', 'title' => __('Current Tab', SATL_PLUGIN_NAME)),
+                               array('id' => 'B', 'title' => __('New Tab', SATL_PLUGIN_NAME))
+                               )
+                    ));
+                break;
             
             case 'slide':
                 
                 $Gallery = new SatelliteGallery();
+                $section = ($_GET['single']) ? $_GET['single'] : $model -> data -> section;
                 
                 $optionsArray = array(
                 array(  "name"      => "Title",
@@ -112,7 +169,7 @@ class SatelliteConfigHelper extends SatellitePlugin {
                         "desc"      => "The gallery this slide belongs to",
                         "id"        => "section",
                         "type"      => "select",
-                        "value"     => $model -> data -> section,
+                        "value"     => $section,
                         "std"       => "Select a Gallery",
                         "options"   => $Gallery -> getGalleries()),
                 array(  "name"      => "Caption Location",
@@ -126,6 +183,63 @@ class SatelliteConfigHelper extends SatellitePlugin {
                                 array('id'=>'D', 'title'=>'Default'),
                                 array('id'=>'BR', 'title'=>'Bottom Right'),
                                 array('id'=>'TR', 'title'=>'Top Right')))
+                    );                
+                break;
+              
+            case 'preloader':
+                $preloader = $this->get_option('Preloader');
+                $optionsArray = array(
+                array(  "name"      => "Preload # of Images",
+                        "desc"      => "How many images should load before the slideshow loads?",
+                        "id"        => "quantity",
+                        "type"      => "select",
+                        "std"       => "5",
+                        "value"     => $preloader['quantity'],
+                        "options"   => $this->showNumberConfig(0,50,5,"images"))
+                    );
+                break;
+            
+            case 'watermark':
+                
+                $Gallery = new SatelliteGallery();
+                $Slide = new SatelliteSlide();
+                $watermark = $this->get_option('Watermark');
+                
+                $optionsArray = array(
+                array(  "name"      => "Watermarking",
+                        "desc"      => "With this checked - On your image uploads we will apply your chosen watermark",
+                        "id"        => "enabled",
+                        "type"      => "select",
+                        "value"     => $watermark['enabled'],
+                        "options"   => array(
+                            array('id'=>1, 'title'=>'Enabled'),
+                            array('id'=>0, 'title'=>'Disabled')
+                            )),
+                array(  "name"      => "Watermark Image",
+                        "desc"      => "Create a gallery entitled \"Watermark\" if enabled. Upload transparent PNG images you'd like to use as the watermark there.",
+                        "id"        => "image",
+                        "type"      => "select",
+                        "value"     => $watermark['image'],
+                        "std"       => "Select a Watermark",
+                        "options"   => $Slide -> getGalleryImages("Watermark")),
+                array(  "name"      => "Watermark Opacity",
+                        "desc"      => "At 100% opacity you can use advanced PNG-24 transparency, utilizing the percentage is best for PNG-8",
+                        "id"        => "opacity",
+                        "type"      => "select",
+                        "value"     => $watermark['opacity'],
+                        "std"       => "100",
+                        "options"   => $this->showNumberConfig(20,100,10,"%")
+                        ),
+                array(  "name"      => "Watermark Location",
+                        "desc"      => "Only bottom right for now",
+                        "id"        => "location",
+                        "type"      => "select",
+                        "value"     => $watermark['location'],
+                        "std"       => "BR",
+                        "options"   => array(
+                            array('id'=>'BR', 'title'=>'Bottom Right')
+                            //array('id'=>'CX', 'title'=>'Cross X')
+                            ))
 
                 );                
                 break;
@@ -134,7 +248,16 @@ class SatelliteConfigHelper extends SatellitePlugin {
     }
     /**
      *
-     * @return string 
+     * @return array for configs to use 
+     */
+    function showNumberConfig($start = 0,$end = 100,$skip = 10,$extra = null) {
+     for ($i = $start;$i <= $end; $i = $i + $skip ) {
+       $return[] = array("id" => $i, "title" => $i." ".$extra);
+     }
+     return $return;
+    }
+    /*
+     * @return @string for sending to satellite orbit js
      */
     function getTransitionType() {
         
@@ -147,8 +270,10 @@ class SatelliteConfigHelper extends SatellitePlugin {
         } elseif ($this->get_option('transition_temp') == "OVS") {
             $transition = "vertical-slide";
         } elseif ($this->get_option('transition_temp') == "OHP") {
-            $transition = "horizontal-push"; }
-        else {
+            $transition = "horizontal-push";
+        } elseif ($this->get_option('transition_temp') == "N") {
+            $transition = "none";
+        } else {
             $transition = "fade-blend";
         }
         

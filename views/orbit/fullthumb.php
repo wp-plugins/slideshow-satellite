@@ -4,7 +4,12 @@ global $satellite_init_ok;
 if (!empty($slides)) :
 
     $style = $this->get_option('styles');
-    $imagesbox = $this->get_option('imagesbox');
+    $images = $this->get_option('Images');
+    $imagesbox = $images['imagesbox'];
+    $pagelink = $images['pagelink'];
+    $responsive = false;//$this->get_option('responsive');
+    $respExtra = ($respExtra) ? $respExtra : $style['thumbarea'];
+    
     $textloc = $this->get_option('textlocation');
     ?>
 
@@ -12,7 +17,7 @@ if (!empty($slides)) :
         <!-- =======================================
         THE ORBIT SLIDER CONTENT 
         ======================================= -->
-        <div class="<?php echo ( $this->get_option('thumbnails_temp') == 'FR') ? 'full-right' : 'full-left';?>">
+        <div class="<?php echo ( $this->get_option('thumbnails_temp') == 'FR') ? 'full-right' : 'full-left';?><?php echo($responsive) ? ' resp' : ''; ?>">
             <div id="featured<?php echo $satellite_init_ok; ?>"> 
                 <?php foreach ($slides as $slider) : ?>  
                     <?php $full_image_href = wp_get_attachment_image_src($slider->ID, 'full', false); ?>
@@ -44,11 +49,11 @@ if (!empty($slides)) :
 
         </div>
 
-         <?php $this -> render('jsinit', array('gallery'=>false,'frompost' => true, 'fullthumb' => true), true, 'orbit');?>
+         <?php $this -> render('jsinit', array('gallery'=>false,'frompost' => true, 'fullthumb' => true, 'respExtra' => $respExtra), true, 'orbit');?>
         <!--  CUSTOM GALLERY -->
     <?php else : ?>  
 
-        <div class="<?php echo ( $this->get_option('thumbnails_temp') == 'FR') ? 'full-right' : 'full-left';?>">
+        <div class="<?php echo ( $this->get_option('thumbnails_temp') == 'FR') ? 'full-right' : 'full-left';?><?php echo($responsive) ? ' resp' : ''; ?>">
             <div id="featured<?php echo $satellite_init_ok; ?>"> 
                 <?php $i = 0; ?>
                 <?php foreach ($slides as $slider) : ?>     
@@ -62,7 +67,7 @@ if (!empty($slides)) :
                     }
                     ?>					
                     <?php if ($slider->uselink == "Y" && !empty($slider->link)) : ?>
-                        <a href="<?php echo $slider->link; ?>" title="<?php echo $slider->title; ?>" target="<?php echo ($this->get_option('pagelink') == "S") ? "_self":"_blank" ?>">
+                        <a href="<?php echo $slider->link; ?>" title="<?php echo $slider->title; ?>" target="<?php echo ($pagelink == "S") ? "_self":"_blank" ?>">
                     <?PHP elseif ($imagesbox != "N" && ! $this->get_option('nolinker')) : ?>
                         <a class="thickbox sorbit-link" href="<?php echo $this->Html->image_url($slider->image); ?>" rel="" title="<?php echo $slider->title; ?>">
                     <?PHP endif; ?>
@@ -87,7 +92,7 @@ if (!empty($slides)) :
             
         </div>
 
-    <?php $this -> render('jsinit', array('gallery'=>$slides[0]->section, 'frompost' => false, 'fullthumb' => true), true, 'orbit');?>
+    <?php $this -> render('jsinit', array('gallery'=>$slides[0]->section, 'frompost' => false, 'fullthumb' => true, 'respExtra' => $respExtra), true, 'orbit');?>
 
     <?php endif; 
     /******** PRO ONLY **************/

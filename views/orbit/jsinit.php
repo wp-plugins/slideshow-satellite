@@ -2,6 +2,8 @@
     global $satellite_init_ok, $post;
     $postID = $post -> ID;
     $style = $this->get_option('styles');
+    $preloader = $this->get_option('Preloader');
+    $preload = $preloader['quantity'];
     if (!$frompost) {
         $this->Gallery->loadData($gallery);
     }
@@ -22,7 +24,7 @@
     ?>
     <script type="text/javascript">
         jQuery(document).ready(function($) {
-            $('#featured<?php echo $satellite_init_ok; ?>').orbit({
+            $('#featured<?php echo $satellite_init_ok; ?>').satlorbit({
                 animation: '<?PHP echo ($transition) ? $transition : $this->get_option('transition'); ?>',  // fade, horizontal-slide, vertical-slide, horizontal-push
                 animationSpeed: <?php echo($animspeed); ?>,  // how fast animations are
                 timer: <?PHP echo ($this->get_option("autoslide_temp") == "Y" ) ? 'true' : 'false'; ?>,  // true or false to have the timer
@@ -41,8 +43,20 @@
                 afterSlideChange: function(){},    // empty function 
                 centerBullets: <?php echo $this->get_option('bullcenter'); ?>,
                 navOpacity: <?php echo ($navOpacity); ?>,
+                sideThumbs: <?php echo ($fullthumb) ? 'true' : 'false'; ?>,
+                preloader: <?php echo ($preload) ? $preload : 5 ?>,
                 thumbWidth: <?php echo $thumbwidth; ?>,
+                respExtra: <?php echo $respExtra; ?>, // the width beyond the slide image
                 alwaysPlayBtn: <?php echo ($style['playshow'] == "A") ? 'true' : 'false'; ?>
             });				
         });
+        <?php if ($this->get_option('responsive')) : ?>
+        jQuery(window).resize(function($) {
+            jQuery('#featured<?php echo $satellite_init_ok; ?>').satlresponse({
+                respExtra: <?php echo $respExtra; ?>, // the width beyond the slide image
+                sideThumbs: <?php echo ($fullthumb) ? 'true' : 'false'; ?>
+            });
+        });
+        <?php endif; ?>
+        
     </script> 

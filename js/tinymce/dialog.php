@@ -4,9 +4,16 @@ error_reporting(0);
 if (!defined('DS')) { 
 	define('DS', '/'); 
 }
+/*$Gallery = new SatelliteGallery();*/
 $root = __FILE__;
 for ($i = 0; $i < 6; $i++) $root = dirname($root);
-	if (!defined('DS')) { define('DS', '/'); }require_once($root . DS . 'wp-config.php');require_once(ABSPATH . 'wp-admin' . DS . 'admin-functions.php');if(!current_user_can('edit_posts')) die;do_action('admin_init');?>
+	if (!defined('DS')) { define('DS', '/'); }require_once($root . DS . 'wp-config.php');require_once(ABSPATH . 'wp-admin' . DS . 'admin-functions.php');if(!current_user_can('edit_posts')) die;do_action('admin_init');
+  error_log("running the tinyMCE for Satellite Slideshow");
+  require_once(WP_PLUGIN_DIR . '/slideshow-satellite/models/gallery.php');
+  $Gallery = new SatelliteGallery();
+  $galleries = $Gallery->getGalleries();
+
+  ?>
 	
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>	
 	
@@ -19,9 +26,9 @@ for ($i = 0; $i < 6; $i++) $root = dirname($root);
 var _self = tinyMCEPopup;
 function insertTag() {
     var satellite_type = jQuery('input[name="satellite_type"]:checked').val();
-	var auto = jQuery('input[name="auto"]:checked').val();
-	var thumbs = jQuery('input[name="thumbs"]:checked').val();
-        var caption = jQuery('input[name="caption"]:checked').val();
+    var auto = jQuery('input[name="auto"]:checked').val();
+    var thumbs = jQuery('input[name="thumbs"]:checked').val();
+    var caption = jQuery('input[name="caption"]:checked').val();
     if (satellite_type == "post") {
         var post_id = jQuery('#post_id').val();
         var exclude = jQuery('#exclude').val();
@@ -33,14 +40,16 @@ function insertTag() {
         if (exclude != "") {
             tag += ' exclude="' + exclude + ' "';
         }
-        if (auto == "") { tag += '';} else { tag += ' auto=' + auto+'';}	
-        if (caption == "") { tag += '';} else { tag += ' caption=' + caption;}		
-        if (thumbs == "") { tag += ']';} else { tag += ' thumbs=' + thumbs + ']';}		
+        if (auto == undefined) { tag += '';} else { tag += ' auto=' + auto+'';}	
+        if (caption == undefined) { tag += '';} else { tag += ' caption=' + caption;}		
+        if (thumbs == undefined) { tag += ']';} else { tag += ' thumbs=' + thumbs + ']';}		
     } else if (satellite_type == "custom") {
-        var tag = '[satellite gallery=1';
-        if (auto == "") { tag += '';} else { tag += ' auto=' + auto;}		
-        if (caption == "") { tag += '';} else { tag += ' caption=' + caption;}	
-        if (thumbs == "") { tag += ']';} else { tag += ' thumbs=' + thumbs + ']';}		
+        var gal_id = jQuery('#gal_id').val();
+
+        var tag = '[satellite gallery='+ gal_id +'';
+        if (auto == undefined) { tag += '';} else { tag += ' auto=' + auto;}		
+        if (caption == undefined) { tag += '';} else { tag += ' caption=' + caption;}	
+        if (thumbs == undefined) { tag += ']';} else { tag += ' thumbs=' + thumbs + ']';}		
 		
     }
     if (window.tinyMCE) {
@@ -61,6 +70,18 @@ function closePopup() {
 		<label style="font-weight:bold; cursor:pointer;"><input onclick="jQuery('#post_div').show();" type="radio" name="satellite_type" value="post" id="type_post" /> <?php _e('Images From a Post', SATL_PLUGIN_NAME); ?></label><br/>
 		<label style="font-weight:bold; cursor:pointer;"><input onclick="jQuery('#post_div').hide();jQuery('#custom_div').show();" type="radio" name="satellite_type" value="custom" id="type_custom" /> <?php _e('Images From a Custom Gallery', SATL_PLUGIN_NAME); ?></label>
 		<div id="custom_div" style="display:none">
+      <p>
+        <label for="post_id" style="font-weight:bold;"><?php _e('Gallery', SATL_PLUGIN_NAME); ?>:</label><br/>
+		<?php if (!empty($galleries)) : ?>
+			<select name="gal_id" id="gal_id">
+				<option value="">- <?php _e('Select a Gallery', SATL_PLUGIN_NAME); ?></option>
+				<?php foreach ($galleries as $gallery) : ?>
+				<option value="<?php echo $gallery['id']; ?>"><?php echo $gallery['title']; ?></option>	
+				<?php endforeach; ?>
+			</select>
+		<?php endif;?>
+		</p>
+
 			<?php echo showInBoth(); ?>
 		</div>
 		<div id="post_div" style="display:none;">

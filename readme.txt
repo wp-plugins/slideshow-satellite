@@ -1,22 +1,22 @@
 === Slideshow Satellite ===
 Contributors: C- Pres
 Donate link: http://c-pr.es/projects/satellite
-Tags: slideshow pro, photographer, galleries, satellite, orbit, zurb orbit, slideshow gallery, slides, slideshow, image gallery, gallery, slideshow satellite, photography, slideshow orbit
-Requires at least: 3.0
-Tested up to: 3.4.2
-Stable tag: 1.3.4
+Tags: responsive slideshow, photography, watermark, satellite, orbit, zurb orbit, slideshow gallery, responsive, slideshow, content slider, gallery, slideshow satellite, photography, slideshow orbit
+Requires at least: 3.1
+Tested up to: 3.5.1
+Stable tag: 2.0
 License: GPLv2 or later
 
-Ultra customizable and contemporary photo slideshow. Build photograph galleries or content displays with Slideshow Satellite. 
+So Responsive! So Customizable! So Modern! SO PRETTY! Build image galleries or content displays with Slideshow Satellite. 
 
 == Description ==
-The goal of this slideshow is to create beautiful ways of displaying content in ways that suit the content you are providing.
+Satellite's goal is to present a responsive and beautiful slideshow experience to visitors of your WordPress site.
 
-Either use your current Wordpress Media Galleries or take advantage of the Satellite's own custom gallery manager.
+Using either your WordPress Media Galleries or our own Gallery Editor, different pages and different sites deserve a customized look and feel.
 
-To explore the manual or get the premium edition: http://c-pr.es/projects/satellite/
+To explore the manual or get the Premium edition: http://c-pr.es/projects/satellite/
 
-To embed into a post/page, simply insert <code>[satellite]</code> into its content with optional <code>post_id</code>, <code>thumbs</code>, <code>exclude</code>, <code>include</code>, <code>caption</code>, and <code>auto</code>  parameters.  Check out the Slideshow Satellite Manual on the plugin details page (linked above) for code examples.
+Easily embed using our slideshow button. Otherwise, to embed into a post/page, simply insert <code>[satellite]</code> into its content with optional <code>post_id</code>, <code>thumbs</code>, <code>exclude</code>, <code>include</code>, <code>caption</code>, and <code>auto</code>  parameters.  Check out the Slideshow Satellite Manual on the plugin details page (linked above) for code examples.
 
 == Installation ==
 Installing the WordPress Slideshow Satellite plugin manually is very easy. Simply follow the steps below.
@@ -29,11 +29,11 @@ Installing the WordPress Slideshow Satellite plugin manually is very easy. Simpl
 
 1. Add and manage your slides in the 'Satellite' > 'Manage Slides' section (Or just use the built in wordpress gallery)
 
-1. Put `[satellite post_id="X" exclude="" caption="on/off" thumbs="on/off"]` to embed a slideshow with the images of a post into your posts/pages or use `[satellite gallery=1]` to embed a slideshow with images in 'Manage Slides'
+1. Put `[satellite post_id="X" exclude="" caption="on/off" thumbs="on/off"]` to embed a slideshow with the images of a post into your posts/pages or use `[satellite gallery=X]` to embed a slideshow with images in 'Manage Slides'
 
 1. For the most up to date list of options available please goto: http://c-pr.es/projects/satellite and check out the manual
 
-1. Premium Edition: You will download the premium edition from the website directly after paying and setting up your user account
+1. Premium Edition: You will download the premium edition from the website directly after paying and setting up your user account. Check your spam folder for your password!!
 
 1. Premium Edition: Just make sure the `/pro/` folder is in your /wp-content/plugins/slideshow-satellite/ directory and you're set!
 
@@ -91,6 +91,19 @@ You may also want to "Reset Configuration" from the Configuration page
 Two should be enough, we don't want to bog down your install with screenshots. Come to the site for more, and a video tutorial: http://c-pr.es/satellite
 
 == Changelog ==
+= 2.0 =
+* The Responsive release!! - Regular;Multi-Gallery;Full-Thumbs
+* Resizing Images
+* Watermarking Images (Premium Only)
+* New Transition: None - good for flipbooks
+* Preloading now works! Premium can change how many images preload
+* Fix Clean Start
+* Add Change Font per Gallery
+* Adding More Ordering Options
+* Adding Bulk Slide Updates - Resize & Watermark
+* Fixing Delete Images - actually deletes now!
+* Making PHP not "necessary" for CSS
+
 = 1.3.3 =
 * Adding back in Shortcode Requirement
 * Fixing Captions on the Right

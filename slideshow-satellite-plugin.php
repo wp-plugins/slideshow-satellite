@@ -7,17 +7,19 @@ class SatellitePlugin
     var $plugin_base;
     var $pre = 'Satellite';
     var $debugging = false;
+    var $errorlog = true;
     var $menus = array();
     //var $latestorbit = 'jquery.orbit-1.3.1.js';
     var $latestorbit = 'orbit-min.js';
     var $cssfile = 'orbit-css.php';
+    var $staticCSSFile = 'orbit-1.3.1.css';
     var $cssadmin = 'admin-styles.css';
     var $sections = array(
         'satellite' => 'satellite-slides',
         'settings' => 'satellite',
         'newgallery' => 'satellite-galleries',
     );
-    var $helpers = array('Ajax', 'Config', 'Db', 'Html', 'Form', 'Metabox', 'Version', 'Premium');
+    var $helpers = array('Ajax','Config','Db','Form','Html','Image','Metabox','Premium','Version');
     var $models = array('Slide','Gallery');
 
     function register_plugin($name, $base) {
@@ -57,6 +59,7 @@ class SatellitePlugin
 
     function conditionally_add_scripts_and_styles($posts){
             if (empty($posts)) return $posts;
+            $loadGoogleFonts = false;
 
             $shortcode_found = false; // use this flag to see if styles and scripts need to be enqueued
             
@@ -78,6 +81,8 @@ class SatellitePlugin
                         
             $satlStyleFile = SATL_PLUGIN_DIR . '/css/' . $this -> cssfile;
             $satlStyleUrl = SATL_PLUGIN_URL . '/css/' . $this -> cssfile . '?v=' . SATL_VERSION . '&amp;pID=' . $pID;
+            $satlStyleStaticUrl = SATL_PLUGIN_URL . '/css/' . $this -> staticCSSFile . '?v=' . SATL_VERSION;
+            
             if ($_SERVER['HTTPS']) {
                 $satlStyleUrl = str_replace("http:", "https:", $satlStyleUrl);
             }
@@ -106,18 +111,34 @@ class SatellitePlugin
                 }
                 
                 wp_register_style(SATL_PLUGIN_NAME . "_style", $satlStyleUrl);
+                wp_register_style(SATL_PLUGIN_NAME . "_styleStatic", $satlStyleStaticUrl);
+                
+            }
+            if ($loadGoogleFonts) {
+                $this->load_fonts();
+                //wp_register_style(SATL_PLUGIN_NAME.'_googleFonts', 'http://fonts.googleapis.com/css?family=Cabin:400,600,400italic,600italic|Cabin+Condensed|Scada:400,700');
+                //wp_register_style(SATL_PLUGIN_NAME.'_googleFonts', 'http://fonts.googleapis.com/css?family=Cabin+Condensed');
+                //wp_enqueue_style( SATL_PLUGIN_NAME.'_googleFonts');
+
             }
 
                     // enqueue here
-                wp_enqueue_style(SATL_PLUGIN_NAME . "_style");
+            wp_enqueue_style(SATL_PLUGIN_NAME . "_styleStatic");
+            wp_enqueue_style(SATL_PLUGIN_NAME . "_style");
+
+            wp_enqueue_script(SATL_PLUGIN_NAME . "_script", '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/' . $this->latestorbit,
+                    array('jquery'),
+                    SATL_VERSION);
                 
-                wp_enqueue_script(SATL_PLUGIN_NAME . "_script", '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/' . $this->latestorbit,
-                        array('jquery'),
-                        SATL_VERSION);
-                
-            }
-            return $posts;
+        }
+        return $posts;
     }
+    
+    function load_fonts() {
+        wp_register_style(SATL_PLUGIN_NAME.'_googleFonts', 'http://fonts.googleapis.com/css?family=Cabin:400,600,400italic,600italic|Cabin+Condensed|Scada:400,700');
+        wp_enqueue_style( SATL_PLUGIN_NAME.'_googleFonts' );
+    }
+
 
     function init_class($name = null, $params = array()) {
         if (!empty($name)) {
@@ -169,6 +190,9 @@ class SatellitePlugin
     }
 
     function initialize_options() {
+      
+        // Before the configuration page has ever been saved, slideshow relies on these
+      
         $styles = array(
             'width' => "450",
             'height' => "300",
@@ -189,35 +213,47 @@ class SatellitePlugin
             'navpush'   => "0",
             'infomin' => "Y"
         );
-
+        $watermark = array(
+            'watermarkloc' => 'BR'
+        );
+        $images = array(
+            'imagesbox'   => 'T',
+            'resize'      => 1024,
+            'pagelink'    =>  'S'
+        );
+        $preloader = array(
+            'quantity'    => 5,
+        );
+        $this->add_option('Watermark', $watermark);
+        $this->add_option('Images', $images);
         $this->add_option('styles', $styles);
+        $this->add_option('Preloader', $preloader);
+        
         //General Settings
+        $this->add_option('autospeed', 10);
+        $this->add_option('autoslide', "Y");
+        $this->add_option('abscenter', "Y");
         $this->add_option('fadespeed', 10);
         $this->add_option('nav_opacity', 30);
         $this->add_option('navhover', 70);
         $this->add_option('nolinker', false);
         $this->add_option('nolinkpage', 0);
-        $this->add_option('pagelink', "S");
         $this->add_option('wpattach', "N");
         $this->add_option('captionlink', "N");
         $this->add_option('transition', "FB");
         $this->add_option('information', "Y");
         $this->add_option('infospeed', 10);
+        $this->add_option('embedss', "Y");
+        $this->add_option('ggljquery', "Y");
+        $this->add_option('responsive', 1);
+        $this->add_option('satwiz', "Y");
+        $this->add_option('shortreq', "Y");
         $this->add_option('showhover', "P");
+        $this->add_option('splash', "N");
+        $this->add_option('stldb_version', "1.0");
         $this->add_option('thumbnails', "N");
         $this->add_option('thumbposition', "bottom");
         $this->add_option('thumbscrollspeed', 5);
-        $this->add_option('autoslide', "Y");
-        $this->add_option('autoslide_temp', "Y");
-        $this->add_option('imagesbox', "T");
-        $this->add_option('autospeed', 10);
-        $this->add_option('abscenter', "Y");
-        $this->add_option('embedss', "Y");
-        $this->add_option('satwiz', "Y");
-        $this->add_option('shortreq', "Y");
-        $this->add_option('ggljquery', "Y");
-        $this->add_option('splash', "N");
-        $this->add_option('stldb_version', "1.0");
         // Orbit Only
         $this->add_option('autospeed2', 5000);
         $this->add_option('duration', 700);
@@ -230,7 +266,6 @@ class SatellitePlugin
         $this->add_option('thumbarea', 250);
         //Premium
         $this->add_option('custslide', 10);
-        $this->add_option('preload', 'N');
         $this->add_option('keyboard', 'N');
         $this->add_option('manager', 'manage_options');
         $this->add_option('nav', "on");
@@ -248,6 +283,7 @@ class SatellitePlugin
 
     function redirect($location = '', $msgtype = '', $message = '') {
         $url = $location;
+        $url = ($_GET['single']) ? $url."&single=".$_GET['single'] : $url;
         if ($msgtype == "message") {
             $url .= '&' . $this->pre . 'updated=true';
         } elseif ($msgtype == "error") {
@@ -680,6 +716,14 @@ class SatellitePlugin
             array_unshift($links, $settings_link);
         }
         return $links;
+    }
+    
+    public function canPremiumDoThis($action) {
+      switch ($action) {
+        case 'watermark':
+          return method_exists(SatellitePremiumHelper,'doWatermark');
+          break;
+      }
     }
 }
 ?>

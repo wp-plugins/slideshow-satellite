@@ -2,6 +2,7 @@
 class SatelliteGallery extends SatelliteDbHelper {
 	var $table;
 	var $model = 'Gallery';
+  var $specials = array('More','Watermark');
 	var $controller = "galleries";
 	var $plugin_name = SATL_PLUGIN_NAME;
 	var $data = array();
@@ -15,6 +16,7 @@ class SatelliteGallery extends SatelliteDbHelper {
                 'capposition'           =>      "VARCHAR(40) NOT NULL DEFAULT ''",
                 'caphover'              =>      "BOOLEAN NOT NULL DEFAULT 0",
                 'pausehover'            =>      "BOOLEAN NOT NULL DEFAULT 0",
+                'font'                  =>      "VARCHAR(200) CHARACTER SET utf8 NOT NULL DEFAULT ''",
                 'capanimation'          =>      "VARCHAR(40) NOT NULL DEFAULT ''",
 		'gal_order'		=>	"INT(11) NOT NULL DEFAULT '0'",
 		'created'		=>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
@@ -102,19 +104,25 @@ class SatelliteGallery extends SatelliteDbHelper {
                                                         capanimation, 
                                                         title, 
                                                         description, 
+                                                        font,
                                                         type, 
                                                         id');
             //return $this -> find_all(array('id'=>$gallery));
             //return $animation;
         }
-        /** Returns the More Gallery ID **/
-        public function getMoreGallery() {
-            $more = $this -> find(array('title'=>"More"), 'title,id');
-            if ($more->id)
-                return $more->id;
+        /*
+         * $gal : @string eg "More"
+         */
+        public function getGalleryIDByTitle($gal){
+            $gallery = $this -> find(array('title'=>$gal), 'title,id');
+            if ($gallery->id)
+                return $gallery->id;
             else
-                return null;
+                return null;            
         }
+        /*
+         * return @array of all galleries
+         */
         public function getGalleries() {
             $galleries = $this -> find_all('','title,id');
             foreach ($galleries as $gallery )
@@ -125,6 +133,35 @@ class SatelliteGallery extends SatelliteDbHelper {
             
             return null;
             
+        }
+        /*
+         * Returns true if gallery is special like "More or Watermark"
+         * @return bool
+         */
+        public function isSpecialGallery($galId) {
+          $specials = $this->get_option('specials');
+          if (empty($specials)) {
+            $specials = $this->registerSpecials(true);
+          }
+          if (!empty($specials)) {
+            foreach ($specials as $special) {
+              error_log("checking special gallery ".$special." against galId".$galId);
+              if ($galId == $special) {
+                error_log("uploading to a special gallery : ".$galId);
+                return true;
+              }
+            }
+          } else { return false; }
+        }
+        public function registerSpecials($ret = false) {
+          // TODO : on gallery creation run registerSpecials
+          error_log("Registering special galleries");
+          $specarray = array();
+          foreach ($this -> specials as $special) {
+            $specarray[] = $this->getGalleryIDByTitle($special);
+          }
+          $this->update_option('specials',$specarray);
+          if ($ret) {return $specarray; }
         }
         
 }

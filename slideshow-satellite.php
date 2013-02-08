@@ -4,11 +4,11 @@ Plugin Name: Slideshow Satellite
 Plugin URI: http://c-pr.es/projects/satellite
 Author: C- Pres
 Author URI: http://c-pr.es/membership-options
-Description: Display photography and content in highly configurable ways with this slideshow. Pretty pretty pretty.
-Version: 1.3.4
+Description: Responsive display for all your photo needs. Customize to your hearts content.
+Version: 2.0
 */
 define('DS', '/');
-define( 'SATL_VERSION', '1.3.4');
+define( 'SATL_VERSION', '1.3.5');
 $uploads = wp_upload_dir();
 if ( ! defined( 'SATL_PLUGIN_BASENAME' ) )
 	define( 'SATL_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -47,21 +47,22 @@ class Satellite extends SatellitePlugin {
 		$this -> add_action('admin_notices');
 		
 		//WordPress filter hooks
-              if ( $this -> get_option('satwiz') != "N") {
-		$this -> add_filter('mce_buttons');
-		$this -> add_filter('mce_external_plugins');
-              }
+    if ( $this -> get_option('satwiz') != "N") {
+      $this -> add_filter('mce_buttons');
+      $this -> add_filter('mce_external_plugins');
+      $this -> add_action( 'admin_print_footer_scripts', 'htmlmce_add_quicktags', 100 );
+    }
 		$this -> add_filter('plugin_action_links', 'add_satl_settings_link', 10, 2 );			
 		
 		add_shortcode('satellite', array($this, 'embed'));
 		add_shortcode('gpslideshow', array($this, 'embed'));
-                if ($this->get_option('embedss') == "Y") {
-        		add_shortcode('slideshow', array($this, 'embed'));
-                }
-                if ( class_exists( 'SatellitePremium' ) ) {
-                  $satlp = new SatellitePremium;
-                  register_activation_hook( __FILE__, array( &$satlp, 'prem_activate_plugin' ));
-                }
+    if ($this->get_option('embedss') == "Y") {
+      add_shortcode('slideshow', array($this, 'embed'));
+    }
+    if ( class_exists( 'SatellitePremium' ) ) {
+      $satlp = new SatellitePremium;
+      register_activation_hook( __FILE__, array( &$satlp, 'prem_activate_plugin' ));
+    }
 		
 	}  
 
@@ -132,6 +133,16 @@ class Satellite extends SatellitePlugin {
 		$plugins['gallery'] = SATL_PLUGIN_URL . '/js/tinymce/editor_plugin.js';
 		return $plugins;
 	}
+  
+  function htmlmce_add_quicktags() {
+  ?>
+      <script type="text/javascript">
+        if ( typeof QTags != 'undefined' ) { 
+          QTags.addButton( 'content_gallery', 'satellite', '\n[satellite gallery=1 caption=on auto=on thumbs=on]' );
+        }
+      </script>
+  <?php
+  }
 	
 	function slideshow($output = true, $post_id = null, $exclude = null, $include = null, $custom = null, $gallery = null,$width = null, $height = null) {
                 if (SATL_PRO) {
@@ -252,6 +263,8 @@ class Satellite extends SatellitePlugin {
 				$this -> update_option( 'transition_temp', 'OHP' );
 			} elseif (($this -> get_option( 'transition' )!='OM' ) && ( $transition == 'orbit-multi' )) {
 				$this -> update_option( 'transition_temp', 'OM' );
+			} elseif (($this -> get_option( 'transition' )!='N' ) && ( $transition == 'none' )) {
+				$this -> update_option( 'transition_temp', 'N' );
 			}
 		}
 		if ( !empty( $auto ) ) { 
@@ -351,6 +364,7 @@ class Satellite extends SatellitePlugin {
 		elseif ($this -> get_option('transition')=='OVS') { $this -> update_option('transition_temp', 'OVS'); }
 		elseif ($this -> get_option('transition')=='OHS') { $this -> update_option('transition_temp', 'OHS'); }
 		elseif ($this -> get_option('transition')=='OHP') { $this -> update_option('transition_temp', 'OHP'); }
+		elseif ($this -> get_option('transition')=='N') { $this -> update_option('transition_temp', 'N'); }
 		elseif ($this -> get_option('transition')=='OM') { $this -> update_option('transition_temp', 'OM'); }
                 if ($this -> get_option('random') != null) { $this -> update_option('random', null); }
                 
@@ -461,6 +475,23 @@ class Satellite extends SatellitePlugin {
 								$message = __('Selected slides have been removed', SATL_PLUGIN_NAME);
 								$this -> redirect($this -> url, 'message', $message);
 								break;
+              case 'resize' :
+                $slide_ids = $this -> getSlideFromPost($_POST['Slide']['checklist']);
+                foreach ($slide_ids as $slide_id) {
+                  $this -> Slide -> resizeById($slide_id);
+                }
+                $message = __('Selected slides have been resized', SATL_PLUGIN_NAME);
+                $this -> redirect($this -> url, 'message', $message);
+                break;
+              case 'watermark' :
+                $slide_ids = $this -> getSlideFromPost($_POST['Slide']['checklist']);
+                foreach ($slide_ids as $slide_id) {
+                  $this -> Slide -> watermarkById($slide_id);
+                }
+                $message = __('Selected slides have been watermarked', SATL_PLUGIN_NAME);
+                $this -> redirect($this -> url, 'message', $message);                
+                break;
+
 						}
 					} else {
 						$message = __('No slides were selected', SATL_PLUGIN_NAME);
@@ -475,23 +506,36 @@ class Satellite extends SatellitePlugin {
 				$slides = $this -> Slide -> find_all(null, null, array('slide_order', "ASC"));
 				$this -> render('slides' . DS . 'order', array('slides' => $slides), true, 'admin');
 				break;
-                        case 'copysgpro'                :
-                                $sgprodir = SATL_UPLOAD_DIR.'/../slideshow-gallery-pro/';
-                                SatelliteSlide::full_copy($sgprodir, SATL_UPLOAD_DIR);
-                                if ($this -> is_empty_folder(SATL_UPLOAD_DIR)) {
-                                    $message = __('Sorry! Your files weren\'t able to be copied over.', SATL_PLUGIN_NAME);
-                                    $this -> redirect($this -> url, "error", $message);
-                                } else {
-                                    $message = __('Your files have been successfully copied!', SATL_PLUGIN_NAME);
-                                    $this -> redirect($this -> url, "message", $message);
-                                }
-                                break;
-			default					:
+      case 'copysgpro'                :
+        $sgprodir = SATL_UPLOAD_DIR.'/../slideshow-gallery-pro/';
+        SatelliteSlide::full_copy($sgprodir, SATL_UPLOAD_DIR);
+        if ($this -> is_empty_folder(SATL_UPLOAD_DIR)) {
+            $message = __('Sorry! Your files weren\'t able to be copied over.', SATL_PLUGIN_NAME);
+            $this -> redirect($this -> url, "error", $message);
+        } else {
+            $message = __('Your files have been successfully copied!', SATL_PLUGIN_NAME);
+            $this -> redirect($this -> url, "message", $message);
+        }
+        break;
+      default					:
 				$data = $this -> paginate('Slide');				
 				$this -> render('slides' . DS . 'index', array('slides' => $data[$this -> Slide -> model], 'paginate' => $data['Paginate']), true, 'admin');
 				break;
 		}
 	}
+  /*
+   * @return array
+   * $post is array or string
+   */
+  function getSlideFromPost($post) {
+    if (is_array($post)) {
+      foreach ($post as $slide_id) {
+        $slide_array[] = $slide_id;
+      }} else {
+        $slide_array[] = $slide_id;
+    }
+    return $slide_array;
+  }
         
 	function admin_galleries() {	
                 $galleries = $this->Gallery->find_all(null, null, array('id', "ASC"));

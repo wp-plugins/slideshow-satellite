@@ -41,7 +41,12 @@ class SatelliteHtmlHelper extends SatellitePlugin {
 	
 	function image_url($filename = null) {
 		if (!empty($filename)) {
-			return SATL_UPLOAD_URL . DS . $filename;
+      if (file_exists(SATL_UPLOAD_DIR . DS . $filename)) {
+        return SATL_UPLOAD_URL . DS . $filename;
+      } else {
+        return SATL_PLUGIN_URL . "/images/placeholder.png";
+      }
+			
 		}
 		
 		return false;

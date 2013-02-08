@@ -51,7 +51,7 @@ class SatelliteDbHelper extends SatellitePlugin {
 		list($ofield, $odir) = $order;
 		$query .= " ORDER BY `" . $ofield . "` " . $odir . "";
 		$query .= " LIMIT 1";
-		//print_r($query);
+		error_log("finding ".$query);
                 
 		if ($record = $wpdb -> get_row($query)) {		
 			if (!empty($record)) {			
@@ -160,9 +160,13 @@ class SatelliteDbHelper extends SatellitePlugin {
 					}
 					break;
 				case 'Gallery':	
-					if ( $this -> data -> title == "More" ) {
-						//$this -> data -> link = "";
-					}
+          $Gallery = new SatelliteGallery;
+          $specials = $Gallery -> specials;
+          foreach ($specials as $special) {
+            if ( $this -> data -> title == $special ) {
+              $Gallery -> registerSpecials();
+            }
+          }
 					break;                                     
                                      
 			}
@@ -211,22 +215,28 @@ class SatelliteDbHelper extends SatellitePlugin {
 		
 		return false;
 	}
-	
-	function delete($record_id = '') {
+	/*
+   * $deleteall boolean : false means just delete the large image.
+   *                    : true means delete all sizes and db record.
+   */
+	function delete($record_id = '',$deleteall = true) {
 		global $wpdb;
+    $Image = new SatelliteImageHelper;
 		
 		if (!empty($record_id) && $record = $this -> find(array('id' => $record_id))) {
-			$query = "DELETE FROM `" . $this -> table . "` WHERE `id` = '" . $record_id . "' LIMIT 1";
-			
-			if ($wpdb -> query($query)) {
-				//do nothing...				
-				return true;
-			}
+			$Image->deleteImages($record,$deleteall);
+      if ($deleteall) {
+        $query = "DELETE FROM `" . $this -> table . "` WHERE `id` = '" . $record_id . "' LIMIT 1";
+        if ($wpdb -> query($query)) {
+          error_log("Deleting db record for slide: ".$record_id);
+          return true;
+        }
+      }
 		}
 		
 		return false;
 	}
-	
+        
 	function insert_query($model = '') {	
 		if (!empty($model)) {
 			global $wpdb;
@@ -332,11 +342,11 @@ class SatelliteDbHelper extends SatellitePlugin {
 		return false;
 	}
         
-        function latestSection() {
-            $Gallery = new SatelliteGallery;
-            $latest = $Gallery -> find(null,'id');
-            return $latest -> id;
-        }
+  function latestSection() {
+      $Gallery = new SatelliteGallery;
+      $latest = $Gallery -> find(null,'id');
+      return $latest -> id;
+  }
                 
 }
 ?>

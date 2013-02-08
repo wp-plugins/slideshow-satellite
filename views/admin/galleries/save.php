@@ -63,14 +63,14 @@ $options = $this -> Config -> displayOption('gallery', $this -> Gallery);
     });
     </script>
 
-    <?php 
-    $version = $this->Version->checkLatestVersion();
-    if( !$version['latest'] && SATL_PRO ){ ?>
-            <div class="plugin-update-tr">
+	 <?php $version = $this->Version->checkLatestVersion();
+        if (!$version['latest'] && $version['message'] && SATL_PRO) 
+          { ?>
+                <div class="plugin-update-tr">
                     <div class="update-message">
                             <?php echo $version['message']; ?>
                     </div>
-            </div>
+                </div>
     <?php } ?>
 
     <img src="<?php echo(SATL_PLUGIN_URL.'/images/Satellite-Logo-sm.png');?>" style="height:100px" />

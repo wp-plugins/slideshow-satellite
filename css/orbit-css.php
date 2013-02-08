@@ -96,11 +96,11 @@ div.timer {
     color: <?php echo $styles['infocolor']; ?>;
 }
 
-.orbit-caption h5 {
+.satl-wrapper .orbit-caption h5 {
     color:<?php echo $styles['infocolor']; ?>; 
     }
 
-.orbit-caption p {
+.satl-wrapper .orbit-caption p {
     color: <?php echo $styles['infocolor']; ?>;
 }
 div.satl-wrapper .sattext {

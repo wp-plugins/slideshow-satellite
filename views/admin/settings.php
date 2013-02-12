@@ -52,8 +52,8 @@ wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
                             <div id="misc-publishing-actions" class="preminfo">
                                 <h4>What's different on the Premium Edition?</h4>
                                 <p>Display multiple slideshows in a page</p>
+                                <p>Watermark your images</p>
                                 <p>Customize height and width per use</p>
-                                <p>Have multiple custom slideshows</p>
                                 <p>Have multiple arrow options</p>
                                 <p>Keyboard navigation</p>
                                 <p>Ajax load the plugin through a splash image</p>
@@ -77,13 +77,13 @@ wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
 				</div>
 			</div>
 			<div id="side-info-column" class="inner-sidebar inner2">		
-				<?php do_meta_boxes($this -> menus['satellite'], 'side', $post); ?>
-                                <?php do_action('submitpage_box'); ?>
+				<?php //do_meta_boxes($this -> menus['satellite'], 'side', $post); ?>
+                                <?php// do_action('submitpage_box'); ?>
 			</div>
 			<br class="clear" />
 			
             </div>
             <a href="#" onclick="jQuery('.postbox h3').click()">Toggle On/Off All Form Options</a>
 	</form>
-        <h4><?php _e('Current Satellite Version:', SATL_PLUGIN_NAME); ?><?php echo($this->get_option('stldb_version'));?> </h4>
+        <h4><?php _e('Current Satellite Version: ', SATL_PLUGIN_NAME); ?><?php echo($this->get_option('stldb_version'));?> </h4>
 </div>

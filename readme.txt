@@ -4,7 +4,7 @@ Donate link: http://c-pr.es/projects/satellite
 Tags: responsive slideshow, photography, watermark, satellite, orbit, zurb orbit, slideshow gallery, responsive, slideshow, content slider, gallery, slideshow satellite, photography, slideshow orbit
 Requires at least: 3.1
 Tested up to: 3.5.1
-Stable tag: 2.0
+Stable tag: 2.0.1
 License: GPLv2 or later
 
 So Responsive! So Customizable! So Modern! SO PRETTY! Build image galleries or content displays with Slideshow Satellite. 
@@ -91,6 +91,10 @@ You may also want to "Reset Configuration" from the Configuration page
 Two should be enough, we don't want to bog down your install with screenshots. Come to the site for more, and a video tutorial: http://c-pr.es/satellite
 
 == Changelog ==
+= 2.0.1 =
+* Preloading upgraded for minimal images & quicker load time
+* Premium added 'infocolor' capability to pair with 'infobackground'
+
 = 2.0 =
 * The Responsive release!! - Regular;Multi-Gallery;Full-Thumbs
 * Resizing Images

@@ -5,10 +5,10 @@ Plugin URI: http://c-pr.es/projects/satellite
 Author: C- Pres
 Author URI: http://c-pr.es/membership-options
 Description: Responsive display for all your photo needs. Customize to your hearts content.
-Version: 2.0
+Version: 2.0.1
 */
 define('DS', '/');
-define( 'SATL_VERSION', '1.3.5');
+define( 'SATL_VERSION', '2.0.1');
 $uploads = wp_upload_dir();
 if ( ! defined( 'SATL_PLUGIN_BASENAME' ) )
 	define( 'SATL_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -101,7 +101,7 @@ class Satellite extends SatellitePlugin {
 	function admin_head_gallery_settings() {		
 		add_meta_box('submitdiv', __('Save Settings', SATL_PLUGIN_NAME), array($this -> Metabox, "settings_submit"), $this -> menus['satellite'], 'side', 'core');
 		add_meta_box('generaldiv', __('General Settings', SATL_PLUGIN_NAME), array($this -> Metabox, "settings_general"), $this -> menus['satellite'], 'normal', 'core');
-		add_meta_box('linksimagesdiv', __('Links &amp; Images Overlay', SATL_PLUGIN_NAME), array($this -> Metabox, "settings_linksimages"), $this -> menus['satellite'], 'normal', 'core');
+		add_meta_box('linksimagesdiv', __('Links &amp; Images', SATL_PLUGIN_NAME), array($this -> Metabox, "settings_linksimages"), $this -> menus['satellite'], 'normal', 'core');
 		add_meta_box('stylesdiv', __('Appearance &amp; Styles', SATL_PLUGIN_NAME), array($this -> Metabox, "settings_styles"), $this -> menus['satellite'], 'normal', 'core');
 		add_meta_box('thumbsdiv', __('Thumbnail Settings', SATL_PLUGIN_NAME), array($this -> Metabox, "settings_thumbs"), $this -> menus['satellite'], 'normal', 'core');
 		add_meta_box('advanceddiv', __('Advanced Settings', SATL_PLUGIN_NAME), array($this -> Metabox, "settings_advanced"), $this -> menus['satellite'], 'normal', 'core');
@@ -202,7 +202,7 @@ class Satellite extends SatellitePlugin {
                 $defaults=array();
                 $setDefault = array('post_id','exclude','include','custom','gallery','caption','auto','w','h','nolink',
                                     'slug','thumbs','align','nav','transition','display','random','splash','background',
-                                    'infobackground','autospeed', 'animspeed');
+                                    'infobackground','infocolor','autospeed', 'animspeed');
                 foreach ($setDefault as $d) {
                     $defaults[$d] = null;
                 }

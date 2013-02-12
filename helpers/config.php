@@ -188,14 +188,19 @@ class SatelliteConfigHelper extends SatellitePlugin {
               
             case 'preloader':
                 $preloader = $this->get_option('Preloader');
+                $params = array("start" => 1,
+                                "skip1" => 1,
+                                "firstend" => 5,
+                                "end"      => 35,
+                                "skip2"    => 3);
                 $optionsArray = array(
                 array(  "name"      => "Preload # of Images",
                         "desc"      => "How many images should load before the slideshow loads?",
                         "id"        => "quantity",
                         "type"      => "select",
-                        "std"       => "5",
+                        "std"       => "1",
                         "value"     => $preloader['quantity'],
-                        "options"   => $this->showNumberConfig(0,50,5,"images"))
+                        "options"   => $this->showNumberConfig($params,"images"))
                     );
                 break;
             
@@ -204,7 +209,10 @@ class SatelliteConfigHelper extends SatellitePlugin {
                 $Gallery = new SatelliteGallery();
                 $Slide = new SatelliteSlide();
                 $watermark = $this->get_option('Watermark');
-                
+                $params = array("start" => 20,
+                                "skip1" => 10,
+                                "end" => 100);
+
                 $optionsArray = array(
                 array(  "name"      => "Watermarking",
                         "desc"      => "With this checked - On your image uploads we will apply your chosen watermark",
@@ -228,7 +236,7 @@ class SatelliteConfigHelper extends SatellitePlugin {
                         "type"      => "select",
                         "value"     => $watermark['opacity'],
                         "std"       => "100",
-                        "options"   => $this->showNumberConfig(20,100,10,"%")
+                        "options"   => $this->showNumberConfig($params,"%")
                         ),
                 array(  "name"      => "Watermark Location",
                         "desc"      => "Only bottom right for now",
@@ -247,12 +255,20 @@ class SatelliteConfigHelper extends SatellitePlugin {
         return $optionsArray;
     }
     /**
-     *
+     * @params array (start=>int, firstend=>int(optional), skip1=>int, end=int, skip2=int(optional)
      * @return array for configs to use 
+     * 
      */
-    function showNumberConfig($start = 0,$end = 100,$skip = 10,$extra = null) {
-     for ($i = $start;$i <= $end; $i = $i + $skip ) {
+    function showNumberConfig($params, $extra = null) {
+     $end = ($params['firstend']) ? $params['firstend'] : $params['end'];
+     for ($i = $params['start'];$i <= $end; $i = $i + $params['skip1'] ) {
        $return[] = array("id" => $i, "title" => $i." ".$extra);
+     }
+     // Firstend means there must be a second end. Otherwise there's just an end
+     if ($params['firstend']) {
+       for ($i = $i+$params['skip2']-1;$i <= $params['end']; $i = $i + $params['skip2'] ) {
+         $return[] = array("id" => $i, "title" => $i." ".$extra);
+       }       
      }
      return $return;
     }
@@ -261,23 +277,23 @@ class SatelliteConfigHelper extends SatellitePlugin {
      */
     function getTransitionType() {
         
-        if ($this->get_option('transition_temp') == "FB") {
-            $transition = "fade-blend";
-        } elseif ($this->get_option('transition_temp') == "FE") {
-            $transition = "fade-empty";
-        } elseif ($this->get_option('transition_temp') == "OHS") {
-            $transition = "horizontal-slide";
-        } elseif ($this->get_option('transition_temp') == "OVS") {
-            $transition = "vertical-slide";
-        } elseif ($this->get_option('transition_temp') == "OHP") {
-            $transition = "horizontal-push";
-        } elseif ($this->get_option('transition_temp') == "N") {
-            $transition = "none";
-        } else {
-            $transition = "fade-blend";
-        }
-        
-        return $transition;
+      if ($this->get_option('transition_temp') == "FB") {
+          $transition = "fade-blend";
+      } elseif ($this->get_option('transition_temp') == "FE") {
+          $transition = "fade-empty";
+      } elseif ($this->get_option('transition_temp') == "OHS") {
+          $transition = "horizontal-slide";
+      } elseif ($this->get_option('transition_temp') == "OVS") {
+          $transition = "vertical-slide";
+      } elseif ($this->get_option('transition_temp') == "OHP") {
+          $transition = "horizontal-push";
+      } elseif ($this->get_option('transition_temp') == "N") {
+          $transition = "none";
+      } else {
+          $transition = "fade-blend";
+      }
+
+      return $transition;
     }
     
     function getProOption($option,$pID) {

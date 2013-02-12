@@ -101,12 +101,14 @@ class SatellitePlugin
                     $nav_temp = $this->get_option('nav_temp');
                     $background = $this->get_option('background');
                     $infobackground = $this->get_option('infobackground');
+                    $infocolor = $this->get_option('infocolor');
                     
                     $satlStyleUrl .= $this->Premium->addProStyling($width_temp,'width_temp',$pID);
                     $satlStyleUrl .= $this->Premium->addProStyling($height_temp,'height_temp',$pID);
                     $satlStyleUrl .= $this->Premium->addProStyling($background,'background',$pID);
                     $satlStyleUrl .= $this->Premium->addProStyling($align,'align',$pID);
                     $satlStyleUrl .= $this->Premium->addProStyling($infobackground,'infobackground',$pID);
+                    $satlStyleUrl .= $this->Premium->addProStyling($infocolor,'infocolor',$pID);
                     $satlStyleUrl .= $this->Premium->addProStyling($nav_temp,'nav',$pID);
                 }
                 
@@ -222,7 +224,7 @@ class SatellitePlugin
             'pagelink'    =>  'S'
         );
         $preloader = array(
-            'quantity'    => 5,
+            'quantity'    => 1,
         );
         $this->add_option('Watermark', $watermark);
         $this->add_option('Images', $images);

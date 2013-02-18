@@ -242,7 +242,7 @@ class Satellite extends SatellitePlugin {
 			}
 		}
                 
-                if( !empty( $random ) ){   // update random in db options
+    if( !empty( $random ) ){   // update random in db options
 			if(($this -> get_option('random') == 'off' || $this -> get_option('random') == null)  && ($random == 'on') ){
 				$this -> update_option('random', 'on' );	
 			} elseif(($this -> get_option('random') == 'on' )  && ($random == 'off')){
@@ -352,10 +352,10 @@ class Satellite extends SatellitePlugin {
 		if ($this -> get_option('orbitinfo')=='Y') { $this -> update_option('orbitinfo_temp', 'Y'); }
 		elseif ($this -> get_option('orbitinfo')=='N') { $this -> update_option('orbitinfo_temp', 'N'); }
 		if ($this -> get_option('thumbnails')=='Y') { 
-                    $this -> update_option('thumbnails_temp', 'Y'); 
-                    if ($this -> get_option('thumbposition')=='FR') { $this -> update_option('thumbnails_temp', 'FR'); }
-                    elseif ($this -> get_option('thumbposition')=='FL') { $this -> update_option('thumbnails_temp', 'FL'); }
-                }
+      $this -> update_option('thumbnails_temp', 'Y'); 
+      if ($this -> get_option('thumbposition')=='FR') { $this -> update_option('thumbnails_temp', 'FR'); }
+      elseif ($this -> get_option('thumbposition')=='FL') { $this -> update_option('thumbnails_temp', 'FL'); }
+    }
 		elseif ($this -> get_option('thumbnails')=='N') { $this -> update_option('thumbnails_temp', 'N'); }
 		if ($this -> get_option('autoslide')=='Y') { $this -> update_option('autoslide_temp', 'Y'); }
 		elseif ($this -> get_option('autoslide')=='N') { $this -> update_option('autoslide_temp', 'N'); }
@@ -366,24 +366,16 @@ class Satellite extends SatellitePlugin {
 		elseif ($this -> get_option('transition')=='OHP') { $this -> update_option('transition_temp', 'OHP'); }
 		elseif ($this -> get_option('transition')=='N') { $this -> update_option('transition_temp', 'N'); }
 		elseif ($this -> get_option('transition')=='OM') { $this -> update_option('transition_temp', 'OM'); }
-                if ($this -> get_option('random') != null) { $this -> update_option('random', null); }
-                
-                // RESET FOR PREMIUM EDITION SINGLE INSTANCE
-                /** Align, Width, Height, all save on top of itself, and don't need cleared out **/
-                
-                //if ($this -> get_option('align_temp') != null) { $this -> update_option('align_temp', null); }
-                //if ($this -> get_option('nav_temp') != null) { $this -> update_option('nav_temp', null); }
-                //if ($this -> get_option('width_temp') != null) { $this -> update_option('width_temp', null); }
-                //if ($this -> get_option('height_temp') != null) { $this -> update_option('height_temp', null); }
+    if ($this -> get_option('random') != null) { $this -> update_option('random', null); }
                 
 		$style = array();
 		$style = $this -> get_option('styles');
 		$style['align'] = "none";
 		$this -> update_option('styles', $style);
                 
-                // RESET non configurable options
-                $this -> update_option('splash', false);
-                $this -> update_option('nolinker', false);
+    // RESET non configurable options
+    $this -> update_option('splash', false);
+    $this -> update_option('nolinker', false);
 	}
 	function exclude_ids( $attachments, $exclude, $include ) {
 		if ( ! empty( $exclude )) {

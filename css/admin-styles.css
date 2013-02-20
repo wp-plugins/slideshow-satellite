@@ -9,7 +9,7 @@
 root { 
     display: block;
 }
-body.toplevel_page_satellite {
+body.toplevel_page_satellite, body.satellite_page_satellite-galleries, body.satellite_page_satellite-slides {
   background-color : #FFF;
 }
 .satsection-header {

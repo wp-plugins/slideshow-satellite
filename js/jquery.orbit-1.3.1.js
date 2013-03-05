@@ -524,12 +524,17 @@
         this.$wrapper.find('.thumbholder').css('padding-top',this.$wrapper.height()+'px');
         if (this.options.sideThumbs) {
             this.setSideThumbSize(null,null);
+            var b = $('html');
             this.$wrapper.find('.thumbholder').hover(function() {
-                $("body").css({ "height" : ($(window).height() - 1) + 'px', "overflow": "hidden" });
-                $("html").css("overflow-y", "scroll");
+              var s = b.scrollTop();    
+              b.css('overflow', 'hidden');
+              b.css('margin-right', 15);
+              b.scrollTop(s);
             }, function(){
-                jQuery("body").css("overflow", "visible");
-                $("html").css("overflow-y", "auto");
+              var s = b.scrollTop();   
+              b.css('overflow', 'auto');
+              b.css('margin-right', 0);
+              b.scrollTop(s);
             });
         }
       

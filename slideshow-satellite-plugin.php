@@ -440,7 +440,8 @@ class SatellitePlugin
             wp_enqueue_script('satellite_preloader');
         }
 
-        if ($this->get_option('imagesbox') == "T")
+        $images = $this->get_option('Images');
+        if ($images['imagesbox'] == "T")
             add_thickbox();
 
         return true;

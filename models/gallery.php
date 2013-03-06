@@ -125,10 +125,12 @@ class SatelliteGallery extends SatelliteDbHelper {
          */
         public function getGalleries() {
             $galleries = $this -> find_all('','title,id');
-            foreach ($galleries as $gallery )
-                $galArray[] = array('title'=>$gallery -> title, 'id' => $gallery -> id);
-            if ($galArray) {
-                return $galArray;
+            if (!empty($galleries)) {
+              foreach ($galleries as $gallery )
+                  $galArray[] = array('title'=>$gallery -> title, 'id' => $gallery -> id);
+              if ($galArray) {
+                  return $galArray;
+              }
             }
             
             return null;

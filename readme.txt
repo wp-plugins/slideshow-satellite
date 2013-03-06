@@ -4,7 +4,7 @@ Donate link: http://c-pr.es/projects/satellite
 Tags: responsive slideshow, photography, watermark, satellite, orbit, zurb orbit, slideshow gallery, responsive, slideshow, content slider, gallery, slideshow satellite, photography, slideshow orbit
 Requires at least: 3.1
 Tested up to: 3.5.1
-Stable tag: 2.0.1
+Stable tag: 2.0.2
 License: GPLv2 or later
 
 So Responsive! So Customizable! So Modern! SO PRETTY! Build image galleries or content displays with Slideshow Satellite. 
@@ -12,9 +12,9 @@ So Responsive! So Customizable! So Modern! SO PRETTY! Build image galleries or c
 == Description ==
 Satellite's goal is to present a responsive and beautiful slideshow experience to visitors of your WordPress site.
 
-Using either your WordPress Media Galleries or our own Gallery Editor, different pages and different sites deserve a customized look and feel.
+Using either your WordPress Media Galleries or our own Gallery Editor, every page of every site deserves a customized look and feel.
 
-To explore the manual or get the Premium edition: http://c-pr.es/projects/satellite/
+To explore the manual, watch tutorial videos, or get the Premium edition: http://c-pr.es/projects/satellite/
 
 Easily embed using our slideshow button. Otherwise, to embed into a post/page, simply insert <code>[satellite]</code> into its content with optional <code>post_id</code>, <code>thumbs</code>, <code>exclude</code>, <code>include</code>, <code>caption</code>, and <code>auto</code>  parameters.  Check out the Slideshow Satellite Manual on the plugin details page (linked above) for code examples.
 
@@ -91,7 +91,9 @@ You may also want to "Reset Configuration" from the Configuration page
 Two should be enough, we don't want to bog down your install with screenshots. Come to the site for more, and a video tutorial: http://c-pr.es/satellite
 
 == Changelog ==
-= 2.0.1 =
+= 2.0.2 =
+* Fixed thickbox issue
+* Fixed Twenty-Twelve Admin CSS issues
 * Preloading upgraded for minimal images & quicker load time
 * Premium added 'infocolor' capability to pair with 'infobackground'
 

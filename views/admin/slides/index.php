@@ -8,6 +8,7 @@
                     </div>
                 </div>
 	<?php }
+        $images = $this->get_option('Images'); 
 
         if (!empty($_GET['single'])) {
             $single = $_GET['single'];
@@ -57,7 +58,9 @@
 					<select name="action" class="action alignleft">
 						<option value="">- <?php _e('Bulk Actions', SATL_PLUGIN_NAME); ?> -</option>
 						<option value="delete"><?php _e('Delete', SATL_PLUGIN_NAME); ?></option>
-						<option value="resize"><?php _e('Resize', SATL_PLUGIN_NAME); ?></option>
+            <?php if ($images[resize]):?>
+              <option value="resize"><?php _e('Resize to ', SATL_PLUGIN_NAME); echo($images['resize'].'px'); ?></option>
+            <?php endif;?>
 						<?php if ($this->canPremiumDoThis('watermark')) :?>
               <option value="watermark"><?php _e('Watermark', SATL_PLUGIN_NAME); ?></option>
             <?php endif; ?>

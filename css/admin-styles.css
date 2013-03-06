@@ -11,6 +11,7 @@ root {
 }
 body.toplevel_page_satellite, body.satellite_page_satellite-galleries, body.satellite_page_satellite-slides {
   background-color : #FFF;
+  background-image : none;
 }
 .satsection-header {
     height: 24px;

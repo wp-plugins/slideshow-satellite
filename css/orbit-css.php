@@ -56,6 +56,9 @@ div.satl-wrapper {
     background:<?php echo $styles['background']?>; /* VAR BACKGROUND */
     border:<?php echo $styles['border']; ?>;
     }
+div.orbit-default.default-thumbs div.satl-wrapper {
+    margin-bottom:<?php echo $fullthumbheight + $styles['thumbmargin']; ?>px;
+    }
 
 <?php 
 /* Note: If your slider only uses content or anchors, you're going to want to put the width and height declarations on the ".orbit>div" and "div.orbit>a" tags in addition to just the .satl-wrapper */
@@ -290,7 +293,7 @@ li > li.has-thumb {
     
 }
 .splash-satl-wrap.default-thumbs {
-    margin-bottom: <?php echo ((int) $fullthumbheight); ?>px;
+    margin-bottom: <?php echo ((int) $fullthumbheight + $styles['thumbmargin']); ?>px;
 }
 .splash-satl-wrap.default-thumbs .splash-thumbs {
     margin-top: <?php echo ($styles['height']); ?>px;

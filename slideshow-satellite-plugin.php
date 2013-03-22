@@ -55,6 +55,7 @@ class SatellitePlugin
         $adminStyleUrl = SATL_PLUGIN_URL . '/css/' . $this -> cssadmin . '?v=' . SATL_VERSION;
         wp_register_style(SATL_PLUGIN_NAME . "_adstyle", $adminStyleUrl);
         wp_enqueue_style(SATL_PLUGIN_NAME . "_adstyle");
+        wp_enqueue_style('bootstrap',"http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css");
     }
 
     function conditionally_add_scripts_and_styles($posts){
@@ -330,6 +331,34 @@ class SatellitePlugin
         return false;
     }
 
+    function lazyload($model = null, $fields = '*', $sub = null, $conditions = null, $searchterm = null, $per_page = 10, $order = array('modified', "DESC")) {
+        global $wpdb;
+
+        if (!empty($model)) {
+            global $lazyload;
+            $lazyload = $this->vendor('Lazyload');
+            $lazyload->table = $this->{$model}->table;
+            $lazyload->sub = (empty($sub)) ? $this->{$model}->controller : $sub;
+            $lazyload->fields = (empty($fields)) ? '*' : $fields;
+            $lazyload->where = (empty($conditions)) ? false : $conditions;
+            $lazyload->searchterm = (empty($searchterm)) ? false : $searchterm;
+            $lazyload->per_page = $per_page;
+            $lazyload->order = $order;
+            $data = $lazyload->start_loading($_GET[$this->pre . 'page']);
+            if (!empty($data)) {
+                $newdata = array();
+                foreach ($data as $record) {
+                    $newdata[] = $this->init_class($model, $record);
+                }
+                $data = array();
+                $data[$model] = $newdata;
+                $data['Lazyload'] = $lazyload;
+            }
+            return $data;
+        }
+        return false;
+    }
+    
     function vendor($name = '', $folder = '') {
         if (!empty($name)) {
             $filename = 'class.' . strtolower($name) . '.php';
@@ -413,6 +442,11 @@ class SatellitePlugin
 
                 if ($_GET['page'] == "satellite-slides" && $_GET['method'] == "order") {
                     wp_enqueue_script('jquery-ui-sortable');
+                }
+                
+                if ($_GET['page'] == "satellite-slides") {
+                    wp_enqueue_script('angular', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/angular.min.js', array('jquery'), SATL_VERSION);
+                    wp_enqueue_script('bootstrap','http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js');
                 }
                 
                 if ($_GET['page'] == "satellite-galleries") {

@@ -1,4 +1,4 @@
-﻿<div class="wrap">
+﻿<div class="wrap" ng-app="scroll" ng-controller="Main">
 	 <?php $version = $this->Version->checkLatestVersion();
         if (!$version['latest'] && $version['message'] && SATL_PRO) 
           { ?>
@@ -70,9 +70,55 @@
 				<?php $this -> render('paginate', array('paginate' => $paginate), true, 'admin'); ?>
 			</div>
 		
-			<table class="widefat">
-				<thead>
-					<tr>
+			<div class="widefat">
+        <ul>
+          <li class="slide-holder row-fluid">
+            <div class="fl-l loader-check check-column"><input type="checkbox" name="checkboxall" id="checkboxall" value="checkboxall" /></div>
+            <div class="fl-l loader-image">Image</div>
+            <div class="fl-l loader-title">Title</div>
+            <div class="fl-r loader-date">Modified</div>
+            <div class="fl-r loader-uselink">Use Link</div>
+            <div class="fl-r loader-order">Order</div>
+            <div class="fl-r loader-section">Gallery</div>
+          </li>
+        </ul>  
+				<div class="thbody">
+          <div id="fixed" when-scrolled="loadMore()">
+            <ul>
+              <li class="slide-holder row-fluid" ng-repeat="i in items" ng-mouseover="onhover($event)" ng-mouseout="onhover($event)">
+                count: {{count}}
+                <div class="fl-l loader-check check-column"><input type="checkbox" name="Slide[checklist][]" value="{{i.id}}" id="checklist{{i.id}}" /></div>
+                <div class="fl-l loader-image"><a href="{{i.image}}"><img src="{{i.thumb}}"/></a></div>
+                <div class="fl-l loader-title">
+                  <a class="row-title" href="<?php echo $this -> url; ?>&amp;method=save&amp;id={{i.id}}&amp;single=<?php echo($single);?>" title="">{{i.title}}</a>
+                  <div ng-show="hover">
+                    <span class="edit"><?php echo $this -> Html -> link(__('Edit', SATL_PLUGIN_NAME), "?page=satellite-slides&amp;method=save&amp;single=".$single."&amp;id={{i.id}}"); ?> |</span>
+                    <span class="delete"><?php echo $this -> Html -> link(__('Delete', SATL_PLUGIN_NAME), "?page=satellite-slides&amp;method=delete&amp;single=".$single."&amp;id=" . $slide -> id, array('class' => "submitdelete", 'onclick' => "if (!confirm('" . __('Are you sure you want to permanently remove this slide?', SATL_PLUGIN_NAME) . "')) { return false; }")); ?></span>
+                  </div>
+
+                  <div class="loader-title" style="display:none" showonhoverparent>
+                     <span ng-click="deleteEntry(entry)"><a class="btn btn-danger" href="#">Delete</a></span>
+                  </div>
+                </div>
+                <div class="fl-r loader-date">{{i.date}}</div>
+                <div class="fl-r loader-uselink">{{i.uselink}}</div>
+                <div class="fl-r loader-order">{{i.slide_order}}</div>
+                <div class="fl-r loader-section">{{i.section}}</div>
+              </li>
+            </ul>  
+          </div>
+				<div>
+        <ul>
+          <li class="slide-holder row-fluid">
+            <div class="fl-l loader-check check-column">&nbsp;</div>
+            <div class="fl-l loader-image">Image</div>
+            <div class="fl-l loader-title">Title</div>
+            <div class="fl-r loader-date">Modified</div>
+            <div class="fl-r loader-uselink">Use Link</div>
+            <div class="fl-r loader-order">Order</div>
+            <div class="fl-r loader-section">Gallery</div>
+          </li>
+        </ul>  
 						<th class="check-column"><input type="checkbox" name="checkboxall" id="checkboxall" value="checkboxall" /></th>
 						<th><?php _e('Image', SATL_PLUGIN_NAME); ?></th>
 						<th><?php _e('Title', SATL_PLUGIN_NAME); ?></th>
@@ -80,22 +126,11 @@
 						<th><?php _e('Date', SATL_PLUGIN_NAME); ?></th>
                         <th><?php _e('Gallery', SATL_PLUGIN_NAME); ?></th>
 						<th><?php _e('Order', SATL_PLUGIN_NAME); ?></th>
-					</tr>
-				</thead>
-				<tfoot>
-					<tr>
-						<th class="check-column"><input type="checkbox" name="checkboxall" id="checkboxall" value="checkboxall" /></th>
-						<th><?php _e('Image', SATL_PLUGIN_NAME); ?></th>
-						<th><?php _e('Title', SATL_PLUGIN_NAME); ?></th>
-                        <th><?php _e('Link', SATL_PLUGIN_NAME); ?></th>
-						<th><?php _e('Date', SATL_PLUGIN_NAME); ?></th>
-                        <th><?php _e('Gallery', SATL_PLUGIN_NAME); ?></th>
-						<th><?php _e('Order', SATL_PLUGIN_NAME); ?></th>
-					</tr>
-				</tfoot>
-				<tbody>
+				</div>
+
           <?php                                     
           foreach ($slides as $slide) : 
+            continue;
             ?>
                                     
 						<tr class="<?php echo $class = (empty($class)) ? 'alternate' : ''; ?>">
@@ -108,7 +143,7 @@
                   <a class="row-title" href="<?php echo $this -> url; ?>&amp;method=save&amp;id=<?php echo $slide -> id; ?>&amp;single=<?php echo($single);?>" title=""><?php echo $slide -> title; ?></a>
                   <div class="row-actions">
                   <span class="edit"><?php echo $this -> Html -> link(__('Edit', SATL_PLUGIN_NAME), "?page=satellite-slides&amp;method=save&amp;single=".$single."&amp;id=" . $slide -> id); ?> |</span>
-                      <span class="delete"><?php echo $this -> Html -> link(__('Delete', SATL_PLUGIN_NAME), "?page=satellite-slides&amp;method=delete&amp;single=".$single."&amp;id=" . $slide -> id, array('class' => "submitdelete", 'onclick' => "if (!confirm('" . __('Are you sure you want to permanently remove this slide?', SATL_PLUGIN_NAME) . "')) { return false; }")); ?></span>
+                  <span class="delete"><?php echo $this -> Html -> link(__('Delete', SATL_PLUGIN_NAME), "?page=satellite-slides&amp;method=delete&amp;single=".$single."&amp;id=" . $slide -> id, array('class' => "submitdelete", 'onclick' => "if (!confirm('" . __('Are you sure you want to permanently remove this slide?', SATL_PLUGIN_NAME) . "')) { return false; }")); ?></span>
                   </div>
               </td>
               <td>
@@ -125,13 +160,11 @@
                                                     
 					<?php 
            endforeach; ?>
-				</tbody>
+				</div>
 			</table>
 			
-			<div class="tablenav">
-				
-				<?php $this -> render('paginate', array('paginate' => $paginate), true, 'admin'); ?>
-			</div>
+				<?php $this -> render('lazyload', array('slides' => $slides), true, 'admin'); ?>
+
 		</form>
 	<?php else : ?>
 		<p style="color:red;"><?php _e('No slides found', SATL_PLUGIN_NAME); ?></p>

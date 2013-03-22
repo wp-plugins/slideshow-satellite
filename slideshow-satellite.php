@@ -510,8 +510,9 @@ class Satellite extends SatellitePlugin {
         }
         break;
       default					:
-				$data = $this -> paginate('Slide');				
-				$this -> render('slides' . DS . 'index', array('slides' => $data[$this -> Slide -> model], 'paginate' => $data['Paginate']), true, 'admin');
+				$data = $this -> lazyload('Slide');				
+				//$this -> render('slides' . DS . 'index', array('slides' => $data[$this -> Slide -> model], 'paginate' => $data['Paginate']), true, 'admin');
+				$this -> render('slides' . DS . 'index', array('slides' => $data[$this -> Slide -> model], null), true, 'admin');
 				break;
 		}
 	}

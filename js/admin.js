@@ -97,6 +97,16 @@ jQuery(document).ready(function($) {
         });
     }
 });
+
+$(".slide-holder").hover(
+  function () {
+    $(this).addClass("hover");
+  },
+  function () {
+    $(this).removeClass("hover");
+  }
+);
+
  
 function plu_show_thumbs(imgId) {
     var $=jQuery;

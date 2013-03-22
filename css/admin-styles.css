@@ -13,6 +13,8 @@ body.toplevel_page_satellite, body.satellite_page_satellite-galleries, body.sate
   background-color : #FFF;
   background-image : none;
 }
+.fl-l { float:left }
+.fl-r { float: right }
 .satsection-header {
     height: 24px;
     color: #666;
@@ -130,3 +132,23 @@ body.toplevel_page_satellite, body.satellite_page_satellite-galleries, body.sate
 .toplevel_page_satellite .inner-sidebar #side-sortables {
   min-height:0px;
 }
+#fixed li {
+  height: 120px;
+  border-bottom: 1px solid gray;
+}
+
+#fixed {
+    height: 300px;
+    overflow: auto;
+}
+.slide-holder {
+  clear:both;
+  display: inline-block;
+}
+.loader-check { width: 4%;margin-left:3px}
+.loader-title { width: 25%;}
+.loader-image { min-width: 15%;}
+.loader-uselink { width: 10%;}
+.loader-section { width: 10%;}
+.loader-date {width: 15%; }
+.loader-order { width: 10%;}

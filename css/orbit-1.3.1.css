@@ -45,7 +45,7 @@ div.satl-align-right .satl-wrapper {
 div.orbit {
     width: 1px;
     height: 1px;
-    position: absolute;
+    position: absolute !important;
     overflow: hidden;
     z-index:40;}
 

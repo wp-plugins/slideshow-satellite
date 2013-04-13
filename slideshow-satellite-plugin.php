@@ -449,6 +449,7 @@ class SatellitePlugin
                 
                 if ($_GET['page'] == "satellite-slides") {
                     wp_enqueue_script('angular', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/angular.min.js', array('jquery'), SATL_VERSION);
+                    wp_enqueue_script('infinitescroll', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/ng-infinite-scroll.min.js', array('jquery'), SATL_VERSION);
                     wp_enqueue_script('bootstrap','http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js');
                 }
                 
@@ -579,7 +580,7 @@ class SatellitePlugin
         
         if ( !empty($model) ) {
             if ( !empty($this->fields) && is_array($this->fields ) ) {
-                if ( !$wpdb->get_var("SHOW TABLES LIKE '" . $this->table . "'") /*|| $this->get_option($model.'db_version') != SATL_VERSION )*/ ) {
+                if ( /*!$wpdb->get_var("SHOW TABLES LIKE '" . $this->table . "'") ||*/ $this->get_option($model.'db_version') != SATL_VERSION ) {
                     $query = "CREATE TABLE " . $this->table . " (\n";
                     $c = 1;
 
@@ -606,6 +607,7 @@ class SatellitePlugin
                             $satlprem->check_pro_dirs();
                         }
                     }
+                    $rowcount = $wpdb->get_var("SELECT COUNT(*) FROM ".$this->table);
                     
                     if (!empty($this->table_query)) {
                         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
@@ -613,6 +615,9 @@ class SatellitePlugin
                         $this -> update_option($model.'db_version', SATL_VERSION);
                         $this -> update_option('stldb_version', SATL_VERSION);
                         $this->log_me("Updated slideshow satellite databases");
+                        if ($rowcount == 0) {
+                          $this->tableTransition($this->table);
+                        }
                     }
                 } else {
                     //echo "this model db version: ".$this->get_option($model.'db_version');
@@ -631,7 +636,7 @@ class SatellitePlugin
 
         return false;
     }
-
+    
     function get_fields($table = null) {
         global $wpdb;
 
@@ -756,6 +761,25 @@ class SatellitePlugin
             array_unshift($links, $settings_link);
         }
         return $links;
+    }
+    
+    /*
+     * Mainly used on transition from gallery_slides to satl_slides -- V 2.1 Update
+     */
+    function tableTransition($new_table, $old_table = null) {
+      global $wpdb;
+      
+      if (!$old_table) {
+        $gallery_table = $wpdb -> prefix.'gallery_slides';
+        $countGT = $wpdb->get_var("SELECT COUNT(*) FROM ".$gallery_table);
+        if ($countGT > 0){
+          $old_table = $gallery_table;
+        } else { return false; }
+      }
+      $this->log_me("Running table transition, and moving all slide information over from ".$old_table." to the new table: ".$new_table);
+      $result = $wpdb->query("INSERT INTO ". $new_table ." SELECT id, title, description, "
+            ."image, type, section, image_url, uselink, link, textlocation, more,"
+            ."slide_order, created, modified FROM ". $old_table); 
     }
     
     public function canPremiumDoThis($action) {

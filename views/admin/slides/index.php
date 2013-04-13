@@ -1,4 +1,4 @@
-﻿<div class="wrap" ng-app="scroll" ng-controller="Main">
+﻿<div class="wrap" ng-app="slideApp" ng-controller="SlideController">
 	 <?php $version = $this->Version->checkLatestVersion();
         if (!$version['latest'] && $version['message'] && SATL_PRO) 
           { ?>
@@ -84,7 +84,7 @@
           </li>
         </ul>  
 				<div class="thbody">
-          <div id="fixed" when-scrolled="loadMore()">
+          <div  infinite-scroll='loadMore()' infinite-scroll-distance='2'>
             <ul>
               <li class="slide-holder row-fluid" ng-repeat="i in items" ng-mouseover="onhover($event)" ng-mouseout="onhover($event)">
                                 <div class="fl-l loader-check check-column"><input type="checkbox" name="Slide[checklist][]" value="{{i.id}}" id="checklist{{i.id}}" /></div>

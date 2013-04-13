@@ -20,48 +20,37 @@ $i++;
 ?>
 //<![CDATA[ 
 
-function Main($scope) {
-    $scope.items = [];
-    
-    var counter = 0;
-    $scope.loadMore = function() {
-        for (var i = 0; i < 5; i++) {
-            $scope.items.push({
-              id: Slides[counter].id,
-              title: Slides[counter].title,
-              thumb: Slides[counter].thumb,
-              section: Slides[counter].section,
-              slide_order: Slides[counter].slide_order,
-              date: Slides[counter].date,
-              uselink: Slides[counter].uselink,
-              image: Slides[counter].image
-            });
-/*            $scope.items.push({id: Slides[counter].id});
-            $scope.items.push({thumb: Slides[counter].thumb});
-            $scope.items.push({image: Slides[counter].image});*/
-            counter += 1;
-        }
-    };
-    
-    $scope.loadMore();
-    
-    $scope.hover = false;
-    $scope.onhover = function (e) {
-      this.hover = e.type === 'mouseover';
-    };
+var slideApp = angular.module('slideApp', ['infinite-scroll']);
+slideApp.controller('SlideController', function($scope) {
+  //$scope.images = [1, 2, 3, 4, 5, 6, 7, 8];
+  $scope.items = [];
 
-}
-
-angular.module('scroll', []).directive('whenScrolled', function() {
-    return function(scope, elm, attr) {
-        var raw = elm[0];
-        
-        elm.bind('scroll', function() {
-            if (raw.scrollTop + raw.offsetHeight >= raw.scrollHeight) {
-                scope.$apply(attr.whenScrolled);
-            }
+  $scope.loadMore = function() {
+    //var last = this.items.length;
+    var last = $scope.items.length;
+    var total = Slides.length;
+    if (last >= total) { 
+      return;
+    }
+    for (var i = 0; i < 4; i++) {
+        $scope.items.push({
+          id: Slides[last + i].id,
+          title: Slides[last + i].title,
+          thumb: Slides[last + i].thumb,
+          section: Slides[last + i].section,
+          slide_order: Slides[last + i].slide_order,
+          date: Slides[last + i].date,
+          uselink: Slides[last + i].uselink,
+          image: Slides[last + i].image
         });
-    };
+    }
+  };
+
+  $scope.hover = false;
+  $scope.onhover = function (e) {
+    this.hover = e.type === 'mouseover';
+  };
+
 });
 
 //]]>  

@@ -26,8 +26,7 @@ class SatelliteSlide extends SatelliteDbHelper {
 	function SatelliteSlide($data = array()) {
 		global $wpdb;
                 
-		//$this -> table = $wpdb -> prefix . strtolower($this -> pre) . "_" . $this -> controller;
-                $this -> table = $wpdb -> prefix . "satl_" . $this -> controller;
+    $this -> table = $wpdb -> prefix . "satl_" . $this -> controller;
 		$this -> check_table($this -> model);
 		if (!empty($data)) {
 			foreach ($data as $dkey => $dval) {

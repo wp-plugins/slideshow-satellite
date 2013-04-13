@@ -7,7 +7,7 @@ Author URI: http://c-pr.es/membership-options
 Description: Responsive display for all your photo needs. Customize to your hearts content.
 Version: 2.0.2
 */
-define( 'SATL_VERSION', '2.0.2');
+define( 'SATL_VERSION', '2.0.4');
 $uploads = wp_upload_dir();
 if ( ! defined( 'SATL_PLUGIN_BASENAME' ) )
 	define( 'SATL_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );

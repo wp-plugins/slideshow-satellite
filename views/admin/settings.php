@@ -77,8 +77,10 @@ wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
 				</div>
 			</div>
 			<div id="side-info-column" class="inner-sidebar inner2">		
-				<?php //do_meta_boxes($this -> menus['satellite'], 'side', $post); ?>
-                                <?php// do_action('submitpage_box'); ?>
+				<?php 
+        // do_meta_boxes($this -> menus['satellite'], 'side', $post);
+        // do_action('submitpage_box'); 
+        ?>
 			</div>
 			<br class="clear" />
 			

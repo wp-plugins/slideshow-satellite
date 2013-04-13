@@ -9,8 +9,7 @@
                 </div>
 	<?php }
         $images = $this->get_option('Images'); 
-
-        if (!empty($_GET['single'])) {
+		        if (!empty($_GET['single'])) {
             $single = $_GET['single'];
             $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($single)), null, array('slide_order', "ASC"));
         } else { $single = false; }
@@ -31,7 +30,9 @@
                         <select name="section">
                             <option value="All">All</option>
                             <?php $single = ($_GET['single']) ? $_GET['single'] : null;?>
-                            <?php $gals = $this -> Gallery -> find_all(null, array('id','title'), array('gal_order', "ASC") ); ?>
+                            <?php $gals = $this -> Gallery -> find_all(null, array('id','title'), array('gal_order', "ASC") );
+							//print_r($gals);
+							 ?>
 
                                 <?php if (!empty($gals)) : ?>
                                     <?php foreach ( $gals as $gallery ) {?>
@@ -49,7 +50,7 @@
 	<?php endif; ?>
         
 	
-	<?php if (!empty($slides)) : ?>
+	<?php if (!empty($slides)) :  ?>
 		<form onsubmit="if (!confirm('<?php _e('Are you sure you wish to execute this action on the selected slides?', SATL_PLUGIN_NAME); ?>')) { return false; }" action="<?php echo $this -> url; ?>&amp;method=mass&amp;single=<?php echo($single);?>" method="post">
 			<div class="tablenav">
 				<div class="alignleft actions">
@@ -86,14 +87,13 @@
           <div id="fixed" when-scrolled="loadMore()">
             <ul>
               <li class="slide-holder row-fluid" ng-repeat="i in items" ng-mouseover="onhover($event)" ng-mouseout="onhover($event)">
-                count: {{count}}
-                <div class="fl-l loader-check check-column"><input type="checkbox" name="Slide[checklist][]" value="{{i.id}}" id="checklist{{i.id}}" /></div>
+                                <div class="fl-l loader-check check-column"><input type="checkbox" name="Slide[checklist][]" value="{{i.id}}" id="checklist{{i.id}}" /></div>
                 <div class="fl-l loader-image"><a href="{{i.image}}"><img src="{{i.thumb}}"/></a></div>
                 <div class="fl-l loader-title">
                   <a class="row-title" href="<?php echo $this -> url; ?>&amp;method=save&amp;id={{i.id}}&amp;single=<?php echo($single);?>" title="">{{i.title}}</a>
                   <div ng-show="hover">
                     <span class="edit"><?php echo $this -> Html -> link(__('Edit', SATL_PLUGIN_NAME), "?page=satellite-slides&amp;method=save&amp;single=".$single."&amp;id={{i.id}}"); ?> |</span>
-                    <span class="delete"><?php echo $this -> Html -> link(__('Delete', SATL_PLUGIN_NAME), "?page=satellite-slides&amp;method=delete&amp;single=".$single."&amp;id=" . $slide -> id, array('class' => "submitdelete", 'onclick' => "if (!confirm('" . __('Are you sure you want to permanently remove this slide?', SATL_PLUGIN_NAME) . "')) { return false; }")); ?></span>
+                    <span class="delete"><?php echo $this -> Html -> link(__('Delete', SATL_PLUGIN_NAME), "?page=satellite-slides&amp;method=delete&amp;single=".$single."&amp;id={{i.id}}" . $slide ->id, array('class' => "submitdelete", 'onclick' => "if (!confirm('" . __('Are you sure you want to permanently remove this slide?', SATL_PLUGIN_NAME) . "')) { return false; }")); ?></span>
                   </div>
 
                   <div class="loader-title" style="display:none" showonhoverparent>
@@ -131,6 +131,7 @@
           <?php                                     
           foreach ($slides as $slide) : 
             continue;
+			//print_r($slides);
             ?>
                                     
 						<tr class="<?php echo $class = (empty($class)) ? 'alternate' : ''; ?>">

@@ -23,14 +23,14 @@ class SatellitePlugin
     var $models = array('Slide','Gallery');
 
     function register_plugin($name, $base) {
-        $this->plugin_base = rtrim(dirname($base), DS);
+        $this->plugin_base = rtrim(dirname($base), '/');
         $this->initialize_classes();
         $this->initialize_options();
 
         if (function_exists('load_plugin_textdomain')) {
             $currentlocale = get_locale();
             if (!empty($currentlocale)) {
-                $moFile = dirname(__FILE__) . DS . "languages" . DS . SATL_PLUGIN_NAME . "-" . $currentlocale . ".mo";
+                $moFile = dirname(__FILE__) . "/languages/" . SATL_PLUGIN_NAME . "-" . $currentlocale . ".mo";
                 if (@file_exists($moFile) && is_readable($moFile)) {
                     load_textdomain(SATL_PLUGIN_NAME, $moFile);
                 }
@@ -160,9 +160,9 @@ class SatellitePlugin
         if (!empty($this->helpers)) {
             foreach ($this->helpers as $helper) {
                 if ($helper == 'Premium') {
-                    $hfile = dirname(__FILE__) . DS . 'pro' . DS . strtolower($helper) . '.php';
+                    $hfile = dirname(__FILE__) . '/pro/' . strtolower($helper) . '.php';
                 } else {
-                    $hfile = dirname(__FILE__) . DS . 'helpers' . DS . strtolower($helper) . '.php';
+                    $hfile = dirname(__FILE__) . '/helpers/' . strtolower($helper) . '.php';
                 }
                 if (file_exists($hfile)) {
                     require_once($hfile);
@@ -177,7 +177,7 @@ class SatellitePlugin
         }
         if (!empty($this->models)) {
             foreach ($this->models as $model) {
-                $mfile = dirname(__FILE__) . DS . 'models' . DS . strtolower($model) . '.php';
+                $mfile = dirname(__FILE__)  . '/models/' . strtolower($model) . '.php';
                 if (file_exists($mfile)) {
                     require_once($mfile);
                     if (empty($this->{$model}) || !is_object($this->{$model})) {
@@ -316,7 +316,8 @@ class SatellitePlugin
             $paginate->searchterm = (empty($searchterm)) ? false : $searchterm;
             $paginate->per_page = $per_page;
             $paginate->order = $order;
-            $data = $paginate->start_paging($_GET[$this->pre . 'page']);
+            $paging_page = (isset($_GET[$this->pre . 'page'])) ? $_GET[$this->pre . 'page'] : null;
+            $data = $paginate->start_paging($paging_page);
             if (!empty($data)) {
                 $newdata = array();
                 foreach ($data as $record) {
@@ -362,7 +363,7 @@ class SatellitePlugin
     function vendor($name = '', $folder = '') {
         if (!empty($name)) {
             $filename = 'class.' . strtolower($name) . '.php';
-            $filepath = rtrim(dirname(__FILE__), DS) . DS . 'vendors' . DS . $folder . '';
+            $filepath = rtrim(dirname(__FILE__), '/') . '/vendors/' . $folder . '';
             $filefull = $filepath . $filename;
             if (file_exists($filefull)) {
                 require_once($filefull);
@@ -430,6 +431,8 @@ class SatellitePlugin
     function admin_scripts() {
             if (!empty($_GET['page']) && in_array($_GET['page'], (array) $this->sections)) {
                 wp_enqueue_script('autosave');
+                $method = (isset($_GET['method'])) ? $_GET['method'] : null;
+
 
                 if ($_GET['page'] == 'satellite') {
                     wp_enqueue_script('common');
@@ -440,7 +443,7 @@ class SatellitePlugin
                     wp_enqueue_script('admin', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/admin.js', array('jquery'), SATL_VERSION);
                 }
 
-                if ($_GET['page'] == "satellite-slides" && $_GET['method'] == "order") {
+                if ($_GET['page'] == "satellite-slides" && $method == "order") {
                     wp_enqueue_script('jquery-ui-sortable');
                 }
                 
@@ -532,7 +535,7 @@ class SatellitePlugin
     }
 
     function url() {
-        return rtrim(WP_PLUGIN_URL, '/') . '/' . substr(preg_replace("/\\" . DS . "/si", "/", $this->plugin_base()), strlen(ABSPATH));
+        return rtrim(WP_PLUGIN_URL, '/') . '/' . substr(preg_replace("/\\" . "/" . "/si", "/", $this->plugin_base()), strlen(ABSPATH));
     }
 
     function add_option($name = '', $value = '') {
@@ -576,7 +579,7 @@ class SatellitePlugin
         
         if ( !empty($model) ) {
             if ( !empty($this->fields) && is_array($this->fields ) ) {
-                if ( /* !$wpdb->get_var("SHOW TABLES LIKE '" . $this->table . "'") ||*/ $this->get_option($model.'db_version') != SATL_VERSION ) {
+                if ( !$wpdb->get_var("SHOW TABLES LIKE '" . $this->table . "'") /*|| $this->get_option($model.'db_version') != SATL_VERSION )*/ ) {
                     $query = "CREATE TABLE " . $this->table . " (\n";
                     $c = 1;
 
@@ -605,11 +608,11 @@ class SatellitePlugin
                     }
                     
                     if (!empty($this->table_query)) {
-                        require_once(ABSPATH . 'wp-admin'.DS.'includes'.DS.'upgrade.php');
+                        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
                         dbDelta($this->table_query, true);
                         $this -> update_option($model.'db_version', SATL_VERSION);
                         $this -> update_option('stldb_version', SATL_VERSION);
-                        error_log("Updated slideshow satellite databases");
+                        $this->log_me("Updated slideshow satellite databases");
                     }
                 } else {
                     //echo "this model db version: ".$this->get_option($model.'db_version');
@@ -715,7 +718,7 @@ class SatellitePlugin
     function render($file = '', $params = array(), $output = true, $folder = 'admin') {
         if (!empty($file)) {
             $filename = $file . '.php';
-            $filepath = $this->plugin_base() . DS . 'views' . DS . $folder . DS;
+            $filepath = $this->plugin_base() . '/views/' . $folder . "/";
             $filefull = $filepath . $filename;
             if (file_exists($filefull)) {
                 if (!empty($params)) {
@@ -761,6 +764,15 @@ class SatellitePlugin
           return method_exists(SatellitePremiumHelper,'doWatermark');
           break;
       }
+    }
+    public function log_me($message) {
+        if (WP_DEBUG === true) {
+            if (is_array($message) || is_object($message)) {
+                error_log(print_r($message, true));
+            } else {
+                error_log($message);
+            }
+        }
     }
 }
 ?>

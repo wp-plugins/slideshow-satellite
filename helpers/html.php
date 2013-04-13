@@ -2,7 +2,7 @@
 class SatelliteHtmlHelper extends SatellitePlugin {
 	function link($name = '', $href = '/', $args = array()) {
 		$defaults = array(
-			'title'			=>	(empty($args['title'])) ? $title : $args['title'],
+			'title'			=>	(empty($args['title'])) ? $name : $args['title'],
 			'target'		=>	"_self",
 			'class' 		=>	"wpco",
 			'rel'			=>	"",
@@ -41,8 +41,8 @@ class SatelliteHtmlHelper extends SatellitePlugin {
 	
 	function image_url($filename = null) {
 		if (!empty($filename)) {
-      if (file_exists(SATL_UPLOAD_DIR . DS . $filename)) {
-        return SATL_UPLOAD_URL . DS . $filename;
+      if (file_exists(SATL_UPLOAD_DIR . '/' . $filename)) {
+        return SATL_UPLOAD_URL . '/' . $filename;
       } else {
         return SATL_PLUGIN_URL . "/images/placeholder.png";
       }
@@ -99,9 +99,8 @@ class SatelliteHtmlHelper extends SatellitePlugin {
 	function field_value($name = null) {
             //$Html = new SatelliteHtmlHelper;
 		if ($mn = $this -> strip_mn($name)) {
-                    $value = $this -> {$mn[1]} -> data -> {$mn[2]};
-
-                    return $value;
+      $value = $this -> {$mn[1]} -> data -> {$mn[2]};
+      return $value;
 		}
 		
 		return false;

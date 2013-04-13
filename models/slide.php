@@ -27,7 +27,7 @@ class SatelliteSlide extends SatelliteDbHelper {
 		global $wpdb;
                 
 		//$this -> table = $wpdb -> prefix . strtolower($this -> pre) . "_" . $this -> controller;
-                $this -> table = $wpdb -> prefix . "gallery_" . $this -> controller;
+                $this -> table = $wpdb -> prefix . "satl_" . $this -> controller;
 		$this -> check_table($this -> model);
 		if (!empty($data)) {
 			foreach ($data as $dkey => $dval) {
@@ -66,14 +66,14 @@ class SatelliteSlide extends SatelliteDbHelper {
 				if (!empty($image_oldfile) && empty($_FILES['image_file']['name'])) {
 					$imagename = str_replace(" ", "-", $image_oldfile);
 					
-					$imagepath = SATL_UPLOAD_DIR . DS;
+					$imagepath = SATL_UPLOAD_DIR . '/';
 					$imagefull = $imagepath . $imagename;
 					
 					$this -> data -> image = $imagename;
 				} else {					
 					if ($_FILES['image_file']['error'] <= 0) {
 						$imagename = str_replace(" ", "-", $_FILES['image_file']['name']);
-						$imagepath = SATL_UPLOAD_DIR . DS;
+						$imagepath = SATL_UPLOAD_DIR . '/';
 						$imagefull = $imagepath . $imagename;
 						
 						if (!is_uploaded_file($_FILES['image_file']['tmp_name'])) { $this -> errors['image_file'] = __('The image did not upload, please try again', SATL_PLUGIN_NAME); }
@@ -127,7 +127,7 @@ class SatelliteSlide extends SatelliteDbHelper {
 				else {
 					if ( $image = wp_remote_fopen($image_url) ) {
 						$filename = str_replace(" ", "-", basename($image_url));
-						$filepath = SATL_UPLOAD_DIR . DS;
+						$filepath = SATL_UPLOAD_DIR . '/';
 						
 						$filefull = $filepath . $filename;
 						if (!file_exists($filefull)) {
@@ -237,7 +237,7 @@ class SatelliteSlide extends SatelliteDbHelper {
     if (!empty($record_id) && $record = $this -> find(array('id' => $record_id))) {
       $images = $this->get_option('Images');
       $Image = new SatelliteImageHelper;
-      $imagepath = SATL_UPLOAD_DIR . DS;
+      $imagepath = SATL_UPLOAD_DIR . '/';
       $imagefull = $imagepath . $record->image;
       //run normal resize process
       $Image -> load($imagefull);
@@ -255,7 +255,7 @@ class SatelliteSlide extends SatelliteDbHelper {
     if (!empty($record_id) && $record = $this -> find(array('id' => $record_id))) {
       $Image = new SatelliteImageHelper;
       error_log("watermarking name ".$record->image." section of: ".$record->section);
-      $imagepath = SATL_UPLOAD_DIR . DS;
+      $imagepath = SATL_UPLOAD_DIR . '/';
 			$imagefull = $imagepath . $record->image;
       $Image -> load($imagefull);
       $Image->applyWatermark($record->image, $record->section);

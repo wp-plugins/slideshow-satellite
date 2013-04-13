@@ -7,7 +7,6 @@ Author URI: http://c-pr.es/membership-options
 Description: Responsive display for all your photo needs. Customize to your hearts content.
 Version: 2.0.2
 */
-define('DS', '/');
 define( 'SATL_VERSION', '2.0.2');
 $uploads = wp_upload_dir();
 if ( ! defined( 'SATL_PLUGIN_BASENAME' ) )
@@ -15,13 +14,13 @@ if ( ! defined( 'SATL_PLUGIN_BASENAME' ) )
 if ( ! defined( 'SATL_PLUGIN_NAME' ) )
 	define( 'SATL_PLUGIN_NAME', trim( dirname( SATL_PLUGIN_BASENAME ), '/' ) );
 if ( ! defined( 'SATL_PLUGIN_DIR' ) )
-	define( 'SATL_PLUGIN_DIR', WP_PLUGIN_DIR . DS . SATL_PLUGIN_NAME );
+	define( 'SATL_PLUGIN_DIR', WP_PLUGIN_DIR . '/' . SATL_PLUGIN_NAME );
 if ( ! defined( 'SATL_PLUGIN_URL' ) )
-	define( 'SATL_PLUGIN_URL', WP_PLUGIN_URL . DS . SATL_PLUGIN_NAME );
+	define( 'SATL_PLUGIN_URL', WP_PLUGIN_URL . '/' . SATL_PLUGIN_NAME );
 if ( ! defined( 'SATL_UPLOAD_DIR' ) )
-	define( 'SATL_UPLOAD_DIR', $uploads['basedir']. DS . SATL_PLUGIN_NAME );
+	define( 'SATL_UPLOAD_DIR', $uploads['basedir']. '/' . SATL_PLUGIN_NAME );
 if ( ! defined( 'SATL_UPLOAD_URL' ) )
-	define( 'SATL_UPLOAD_URL', $uploads['baseurl']. DS . SATL_PLUGIN_NAME );
+	define( 'SATL_UPLOAD_URL', $uploads['baseurl']. '/' . SATL_PLUGIN_NAME );
 if ( ! defined( 'SATL_UPLOADPRO_DIR' ) )
 	define( 'SATL_UPLOADPRO_DIR', SATL_UPLOAD_DIR . '/pro/' );
 if ( ! defined( 'SATL_PLUGINPRO_DIR' ) )
@@ -407,7 +406,8 @@ class Satellite extends SatellitePlugin {
 	}	
 	
 	function admin_slides() {	
-		switch ($_GET['method']) {
+    $method = (isset($_GET['method'])) ? $_GET['method'] : null;
+		switch ($method) {
 			case 'delete'			:
 				if (!empty($_GET['id'])) {
 					if ($this -> Slide -> delete($_GET['id'])) {
@@ -447,12 +447,12 @@ class Satellite extends SatellitePlugin {
 						$message = __('Slide has been saved', SATL_PLUGIN_NAME);
 						$this -> redirect($this -> url, "message", $message);
 					} else {
-						$this -> render('slides' . DS . 'save', false, true, 'admin');
+						$this -> render('slides/save', false, true, 'admin');
 					}
 				} else {
 					$this -> Db -> model = $this -> Slide -> model;
 					$this -> Slide -> find(array('id' => $_GET['id']));
-					$this -> render('slides' . DS . 'save', false, true, 'admin');
+					$this -> render('slides/save', false, true, 'admin');
 				}
 				break;
 			case 'mass'				:
@@ -496,7 +496,7 @@ class Satellite extends SatellitePlugin {
 				break;
 			case 'order'			:
 				$slides = $this -> Slide -> find_all(null, null, array('slide_order', "ASC"));
-				$this -> render('slides' . DS . 'order', array('slides' => $slides), true, 'admin');
+				$this -> render('slides/order', array('slides' => $slides), true, 'admin');
 				break;
       case 'copysgpro'                :
         $sgprodir = SATL_UPLOAD_DIR.'/../slideshow-gallery-pro/';
@@ -511,8 +511,8 @@ class Satellite extends SatellitePlugin {
         break;
       default					:
 				$data = $this -> lazyload('Slide');				
-				//$this -> render('slides' . DS . 'index', array('slides' => $data[$this -> Slide -> model], 'paginate' => $data['Paginate']), true, 'admin');
-				$this -> render('slides' . DS . 'index', array('slides' => $data[$this -> Slide -> model], null), true, 'admin');
+				//$this -> render('slides/index', array('slides' => $data[$this -> Slide -> model], 'paginate' => $data['Paginate']), true, 'admin');
+				$this -> render('slides/index', array('slides' => $data[$this -> Slide -> model], null), true, 'admin');
 				break;
 		}
 	}
@@ -531,9 +531,9 @@ class Satellite extends SatellitePlugin {
   }
         
 	function admin_galleries() {	
-                $galleries = $this->Gallery->find_all(null, null, array('id', "ASC"));
-
-		switch ($_GET['method']) {
+    $galleries = $this->Gallery->find_all(null, null, array('id', "ASC"));
+    $method = (isset($_GET['method'])) ? $_GET['method'] : null;
+		switch ($method) {
 			case 'delete'			:
 				if (!empty($_GET['id'])) {
 					if ($this -> Gallery -> delete($_GET['id'])) {
@@ -564,12 +564,12 @@ class Satellite extends SatellitePlugin {
                                             }
                                             $this -> redirect($this -> url, "message", $message);
 					} else {
-						$this -> render('galleries' . DS . 'save', false, true, 'admin');
+						$this -> render('galleries/save', false, true, 'admin');
 					}
 				} else {
 					$this -> Db -> model = $this -> Gallery -> model;
 					$this -> Gallery -> find(array('id' => $_GET['id']));
-					$this -> render('galleries' . DS . 'save', false, true, 'admin');
+					$this -> render('galleries/save', false, true, 'admin');
 				}
 				break;                                
 			case 'mass'				:
@@ -596,7 +596,7 @@ class Satellite extends SatellitePlugin {
 				break;
 			default					:
 				$data = $this -> paginate('Gallery');				
-				$this -> render('galleries' . DS . 'index', array('galleries' => $data[$this -> Gallery -> model], 'paginate' => $data['Paginate']), true, 'admin');
+				$this -> render('galleries/index', array('galleries' => $data[$this -> Gallery -> model], 'paginate' => $data['Paginate']), true, 'admin');
 				break;
 		}
 	}
@@ -612,12 +612,12 @@ class Satellite extends SatellitePlugin {
                         }
                         $this -> redirect($this -> url, "message", $message);
                     } else {
-                        $this -> render('galleries' . DS . 'save', false, true, 'admin');
+                        $this -> render('galleries/save', false, true, 'admin');
                     }
                 } else {
                     $this -> Db -> model = $this -> Gallery -> model;
                     $this -> Gallery -> find(array('id' => $_GET['id']));
-                    $this -> render('galleries' . DS . 'save', false, true, 'admin');
+                    $this -> render('galleries/save', false, true, 'admin');
                 }
 
         }

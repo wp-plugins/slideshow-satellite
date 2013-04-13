@@ -147,9 +147,9 @@ class SatelliteGallery extends SatelliteDbHelper {
           }
           if (!empty($specials)) {
             foreach ($specials as $special) {
-              error_log("checking special gallery ".$special." against galId".$galId);
+              $this->log_me("checking special gallery ".$special." against galId".$galId);
               if ($galId == $special) {
-                error_log("uploading to a special gallery : ".$galId);
+                $this->log_me("uploading to a special gallery : ".$galId);
                 return true;
               }
             }
@@ -157,7 +157,7 @@ class SatelliteGallery extends SatelliteDbHelper {
         }
         public function registerSpecials($ret = false) {
           // TODO : on gallery creation run registerSpecials
-          error_log("Registering special galleries");
+          $this->log_me("Registering special galleries");
           $specarray = array();
           foreach ($this -> specials as $special) {
             $specarray[] = $this->getGalleryIDByTitle($special);

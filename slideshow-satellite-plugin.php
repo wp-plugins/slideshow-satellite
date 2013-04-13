@@ -451,6 +451,7 @@ class SatellitePlugin
                     wp_enqueue_script('angular', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/angular.min.js', array('jquery'), SATL_VERSION);
                     wp_enqueue_script('infinitescroll', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/ng-infinite-scroll.min.js', array('jquery'), SATL_VERSION);
                     wp_enqueue_script('bootstrap','http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js');
+                    wp_enqueue_script('admin', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/admin.js', array('jquery'), SATL_VERSION);
                 }
                 
                 if ($_GET['page'] == "satellite-galleries") {

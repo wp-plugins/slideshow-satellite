@@ -75,8 +75,14 @@ $options = $this -> Config -> displayOption('gallery', $this -> Gallery);
 
     <img src="<?php echo(SATL_PLUGIN_URL.'/images/Satellite-Logo-sm.png');?>" style="height:100px" />
     <div class="wrap">
-    <h2><?php echo $pluginName; ?> <?php _e('Gallery Creator', SATL_PLUGIN_NAME); ?></h2>
-            <h2></h2>
+    <?php if ($this -> Gallery -> data -> id) : ?>
+      <h2><?php echo $pluginName; ?> <?php _e('Gallery Editor', SATL_PLUGIN_NAME); ?></h2>
+      <div id="gallery-slide-switch">
+        Switch Your View: <a class="btn btn-primary" href="<?php echo(admin_url()."admin.php?page=satellite-slides&single=".$this -> Gallery -> data -> id) ?>">Slides View</a>
+      </div>
+    <?php else : ?>
+      <h2><?php echo $pluginName; ?> <?php _e('Gallery Creator', SATL_PLUGIN_NAME); ?></h2>
+    <?php endif; ?>
 
 
     <form action="<?php echo $this -> url; ?>&amp;method=save" name="post" id="post" method="post">

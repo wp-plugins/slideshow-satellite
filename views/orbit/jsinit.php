@@ -4,6 +4,7 @@
     $style = $this->get_option('styles');
     $preloader = $this->get_option('Preloader');
     $preload = $preloader['quantity'];
+    $auto = $this->get_option("autoslide_temp");
     if (!$frompost) {
         $this->Gallery->loadData($gallery);
     }
@@ -18,6 +19,12 @@
     $autospeed = ($autoTemp = $this->Config->getProOption('autospeed_temp',$postID)) ? $autoTemp : $this->get_option('autospeed2');
     $animspeed = ($animTemp = $this->Config->getProOption('animspeed_temp',$postID)) ? $animTemp : $this->get_option('duration');
     
+    if ($this->Gallery->data->theme == 'flipbook') {
+      list($transition,$animspeed,$autospeed,$auto) = $this->Config->getFlipBookSettings();
+    }
+    // mouse_out should be on for all auto & pausehovers
+    $mouse_out = ((!$this->Gallery->data->pausehover && $auto) || $this->Gallery->data->pausehover ) ? 'true' : 'false';
+    
     if ($fullthumb) { $bullets = true; }
     elseif ($this->get_option('thumbnails_temp') == "Y") { $bullets = true; }
     else { $bullets = false; }
@@ -27,10 +34,10 @@
             $('#featured<?php echo $satellite_init_ok; ?>').satlorbit({
                 animation: '<?PHP echo ($transition) ? $transition : $this->get_option('transition'); ?>',  // fade, horizontal-slide, vertical-slide, horizontal-push
                 animationSpeed: <?php echo($animspeed); ?>,  // how fast animations are
-                timer: <?PHP echo ($this->get_option("autoslide_temp") == "Y" ) ? 'true' : 'false'; ?>,  // true or false to have the timer
+                timer: <?PHP echo ( $auto == "Y" ) ? 'true' : 'false'; ?>,  // true or false to have the timer
                 advanceSpeed: <?PHP echo ($autospeed); ?>, 		 // if timer is enabled, time between transitions 
                 pauseOnHover: <?php echo ($this->Gallery->data->pausehover) ? 'true' : 'false'; ?>, 		 // if you hover pauses the slider
-                startClockOnMouseOut: <?php echo ($this->Gallery->data->pausehover) ? 'true' : 'false'; ?>, 	 // if clock should start on MouseOut
+                startClockOnMouseOut: <?php echo ($mouse_out); ?>, 	 // if clock should start on MouseOut
                 startClockOnMouseOutAfter: 1000, 	 // how long after MouseOut should the timer start again
                 directionalNav: true, 		 // manual advancing directional navs
                 captions: <?php echo($this->get_option('information_temp') == 'Y') ? 'true' : 'false'; ?>,	 // do you want captions?

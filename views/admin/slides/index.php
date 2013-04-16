@@ -9,9 +9,11 @@
                 </div>
 	<?php }
         $images = $this->get_option('Images'); 
-		        if (!empty($_GET['single'])) {
-            $single = $_GET['single'];
-            $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($single)), null, array('slide_order', "ASC"));
+		    if (!empty($_GET['single'])) {
+          $single = $_GET['single'];
+          $ordertopic = (isset($_GET['orderby'])) ? $_GET['orderby'] : 'slide_order';
+          $orderdirection = ($ordertopic == 'modified') ? "DESC" : "ASC";
+          $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($single)), null, array($ordertopic, $orderdirection));
         } else { $single = false; }
         
         ?>
@@ -45,7 +47,13 @@
         
 	
 	<?php if (!empty($slides)) :  ?>
-                <h5>Slides Count: <?php echo(count($slides));?></h5>
+    <h5>Slides Count: <?php echo(count($slides));?></h5>
+    <?php if ($single): ?>
+    <div id="gallery-slide-switch">
+      Switch Your View: <a class="btn btn-primary" href="<?php echo(admin_url()."admin.php?page=satellite-galleries&method=save&id=".$single) ?>">Gallery View</a>
+    </div>
+    <?php endif; ?>
+      
 		<form onsubmit="if (!confirm('<?php _e('Are you sure you wish to execute this action on the selected slides?', SATL_PLUGIN_NAME); ?>')) { return false; }" action="<?php echo $this -> url; ?>&amp;method=mass&amp;single=<?php echo($single);?>" method="post">
 			<div class="tablenav">
 				<div class="alignleft actions">
@@ -71,10 +79,10 @@
           <li class="slide-holder row-fluid">
             <div class="fl-l loader-check check-column"><input type="checkbox" name="checkboxall" id="checkboxall" value="checkboxall" /></div>
             <div class="fl-l loader-image">Image</div>
-            <div class="fl-l loader-title">Title</div>
-            <div class="fl-r loader-date">Modified</div>
+            <div class="fl-l loader-title"><a href="<?php echo ($this->url."&single=".$single."&orderby=title")?>">Title</a></div>
+            <div class="fl-r loader-date"><a href="<?php echo ($this->url."&single=".$single."&orderby=modified")?>">Modified</a></div>
             <div class="fl-r loader-uselink">Use Link</div>
-            <div class="fl-r loader-order">Order</div>
+            <div class="fl-r loader-order"><a href="<?php echo ($this->url."&single=".$single."&orderby=slide_order")?>">Order</a></div>
             <div class="fl-r loader-section">Gallery</div>
           </li>
         </ul>  

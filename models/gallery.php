@@ -8,20 +8,21 @@ class SatelliteGallery extends SatelliteDbHelper {
 	var $data = array();
 	var $errors = array();
 	var $fields = array(
-		'id'			=>	"INT(11) NOT NULL AUTO_INCREMENT",
-		'title'			=>	"VARCHAR(150) CHARACTER SET utf8 NOT NULL DEFAULT ''",
-		'description'		=>	"TEXT CHARACTER SET utf8",
-		'image'			=>	"VARCHAR(75) NOT NULL DEFAULT ''",
-		'type'			=>	"VARCHAR(40) NOT NULL DEFAULT ''",
-                'capposition'           =>      "VARCHAR(40) NOT NULL DEFAULT ''",
-                'caphover'              =>      "BOOLEAN NOT NULL DEFAULT 0",
-                'pausehover'            =>      "BOOLEAN NOT NULL DEFAULT 0",
-                'font'                  =>      "VARCHAR(200) CHARACTER SET utf8 NOT NULL DEFAULT ''",
-                'capanimation'          =>      "VARCHAR(40) NOT NULL DEFAULT ''",
-		'gal_order'		=>	"INT(11) NOT NULL DEFAULT '0'",
-		'created'		=>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
-		'modified'		=>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
-		'key'			=>	"PRIMARY KEY  (`id`)",
+		'id'              =>	"INT(11) NOT NULL AUTO_INCREMENT",
+		'title'           =>	"VARCHAR(150) CHARACTER SET utf8 NOT NULL DEFAULT ''",
+		'description'     =>	"TEXT CHARACTER SET utf8",
+		'image'           =>	"VARCHAR(75) NOT NULL DEFAULT ''",
+		'type'            =>	"VARCHAR(40) NOT NULL DEFAULT ''",
+    'capposition'     =>  "VARCHAR(40) NOT NULL DEFAULT ''",
+    'theme'           =>  "VARCHAR(40) NOT NULL DEFAULT ''",
+    'caphover'        =>  "BOOLEAN NOT NULL DEFAULT 0",
+    'pausehover'      =>  "BOOLEAN NOT NULL DEFAULT 0",
+    'font'            =>  "VARCHAR(200) CHARACTER SET utf8 NOT NULL DEFAULT ''",
+    'capanimation'    =>  "VARCHAR(40) NOT NULL DEFAULT ''",
+		'gal_order'       =>	"INT(11) NOT NULL DEFAULT '0'",
+		'created'         =>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
+		'modified'        =>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
+		'key'             =>	"PRIMARY KEY  (`id`)",
 	);
 	function SatelliteGallery($data = array()) {
 		global $wpdb;
@@ -103,6 +104,7 @@ class SatelliteGallery extends SatelliteDbHelper {
                                                         capposition, 
                                                         capanimation, 
                                                         title, 
+                                                        theme,
                                                         description, 
                                                         font,
                                                         type, 

@@ -7,7 +7,7 @@ Author URI: http://c-pr.es/membership-options
 Description: Responsive display for all your photo needs. Customize to your hearts content.
 Version: 2.0.2
 */
-define( 'SATL_VERSION', '2.0.4');
+define( 'SATL_VERSION', '2.0.3');
 $uploads = wp_upload_dir();
 if ( ! defined( 'SATL_PLUGIN_BASENAME' ) )
 	define( 'SATL_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -162,15 +162,16 @@ class Satellite extends SatellitePlugin {
 			}
 		}
 		elseif ( (! empty( $custom ) || (! empty( $gallery ) ) ) ) {
-                    $gallery = ($custom) ? $custom : $gallery;
-                    $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($gallery)), null, array('order', "ASC"));
-                    $this->slidenum = count($slides);
+        $gallery = ($custom) ? $custom : $gallery;
+        $ordertopic = (isset($_GET['orderby'])) ? $_GET['orderby'] : 'slide_order';
+        $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($gallery)), null, array($ordertopic, "ASC"));
+        $this->slidenum = count($slides);
 
-                    if ( $this -> get_option('transition_temp') == "OM") {
-                            $content = $this -> render('multislider', array('slides' => $slides, 'frompost' => false), false, 'pro');
-                    } else {
-                            $content = $this -> render('default', array('slides' => $slides, 'frompost' => false), false, 'orbit');
-                    }			
+        if ( $this -> get_option('transition_temp') == "OM") {
+                $content = $this -> render('multislider', array('slides' => $slides, 'frompost' => false), false, 'pro');
+        } else {
+                $content = $this -> render('default', array('slides' => $slides, 'frompost' => false), false, 'orbit');
+        }			
 		}
 		else {
 			$slides = $this -> Slide -> find_all(null, null, array('slide_order', "ASC"));
@@ -510,9 +511,12 @@ class Satellite extends SatellitePlugin {
         }
         break;
       default					:
-				$data = $this -> lazyload('Slide');				
+				//$data = $this -> lazyload('Slide');				
 				//$this -> render('slides/index', array('slides' => $data[$this -> Slide -> model], 'paginate' => $data['Paginate']), true, 'admin');
-				$this -> render('slides/index', array('slides' => $data[$this -> Slide -> model], null), true, 'admin');
+        $ordertopic = (isset($_GET['orderby'])) ? $_GET['orderby'] : 'modified';
+        $orderdirection = ($ordertopic == 'modified') ? "DESC" : "ASC";
+        $slides = $this -> Slide -> find_all(null, null, array($ordertopic, $orderdirection));
+				$this -> render('slides/index', array('slides' => $slides, null), true, 'admin');
 				break;
 		}
 	}

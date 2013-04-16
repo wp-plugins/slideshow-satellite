@@ -152,3 +152,9 @@ body.toplevel_page_satellite, body.satellite_page_satellite-galleries, body.sate
 .loader-section { width: 10%;}
 .loader-date {width: 15%; }
 .loader-order { width: 10%;}
+
+#gallery-slide-switch {
+  float:right;
+  display:block;
+  font-size:1.2em;
+}

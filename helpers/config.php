@@ -74,16 +74,15 @@ class SatelliteConfigHelper extends SatellitePlugin {
                                         array('id' => 'On Right', 'title' => 'On Right'),
                                         array('id' => 'Disabled', 'title' => 'Disabled'))),
                     
-                array(  "name"      => "Caption Animation",
-                        "desc"      => "How will the animation transition occur?",
-                        "id"        => "capanimation",
-                        "value"     => $model -> data -> capanimation,
+                array(  "name"      => "Theme",
+                        "desc"      => "Which Theme should this slideshow use? Flipbook is similar to an animated gif",
+                        "id"        => "theme",
+                        "value"     => $model -> data -> theme,
                         "type"      => "select",
-                        "std"       => "slideOpen",
+                        "std"       => "standard",
                         "options"   => array(
-                                        array("id" => "fade", "title" => "Fade"),
-                                        array("id" => "slideOpen", "title" => "Slide Open"),
-                                        array("id" => "none", "title" => "None"))),
+                                        array("id" => "standard", "title" => "Standard"),
+                                        array("id" => "flipbook", "title" => "Flipbook"))),
 
                 array(  "name"      => "Clean Start",
                         "desc"      => "Caption and Navigation Arrows display on mouse hover",
@@ -305,6 +304,13 @@ class SatelliteConfigHelper extends SatellitePlugin {
             }
         }
         return null;
+    }
+    /*
+     * Returns to list($transition,$animspeed,$autospeed,$auto)
+     * @return array
+     */
+    function getFlipBookSettings() {
+      return array("none","1","100","Y");
     }
     
 

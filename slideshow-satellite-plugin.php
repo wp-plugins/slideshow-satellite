@@ -784,13 +784,15 @@ class SatellitePlugin
     }
     
     public function canPremiumDoThis($action) {
-      switch ($action) {
-        case 'watermark':
-          return method_exists(SatellitePremiumHelper,'doWatermark');
-          break;
-        default:
-          return false;
-          break;
+      if (SATL_PRO) {
+        switch ($action) {
+          case 'watermark':
+            return method_exists(SatellitePremiumHelper,'doWatermark');
+            break;
+          default:
+            return false;
+            break;
+        }
       }
       return false;
     }

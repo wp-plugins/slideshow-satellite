@@ -788,7 +788,11 @@ class SatellitePlugin
         case 'watermark':
           return method_exists(SatellitePremiumHelper,'doWatermark');
           break;
+        default:
+          return false;
+          break;
       }
+      return false;
     }
     public function log_me($message) {
         if (WP_DEBUG === true) {

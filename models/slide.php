@@ -21,7 +21,7 @@ class SatelliteSlide extends SatelliteDbHelper {
 		'slide_order'		=>	"INT(11) NOT NULL DEFAULT '0'",
 		'created'		=>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
 		'modified'		=>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
-		'key'			=>	"PRIMARY KEY  (`id`)",
+		'key'			=>	"PRIMARY KEY  (id)",
 	);
 	function SatelliteSlide($data = array()) {
 		global $wpdb;

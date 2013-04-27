@@ -22,7 +22,7 @@ class SatelliteGallery extends SatelliteDbHelper {
 		'gal_order'       =>	"INT(11) NOT NULL DEFAULT '0'",
 		'created'         =>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
 		'modified'        =>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
-		'key'             =>	"PRIMARY KEY  (`id`)",
+		'key'             =>	"PRIMARY KEY  (id)",
 	);
 	function SatelliteGallery($data = array()) {
 		global $wpdb;
@@ -93,7 +93,7 @@ class SatelliteGallery extends SatelliteDbHelper {
             if ($position == "On Right") :
                 $briefLocation = "right";
             else:
-                $briefLocation = $location -> capposition;
+                $briefLocation = $gallery -> capposition;
             endif;
             return $briefLocation;
         }

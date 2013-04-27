@@ -4,15 +4,17 @@ Donate link: http://c-pr.es/projects/satellite
 Tags: responsive slideshow, photography, watermark, satellite, orbit, zurb orbit, slideshow gallery, responsive, slideshow, content slider, gallery, slideshow satellite, photography, slideshow orbit
 Requires at least: 3.1
 Tested up to: 3.5.1
-Stable tag: 2.0.2
+Stable tag: 2.1
 License: GPLv2 or later
 
-So Responsive! So Customizable! So Modern! SO PRETTY! Build image galleries or content displays with Slideshow Satellite. 
+So Responsive! So Customizable! So Modern! Build Slideshows, Flipbooks, and do Infinite Scrolls with Slideshow Satellite. 
 
 == Description ==
 Satellite's goal is to present a responsive and beautiful slideshow experience to visitors of your WordPress site.
 
-Using either your WordPress Media Galleries or our own Gallery Editor, every page of every site deserves a customized look and feel.
+Choose from multiple easy to use themes like Slideshows with full thumbnail displays, Flipbooks for that animated-gif style slideshow, or the brand new Infinite Scroll!
+
+Use either your WordPress Media Galleries or our own highly customized Gallery Editor.
 
 To explore the manual, watch tutorial videos, or get the Premium edition: http://c-pr.es/projects/satellite/
 
@@ -74,7 +76,6 @@ If you have the premium edition and multiple custom galleries setup do this `[sa
 = The slideshow loads a little funky, I fear it's the theme =
 With premium edition, you can load the plugin after the theme loads by using the splash screen `[satellite gallery=2 splash=on]`
 
-= 
 
 Premium Questions
 

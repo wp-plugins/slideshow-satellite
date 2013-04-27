@@ -153,8 +153,20 @@ body.toplevel_page_satellite, body.satellite_page_satellite-galleries, body.sate
 .loader-date {width: 15%; }
 .loader-order { width: 10%;}
 
+/**** Slides Page ******/
+
 #gallery-slide-switch {
   float:right;
   display:block;
   font-size:1.2em;
+  clear:both;
+}
+
+.viewonly form {
+  margin:0;
+}
+
+/**** Angular Specific ****/
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none;
 }

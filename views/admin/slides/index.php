@@ -41,7 +41,7 @@
                         <input type="submit" name="View" value="View"/>
                     </form>
                 </div>
-                <span class="alignright" style="padding-top:5px">View Only : </span>
+                <span class="alignright viewonly" style="padding-top:5px">View Only : </span>
 
 	<?php endif; ?>
         

@@ -5,9 +5,9 @@ Plugin URI: http://c-pr.es/projects/satellite
 Author: C- Pres
 Author URI: http://c-pr.es/membership-options
 Description: Responsive display for all your photo needs. Customize to your hearts content.
-Version: 2.0.2
+Version: 2.1
 */
-define( 'SATL_VERSION', '2.0.3');
+define( 'SATL_VERSION', '2.1');
 $uploads = wp_upload_dir();
 if ( ! defined( 'SATL_PLUGIN_BASENAME' ) )
 	define( 'SATL_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -292,29 +292,46 @@ class Satellite extends SatellitePlugin {
                     $this -> update_option('orbitinfo', 'N' ); 
                     }
 		if ( (!empty($custom)) || (!empty($gallery)) ) { // custom is deprecated as of version 1.2
-                    $gallery = ($custom) ? $custom : $gallery;
-                    $multigallery = preg_match("[\,]",$gallery);
-                    if ( $multigallery ) {
-                        $gallery_array = explode(',',$gallery);
-                        $first_gallery = $gallery_array[0];
-                        $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($first_gallery)), null, array('slide_order', "ASC"));
-                    } else {
-                        $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($gallery)), null, array('slide_order', "ASC"));
-                    }
-                                            
-                    if( $this -> get_option('random') == "on"){
-                        shuffle($slides);
-                    }
-                    $this->slidenum = count($slides);
-                    if ( SATL_PRO && $multigallery )
-                        $content = $this -> render('galleries', array('slides' => $slides, 'frompost' => false, 'galleries' => $gallery_array), false, 'premium');
-                    elseif (SATL_PRO && $this -> get_option('splash'))
-                        $content = $this -> render('splash', array('slides' => $slides, 'frompost' => false), false, 'orbit');
-                    elseif ( $this -> get_option( 'thumbnails_temp') == "FR" || $this -> get_option( 'thumbnails_temp') == "FL" )
-                        $content = $this -> render('fullthumb', array('slides' => $slides, 'frompost' => false), false, 'orbit');
-                    else
-                        $content = $this -> render('default', array('slides' => $slides, 'frompost' => false), false, 'orbit');
-                } else { // from post
+        $gallery = ($custom) ? $custom : $gallery;
+        $multigallery = preg_match("[\,]",$gallery);
+        if ( $multigallery ) {
+            $gallery_array = explode(',',$gallery);
+            $first_gallery = $gallery_array[0];
+            $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($first_gallery)), null, array('slide_order', "ASC"));
+        } else {
+            $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($gallery)), null, array('slide_order', "ASC"));
+        }
+
+        if( $this -> get_option('random') == "on"){
+            shuffle($slides);
+        }
+        $this->slidenum = count($slides);
+        
+        /* THIS IS WHERE THE VIEW MAGIC HAPPENS */
+        $view = $this->getCustomView($gallery);
+        $this->log_me('View for this embed is: '.$view);
+        
+        switch ($view) {
+          case 'multigallery':
+            $content = $this -> render('galleries', array('slides' => $slides, 'frompost' => false, 'galleries' => $gallery_array), false, 'premium');
+            break;
+          case 'splash':
+            $content = $this -> render('splash', array('slides' => $slides, 'frompost' => false), false, 'orbit');
+            break;
+          case 'fullthumb':
+            $content = $this -> render('fullthumb', array('slides' => $slides, 'frompost' => false), false, 'orbit');
+            break;
+          case 'infinite':
+            $this->run_angular();
+            //add_action( 'wp_head', 'run_angular' );
+            $content = $this -> render('infinite', array('slides' => $slides, 'frompost' => false), false, 'custom');
+            break;
+          default:
+            $content = $this -> render('default', array('slides' => $slides, 'frompost' => false), false, 'orbit');
+            break;
+          
+        }
+    } else { // from post
 			global $post;
 			$post_id_orig = $post -> ID;
 			if ( empty( $slug )) {
@@ -345,6 +362,20 @@ class Satellite extends SatellitePlugin {
 		
 		return $content;
 	}
+  
+  public function getCustomView($gallery) {
+    $this->Gallery->loadData($gallery);
+    if ($this->Gallery->data->theme == 'infinite')
+      return 'infinite';
+    elseif ( SATL_PRO && $multigallery )
+      return 'multigallery';
+    elseif (SATL_PRO && $this -> get_option('splash'))
+      return 'splash';
+    elseif ( $this -> get_option( 'thumbnails_temp') == "FR" || $this -> get_option( 'thumbnails_temp') == "FL" )
+      return 'fullthumb';
+    else
+      return 'default';
+  }
 	function resetTemp() {
 		// This section allows for using _temp variable only (esp in gallery.php)
 		if ($this -> get_option('information')=='Y') { $this -> update_option('information_temp', 'Y'); }

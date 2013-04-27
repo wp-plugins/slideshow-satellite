@@ -138,20 +138,13 @@ class SatelliteHtmlHelper extends SatellitePlugin {
 	
 	function strip_ext($filename = '', $return = 'ext') {
 		if (!empty($filename)) { 
-			$extArray = split("[/\\.]", $filename); 
-			$fileArray = split("\.[^.]*$", $filename); 
-			
+      $path_parts = pathinfo($filename);
 			if ($return == 'ext') {
-				$p = count($extArray) - 1; 
-				$extension = $extArray[$p]; 
-				return $extension;
+				return $path_parts['extension'];
 			} else {
-				$p = count($fileArray) - 2;
-				$filename = $fileArray[$p];
-				return $filename;
+				return $path_parts['filename'];
 			}
 		}
-		
 		return false;
 	}
 	

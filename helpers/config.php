@@ -82,7 +82,8 @@ class SatelliteConfigHelper extends SatellitePlugin {
                         "std"       => "standard",
                         "options"   => array(
                                         array("id" => "standard", "title" => "Standard"),
-                                        array("id" => "flipbook", "title" => "Flipbook"))),
+                                        array("id" => "flipbook", "title" => "Flipbook"),
+                                        array("id" => "infinite", "title" => "Infinite Scroll"))),
 
                 array(  "name"      => "Clean Start",
                         "desc"      => "Caption and Navigation Arrows display on mouse hover",

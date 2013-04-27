@@ -225,13 +225,13 @@ span.pause.active {
     font-weight:bold;
     line-height:1em;
     }
-.satl-wrapper .orbit-caption h5.size-2 {
+.satl-wrapper .orbit-caption h5.size-2, .satellite-infinite .title.size-2 {
     font-size:2em;
 }
-.satl-wrapper .orbit-caption h5.size-3 {
+.satl-wrapper .orbit-caption h5.size-3, .satellite-infinite .title.size-3 {
     font-size:3em;
 }
-.satl-wrapper .orbit-caption h5.size-4 {
+.satl-wrapper .orbit-caption h5.size-4, .satellite-infinite .title.size-4 {
     font-size:4em;
 }
 

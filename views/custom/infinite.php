@@ -1,11 +1,16 @@
 <!-- Satellite Slideshow Infinite Scroll -->
+<?php
+$this->Gallery->loadData($slides[0]->section);
+$fontsize = $this -> Gallery -> data -> font;
+?>
 <script type='text/javascript' src='<?php echo(SATL_PLUGIN_URL);?>/js/angular.min.js?ver=<?php echo(SATL_VERSION);?>'></script>
 <script type='text/javascript' src='<?php echo(SATL_PLUGIN_URL);?>/js/ng-infinite-scroll.min.js?ver=<?php echo(SATL_VERSION);?>'></script>
+
 <div class="wrap" ng-app="scrollApp" ng-controller="ScrollController">
   <div  infinite-scroll='loadMore()' infinite-scroll-distance='2'>
     <div class="satellite-infinite" ng-repeat="i in items" ng-mouseover="onhover($event)" ng-mouseout="onhover($event)">
       <div class="info-hold" ng-show="hover">
-        <span class="title">{{i.title}}</span>
+        <span class="title size-<?php echo $fontsize;?>">{{i.title}}</span>
       </div>
       <img ng-cloak class="ng-cloak" src="{{i.image}}"/>
     </div>

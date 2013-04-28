@@ -1,22 +1,27 @@
-﻿<div class="wrap" ng-app="slideApp" ng-controller="SlideController">
-	 <?php $version = $this->Version->checkLatestVersion();
-        if (!$version['latest'] && $version['message'] && SATL_PRO) 
-          { ?>
-                <div class="plugin-update-tr">
-                    <div class="update-message">
-                            <?php echo $version['message']; ?>
-                    </div>
-                </div>
-	<?php }
-        $images = $this->get_option('Images'); 
-		    if (!empty($_GET['single'])) {
-          $single = $_GET['single'];
-          $ordertopic = (isset($_GET['orderby'])) ? $_GET['orderby'] : 'slide_order';
-          $orderdirection = ($ordertopic == 'modified') ? "DESC" : "ASC";
-          $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($single)), null, array($ordertopic, $orderdirection));
-        } else { $single = false; }
-        
-        ?>
+﻿<?php 
+$quickedit = false;
+$version = $this->Version->checkLatestVersion();
+$images = $this->get_option('Images'); 
+if (!empty($_GET['single'])) {
+  $single = $_GET['single'];
+  $ordertopic = (isset($_GET['orderby'])) ? $_GET['orderby'] : 'slide_order';
+  $orderdirection = ($ordertopic == 'modified') ? "DESC" : "ASC";
+  $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($single)), null, array($ordertopic, $orderdirection));
+} else { $single = false; }
+if (!empty($_GET['quickedit'])) {
+  $quickedit = true;
+}
+
+?>
+<div class="wrap" ng-app="slideApp" ng-controller="SlideController">
+	 <?php 
+    if (!$version['latest'] && $version['message'] && SATL_PRO) : ?>
+        <div class="plugin-update-tr">
+            <div class="update-message">
+                    <?php echo $version['message']; ?>
+            </div>
+        </div>
+	<?php endif; ?>
 
     <h2><?php _e('Manage Slides', SATL_PLUGIN_NAME); ?> <?php echo $this -> Html -> link(__('Add New'), 
                     $this -> url . '&amp;method=save&single='.$single, 
@@ -59,9 +64,10 @@
 				<div class="alignleft actions">
 					<a href="<?php echo $this -> url; ?>&amp;method=order&single=<?php echo $_GET['single']; ?>" title="<?php _e('Order all your slides', SATL_PLUGIN_NAME); ?>" class="button clearfix alignright" style="margin-left:7px;"><?php _e('Order Slides', SATL_PLUGIN_NAME); ?></a>
 				
-					<select name="action" class="action alignleft">
+					<select id="satl_bulkaction" name="action" class="action alignleft">
 						<option value="">- <?php _e('Bulk Actions', SATL_PLUGIN_NAME); ?> -</option>
 						<option value="delete"><?php _e('Delete', SATL_PLUGIN_NAME); ?></option>
+            <option value="quickedit" <?php echo ($quickedit) ? "selected=selected" : null ?>><?php _e('Quick Edit', SATL_PLUGIN_NAME); ?></option>
             <?php if ($images[resize]):?>
               <option value="resize"><?php _e('Resize to ', SATL_PLUGIN_NAME); echo($images['resize'].'px'); ?></option>
             <?php endif;?>
@@ -71,7 +77,6 @@
 					</select>
 					<input type="submit" class="button alignleft" value="<?php _e('Apply', SATL_PLUGIN_NAME); ?>" name="execute" />
 				</div>
-				<?php $this -> render('paginate', array('paginate' => $paginate), true, 'admin'); ?>
 			</div>
 		
 			<div class="widefat">
@@ -88,27 +93,13 @@
         </ul>  
 				<div class="thbody">
           <div  infinite-scroll='loadMore()' infinite-scroll-distance='2'>
-            <ul>
-              <li class="slide-holder row-fluid" ng-repeat="i in items" ng-mouseover="onhover($event)" ng-mouseout="onhover($event)">
-                                <div class="fl-l loader-check check-column"><input type="checkbox" name="Slide[checklist][]" value="{{i.id}}" id="checklist{{i.id}}" /></div>
-                <div class="fl-l loader-image"><a href="{{i.image}}"><img src="{{i.thumb}}"/></a></div>
-                <div class="fl-l loader-title">
-                  <a class="row-title" href="<?php echo $this -> url; ?>&amp;method=save&amp;id={{i.id}}&amp;single=<?php echo($single);?>" title="">{{i.title}}</a>
-                  <div ng-show="hover">
-                    <span class="edit"><?php echo $this -> Html -> link(__('Edit', SATL_PLUGIN_NAME), "?page=satellite-slides&amp;method=save&amp;single=".$single."&amp;id={{i.id}}"); ?> |</span>
-                    <span class="delete"><?php echo $this -> Html -> link(__('Delete', SATL_PLUGIN_NAME), "?page=satellite-slides&amp;method=delete&amp;single=".$single."&amp;id={{i.id}}" . $slide ->id, array('class' => "submitdelete", 'onclick' => "if (!confirm('" . __('Are you sure you want to permanently remove this slide?', SATL_PLUGIN_NAME) . "')) { return false; }")); ?></span>
-                  </div>
-
-                  <div class="loader-title" style="display:none" showonhoverparent>
-                     <span ng-click="deleteEntry(entry)"><a class="btn btn-danger" href="#">Delete</a></span>
-                  </div>
-                </div>
-                <div class="fl-r loader-date">{{i.date}}</div>
-                <div class="fl-r loader-uselink">{{i.uselink}}</div>
-                <div class="fl-r loader-order">{{i.slide_order}}</div>
-                <div class="fl-r loader-section">{{i.section}}</div>
-              </li>
-            </ul>  
+            <?php
+              if ($quickedit) {
+                $this -> render('slides/display-quickedit', array(), true, 'admin');
+              } else {
+                $this -> render('slides/display-standard', array(), true, 'admin'); 
+              }
+             ?>
           </div>
 				<div>
         <ul>

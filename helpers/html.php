@@ -1,5 +1,6 @@
 <?php
 class SatelliteHtmlHelper extends SatellitePlugin {
+  
 	function link($name = '', $href = '/', $args = array()) {
 		$defaults = array(
 			'title'			=>	(empty($args['title'])) ? $name : $args['title'],

@@ -122,6 +122,7 @@ class SatelliteDbHelper extends SatellitePlugin {
 	
 	function save($data = null, $validate = true, $model = null) {
 		global $wpdb;
+    $this->log_me($data);
 		$defaults = (method_exists($this, 'defaults')) ? $this -> defaults() : false;
                /* if ($model != null) {
                     $this -> model = $model;
@@ -138,8 +139,7 @@ class SatelliteDbHelper extends SatellitePlugin {
 		
 		if ($validate == true) {
 			if (method_exists($this, 'validate')) {
-				$this -> validate($r);
-                                
+				$this -> validate($r);                         
 			}
 		}
 		
@@ -324,19 +324,19 @@ class SatelliteDbHelper extends SatellitePlugin {
         
 	function alter_field($field = null, $value = null, $action = null) {
 		if (!empty($this -> model)) {
-                    global $wpdb;
+        global $wpdb;
 
-                    if (!empty($field)) {
-                        $query = "ALTER `" . $this -> table . "`";
+        if (!empty($field)) {
+            $query = "ALTER `" . $this -> table . "`";
 
-                        if ($action == "modify") {
-                            $query .= "MODIFY " . $field . " " . $value . "";
-                        }
+            if ($action == "modify") {
+                $query .= "MODIFY " . $field . " " . $value . "";
+            }
 
-                        if ($wpdb -> query($query)) {
-                                return true;
-                        }
-                    }
+            if ($wpdb -> query($query)) {
+                    return true;
+            }
+        }
 		}
 		
 		return false;

@@ -476,6 +476,7 @@ class Satellite extends SatellitePlugin {
 			case 'save'				:
 				if (!empty($_POST)) {
 					if ($this -> Slide -> save($_POST, true)) {
+            //$this->log_me($_POST);
 						$message = __('Slide has been saved', SATL_PLUGIN_NAME);
 						$this -> redirect($this -> url, "message", $message);
 					} else {
@@ -505,6 +506,18 @@ class Satellite extends SatellitePlugin {
                   $this -> Slide -> resizeById($slide_id);
                 }
                 $message = __('Selected slides have been resized', SATL_PLUGIN_NAME);
+                $this -> redirect($this -> url, 'message', $message);
+                break;
+              case 'quickedit':
+                $slide_ids = $this -> getSlideFromPost($_POST['Slide']['checklist']);
+                $slide_titles = $this -> getSlideFromPost($_POST['Slide']['title']);
+                $slide_galleries = $this -> getSlideFromPost($_POST['Slide']['gallery']);
+                $this->log_me($slide_ids);
+                $this->log_me($slide_titles);
+                for ($i=0;$i<count($slide_ids);$i++) {
+                  $this->Slide ->quickSaveSlide($slide_ids[$i],$slide_titles[$i],$slide_galleries[$i]);
+                }
+                $message = __('Selected slides have been edited, quickly', SATL_PLUGIN_NAME);
                 $this -> redirect($this -> url, 'message', $message);
                 break;
               case 'watermark' :
@@ -559,7 +572,8 @@ class Satellite extends SatellitePlugin {
     if (is_array($post)) {
       foreach ($post as $slide_id) {
         $slide_array[] = $slide_id;
-      }} else {
+      } 
+    } else {
         $slide_array[] = $slide_id;
     }
     return $slide_array;

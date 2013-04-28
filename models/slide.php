@@ -260,6 +260,14 @@ class SatelliteSlide extends SatelliteDbHelper {
       $Image->applyWatermark($record->image, $record->section);
     }
   }
+  
+  public function quickSaveSlide($id,$title,$gallery) {
+    
+    $conditions = array('id'=> $id);
+    $this->save_field('title', $title, $conditions);
+    $this->save_field('section', intval($gallery), $conditions);
+    $this->save_field('modified', SatelliteHtmlHelper::gen_date(), $conditions);
+  }
 
 }
 ?>

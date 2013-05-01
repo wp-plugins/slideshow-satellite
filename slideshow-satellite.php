@@ -308,7 +308,7 @@ class Satellite extends SatellitePlugin {
         $this->slidenum = count($slides);
         
         /* THIS IS WHERE THE VIEW MAGIC HAPPENS */
-        $view = $this->getCustomView($gallery);
+        $view = $this->getCustomView($multigallery,$gallery);
         $this->log_me('View for this embed is: '.$view);
         
         switch ($view) {
@@ -363,7 +363,7 @@ class Satellite extends SatellitePlugin {
 		return $content;
 	}
   
-  public function getCustomView($gallery) {
+  public function getCustomView($multigallery,$gallery) {
     $this->Gallery->loadData($gallery);
     if ($this->Gallery->data->theme == 'infinite')
       return 'infinite';

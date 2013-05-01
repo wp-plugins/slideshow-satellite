@@ -5,9 +5,9 @@ Plugin URI: http://c-pr.es/projects/satellite
 Author: C- Pres
 Author URI: http://c-pr.es/membership-options
 Description: Responsive display for all your photo needs. Customize to your hearts content.
-Version: 2.1
+Version: 2.1.1
 */
-define( 'SATL_VERSION', '2.1');
+define( 'SATL_VERSION', '2.1.1');
 $uploads = wp_upload_dir();
 if ( ! defined( 'SATL_PLUGIN_BASENAME' ) )
 	define( 'SATL_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -308,7 +308,7 @@ class Satellite extends SatellitePlugin {
         $this->slidenum = count($slides);
         
         /* THIS IS WHERE THE VIEW MAGIC HAPPENS */
-        $view = $this->getCustomView($gallery);
+        $view = $this->getCustomView($multigallery,$gallery);
         $this->log_me('View for this embed is: '.$view);
         
         switch ($view) {
@@ -363,7 +363,7 @@ class Satellite extends SatellitePlugin {
 		return $content;
 	}
   
-  public function getCustomView($gallery) {
+  public function getCustomView($multigallery,$gallery) {
     $this->Gallery->loadData($gallery);
     if ($this->Gallery->data->theme == 'infinite')
       return 'infinite';

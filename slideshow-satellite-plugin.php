@@ -55,7 +55,10 @@ class SatellitePlugin
         $adminStyleUrl = SATL_PLUGIN_URL . '/css/' . $this -> cssadmin . '?v=' . SATL_VERSION;
         wp_register_style(SATL_PLUGIN_NAME . "_adstyle", $adminStyleUrl);
         wp_enqueue_style(SATL_PLUGIN_NAME . "_adstyle");
-        wp_enqueue_style('bootstrap',"http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css");
+        if ($_GET['page'] == "satellite-slides") {
+          wp_enqueue_style('bootstrap',"http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css");
+        }
+
     }
 
     function conditionally_add_scripts_and_styles($posts){

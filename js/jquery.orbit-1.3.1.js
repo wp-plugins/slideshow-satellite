@@ -120,6 +120,10 @@
         this.stopClock();        
       }
       
+      this.$wrapper.hover(function() {
+        $(this).toggleClass('hover')
+      });
+      
       if (this.options.captions) {
           this.setupCaptions();
       }
@@ -394,13 +398,12 @@
             //
             captionClass = $(captionLocation).attr('class');
             this.$caption.attr('class', captionClass); // Add class caption TODO why is the id being set?
-            $hovering = this.$wrapper.is(':hover');
 
             //Animations for Caption entrances
             if (this.options.captionHover) {
                 this.$wrapper.mouseleave(this.clearCaptionAfterMouseLeave);
                 this.$wrapper.mouseenter(this.setCaptionAfterMouseHover);
-                if (!$hovering){
+                if (!this.$wrapper.hasClass('hover')){
                     return;
                 }
                 

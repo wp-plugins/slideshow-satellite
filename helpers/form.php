@@ -8,27 +8,28 @@ class SatelliteFormHelper extends SatellitePlugin {
             $form = new SatelliteFormHelper;
         } else { $form = $this; }
         foreach ($newfields as $value) {
+            $valId = (isset($value['id'])) ? $value['id'] : null;
             switch ( $value['type'] ) {
                 case 'open':
                     echo $this -> open();
                     break;
                 case 'checkbox':
-                    echo SatelliteFormHelper::checkbox($model.'.'.$value[id], $value);
+                    echo SatelliteFormHelper::checkbox($model.'.'.$valId, $value);
                     break;
                 case 'close':
                     echo $this -> close();
                     break;
                 case 'select':
-                    echo SatelliteFormHelper::select($model.'.'.$value[id], $value);
+                    echo SatelliteFormHelper::select($model.'.'.$valId, $value);
                     break;
                 case 'text':
-                    echo $this -> text($model.'.'.$value[id], $value);
+                    echo $this -> text($model.'.'.$valId, $value);
                     break;
                 case 'upload':
-                    echo $this -> upload($model.'.'.$value[id], $value);
+                    echo $this -> upload($model.'.'.$valId, $value);
                     break;
                 case 'textarea':
-                    echo $this -> textarea($model.'.'.$value[id], $value);
+                    echo $this -> textarea($model.'.'.$valId, $value);
                     break;
                 default:
                     error_log("Satellite could not find a form value for ".$value['type']);

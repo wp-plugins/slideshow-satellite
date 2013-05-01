@@ -5,23 +5,22 @@ Plugin URI: http://c-pr.es/projects/satellite
 Author: C- Pres
 Author URI: http://c-pr.es/membership-options
 Description: Responsive display for all your photo needs. Customize to your hearts content.
-Version: 2.0.2
+Version: 2.1
 */
-define('DS', '/');
-define( 'SATL_VERSION', '2.0.2');
+define( 'SATL_VERSION', '2.1');
 $uploads = wp_upload_dir();
 if ( ! defined( 'SATL_PLUGIN_BASENAME' ) )
 	define( 'SATL_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 if ( ! defined( 'SATL_PLUGIN_NAME' ) )
 	define( 'SATL_PLUGIN_NAME', trim( dirname( SATL_PLUGIN_BASENAME ), '/' ) );
 if ( ! defined( 'SATL_PLUGIN_DIR' ) )
-	define( 'SATL_PLUGIN_DIR', WP_PLUGIN_DIR . DS . SATL_PLUGIN_NAME );
+	define( 'SATL_PLUGIN_DIR', WP_PLUGIN_DIR . '/' . SATL_PLUGIN_NAME );
 if ( ! defined( 'SATL_PLUGIN_URL' ) )
-	define( 'SATL_PLUGIN_URL', WP_PLUGIN_URL . DS . SATL_PLUGIN_NAME );
+	define( 'SATL_PLUGIN_URL', WP_PLUGIN_URL . '/' . SATL_PLUGIN_NAME );
 if ( ! defined( 'SATL_UPLOAD_DIR' ) )
-	define( 'SATL_UPLOAD_DIR', $uploads['basedir']. DS . SATL_PLUGIN_NAME );
+	define( 'SATL_UPLOAD_DIR', $uploads['basedir']. '/' . SATL_PLUGIN_NAME );
 if ( ! defined( 'SATL_UPLOAD_URL' ) )
-	define( 'SATL_UPLOAD_URL', $uploads['baseurl']. DS . SATL_PLUGIN_NAME );
+	define( 'SATL_UPLOAD_URL', $uploads['baseurl']. '/' . SATL_PLUGIN_NAME );
 if ( ! defined( 'SATL_UPLOADPRO_DIR' ) )
 	define( 'SATL_UPLOADPRO_DIR', SATL_UPLOAD_DIR . '/pro/' );
 if ( ! defined( 'SATL_PLUGINPRO_DIR' ) )
@@ -163,15 +162,16 @@ class Satellite extends SatellitePlugin {
 			}
 		}
 		elseif ( (! empty( $custom ) || (! empty( $gallery ) ) ) ) {
-                    $gallery = ($custom) ? $custom : $gallery;
-                    $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($gallery)), null, array('order', "ASC"));
-                    $this->slidenum = count($slides);
+        $gallery = ($custom) ? $custom : $gallery;
+        $ordertopic = (isset($_GET['orderby'])) ? $_GET['orderby'] : 'slide_order';
+        $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($gallery)), null, array($ordertopic, "ASC"));
+        $this->slidenum = count($slides);
 
-                    if ( $this -> get_option('transition_temp') == "OM") {
-                            $content = $this -> render('multislider', array('slides' => $slides, 'frompost' => false), false, 'pro');
-                    } else {
-                            $content = $this -> render('default', array('slides' => $slides, 'frompost' => false), false, 'orbit');
-                    }			
+        if ( $this -> get_option('transition_temp') == "OM") {
+                $content = $this -> render('multislider', array('slides' => $slides, 'frompost' => false), false, 'pro');
+        } else {
+                $content = $this -> render('default', array('slides' => $slides, 'frompost' => false), false, 'orbit');
+        }			
 		}
 		else {
 			$slides = $this -> Slide -> find_all(null, null, array('slide_order', "ASC"));
@@ -292,29 +292,46 @@ class Satellite extends SatellitePlugin {
                     $this -> update_option('orbitinfo', 'N' ); 
                     }
 		if ( (!empty($custom)) || (!empty($gallery)) ) { // custom is deprecated as of version 1.2
-                    $gallery = ($custom) ? $custom : $gallery;
-                    $multigallery = preg_match("[\,]",$gallery);
-                    if ( $multigallery ) {
-                        $gallery_array = explode(',',$gallery);
-                        $first_gallery = $gallery_array[0];
-                        $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($first_gallery)), null, array('slide_order', "ASC"));
-                    } else {
-                        $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($gallery)), null, array('slide_order', "ASC"));
-                    }
-                                            
-                    if( $this -> get_option('random') == "on"){
-                        shuffle($slides);
-                    }
-                    $this->slidenum = count($slides);
-                    if ( SATL_PRO && $multigallery )
-                        $content = $this -> render('galleries', array('slides' => $slides, 'frompost' => false, 'galleries' => $gallery_array), false, 'premium');
-                    elseif (SATL_PRO && $this -> get_option('splash'))
-                        $content = $this -> render('splash', array('slides' => $slides, 'frompost' => false), false, 'orbit');
-                    elseif ( $this -> get_option( 'thumbnails_temp') == "FR" || $this -> get_option( 'thumbnails_temp') == "FL" )
-                        $content = $this -> render('fullthumb', array('slides' => $slides, 'frompost' => false), false, 'orbit');
-                    else
-                        $content = $this -> render('default', array('slides' => $slides, 'frompost' => false), false, 'orbit');
-                } else { // from post
+        $gallery = ($custom) ? $custom : $gallery;
+        $multigallery = preg_match("[\,]",$gallery);
+        if ( $multigallery ) {
+            $gallery_array = explode(',',$gallery);
+            $first_gallery = $gallery_array[0];
+            $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($first_gallery)), null, array('slide_order', "ASC"));
+        } else {
+            $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($gallery)), null, array('slide_order', "ASC"));
+        }
+
+        if( $this -> get_option('random') == "on"){
+            shuffle($slides);
+        }
+        $this->slidenum = count($slides);
+        
+        /* THIS IS WHERE THE VIEW MAGIC HAPPENS */
+        $view = $this->getCustomView($gallery);
+        $this->log_me('View for this embed is: '.$view);
+        
+        switch ($view) {
+          case 'multigallery':
+            $content = $this -> render('galleries', array('slides' => $slides, 'frompost' => false, 'galleries' => $gallery_array), false, 'premium');
+            break;
+          case 'splash':
+            $content = $this -> render('splash', array('slides' => $slides, 'frompost' => false), false, 'orbit');
+            break;
+          case 'fullthumb':
+            $content = $this -> render('fullthumb', array('slides' => $slides, 'frompost' => false), false, 'orbit');
+            break;
+          case 'infinite':
+            $this->run_angular();
+            //add_action( 'wp_head', 'run_angular' );
+            $content = $this -> render('infinite', array('slides' => $slides, 'frompost' => false), false, 'custom');
+            break;
+          default:
+            $content = $this -> render('default', array('slides' => $slides, 'frompost' => false), false, 'orbit');
+            break;
+          
+        }
+    } else { // from post
 			global $post;
 			$post_id_orig = $post -> ID;
 			if ( empty( $slug )) {
@@ -345,6 +362,20 @@ class Satellite extends SatellitePlugin {
 		
 		return $content;
 	}
+  
+  public function getCustomView($gallery) {
+    $this->Gallery->loadData($gallery);
+    if ($this->Gallery->data->theme == 'infinite')
+      return 'infinite';
+    elseif ( SATL_PRO && $multigallery )
+      return 'multigallery';
+    elseif (SATL_PRO && $this -> get_option('splash'))
+      return 'splash';
+    elseif ( $this -> get_option( 'thumbnails_temp') == "FR" || $this -> get_option( 'thumbnails_temp') == "FL" )
+      return 'fullthumb';
+    else
+      return 'default';
+  }
 	function resetTemp() {
 		// This section allows for using _temp variable only (esp in gallery.php)
 		if ($this -> get_option('information')=='Y') { $this -> update_option('information_temp', 'Y'); }
@@ -407,7 +438,8 @@ class Satellite extends SatellitePlugin {
 	}	
 	
 	function admin_slides() {	
-		switch ($_GET['method']) {
+    $method = (isset($_GET['method'])) ? $_GET['method'] : null;
+		switch ($method) {
 			case 'delete'			:
 				if (!empty($_GET['id'])) {
 					if ($this -> Slide -> delete($_GET['id'])) {
@@ -444,15 +476,16 @@ class Satellite extends SatellitePlugin {
 			case 'save'				:
 				if (!empty($_POST)) {
 					if ($this -> Slide -> save($_POST, true)) {
+            //$this->log_me($_POST);
 						$message = __('Slide has been saved', SATL_PLUGIN_NAME);
 						$this -> redirect($this -> url, "message", $message);
 					} else {
-						$this -> render('slides' . DS . 'save', false, true, 'admin');
+						$this -> render('slides/save', false, true, 'admin');
 					}
 				} else {
 					$this -> Db -> model = $this -> Slide -> model;
 					$this -> Slide -> find(array('id' => $_GET['id']));
-					$this -> render('slides' . DS . 'save', false, true, 'admin');
+					$this -> render('slides/save', false, true, 'admin');
 				}
 				break;
 			case 'mass'				:
@@ -473,6 +506,18 @@ class Satellite extends SatellitePlugin {
                   $this -> Slide -> resizeById($slide_id);
                 }
                 $message = __('Selected slides have been resized', SATL_PLUGIN_NAME);
+                $this -> redirect($this -> url, 'message', $message);
+                break;
+              case 'quickedit':
+                $slide_ids = $this -> getSlideFromPost($_POST['Slide']['checklist']);
+                $slide_titles = $this -> getSlideFromPost($_POST['Slide']['title']);
+                $slide_galleries = $this -> getSlideFromPost($_POST['Slide']['gallery']);
+                $this->log_me($slide_ids);
+                $this->log_me($slide_titles);
+                for ($i=0;$i<count($slide_ids);$i++) {
+                  $this->Slide ->quickSaveSlide($slide_ids[$i],$slide_titles[$i],$slide_galleries[$i]);
+                }
+                $message = __('Selected slides have been edited, quickly', SATL_PLUGIN_NAME);
                 $this -> redirect($this -> url, 'message', $message);
                 break;
               case 'watermark' :
@@ -496,7 +541,7 @@ class Satellite extends SatellitePlugin {
 				break;
 			case 'order'			:
 				$slides = $this -> Slide -> find_all(null, null, array('slide_order', "ASC"));
-				$this -> render('slides' . DS . 'order', array('slides' => $slides), true, 'admin');
+				$this -> render('slides/order', array('slides' => $slides), true, 'admin');
 				break;
       case 'copysgpro'                :
         $sgprodir = SATL_UPLOAD_DIR.'/../slideshow-gallery-pro/';
@@ -510,8 +555,12 @@ class Satellite extends SatellitePlugin {
         }
         break;
       default					:
-				$data = $this -> paginate('Slide');				
-				$this -> render('slides' . DS . 'index', array('slides' => $data[$this -> Slide -> model], 'paginate' => $data['Paginate']), true, 'admin');
+				//$data = $this -> lazyload('Slide');				
+				//$this -> render('slides/index', array('slides' => $data[$this -> Slide -> model], 'paginate' => $data['Paginate']), true, 'admin');
+        $ordertopic = (isset($_GET['orderby'])) ? $_GET['orderby'] : 'modified';
+        $orderdirection = ($ordertopic == 'modified') ? "DESC" : "ASC";
+        $slides = $this -> Slide -> find_all(null, null, array($ordertopic, $orderdirection));
+				$this -> render('slides/index', array('slides' => $slides, null), true, 'admin');
 				break;
 		}
 	}
@@ -523,16 +572,17 @@ class Satellite extends SatellitePlugin {
     if (is_array($post)) {
       foreach ($post as $slide_id) {
         $slide_array[] = $slide_id;
-      }} else {
+      } 
+    } else {
         $slide_array[] = $slide_id;
     }
     return $slide_array;
   }
         
 	function admin_galleries() {	
-                $galleries = $this->Gallery->find_all(null, null, array('id', "ASC"));
-
-		switch ($_GET['method']) {
+    $galleries = $this->Gallery->find_all(null, null, array('id', "ASC"));
+    $method = (isset($_GET['method'])) ? $_GET['method'] : null;
+		switch ($method) {
 			case 'delete'			:
 				if (!empty($_GET['id'])) {
 					if ($this -> Gallery -> delete($_GET['id'])) {
@@ -563,12 +613,12 @@ class Satellite extends SatellitePlugin {
                                             }
                                             $this -> redirect($this -> url, "message", $message);
 					} else {
-						$this -> render('galleries' . DS . 'save', false, true, 'admin');
+						$this -> render('galleries/save', false, true, 'admin');
 					}
 				} else {
 					$this -> Db -> model = $this -> Gallery -> model;
 					$this -> Gallery -> find(array('id' => $_GET['id']));
-					$this -> render('galleries' . DS . 'save', false, true, 'admin');
+					$this -> render('galleries/save', false, true, 'admin');
 				}
 				break;                                
 			case 'mass'				:
@@ -595,7 +645,7 @@ class Satellite extends SatellitePlugin {
 				break;
 			default					:
 				$data = $this -> paginate('Gallery');				
-				$this -> render('galleries' . DS . 'index', array('galleries' => $data[$this -> Gallery -> model], 'paginate' => $data['Paginate']), true, 'admin');
+				$this -> render('galleries/index', array('galleries' => $data[$this -> Gallery -> model], 'paginate' => $data['Paginate']), true, 'admin');
 				break;
 		}
 	}
@@ -611,12 +661,12 @@ class Satellite extends SatellitePlugin {
                         }
                         $this -> redirect($this -> url, "message", $message);
                     } else {
-                        $this -> render('galleries' . DS . 'save', false, true, 'admin');
+                        $this -> render('galleries/save', false, true, 'admin');
                     }
                 } else {
                     $this -> Db -> model = $this -> Gallery -> model;
                     $this -> Gallery -> find(array('id' => $_GET['id']));
-                    $this -> render('galleries' . DS . 'save', false, true, 'admin');
+                    $this -> render('galleries/save', false, true, 'admin');
                 }
 
         }

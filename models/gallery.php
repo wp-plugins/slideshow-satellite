@@ -8,20 +8,21 @@ class SatelliteGallery extends SatelliteDbHelper {
 	var $data = array();
 	var $errors = array();
 	var $fields = array(
-		'id'			=>	"INT(11) NOT NULL AUTO_INCREMENT",
-		'title'			=>	"VARCHAR(150) CHARACTER SET utf8 NOT NULL DEFAULT ''",
-		'description'		=>	"TEXT CHARACTER SET utf8",
-		'image'			=>	"VARCHAR(75) NOT NULL DEFAULT ''",
-		'type'			=>	"VARCHAR(40) NOT NULL DEFAULT ''",
-                'capposition'           =>      "VARCHAR(40) NOT NULL DEFAULT ''",
-                'caphover'              =>      "BOOLEAN NOT NULL DEFAULT 0",
-                'pausehover'            =>      "BOOLEAN NOT NULL DEFAULT 0",
-                'font'                  =>      "VARCHAR(200) CHARACTER SET utf8 NOT NULL DEFAULT ''",
-                'capanimation'          =>      "VARCHAR(40) NOT NULL DEFAULT ''",
-		'gal_order'		=>	"INT(11) NOT NULL DEFAULT '0'",
-		'created'		=>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
-		'modified'		=>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
-		'key'			=>	"PRIMARY KEY  (`id`)",
+		'id'              =>	"INT(11) NOT NULL AUTO_INCREMENT",
+		'title'           =>	"VARCHAR(150) CHARACTER SET utf8 NOT NULL DEFAULT ''",
+		'description'     =>	"TEXT CHARACTER SET utf8",
+		'image'           =>	"VARCHAR(75) NOT NULL DEFAULT ''",
+		'type'            =>	"VARCHAR(40) NOT NULL DEFAULT ''",
+    'capposition'     =>  "VARCHAR(40) NOT NULL DEFAULT ''",
+    'theme'           =>  "VARCHAR(40) NOT NULL DEFAULT ''",
+    'caphover'        =>  "BOOLEAN NOT NULL DEFAULT 0",
+    'pausehover'      =>  "BOOLEAN NOT NULL DEFAULT 0",
+    'font'            =>  "VARCHAR(200) CHARACTER SET utf8 NOT NULL DEFAULT ''",
+    'capanimation'    =>  "VARCHAR(40) NOT NULL DEFAULT ''",
+		'gal_order'       =>	"INT(11) NOT NULL DEFAULT '0'",
+		'created'         =>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
+		'modified'        =>	"DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
+		'key'             =>	"PRIMARY KEY  (id)",
 	);
 	function SatelliteGallery($data = array()) {
 		global $wpdb;
@@ -92,7 +93,7 @@ class SatelliteGallery extends SatelliteDbHelper {
             if ($position == "On Right") :
                 $briefLocation = "right";
             else:
-                $briefLocation = $location -> capposition;
+                $briefLocation = $gallery -> capposition;
             endif;
             return $briefLocation;
         }
@@ -103,6 +104,7 @@ class SatelliteGallery extends SatelliteDbHelper {
                                                         capposition, 
                                                         capanimation, 
                                                         title, 
+                                                        theme,
                                                         description, 
                                                         font,
                                                         type, 
@@ -147,9 +149,9 @@ class SatelliteGallery extends SatelliteDbHelper {
           }
           if (!empty($specials)) {
             foreach ($specials as $special) {
-              error_log("checking special gallery ".$special." against galId".$galId);
+              $this->log_me("checking special gallery ".$special." against galId".$galId);
               if ($galId == $special) {
-                error_log("uploading to a special gallery : ".$galId);
+                $this->log_me("uploading to a special gallery : ".$galId);
                 return true;
               }
             }
@@ -157,7 +159,7 @@ class SatelliteGallery extends SatelliteDbHelper {
         }
         public function registerSpecials($ret = false) {
           // TODO : on gallery creation run registerSpecials
-          error_log("Registering special galleries");
+          $this->log_me("Registering special galleries");
           $specarray = array();
           foreach ($this -> specials as $special) {
             $specarray[] = $this->getGalleryIDByTitle($special);

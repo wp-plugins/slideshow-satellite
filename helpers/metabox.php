@@ -10,30 +10,30 @@ class SatelliteMetaboxHelper extends SatellitePlugin {
     }
 
     function settings_submit() {
-        $this->render('metaboxes' . DS . 'settings-submit', false, true, 'admin');
+        $this->render('metaboxes/settings-submit', false, true, 'admin');
     }
 
     function settings_general() {
-        $this->render('metaboxes' . DS . 'settings-general', false, true, 'admin');
+        $this->render('metaboxes/settings-general', false, true, 'admin');
     }
 
     function settings_linksimages() {
-        $this->render('metaboxes' . DS . 'settings-linksimages', false, true, 'admin');
+        $this->render('metaboxes/settings-linksimages', false, true, 'admin');
     }
 
     function settings_styles() {
-        $this->render('metaboxes' . DS . 'settings-styles', false, true, 'admin');
+        $this->render('metaboxes/settings-styles', false, true, 'admin');
     }
     function settings_thumbs() {
-        $this->render('metaboxes' . DS . 'settings-thumbs', false, true, 'admin');
+        $this->render('metaboxes/settings-thumbs', false, true, 'admin');
     }
    
     function settings_advanced() {
-        $this->render('metaboxes' . DS . 'settings-advanced', false, true, 'admin');
+        $this->render('metaboxes/settings-advanced', false, true, 'admin');
     }
 
     function settings_pro() {
-        $this->render('metaboxes' . DS . 'settings-pro', false, true, 'admin');
+        $this->render('metaboxes/settings-pro', false, true, 'admin');
     }
 
 }

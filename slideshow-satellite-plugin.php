@@ -23,14 +23,14 @@ class SatellitePlugin
     var $models = array('Slide','Gallery');
 
     function register_plugin($name, $base) {
-        $this->plugin_base = rtrim(dirname($base), DS);
+        $this->plugin_base = rtrim(dirname($base), '/');
         $this->initialize_classes();
         $this->initialize_options();
 
         if (function_exists('load_plugin_textdomain')) {
             $currentlocale = get_locale();
             if (!empty($currentlocale)) {
-                $moFile = dirname(__FILE__) . DS . "languages" . DS . SATL_PLUGIN_NAME . "-" . $currentlocale . ".mo";
+                $moFile = dirname(__FILE__) . "/languages/" . SATL_PLUGIN_NAME . "-" . $currentlocale . ".mo";
                 if (@file_exists($moFile) && is_readable($moFile)) {
                     load_textdomain(SATL_PLUGIN_NAME, $moFile);
                 }
@@ -55,6 +55,7 @@ class SatellitePlugin
         $adminStyleUrl = SATL_PLUGIN_URL . '/css/' . $this -> cssadmin . '?v=' . SATL_VERSION;
         wp_register_style(SATL_PLUGIN_NAME . "_adstyle", $adminStyleUrl);
         wp_enqueue_style(SATL_PLUGIN_NAME . "_adstyle");
+        wp_enqueue_style('bootstrap',"http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css");
     }
 
     function conditionally_add_scripts_and_styles($posts){
@@ -89,9 +90,10 @@ class SatellitePlugin
             //$infogal = $this;
             if (file_exists($satlStyleFile)) {
                 if ($styles = $this->get_option('styles')) {
-                    foreach ($styles as $skey => $sval) {
-                        $satlStyleUrl .= "&amp;" . $skey . "=" . urlencode($sval);
-                    }
+                  $this->log_me($styles);
+                  foreach ($styles as $skey => $sval) {
+                      $satlStyleUrl .= "&amp;" . $skey . "=" . urlencode($sval);
+                  }
                 }
 
                 if ( class_exists( 'SatellitePremiumHelper' ) ) {
@@ -159,9 +161,9 @@ class SatellitePlugin
         if (!empty($this->helpers)) {
             foreach ($this->helpers as $helper) {
                 if ($helper == 'Premium') {
-                    $hfile = dirname(__FILE__) . DS . 'pro' . DS . strtolower($helper) . '.php';
+                    $hfile = dirname(__FILE__) . '/pro/' . strtolower($helper) . '.php';
                 } else {
-                    $hfile = dirname(__FILE__) . DS . 'helpers' . DS . strtolower($helper) . '.php';
+                    $hfile = dirname(__FILE__) . '/helpers/' . strtolower($helper) . '.php';
                 }
                 if (file_exists($hfile)) {
                     require_once($hfile);
@@ -176,7 +178,7 @@ class SatellitePlugin
         }
         if (!empty($this->models)) {
             foreach ($this->models as $model) {
-                $mfile = dirname(__FILE__) . DS . 'models' . DS . strtolower($model) . '.php';
+                $mfile = dirname(__FILE__)  . '/models/' . strtolower($model) . '.php';
                 if (file_exists($mfile)) {
                     require_once($mfile);
                     if (empty($this->{$model}) || !is_object($this->{$model})) {
@@ -315,7 +317,8 @@ class SatellitePlugin
             $paginate->searchterm = (empty($searchterm)) ? false : $searchterm;
             $paginate->per_page = $per_page;
             $paginate->order = $order;
-            $data = $paginate->start_paging($_GET[$this->pre . 'page']);
+            $paging_page = (isset($_GET[$this->pre . 'page'])) ? $_GET[$this->pre . 'page'] : null;
+            $data = $paginate->start_paging($paging_page);
             if (!empty($data)) {
                 $newdata = array();
                 foreach ($data as $record) {
@@ -330,10 +333,38 @@ class SatellitePlugin
         return false;
     }
 
+    function lazyload($model = null, $fields = '*', $sub = null, $conditions = null, $searchterm = null, $per_page = 10, $order = array('modified', "DESC")) {
+        global $wpdb;
+
+        if (!empty($model)) {
+            global $lazyload;
+            $lazyload = $this->vendor('Lazyload');
+            $lazyload->table = $this->{$model}->table;
+            $lazyload->sub = (empty($sub)) ? $this->{$model}->controller : $sub;
+            $lazyload->fields = (empty($fields)) ? '*' : $fields;
+            $lazyload->where = (empty($conditions)) ? false : $conditions;
+            $lazyload->searchterm = (empty($searchterm)) ? false : $searchterm;
+            $lazyload->per_page = $per_page;
+            $lazyload->order = $order;
+            $data = $lazyload->start_loading($_GET[$this->pre . 'page']);
+            if (!empty($data)) {
+                $newdata = array();
+                foreach ($data as $record) {
+                    $newdata[] = $this->init_class($model, $record);
+                }
+                $data = array();
+                $data[$model] = $newdata;
+                $data['Lazyload'] = $lazyload;
+            }
+            return $data;
+        }
+        return false;
+    }
+    
     function vendor($name = '', $folder = '') {
         if (!empty($name)) {
             $filename = 'class.' . strtolower($name) . '.php';
-            $filepath = rtrim(dirname(__FILE__), DS) . DS . 'vendors' . DS . $folder . '';
+            $filepath = rtrim(dirname(__FILE__), '/') . '/vendors/' . $folder . '';
             $filefull = $filepath . $filename;
             if (file_exists($filefull)) {
                 require_once($filefull);
@@ -401,6 +432,8 @@ class SatellitePlugin
     function admin_scripts() {
             if (!empty($_GET['page']) && in_array($_GET['page'], (array) $this->sections)) {
                 wp_enqueue_script('autosave');
+                $method = (isset($_GET['method'])) ? $_GET['method'] : null;
+
 
                 if ($_GET['page'] == 'satellite') {
                     wp_enqueue_script('common');
@@ -411,8 +444,14 @@ class SatellitePlugin
                     wp_enqueue_script('admin', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/admin.js', array('jquery'), SATL_VERSION);
                 }
 
-                if ($_GET['page'] == "satellite-slides" && $_GET['method'] == "order") {
+                if ($_GET['page'] == "satellite-slides" && $method == "order") {
                     wp_enqueue_script('jquery-ui-sortable');
+                }
+                
+                if ($_GET['page'] == "satellite-slides") {
+                    $this->run_angular();
+                    wp_enqueue_script('bootstrap','http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js');
+                    wp_enqueue_script('admin', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/admin.js', array('jquery'), SATL_VERSION);
                 }
                 
                 if ($_GET['page'] == "satellite-galleries") {
@@ -426,25 +465,32 @@ class SatellitePlugin
                 add_thickbox();
             }
     }
+    
+    function run_angular() {
+      $this->log_me("Registering angular");
+      wp_enqueue_script('angular', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/angular.min.js', array('jquery'), SATL_VERSION);
+      wp_enqueue_script('infinitescroll', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/ng-infinite-scroll.min.js', array('jquery'), SATL_VERSION);
 
+    }
 
     function enqueue_scripts() {
-        if ($this->get_option('ggljquery') == "Y") {
-            wp_deregister_script( 'jquery' );
-            wp_register_script( 'jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js');
-        }
-        wp_enqueue_script('jquery');
+      $this->log_me("enqueuing scripts");
+      if ($this->get_option('ggljquery') == "Y") {
+          wp_deregister_script( 'jquery' );
+          wp_register_script( 'jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js');
+      }
+      wp_enqueue_script('jquery');
 
-        if (SATL_PRO && ($this->get_option('preload') == 'Y')) {
-            wp_register_script('satellite_preloader', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/pro/preloader.js');
-            wp_enqueue_script('satellite_preloader');
-        }
+      if (SATL_PRO && ($this->get_option('preload') == 'Y')) {
+          wp_register_script('satellite_preloader', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/pro/preloader.js');
+          wp_enqueue_script('satellite_preloader');
+      }
 
-        $images = $this->get_option('Images');
-        if ($images['imagesbox'] == "T")
-            add_thickbox();
+      $images = $this->get_option('Images');
+      if ($images['imagesbox'] == "T")
+          add_thickbox();
 
-        return true;
+      return true;
     }
     
     function plupload_admin_head() {
@@ -498,7 +544,7 @@ class SatellitePlugin
     }
 
     function url() {
-        return rtrim(WP_PLUGIN_URL, '/') . '/' . substr(preg_replace("/\\" . DS . "/si", "/", $this->plugin_base()), strlen(ABSPATH));
+        return rtrim(WP_PLUGIN_URL, '/') . '/' . substr(preg_replace("/\\" . "/" . "/si", "/", $this->plugin_base()), strlen(ABSPATH));
     }
 
     function add_option($name = '', $value = '') {
@@ -517,7 +563,7 @@ class SatellitePlugin
 
     function get_option($name = '', $stripslashes = true) {
         if ($option = get_option($this->pre . $name)) {
-            if (@unserialize($option) !== false) {
+            if ( !is_array($option) && @unserialize($option) !== false) {
                 return unserialize($option);
             }
             if ($stripslashes == true) {
@@ -542,7 +588,7 @@ class SatellitePlugin
         
         if ( !empty($model) ) {
             if ( !empty($this->fields) && is_array($this->fields ) ) {
-                if ( /* !$wpdb->get_var("SHOW TABLES LIKE '" . $this->table . "'") ||*/ $this->get_option($model.'db_version') != SATL_VERSION ) {
+                if ( /*!$wpdb->get_var("SHOW TABLES LIKE '" . $this->table . "'") ||*/ $this->get_option($model.'db_version') != SATL_VERSION ) {
                     $query = "CREATE TABLE " . $this->table . " (\n";
                     $c = 1;
 
@@ -569,13 +615,17 @@ class SatellitePlugin
                             $satlprem->check_pro_dirs();
                         }
                     }
+                    $rowcount = $wpdb->get_var("SELECT COUNT(*) FROM ".$this->table);
                     
                     if (!empty($this->table_query)) {
-                        require_once(ABSPATH . 'wp-admin'.DS.'includes'.DS.'upgrade.php');
+                        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
                         dbDelta($this->table_query, true);
                         $this -> update_option($model.'db_version', SATL_VERSION);
                         $this -> update_option('stldb_version', SATL_VERSION);
-                        error_log("Updated slideshow satellite databases");
+                        $this->log_me("Updated slideshow satellite databases");
+                        if ($rowcount == 0) {
+                          $this->tableTransition($this->table);
+                        }
                     }
                 } else {
                     //echo "this model db version: ".$this->get_option($model.'db_version');
@@ -594,7 +644,7 @@ class SatellitePlugin
 
         return false;
     }
-
+    
     function get_fields($table = null) {
         global $wpdb;
 
@@ -657,50 +707,48 @@ class SatellitePlugin
     }
 
     function add_field($table = '', $field = '', $attributes = "TEXT NOT NULL") {
-        global $wpdb;
+      global $wpdb;
 
-        if (!empty($table)) {
-            if (!empty($field)) {
-                $field_array = $this->get_fields($table);
+      if (!empty($table)) {
+        if (!empty($field)) {
+          $field_array = $this->get_fields($table);
 
-                if (!empty($field_array)) {
-                    if (!in_array($field, $field_array)) {
-                        $query = "ALTER TABLE `" . $table . "` ADD `" . $field . "` " . $attributes . ";";
-
-                        if ($wpdb->query($query)) {
-                            return true;
-                        }
-                    }
-                }
+          if (!empty($field_array)) {
+            if (!in_array($field, $field_array)) {
+              $query = "ALTER TABLE `" . $table . "` ADD `" . $field . "` " . $attributes . ";";
+              if ($wpdb->query($query)) {
+                return true;
+              }
             }
+          }
         }
-
-        return false;
+      }
+      return false;
     }
 
     function render($file = '', $params = array(), $output = true, $folder = 'admin') {
         if (!empty($file)) {
-            $filename = $file . '.php';
-            $filepath = $this->plugin_base() . DS . 'views' . DS . $folder . DS;
-            $filefull = $filepath . $filename;
-            if (file_exists($filefull)) {
-                if (!empty($params)) {
-                    foreach ($params as $pkey => $pval) {
-                        ${$pkey} = $pval;
-                    }
-                }
-                if ($output == false) {
-                    ob_start();
-                }
-                include($filefull);
-                if ($output == false) {
-                    $data = ob_get_clean();
-                    return $data;
-                } else {
-                    flush();
-                    return true;
+          $filename = $file . '.php';
+          $filepath = $this->plugin_base() . '/views/' . $folder . "/";
+          $filefull = $filepath . $filename;
+          if (file_exists($filefull)) {
+            if (!empty($params)) {
+                foreach ($params as $pkey => $pval) {
+                    ${$pkey} = $pval;
                 }
             }
+            if ($output == false) {
+                ob_start();
+            }
+            include($filefull);
+            if ($output == false) {
+                $data = ob_get_clean();
+                return $data;
+            } else {
+                flush();
+                return true;
+            }
+          }
         }
         return false;
     }
@@ -721,12 +769,46 @@ class SatellitePlugin
         return $links;
     }
     
-    public function canPremiumDoThis($action) {
-      switch ($action) {
-        case 'watermark':
-          return method_exists(SatellitePremiumHelper,'doWatermark');
-          break;
+    /*
+     * Mainly used on transition from gallery_slides to satl_slides -- V 2.1 Update
+     */
+    function tableTransition($new_table, $old_table = null) {
+      global $wpdb;
+      
+      if (!$old_table) {
+        $gallery_table = $wpdb -> prefix.'gallery_slides';
+        $countGT = $wpdb->get_var("SELECT COUNT(*) FROM ".$gallery_table);
+        if ($countGT > 0){
+          $old_table = $gallery_table;
+        } else { return false; }
       }
+      $this->log_me("Running table transition, and moving all slide information over from ".$old_table." to the new table: ".$new_table);
+      $result = $wpdb->query("INSERT INTO ". $new_table ." SELECT id, title, description, "
+            ."image, type, section, image_url, uselink, link, textlocation, more,"
+            ."slide_order, created, modified FROM ". $old_table); 
+    }
+    
+    public function canPremiumDoThis($action) {
+      if (SATL_PRO && class_exists(SatellitePremiumHelper)) {
+        switch ($action) {
+          case 'watermark':
+            return method_exists(SatellitePremiumHelper,'doWatermark');
+            break;
+          default:
+            return false;
+            break;
+        }
+      }
+      return false;
+    }
+    public function log_me($message) {
+        if (WP_DEBUG === true) {
+            if (is_array($message) || is_object($message)) {
+                error_log(print_r($message, true));
+            } else {
+                error_log($message);
+            }
+        }
     }
 }
 ?>

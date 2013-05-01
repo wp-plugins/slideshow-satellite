@@ -1,18 +1,20 @@
 === Slideshow Satellite ===
 Contributors: C- Pres
 Donate link: http://c-pr.es/projects/satellite
-Tags: responsive slideshow, photography, watermark, satellite, orbit, zurb orbit, slideshow gallery, responsive, slideshow, content slider, gallery, slideshow satellite, photography, slideshow orbit
+Tags: responsive slideshow, photography, watermark, satellite, orbit, responsive, slideshow, infinite scroll, lazy load, flipbook 
 Requires at least: 3.1
 Tested up to: 3.5.1
-Stable tag: 2.0.2
+Stable tag: 2.1
 License: GPLv2 or later
 
-So Responsive! So Customizable! So Modern! SO PRETTY! Build image galleries or content displays with Slideshow Satellite. 
+So Responsive! So Customizable! So Modern! Build Slideshows, Flipbooks, and do Infinite Scrolls with Slideshow Satellite. 
 
 == Description ==
 Satellite's goal is to present a responsive and beautiful slideshow experience to visitors of your WordPress site.
 
-Using either your WordPress Media Galleries or our own Gallery Editor, every page of every site deserves a customized look and feel.
+Choose from multiple easy to use themes like Slideshows with full thumbnail displays, Flipbooks for that animated-gif style slideshow, or the brand new Infinite Scroll!
+
+Use either your WordPress Media Galleries or our own highly customized Gallery Editor.
 
 To explore the manual, watch tutorial videos, or get the Premium edition: http://c-pr.es/projects/satellite/
 
@@ -74,7 +76,6 @@ If you have the premium edition and multiple custom galleries setup do this `[sa
 = The slideshow loads a little funky, I fear it's the theme =
 With premium edition, you can load the plugin after the theme loads by using the splash screen `[satellite gallery=2 splash=on]`
 
-= 
 
 Premium Questions
 
@@ -88,9 +89,16 @@ You may also want to "Reset Configuration" from the Configuration page
 1. Slideshow Satellite with bottom thumbnails
 2. Slideshow Satellite with "Full Right"
 
-Two should be enough, we don't want to bog down your install with screenshots. Come to the site for more, and a video tutorial: http://c-pr.es/satellite
+See slideshows in action on our Sandbox: http://c-pr.es/sandbox
+See the manual and videos and more: http://c-pr.es/satellite
 
 == Changelog ==
+= 2.1 =
+* Slideshow Themes Added: Infinite Scroll & Flipbooks
+* Infinite Scrolls for Admin Slides
+* Updated Admin Sections: Quick Edit & Gallery-Slide Connection
+* jQuery IE 7&8 issue
+
 = 2.0.2 =
 * Fixed thickbox issue
 * Fixed Twenty-Twelve Admin CSS issues

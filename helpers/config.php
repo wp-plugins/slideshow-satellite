@@ -51,6 +51,17 @@ class SatelliteConfigHelper extends SatellitePlugin {
                         "id"        => "slides",
                         "type"      => "upload"),
 
+                array(  "name"      => "Theme",
+                        "desc"      => "Which Theme should this slideshow use? Flipbook is similar to an animated gif",
+                        "id"        => "theme",
+                        "value"     => $model -> data -> theme,
+                        "type"      => "select",
+                        "std"       => "standard",
+                        "options"   =>  array(
+                                        array("id" => "standard", "title" => "Standard"),
+                                        array("id" => "flipbook", "title" => "Flipbook"),
+                                        array("id" => "infinite", "title" => "Infinite Scroll"))),
+
                 array(  "name"      => "Caption sizing",
                         "desc"      => "Large is In Charge for a reason. Default is how you have it set in General Configuration",
                         "id"        => "font",
@@ -74,17 +85,6 @@ class SatelliteConfigHelper extends SatellitePlugin {
                                         array('id' => 'On Right', 'title' => 'On Right'),
                                         array('id' => 'Disabled', 'title' => 'Disabled'))),
                     
-                array(  "name"      => "Caption Animation",
-                        "desc"      => "How will the animation transition occur?",
-                        "id"        => "capanimation",
-                        "value"     => $model -> data -> capanimation,
-                        "type"      => "select",
-                        "std"       => "slideOpen",
-                        "options"   => array(
-                                        array("id" => "fade", "title" => "Fade"),
-                                        array("id" => "slideOpen", "title" => "Slide Open"),
-                                        array("id" => "none", "title" => "None"))),
-
                 array(  "name"      => "Clean Start",
                         "desc"      => "Caption and Navigation Arrows display on mouse hover",
                         "id"        => "caphover",
@@ -305,6 +305,13 @@ class SatelliteConfigHelper extends SatellitePlugin {
             }
         }
         return null;
+    }
+    /*
+     * Returns to list($transition,$animspeed,$autospeed,$auto)
+     * @return array
+     */
+    function getFlipBookSettings() {
+      return array("none","1","100","Y");
     }
     
 

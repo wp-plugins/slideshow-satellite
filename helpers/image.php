@@ -131,7 +131,7 @@ class SatelliteImageHelper extends SatellitePlugin {
     }
     
     function deleteImages($record, $deleteall) {
-      $imagepath = SATL_UPLOAD_DIR . DS;
+      $imagepath = SATL_UPLOAD_DIR . '/';
       $name = SatelliteHtmlHelper::strip_ext($record->image, 'filename');
       $ext = SatelliteHtmlHelper::strip_ext($record->image, 'ext');
 

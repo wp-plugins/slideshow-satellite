@@ -9,7 +9,7 @@ if (!empty($slides)) :
     $pagelink = $images['pagelink'];
     $textloc = $this->get_option('textlocation');
     $responsive = $this->get_option('responsive');
-    $respExtra = ($respExtra) ? $respExtra : 0;
+    $respExtra = (isset($respExtra)) ? $respExtra : 0;
     $align = $this->get_option('align');
     if (!$frompost) {
         $this->Gallery->loadData($slides[0]->section);

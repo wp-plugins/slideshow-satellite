@@ -45,7 +45,7 @@ div.satl-align-right .satl-wrapper {
 div.orbit {
     width: 1px;
     height: 1px;
-    position: absolute;
+    position: absolute !important;
     overflow: hidden;
     z-index:40;}
 
@@ -79,6 +79,10 @@ div.orbit>a {
     }
 /* Note: If your slider only uses content or anchors, you're going to want to put the width and height declarations on the ".orbit>div" and "div.orbit>a" tags in addition to just the .satl-wrapper */
 /* SPECIAL IMAGES */
+
+.display-none {
+  display: none;
+}
 
 div.sorbit-tall, div.sorbit-wide, div.sorbit-basic {
     background:#000; 
@@ -221,13 +225,13 @@ span.pause.active {
     font-weight:bold;
     line-height:1em;
     }
-.satl-wrapper .orbit-caption h5.size-2 {
+.satl-wrapper .orbit-caption h5.size-2, .satellite-infinite .title.size-2 {
     font-size:2em;
 }
-.satl-wrapper .orbit-caption h5.size-3 {
+.satl-wrapper .orbit-caption h5.size-3, .satellite-infinite .title.size-3 {
     font-size:3em;
 }
-.satl-wrapper .orbit-caption h5.size-4 {
+.satl-wrapper .orbit-caption h5.size-4, .satellite-infinite .title.size-4 {
     font-size:4em;
 }
 
@@ -667,4 +671,21 @@ ul.orbit-thumbnails {
 .satl-gal-title a:hover {
     text-decoration:none;
     color:#FFF;
+}
+
+/**** Infinite Scroll ******/
+.satellite-infinite .info-hold {
+  position:relative;
+}
+.satellite-infinite .title {
+  background: rgba(0,0,0,.5);
+  float:right;
+  color:#FFF; 
+  padding:10px; 
+  font-size:1.4em; 
+  font-weight:bold;
+  line-height:1em;
+  position: absolute;
+  top: 0;
+  right:0;
 }

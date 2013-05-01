@@ -1,7 +1,7 @@
 === Slideshow Satellite ===
 Contributors: C- Pres
 Donate link: http://c-pr.es/projects/satellite
-Tags: responsive slideshow, photography, watermark, satellite, orbit, zurb orbit, slideshow gallery, responsive, slideshow, content slider, gallery, slideshow satellite, photography, slideshow orbit
+Tags: responsive slideshow, photography, watermark, satellite, orbit, responsive, slideshow, infinite scroll, lazy load, flipbook 
 Requires at least: 3.1
 Tested up to: 3.5.1
 Stable tag: 2.1
@@ -89,9 +89,16 @@ You may also want to "Reset Configuration" from the Configuration page
 1. Slideshow Satellite with bottom thumbnails
 2. Slideshow Satellite with "Full Right"
 
-Two should be enough, we don't want to bog down your install with screenshots. Come to the site for more, and a video tutorial: http://c-pr.es/satellite
+See slideshows in action on our Sandbox: http://c-pr.es/sandbox
+See the manual and videos and more: http://c-pr.es/satellite
 
 == Changelog ==
+= 2.1 =
+* Slideshow Themes Added: Infinite Scroll & Flipbooks
+* Infinite Scrolls for Admin Slides
+* Updated Admin Sections: Quick Edit & Gallery-Slide Connection
+* jQuery IE 7&8 issue
+
 = 2.0.2 =
 * Fixed thickbox issue
 * Fixed Twenty-Twelve Admin CSS issues

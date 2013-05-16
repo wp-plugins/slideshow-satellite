@@ -11,6 +11,11 @@ if (!empty($slides)) :
     $respExtra = ($respExtra) ? $respExtra : $style['thumbarea'];
     
     $textloc = $this->get_option('textlocation');
+    if (!$frompost) {
+        $this->Gallery->loadData($slides[0]->section);
+        $sidetext = $this -> Gallery -> capLocation($this->Gallery->data->capposition,$slides[0]->section);
+    }
+
     ?>
 
     <?php if ($frompost) : ?>
@@ -40,10 +45,12 @@ if (!empty($slides)) :
                         <?PHP if ($imagesbox != "N" && ! $this->get_option( 'nolinker' )) { ?></a><?PHP } ?>
                 </div>
             
-                <span class="orbit-caption" id="post-<?php echo $slider->ID; ?>">
-                    <h5 class="orbit-title<?php echo($style['infotitle']) ?>"><?php echo $slider->post_title; ?></h5>
-                    <p><?php echo $slider->post_content; ?></p>
-                </span>
+                <?php $this -> render('display-caption', array('frompost'   => true, 
+                                                               'slider'     => $slider, 
+                                                               'fontsize'   => null,
+                                                               'style'      => $style,
+                                                               'i'          => null
+                                                               ), true, 'orbit');?>
             <?php endforeach;  ?>
             </div> <!-- end featured -->
 
@@ -53,16 +60,19 @@ if (!empty($slides)) :
         <!--  CUSTOM GALLERY -->
     <?php else : ?>  
 
-        <div class="<?php echo ( $this->get_option('thumbnails_temp') == 'FR') ? 'full-right' : 'full-left';?><?php echo($responsive) ? ' resp' : ''; ?>">
+        <div class="<?php echo ( $this->get_option('thumbnails_temp') == 'FR') ? 'full-right' : 'full-left';?><?php echo($responsive) ? ' resp' : ''; ?>
+            <?php echo($sidetext) ? ' text-' . $sidetext : ''; ?>">
             <div id="featured<?php echo $satellite_init_ok; ?>"> 
                 <?php $i = 0; ?>
                 <?php foreach ($slides as $slider) : ?>     
                     <?php
                     if ($this->get_option('abscenter') == "Y" ) {
-                        echo "<div class='sorbit-wide absoluteCenter' data-caption='#custom-$i'
+                        echo "<div class='sorbit-wide absoluteCenter' 
+                            data-caption='#custom{$satellite_init_ok}-$i'
                             data-thumb='{$this->Html->image_url($this->Html->thumbname($slider->image))}'>";
                     } else {
-                        echo "<div class='sorbit-basic' data-caption='#custom-$i'
+                        echo "<div class='sorbit-basic' 
+                            data-caption='#custom{$satellite_init_ok}-$i'
                             data-thumb='{$this->Html->image_url($this->Html->thumbname($slider->image))}'>";
                     }
                     ?>					
@@ -81,10 +91,12 @@ if (!empty($slides)) :
                     <?PHP if (( $imagesbox != "N" && ! $this->get_option('nolinker') ) || $slider->uselink == "Y") : ?></a><?PHP endif; ?>
                 </div>
                 <?php if ($slider->textlocation != "N") { ?>
-                <span class="orbit-caption <?php echo ($slider->textlocation == 'BR'|| $slider->textlocation == 'TR') ? ' sattext sattext'.$slider->textlocation:''?>" id="custom-<?php echo $i; ?>">
-                    <h5 class="orbit-title<?php echo($style['infotitle']) ?>"><?php echo $slider->title; ?></h5>
-                    <p><?php echo $slider->description; ?></p>
-                </span> 
+                  <?php $this -> render('display-caption', array('frompost'   => false, 
+                                                                 'slider'     => $slider, 
+                                                                 'fontsize'   => $this->Gallery->data->font,
+                                                                 'style'      => $style,
+                                                                 'i'          => $i
+                                                                 ), true, 'orbit');?> 
                 <?php } ?>
                 <?php $i = $i +1; ?>
             <?php endforeach; ?>

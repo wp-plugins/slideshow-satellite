@@ -53,9 +53,10 @@ class SatellitePlugin
     }
     function add_admin_styles() {
         $adminStyleUrl = SATL_PLUGIN_URL . '/css/' . $this -> cssadmin . '?v=' . SATL_VERSION;
+        $page = (isset($_GET['page'])) ? $_GET['page'] : null;
         wp_register_style(SATL_PLUGIN_NAME . "_adstyle", $adminStyleUrl);
         wp_enqueue_style(SATL_PLUGIN_NAME . "_adstyle");
-        if ($_GET['page'] == "satellite-slides") {
+        if ($page == "satellite-slides" || $page == "satellite-galleries") {
           wp_enqueue_style('bootstrap',"http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css");
         }
 

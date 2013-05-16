@@ -51,7 +51,6 @@ class SatelliteDbHelper extends SatellitePlugin {
 		list($ofield, $odir) = $order;
 		$query .= " ORDER BY `" . $ofield . "` " . $odir . "";
 		$query .= " LIMIT 1";
-		error_log("finding ".$query);
                 
 		if ($record = $wpdb -> get_row($query)) {		
 			if (!empty($record)) {			

@@ -331,7 +331,7 @@ class Satellite extends SatellitePlugin {
             break;
           
         }
-    } else { // from post
+    } else { // from post "frompost => true"
 			global $post;
 			$post_id_orig = $post -> ID;
 			if ( empty( $slug )) {

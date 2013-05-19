@@ -39,23 +39,19 @@ if (!empty($slides)) :
                     } else {
                         echo "<div class='sorbit-basic' data-caption='#post-{$slider->ID}' data-thumb='{$thumbnail_link[0]}'>";
                     }
-                    ?>
-                            <?PHP if ($this->get_option('wpattach') == 'Y') { ?>
-                        <a href="<?php echo $attachment_link; ?>" rel="" title="<?php echo $slider->post_title; ?>">
-            <?PHP } elseif ($imagesbox != "N" && ! $this->get_option('nolinker')) { ?>
-                            <a class="thickbox sorbit-link" href="<?php echo $full_image_href[0]; ?>" rel="" title="<?php echo $slider->post_title; ?>">
-                            <?PHP } ?>
-                            <img <?php echo ($this->get_option('abscenter') == "Y") ? "class='absoluteCenter'" : "" ?> src="<?php echo $full_image_href[0]; ?>" 
-                                                                                                                     alt="<?php echo $slider->post_title; ?>" />
-            <?PHP if ($imagesbox != "N" && ! $this->get_option('nolinker')) { ?></a><?PHP } ?>
-                </div>
+                    $this->render('display-image', 
+                      array('frompost'  =>  true,
+                            'slider'    => $slider), true, 'orbit');?>
+ 
+            </div>
 
-                <?php $this -> render('display-caption', array('frompost'   => true, 
-                                                               'slider'     => $slider, 
-                                                               'fontsize'   => null,
-                                                               'style'      => $style,
-                                                               'i'          => null
-                                                               ), true, 'orbit');?>
+                <?php $this -> render('display-caption', 
+                        array(  'frompost'   => true, 
+                                'slider'     => $slider, 
+                                'fontsize'   => null,
+                                'style'      => $style,
+                                'i'          => null
+                                ), true, 'orbit');?>
 
             <?php endforeach; ?>
             </div> <!-- end featured -->
@@ -75,40 +71,30 @@ if (!empty($slides)) :
                 <?php $i = 0; ?>
                 <?php foreach ($slides as $slider) : ?>     
                     <?php
-                    if ($this->get_option('abscenter') == "Y") {
-                        echo "<div id='satl-custom-{$this->Gallery->data->id}{$slider->id}' class='sorbit-wide absoluteCenter' 
-                            data-caption='#custom{$satellite_init_ok}-$i'
-                            data-thumb='{$this->Html->image_url($this->Html->thumbname($slider->image))}'>";
-                    } else {
-                        echo "<div id='satl-custom-{$this->Gallery->data->id}{$slider->id}' class='sorbit-basic' 
-                            data-caption='#custom{$satellite_init_ok}-$i'
-                            data-thumb='{$this->Html->image_url($this->Html->thumbname($slider->image))}'>";
-                    }
-                    ?>					
-                            <?php if ($slider->uselink == "Y" && !empty($slider->link)) : ?>
-                        <a href="<?php echo $slider->link; ?>" title="<?php echo $slider->title; ?>" target="<?php echo ($pagelink == "S") ? "_self" : "_blank" ?>">
-            <?PHP elseif ($imagesbox != "N" && ! $this->get_option('nolinker')) : ?>
-                            <a class="thickbox sorbit-link" href="<?php echo $this->Html->image_url($slider->image); ?>" rel="" title="<?php echo $slider->title; ?>">
-            <?PHP endif; ?>
 
-                            <img <?php echo ($this->get_option('abscenter') == "Y") ? "class='absoluteCenter'" : "" ?> 
-                                src="<?php echo $this->Html->image_url($slider->image); ?>" 
-                                alt="<?php echo $slider->title; ?>"                       
-                                />
+                $class= ($this->get_option('abscenter') == "Y") ? "absoluteCenter" : "";
 
-                <?PHP if ($imagesbox != "N" || $slider->uselink == "Y") : ?></a><?PHP endif; ?>
+                echo "<div id='satl-custom-{$this->Gallery->data->id}{$slider->id}' class='sorbit-wide ".$class."' 
+                    data-caption='#custom{$satellite_init_ok}-$i'
+                    data-thumb='{$this->Html->image_url($this->Html->thumbname($slider->image))}'>";
+
+                    $this->render('display-image', 
+                      array('frompost'  =>false,
+                            'slider'    => $slider), true, 'orbit');?>
+
                 </div>
             <?php
             if ($sidetext != ( "Disabled" )) :
                 if ($slider->textlocation != "N") :
                     ?>
-                        <?php $this -> render('display-caption', array('frompost'   => false, 
-                                                                       'slider'     => $slider, 
-                                                                       'fontsize'   => $this->Gallery->data->font,
-                                                                       'style'      => $style,
-                                                                       'i'          => $i
-                                                                       ), true, 'orbit');?>
- 
+                        <?php $this -> render('display-caption', 
+                              array(  'frompost'   => false, 
+                                      'slider'     => $slider, 
+                                      'fontsize'   => $this->Gallery->data->font,
+                                      'style'      => $style,
+                                      'i'          => $i
+                                      ), true, 'orbit');?>
+
                     <?php else : ?>
                         <span class="sattext-none" id='custom<?php echo ($satellite_init_ok . '-' . $i); ?>'>
                         </span>

@@ -29,11 +29,8 @@ if (!empty($slides)) :
                     <?php $thumbnail_link = wp_get_attachment_image_src($slider->ID, 'thumbnail', false); ?>
 
                     <?php
-                    if ($this->get_option('abscenter') == "Y" ) {
-                        echo "<div class='sorbit-wide absoluteCenter' data-caption='#post-{$slider->ID}' data-thumb='{$thumbnail_link[0]}'>";
-                    } else {
-                        echo "<div class='sorbit-basic' data-caption='#post-{$slider->ID}' data-thumb='{$thumbnail_link[0]}'>";
-                    }
+                    $class= ($this->get_option('abscenter') == "Y") ? "absoluteCenter" : "";
+                    echo "<div class='sorbit-wide ".$class."' data-caption='#post-{$slider->ID}' data-thumb='{$thumbnail_link[0]}'>";
                     ?>
                     <?PHP if ($this->get_option('wpattach') == 'Y') { ?>
                         <a href="<?php echo $attachment_link; ?>" rel="" title="<?php echo $slider->post_title; ?>">
@@ -66,29 +63,14 @@ if (!empty($slides)) :
                 <?php $i = 0; ?>
                 <?php foreach ($slides as $slider) : ?>     
                     <?php
-                    if ($this->get_option('abscenter') == "Y" ) {
-                        echo "<div class='sorbit-wide absoluteCenter' 
-                            data-caption='#custom{$satellite_init_ok}-$i'
-                            data-thumb='{$this->Html->image_url($this->Html->thumbname($slider->image))}'>";
-                    } else {
-                        echo "<div class='sorbit-basic' 
-                            data-caption='#custom{$satellite_init_ok}-$i'
-                            data-thumb='{$this->Html->image_url($this->Html->thumbname($slider->image))}'>";
-                    }
-                    ?>					
-                    <?php if ($slider->uselink == "Y" && !empty($slider->link)) : ?>
-                        <a href="<?php echo $slider->link; ?>" title="<?php echo $slider->title; ?>" target="<?php echo ($pagelink == "S") ? "_self":"_blank" ?>">
-                    <?PHP elseif ($imagesbox != "N" && ! $this->get_option('nolinker')) : ?>
-                        <a class="thickbox sorbit-link" href="<?php echo $this->Html->image_url($slider->image); ?>" rel="" title="<?php echo $slider->title; ?>">
-                    <?PHP endif; ?>
+                    $class= ($this->get_option('abscenter') == "Y") ? "absoluteCenter" : "";
+                    echo "<div class='sorbit-wide ".$class."' 
+                        data-caption='#custom{$satellite_init_ok}-$i'
+                        data-thumb='{$this->Html->image_url($this->Html->thumbname($slider->image))}'>";
 
-
-                    <img <?php echo ($this->get_option('abscenter') == "Y") ? "class='absoluteCenter'":"" ?> 
-                        src="<?php echo $this->Html->image_url($slider->image); ?>" 
-                        alt="<?php echo $slider->title; ?>"                       
-                        />
-                    
-                    <?PHP if (( $imagesbox != "N" && ! $this->get_option('nolinker') ) || $slider->uselink == "Y") : ?></a><?PHP endif; ?>
+                    $this->render('display-image', 
+                    array('frompost'  =>false,
+                          'slider'    => $slider), true, 'orbit');?>
                 </div>
                 <?php if ($slider->textlocation != "N") { ?>
                   <?php $this -> render('display-caption', array('frompost'   => false, 

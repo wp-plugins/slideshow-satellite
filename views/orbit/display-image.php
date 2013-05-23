@@ -7,6 +7,13 @@ $attachment_link = ($frompost) ? get_attachment_link($slider->ID) : '';
 $pagelink = $images['pagelink'];
 $full_image_href = wp_get_attachment_image_src($slider->ID, 'full', false);
 $imagelink = ($frompost) ? $full_image_href[0] : $this->Html->image_url($slider->image);
+if ($images['position'] == "S") {
+  list($width, $height, $type, $attr) = getimagesize($imagelink);
+  $size = ($width > $height) ? " wide" : " tall";
+  $position = "absoluteCenter stretchCenter " .$size;
+} else {
+  $position = "absoluteCenter";
+}
 $rel = "";
 $class= "";
 if ($imagesbox == "T") {
@@ -24,7 +31,7 @@ if ($imagesbox == "T") {
 <?PHP elseif ($imagesbox != "N" && ! $this->get_option('nolinker')) : ?>
   <a class="sorbit-link <?php echo $class; ?>" href="<?php echo $imagelink; ?>" rel="<?php echo $rel; ?>" title="<?php echo $title; ?>">
 <?PHP endif; ?>
-<img <?php echo ($this->get_option('abscenter') == "Y") ? "class='absoluteCenter'" : "" ?> 
+<img class="<?php echo($position);?>"
   src="<?php echo $imagelink; ?>" 
   alt="<?php echo $title; ?>" />
 <?PHP if (($imagesbox != "N" && ! $this->get_option('nolinker')) || $slider->uselink == "Y")  { ?></a><?PHP } ?>

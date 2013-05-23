@@ -29,16 +29,16 @@ if (!empty($slides)) :
                 <?php echo($responsive) ? ' resp' : ''; ?>
              ">
             <div id="featured<?php echo $satellite_init_ok; ?>"> 
-                <?php foreach ($slides as $slider) : ?>  
-                    <?php $full_image_href = wp_get_attachment_image_src($slider->ID, 'full', false); ?>
-                    <?php $thumbnail_link = wp_get_attachment_image_src($slider->ID, 'thumbnail', false); ?>
-                    <?php $attachment_link = get_attachment_link($slider->ID); ?>
-                    <?php
-                    if ($this->get_option('abscenter') == "Y") {
-                        echo "<div class='sorbit-wide absoluteCenter' data-caption='#post-{$slider->ID}' data-thumb='{$thumbnail_link[0]}'>";
-                    } else {
-                        echo "<div class='sorbit-basic' data-caption='#post-{$slider->ID}' data-thumb='{$thumbnail_link[0]}'>";
-                    }
+                <?php foreach ($slides as $slider) :
+                    $thumbnail_link = wp_get_attachment_image_src($slider->ID, 'thumbnail', false);
+                    $attachment_link = get_attachment_link($slider->ID);
+                    
+                    $class= ($images['position'] == "S") ? "stretchCenter" : "absoluteCenter";
+                    
+                    echo "<div class='sorbit-wide ".$class."'  
+                            data-caption='#post-{$slider->ID}' 
+                            data-thumb='{$thumbnail_link[0]}'>";
+                            
                     $this->render('display-image', 
                       array('frompost'  =>  true,
                             'slider'    => $slider), true, 'orbit');?>
@@ -72,7 +72,7 @@ if (!empty($slides)) :
                 <?php foreach ($slides as $slider) : ?>     
                     <?php
 
-                $class= ($this->get_option('abscenter') == "Y") ? "absoluteCenter" : "";
+                $class= ($images['position'] == "S") ? "stretchCenter" : "absoluteCenter";
 
                 echo "<div id='satl-custom-{$this->Gallery->data->id}{$slider->id}' class='sorbit-wide ".$class."' 
                     data-caption='#custom{$satellite_init_ok}-$i'

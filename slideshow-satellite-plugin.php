@@ -226,6 +226,7 @@ class SatellitePlugin
         );
         $images = array(
             'imagesbox'   => 'T',
+            'position'    => 'A',
             'resize'      => 1024,
             'pagelink'    =>  'S'
         );
@@ -240,7 +241,6 @@ class SatellitePlugin
         //General Settings
         $this->add_option('autospeed', 10);
         $this->add_option('autoslide', "Y");
-        $this->add_option('abscenter', "Y");
         $this->add_option('fadespeed', 10);
         $this->add_option('nav_opacity', 30);
         $this->add_option('navhover', 70);

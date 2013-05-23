@@ -24,30 +24,26 @@ if (!empty($slides)) :
         ======================================= -->
         <div class="<?php echo ( $this->get_option('thumbnails_temp') == 'FR') ? 'full-right' : 'full-left';?><?php echo($responsive) ? ' resp' : ''; ?>">
             <div id="featured<?php echo $satellite_init_ok; ?>"> 
-                <?php foreach ($slides as $slider) : ?>  
-                    <?php $full_image_href = wp_get_attachment_image_src($slider->ID, 'full', false); ?>
-                    <?php $thumbnail_link = wp_get_attachment_image_src($slider->ID, 'thumbnail', false); ?>
-
-                    <?php
-                    $class= ($this->get_option('abscenter') == "Y") ? "absoluteCenter" : "";
-                    echo "<div class='sorbit-wide ".$class."' data-caption='#post-{$slider->ID}' data-thumb='{$thumbnail_link[0]}'>";
-                    ?>
-                    <?PHP if ($this->get_option('wpattach') == 'Y') { ?>
-                        <a href="<?php echo $attachment_link; ?>" rel="" title="<?php echo $slider->post_title; ?>">
-                    <?PHP } elseif ($imagesbox != "N" && ! $this->get_option( 'nolinker' )) { ?>
-                        <a class="thickbox sorbit-link" href="<?php echo $full_image_href[0]; ?>" rel="" title="<?php echo $slider->post_title; ?>">
-                    <?PHP } ?>
-                        <img <?php echo ($this->get_option('abscenter') == "Y") ? "class='absoluteCenter'":"" ?> src="<?php echo $full_image_href[0]; ?>" 
-                             alt="<?php echo $imagesbox . $slider->post_title; ?>" />
-                        <?PHP if ($imagesbox != "N" && ! $this->get_option( 'nolinker' )) { ?></a><?PHP } ?>
+                <?php foreach ($slides as $slider) :  
+                    $thumbnail_link = wp_get_attachment_image_src($slider->ID, 'thumbnail', false);
+                    $class= ($images['position'] == "S") ? "stretchCenter" : "absoluteCenter";
+                    
+                    echo "<div class='sorbit-wide ".$class."' 
+                               data-caption='#post-{$slider->ID}' 
+                               data-thumb='{$thumbnail_link[0]}'>";
+                            
+                    $this->render('display-image', 
+                      array('frompost'  =>  true,
+                            'slider'    => $slider), true, 'orbit');?>
                 </div>
             
-                <?php $this -> render('display-caption', array('frompost'   => true, 
-                                                               'slider'     => $slider, 
-                                                               'fontsize'   => null,
-                                                               'style'      => $style,
-                                                               'i'          => null
-                                                               ), true, 'orbit');?>
+                <?php $this -> render('display-caption', 
+                        array( 'frompost'   => true, 
+                               'slider'     => $slider, 
+                               'fontsize'   => null,
+                               'style'      => $style,
+                               'i'          => null
+                               ), true, 'orbit');?>
             <?php endforeach;  ?>
             </div> <!-- end featured -->
 
@@ -61,9 +57,10 @@ if (!empty($slides)) :
             <?php echo($sidetext) ? ' text-' . $sidetext : ''; ?>">
             <div id="featured<?php echo $satellite_init_ok; ?>"> 
                 <?php $i = 0; ?>
-                <?php foreach ($slides as $slider) : ?>     
-                    <?php
-                    $class= ($this->get_option('abscenter') == "Y") ? "absoluteCenter" : "";
+                <?php foreach ($slides as $slider) :
+
+                    $class= ($images['position'] == "S") ? "stretchCenter" : "absoluteCenter";
+                    
                     echo "<div class='sorbit-wide ".$class."' 
                         data-caption='#custom{$satellite_init_ok}-$i'
                         data-thumb='{$this->Html->image_url($this->Html->thumbname($slider->image))}'>";

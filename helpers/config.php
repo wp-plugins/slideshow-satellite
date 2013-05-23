@@ -120,9 +120,21 @@ class SatelliteConfigHelper extends SatellitePlugin {
                                        array('id' => 800, 'title' => '800 px'),
                                        array('id' => 600, 'title' => '600 px'))
                         ),
+                
                   
+                array(  "name"      => "Image Positioning",
+                        "desc"      => "When the image is too small, stretch it or no?",
+                        "id"        => "position",
+                        "type"      => "select",
+                        "value"     => $image['position'],
+                        "std"       => 'A',
+                        "options"   => array(
+                               array('id' => 'A', 'title' => __('Absolute Center', SATL_PLUGIN_NAME)),
+                               array('id' => 'S', 'title' => __('Stretch and Center', SATL_PLUGIN_NAME))
+                               )
+                        ),
                 array(  "name"      => "Open Images in...",
-                        "desc"      => "Thickbox is the standard, built into wordpress, but if you use another plugin choose custom",
+                        "desc"      => "Thickbox is WordPress Standard. Use a Lightbox Plugin or something else!",
                         "id"        => "imagesbox",
                         "type"      => "select",
                         "value"     => $image['imagesbox'],

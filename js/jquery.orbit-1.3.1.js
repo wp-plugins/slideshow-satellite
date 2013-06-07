@@ -504,6 +504,11 @@
 
         this.$wrapper.append(this.directionalThumbHTML);
         
+        if (this.$holdermin) {
+          this.$wrapper.find('#slideleft').hide();
+          this.$wrapper.find('#slideright').hide();
+        }
+        
         this.$wrapper.find('#slideleft').click(function () { 
             self.$wrapper.find('.thumbholder').animate({scrollLeft: "-="+scrollsize}, 'slow'); 
         });
@@ -519,12 +524,19 @@
         if (!this.options.sideThumbs) {
             this.$thumbwidth = (this.$slides.length * this.options.thumbWidth);
             this.$bullets.css('width', this.$thumbwidth);
+            
         } else {
             this.$bullets.css('min-width', this.options.thumbWidth);
         }
     	this.$wrapper.append(this.$bullets);
         this.$bullets.wrap(this.wrapThumbHTML);
-        this.$wrapper.find('.thumbholder').css('padding-top',this.$wrapper.height()+'px');
+        this.$holder = this.$wrapper.find('.thumbholder')
+        this.$holder.css('padding-top',this.$wrapper.height()+'px');
+        // If small amount of thumbs - minify stuff!
+        if (this.$thumbwidth < this.$holder.width() && !this.options.sideThumbs) {
+          this.$bullets.css('margin', '0 auto');
+          this.$holdermin = true;
+        }
         if (this.options.sideThumbs) {
             this.setSideThumbSize(null,null);
             var b = $('html');

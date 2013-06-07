@@ -273,12 +273,12 @@ class SatelliteConfigHelper extends SatellitePlugin {
      * 
      */
     function showNumberConfig($params, $extra = null) {
-     $end = ($params['firstend']) ? $params['firstend'] : $params['end'];
+     $end = (isset($params['firstend'])) ? $params['firstend'] : $params['end'];
      for ($i = $params['start'];$i <= $end; $i = $i + $params['skip1'] ) {
        $return[] = array("id" => $i, "title" => $i." ".$extra);
      }
      // Firstend means there must be a second end. Otherwise there's just an end
-     if ($params['firstend']) {
+     if (isset($params['firstend']) && $params['firstend']) {
        for ($i = $i+$params['skip2']-1;$i <= $params['end']; $i = $i + $params['skip2'] ) {
          $return[] = array("id" => $i, "title" => $i." ".$extra);
        }       

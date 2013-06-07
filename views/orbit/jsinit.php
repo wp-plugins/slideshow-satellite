@@ -23,7 +23,8 @@
       list($transition,$animspeed,$autospeed,$auto) = $this->Config->getFlipBookSettings();
     }
     // mouse_out should be on for all auto & pausehovers
-    $mouse_out = ((!$this->Gallery->data->pausehover && $auto) || $this->Gallery->data->pausehover ) ? 'true' : 'false';
+    $mouse_out = ((!$this->Gallery->data->pausehover && $auto == "Y") || $this->Gallery->data->pausehover && $auto != "N") ? 'true' : 'false';
+    $this->log_me("auto: ".$auto);
     
     if ($fullthumb) { $bullets = true; }
     elseif ($this->get_option('thumbnails_temp') == "Y") { $bullets = true; }
@@ -55,8 +56,14 @@
                 thumbWidth: <?php echo $thumbwidth; ?>,
                 respExtra: <?php echo $respExtra; ?>, // the width beyond the slide image
                 alwaysPlayBtn: <?php echo ($style['playshow'] == "A") ? 'true' : 'false'; ?>
-            });				
+            });			
         });
+        jQuery('.orbit-thumbnails').ready(function ($) {
+          if ($('.orbit-thumbnails').width() < $('.thumbholder').width()) {
+            $('.orbit-thumbnails').css('margin', '0 auto');
+          }
+        });
+
         <?php if ($this->get_option('responsive')) : ?>
         jQuery(window).resize(function($) {
             jQuery('#featured<?php echo $satellite_init_ok; ?>').satlresponse({

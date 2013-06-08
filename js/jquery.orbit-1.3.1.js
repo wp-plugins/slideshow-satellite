@@ -605,7 +605,9 @@
         .animate({"opacity": 0}, this.options.animationSpeed);
       this.unlock();
       this.setupClicks();
-      this.setupCaptions();
+      if (this.options.captions) {
+        this.setupCaptions();
+      }
       this.options.afterSlideChange.call(this, this.$slides.eq(this.prevActiveSlide), this.$slides.eq(this.activeSlide));
     },
     // load is weather to load plugin right away

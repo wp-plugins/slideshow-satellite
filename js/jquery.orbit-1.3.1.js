@@ -488,9 +488,9 @@
 
     setLeftMargin: function(extraWidth) {
         var self = this;
-        var distance = parseInt(self.$wrapper.find('.left').css('left'))+self.$element.width();
         // Navigation
         self.$wrapper.find('.left').css('left',extraWidth);
+        var distance = parseInt(self.$wrapper.find('.left').css('left'))+self.$element.width();
         self.$wrapper.find('.right').css('left',distance - self.$wrapper.find('.right').width());
         // Caption
         this.$wrapper.find('.orbit-caption').css('left',extraWidth);

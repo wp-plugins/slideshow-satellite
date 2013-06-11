@@ -8,11 +8,17 @@ $pagelink = $images['pagelink'];
 $full_image_href = wp_get_attachment_image_src($slider->ID, 'full', false);
 $imagelink = ($frompost) ? $full_image_href[0] : $this->Html->image_url($slider->image);
 if ($images['position'] == "S") {
-  list($width, $height, $type, $attr) = getimagesize($imagelink);
-  $size = ($width > $height) ? " wide" : " tall";
+  if (!$frompost && $data = getimagesize($imagelink)) {
+    list($width,$height) = $data;
+    $size = $this->Image->getImageStretch($width,$height);
+  } elseif ($frompost) {
+    $size = $this->Image->getImageStretch($full_image_href[1],$full_image_href[2]);
+  } else {
+    $size = null;
+  }
   $position = "absoluteCenter stretchCenter " .$size;
 } else {
-  $position = "absoluteCenter";
+  $position = "absoluteCenter noStretch";
 }
 $rel = "";
 $class= "";

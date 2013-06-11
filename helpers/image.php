@@ -112,6 +112,17 @@ class SatelliteImageHelper extends SatellitePlugin {
       imagecopyresampled($new_image, $this->image, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
       $this->image = $new_image;
     }      
+    
+    public function getImageStretch($i_w,$i_h) {
+      $s_w = intval($this->get_option('width_temp'));
+      $s_h = intval($this->get_option('height_temp'));
+      $i_r = $i_w/$i_h;
+      $s_r = $s_w/$s_h;
+      if ($i_r <= $s_r)
+        return "tall";
+      else
+        return "wide";
+    }
     /*
      * @image is 
      */

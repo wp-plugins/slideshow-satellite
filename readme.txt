@@ -93,6 +93,12 @@ See slideshows in action on our Sandbox: http://c-pr.es/sandbox
 See the manual and videos and more: http://c-pr.es/satellite
 
 == Changelog ==
+= 2.1.2 =
+* Add Stretch and Center
+* Lightbox Readiness
+* Timing issue with no caption
+* Minor bug fixes
+
 = 2.1 =
 * Slideshow Themes Added: Infinite Scroll & Flipbooks
 * Infinite Scrolls for Admin Slides

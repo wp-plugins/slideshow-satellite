@@ -113,10 +113,11 @@ class SatelliteImageHelper extends SatellitePlugin {
       $this->image = $new_image;
     }      
     
-    public function getImageStretch($i_w,$i_h) {
-      $s_w = intval($this->get_option('width_temp'));
-      $s_h = intval($this->get_option('height_temp'));
-      $i_r = $i_w/$i_h;
+    public function getImageStretch($i_w,$i_h,$w) {
+      $styles = $this->get_option('styles');
+      $s_w = ($wt = intval($this->get_option('width_temp'))) ? $wt : $styles['width'];
+      $s_h = ($ht = intval($this->get_option('height_temp'))) ? $ht : $styles['height'];
+      $i_r = intval($i_w)/intval($i_h);
       $s_r = $s_w/$s_h;
       if ($i_r <= $s_r)
         return "tall";

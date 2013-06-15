@@ -113,16 +113,23 @@ class SatelliteImageHelper extends SatellitePlugin {
       $this->image = $new_image;
     }      
     
-    public function getImageStretch($i_w,$i_h,$w) {
+    public function getImageStretch($id,$i_w,$i_h,$crop) {
       $styles = $this->get_option('styles');
-      $s_w = ($wt = intval($this->get_option('width_temp'))) ? $wt : $styles['width'];
-      $s_h = ($ht = intval($this->get_option('height_temp'))) ? $ht : $styles['height'];
+      $width=$this->get_option('width_temp');
+      $height=$this->get_option('height_temp');
+      $s_w = ($wt = intval($width[$id])) ? $wt : $styles['width'];
+      $s_h = ($ht = intval($height[$id])) ? $ht : $styles['height'];
       $i_r = intval($i_w)/intval($i_h);
       $s_r = $s_w/$s_h;
-      if ($i_r <= $s_r)
-        return "tall";
-      else
-        return "wide";
+      $notclose = (abs($i_r - $s_r) > .4) ? true : false;
+      //$this->log_me("sw $s_w / sh $s_h  = sr: $s_r and iw $i_w / ih $i_h = ir: $i_r");
+      $crop = ($crop) ? "stretchCrop absoluteCenter" : false;
+      $crop = ($notclose && $crop) ? "stretchCenter absoluteCenter" : $crop;
+      if ($i_r <= $s_r) {
+        return "tall $crop";
+      } else {
+        return "wide $crop";
+      }
     }
     /*
      * @image is 

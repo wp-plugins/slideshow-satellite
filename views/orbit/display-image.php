@@ -1,4 +1,4 @@
-<?php global $satellite_init_ok; ?>
+<?php global $satellite_init_ok, $post; ?>
 <?php
 $images = $this->get_option('Images');
 $imagesbox = $images['imagesbox'];
@@ -7,16 +7,20 @@ $attachment_link = ($frompost) ? get_attachment_link($slider->ID) : '';
 $pagelink = $images['pagelink'];
 $full_image_href = wp_get_attachment_image_src($slider->ID, 'full', false);
 $imagelink = ($frompost) ? $full_image_href[0] : $this->Html->image_url($slider->image);
-if ($images['position'] == "S") {
+if ($images['position'] == "S" || $images['position'] == "C") {
+  $crop = ($images['position'] == "C") ? true : false;
   if (!$frompost && $data = getimagesize($imagelink)) {
     list($width,$height) = $data;
-    $size = $this->Image->getImageStretch($width,$height);
+    $size = $this->Image->getImageStretch($GLOBALS['post']->ID,$width,$height,$crop);
   } elseif ($frompost) {
-    $size = $this->Image->getImageStretch($full_image_href[1],$full_image_href[2]);
+    $size = $this->Image->getImageStretch($GLOBALS['post']->ID,$full_image_href[1],$full_image_href[2],$crop);
   } else {
     $size = null;
   }
-  $position = "absoluteCenter stretchCenter " .$size;
+  if ($images['position'] == "C") 
+    $position = $size;
+  else
+    $position = "absoluteCenter stretchCenter " .$size;
 } else {
   $position = "absoluteCenter noStretch";
 }

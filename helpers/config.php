@@ -114,23 +114,24 @@ class SatelliteConfigHelper extends SatellitePlugin {
                         "value"     => $image['resize'],
                         "std"       => 1024,
                         "options"   => array(
-                                       array('id' => 0, 'title' => 'No Resizing'),
-                                       array('id' => 1024, 'title' => '1024 px'),
-                                       array('id' => 900, 'title' => '900 px'),
-                                       array('id' => 800, 'title' => '800 px'),
-                                       array('id' => 600, 'title' => '600 px'))
+                               array('id' => 0, 'title' => 'No Resizing'),
+                               array('id' => 1024, 'title' => '1024 px'),
+                               array('id' => 900, 'title' => '900 px'),
+                               array('id' => 800, 'title' => '800 px'),
+                               array('id' => 600, 'title' => '600 px'))
                         ),
                 
                   
                 array(  "name"      => "Image Positioning",
-                        "desc"      => "When the image is too small, stretch it or no?",
+                        "desc"      => "When the image is too small, stretch it or no? Cropping will make sure it bleeds to all edges without distortion",
                         "id"        => "position",
                         "type"      => "select",
                         "value"     => $image['position'],
-                        "std"       => 'A',
+                        "std"       => 'S',
                         "options"   => array(
-                               array('id' => 'A', 'title' => __('Absolute Center', SATL_PLUGIN_NAME)),
-                               array('id' => 'S', 'title' => __('Stretch and Center', SATL_PLUGIN_NAME))
+                               array('id' => 'A', 'title' => __('Center - No Stretch', SATL_PLUGIN_NAME)),
+                               array('id' => 'S', 'title' => __('Stretch and Fit Center', SATL_PLUGIN_NAME)),
+                               array('id' => 'C', 'title' => __('Stretch and Crop', SATL_PLUGIN_NAME))
                                )
                         ),
                 array(  "name"      => "Open Images in...",

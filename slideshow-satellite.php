@@ -49,6 +49,9 @@ class Satellite extends SatellitePlugin {
     if ( $this -> get_option('satwiz') != "N") {
       $this -> add_filter('mce_buttons');
       $this -> add_filter('mce_external_plugins');
+      /*$this -> add_filter( 'ckeditor_plugin');
+      $this -> add_filter( 'ckeditor_buttons');*/
+      
       $this -> add_action( 'admin_print_footer_scripts', 'htmlmce_add_quicktags', 100 );
     }
 		$this -> add_filter('plugin_action_links', 'add_satl_settings_link', 10, 2 );			
@@ -132,6 +135,15 @@ class Satellite extends SatellitePlugin {
 		$plugins['gallery'] = SATL_PLUGIN_URL . '/js/tinymce/editor_plugin.js';
 		return $plugins;
 	}
+  function ckeditor_plugin($plugins) {
+    $plugins['gallery'] = SATL_PLUGIN_URL . '/js/ckeditor/';
+    return $plugins;
+  }
+
+  function ckeditor_buttons($buttons) {
+		array_push($buttons, "separator", "gallery");
+		return $buttons;
+  }
   
   function htmlmce_add_quicktags() {
   ?>
@@ -334,6 +346,8 @@ class Satellite extends SatellitePlugin {
     } else { // from post "frompost => true"
 			global $post;
 			$post_id_orig = $post -> ID;
+          
+
 			if ( empty( $slug )) {
 				$pid = (empty($post_id)) ? $post -> ID : $post_id;
 			} else {
@@ -349,15 +363,14 @@ class Satellite extends SatellitePlugin {
 					}
 				}
 			}
-			if (!empty( $pid ) && $post = get_post($pid)) {
-				if ($attachments = get_children("post_parent=" . $post -> ID . "&post_type=attachment&post_mime_type=image&orderby=menu_order ASC, ID ASC")) {
+			if (!empty( $pid )) {
+				if ($attachments = get_children("post_parent=" . $pid . "&post_type=attachment&post_mime_type=image&orderby=menu_order ASC, ID ASC")) {
 					if( $this -> get_option('random') == "on"){
 						shuffle($attachments);
 					}
 					$content = $this->exclude_ids($attachments, $exclude, $include);
 				}
 			}
-			$post -> ID = $post_id_orig;
 		}
 		
 		return $content;
@@ -408,6 +421,7 @@ class Satellite extends SatellitePlugin {
     $this -> update_option('splash', false);
     $this -> update_option('nolinker', false);
 	}
+  
 	function exclude_ids( $attachments, $exclude, $include ) {
 		if ( ! empty( $exclude )) {
 			$exclude = array_map('trim', explode(',', $exclude));
@@ -458,15 +472,15 @@ class Satellite extends SatellitePlugin {
 				break;
 			case 'single'			:
 				if (!empty($_POST['section'])) {
-                                        $msg_type = 'message';
-                                        $single = $_POST['section'];
-                                        $message = __('You have successfully updated your view to '.$single, SATL_PLUGIN_NAME);
-                                        if ( $single != "All") {
-                                            $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($single)), null, array('slide_order', "ASC"));
-                                            $this -> url = $this -> url . "&single={$single}";
-                                        } else {
-                                            $this -> url = $this -> url;
-                                        }
+          $msg_type = 'message';
+          $single = $_POST['section'];
+          $message = __('You have successfully updated your view to '.$single, SATL_PLUGIN_NAME);
+          if ( $single != "All") {
+              $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($single)), null, array('slide_order', "ASC"));
+              $this -> url = $this -> url . "&single={$single}";
+          } else {
+              $this -> url = $this -> url;
+          }
 				} else {
 					$msg_type = 'error';
 					$message = __('No section was specified', SATL_PLUGIN_NAME);
@@ -476,7 +490,6 @@ class Satellite extends SatellitePlugin {
 			case 'save'				:
 				if (!empty($_POST)) {
 					if ($this -> Slide -> save($_POST, true)) {
-            //$this->log_me($_POST);
 						$message = __('Slide has been saved', SATL_PLUGIN_NAME);
 						$this -> redirect($this -> url, "message", $message);
 					} else {
@@ -512,8 +525,6 @@ class Satellite extends SatellitePlugin {
                 $slide_ids = $this -> getSlideFromPost($_POST['Slide']['checklist']);
                 $slide_titles = $this -> getSlideFromPost($_POST['Slide']['title']);
                 $slide_galleries = $this -> getSlideFromPost($_POST['Slide']['gallery']);
-                $this->log_me($slide_ids);
-                $this->log_me($slide_titles);
                 for ($i=0;$i<count($slide_ids);$i++) {
                   $this->Slide ->quickSaveSlide($slide_ids[$i],$slide_titles[$i],$slide_galleries[$i]);
                 }
@@ -602,16 +613,16 @@ class Satellite extends SatellitePlugin {
 			case 'save'				:
 				if (!empty($_POST)) {
 					if ($this -> Gallery -> save($_POST, true)) {
-                                            if (!empty($_POST['images'])) {
-                                                if ($this -> Slide -> processImages($_POST['images'], $_POST['Gallery']['id'])) {
-                                                    $message = __('Gallery and images have been saved', SATL_PLUGIN_NAME);
-                                                } else {
-                                                    $message = __('Gallery has saved but image upload failed', SATL_PLUGIN_NAME);
-                                                }
-                                            } else {
-                                                $message = __('Gallery info has been saved', SATL_PLUGIN_NAME);
-                                            }
-                                            $this -> redirect($this -> url, "message", $message);
+            if (!empty($_POST['images'])) {
+                if ($this -> Slide -> processImages($_POST['images'], $_POST['Gallery']['id'])) {
+                    $message = __('Gallery and images have been saved', SATL_PLUGIN_NAME);
+                } else {
+                    $message = __('Gallery has saved but image upload failed', SATL_PLUGIN_NAME);
+                }
+            } else {
+                $message = __('Gallery info has been saved', SATL_PLUGIN_NAME);
+            }
+            $this -> redirect($this -> url, "message", $message);
 					} else {
 						$this -> render('galleries/save', false, true, 'admin');
 					}
@@ -650,59 +661,59 @@ class Satellite extends SatellitePlugin {
 		}
 	}
         
-        function admin_newgallery() {
-                if (!empty($_POST)) {
-                    if ($this -> Gallery -> save($_POST, true)) {
-                        if (!empty($_POST['images'])) {
-                            $this -> Slide -> processImages($_POST['images']);
-                            $message = __('Gallery and images have been saved', SATL_PLUGIN_NAME);
-                        } else {
-                            $message = __('Gallery with no images has been saved', SATL_PLUGIN_NAME);
-                        }
-                        $this -> redirect($this -> url, "message", $message);
-                    } else {
-                        $this -> render('galleries/save', false, true, 'admin');
-                    }
-                } else {
-                    $this -> Db -> model = $this -> Gallery -> model;
-                    $this -> Gallery -> find(array('id' => $_GET['id']));
-                    $this -> render('galleries/save', false, true, 'admin');
-                }
+  function admin_newgallery() {
+    if (!empty($_POST)) {
+      if ($this -> Gallery -> save($_POST, true)) {
+          if (!empty($_POST['images'])) {
+              $this -> Slide -> processImages($_POST['images']);
+              $message = __('Gallery and images have been saved', SATL_PLUGIN_NAME);
+          } else {
+              $message = __('Gallery with no images has been saved', SATL_PLUGIN_NAME);
+          }
+          $this -> redirect($this -> url, "message", $message);
+      } else {
+          $this -> render('galleries/save', false, true, 'admin');
+      }
+    } else {
+      $this -> Db -> model = $this -> Gallery -> model;
+      $this -> Gallery -> find(array('id' => $_GET['id']));
+      $this -> render('galleries/save', false, true, 'admin');
+    }
 
-        }
+  }
 	
 	function admin_settings() {
-            if ( ! isset( $_GET['method'] ) ) { $_GET['method'] = "undefined"; }
-            switch ($_GET['method']) {
-                case 'reset'			:
-                    global $wpdb;
-                    $query = "DELETE FROM `" . $wpdb -> prefix . "options` WHERE `option_name` LIKE '" . $this -> pre . "%';";
+    if ( ! isset( $_GET['method'] ) ) { $_GET['method'] = "undefined"; }
+    switch ($_GET['method']) {
+        case 'reset'			:
+            global $wpdb;
+            $query = "DELETE FROM `" . $wpdb -> prefix . "options` WHERE `option_name` LIKE '" . $this -> pre . "%';";
 
-                    if ($wpdb -> query($query)) {
-                            $message = __('All configuration settings have been reset to their defaults', SATL_PLUGIN_NAME);
-                            $msg_type = 'message';
-                            $this -> render_msg($message);	
-                    } else {
-                            $message = __('Configuration settings could not be reset', SATL_PLUGIN_NAME);
-                            $msg_type = 'error';
-                            $this -> render_err($message);
-                    }
-
-                    $this -> redirect($this -> url, $msg_type, $message);
-                    break;
-                default					:
-                    if (!empty($_POST)) {
-                        foreach ($_POST as $pkey => $pval) {		
-                                $this -> update_option($pkey, $pval);
-                        }
-
-                        $message = __('Configuration has been saved', SATL_PLUGIN_NAME);
-                        $this -> render_msg($message);
-                    }	
-                    break;
+            if ($wpdb -> query($query)) {
+                    $message = __('All configuration settings have been reset to their defaults', SATL_PLUGIN_NAME);
+                    $msg_type = 'message';
+                    $this -> render_msg($message);	
+            } else {
+                    $message = __('Configuration settings could not be reset', SATL_PLUGIN_NAME);
+                    $msg_type = 'error';
+                    $this -> render_err($message);
             }
 
-            $this -> render('settings', false, true, 'admin');
+            $this -> redirect($this -> url, $msg_type, $message);
+            break;
+        default					:
+            if (!empty($_POST)) {
+                foreach ($_POST as $pkey => $pval) {		
+                        $this -> update_option($pkey, $pval);
+                }
+
+                $message = __('Configuration has been saved', SATL_PLUGIN_NAME);
+                $this -> render_msg($message);
+            }	
+            break;
+    }
+
+    $this -> render('settings', false, true, 'admin');
 	}
 	
 }

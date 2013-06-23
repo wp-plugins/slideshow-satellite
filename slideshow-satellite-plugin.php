@@ -9,8 +9,8 @@ class SatellitePlugin
     var $debugging = false;
     var $errorlog = true;
     var $menus = array();
-    //var $latestorbit = 'jquery.orbit-1.3.1.js';
-    var $latestorbit = 'orbit-min.js';
+    private $_latestOrbit = 'jquery.orbit-1.3.1.js';
+    private $_latestOrbitMin = 'orbit-min.js';
     var $cssfile = 'orbit-css.php';
     var $staticCSSFile = 'orbit-1.3.1.css';
     var $cssadmin = 'admin-styles.css';
@@ -134,8 +134,10 @@ class SatellitePlugin
                     // enqueue here
             wp_enqueue_style(SATL_PLUGIN_NAME . "_styleStatic");
             wp_enqueue_style(SATL_PLUGIN_NAME . "_style");
+            $advanced = $this->get_option('Advanced');
+            $orbitjss = ($advanced['debug']) ? $this->_latestOrbit : $this->_latestOrbitMin;
 
-            wp_enqueue_script(SATL_PLUGIN_NAME . "_script", '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/' . $this->latestorbit,
+            wp_enqueue_script(SATL_PLUGIN_NAME . "_script", '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/' . $orbitjss,
                     array('jquery'),
                     SATL_VERSION);
                 

@@ -103,6 +103,24 @@ class SatelliteConfigHelper extends SatellitePlugin {
                 
                 break;  
               
+            case 'advanced':
+              $advanced = $this->get_option('Advanced');
+              
+              $optionsArray = array (
+                array(  "name"      => "Debug Mode",
+                        "desc"      => "Helps a developer find a bug on your site",
+                        "id"        => "debug",
+                        "type"      => "select",
+                        "value"     => $advanced['debug'],
+                        "std"       => false,
+                        "options"   => array(
+                               array('id' => false, 'title' => 'Off'),
+                               array('id' => true, 'title' => 'On')
+                        )
+                    ));
+
+              break;
+              
             case 'images':
               
               $image = $this->get_option('Images');

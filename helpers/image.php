@@ -121,7 +121,7 @@ class SatelliteImageHelper extends SatellitePlugin {
       $s_h = ($ht = intval($height[$id])) ? $ht : $styles['height'];
       $i_r = intval($i_w)/intval($i_h);
       $s_r = $s_w/$s_h;
-      $notclose = (abs($i_r - $s_r) > .4) ? true : false;
+      $notclose = (abs($i_r - $s_r) > .7) ? true : false;
       //$this->log_me("sw $s_w / sh $s_h  = sr: $s_r and iw $i_w / ih $i_h = ir: $i_r");
       $crop = ($crop) ? "stretchCrop absoluteCenter" : false;
       $crop = ($notclose && $crop) ? "stretchCenter absoluteCenter" : $crop;

@@ -13,7 +13,7 @@ if (!empty($_GET['quickedit'])) {
 }
 
 ?>
-<div class="wrap" ng-app="slideApp" ng-controller="SlideController">
+<div class="wrap scrollSpace" ng-app="slideApp" ng-controller="SlideController">
 	 <?php 
     if (!$version['latest'] && $version['message'] && SATL_PRO) : ?>
         <div class="plugin-update-tr">
@@ -101,21 +101,23 @@ if (!empty($_GET['quickedit'])) {
               }
              ?>
           </div>
-				<div>
-        <ul>
-          <li class="slide-holder row-fluid">
-            <div class="fl-l loader-check check-column"><input type="checkbox" name="checkboxall" id="checkboxall" value="checkboxall" /></div>
-            <div class="fl-l loader-image"><?php _e('Image', SATL_PLUGIN_NAME); ?></div>
-            <div class="fl-l loader-title"><?php _e('Title', SATL_PLUGIN_NAME); ?></div>
-            <div class="fl-r loader-date"><?php _e('Modified', SATL_PLUGIN_NAME); ?></div>
-            <div class="fl-r loader-uselink"><?php _e('Link', SATL_PLUGIN_NAME); ?></div>
-            <div class="fl-r loader-order"><?php _e('Order', SATL_PLUGIN_NAME); ?></div>
-            <div class="fl-r loader-section"><?php _e('Gallery', SATL_PLUGIN_NAME); ?></div>
-          </li>
-        </ul>  
-				</div>
-				<?php $this -> render('lazyload', array('slides' => $slides), true, 'admin'); ?>
-	<?php else : ?>
-		<p style="color:red;"><?php _e('No slides found', SATL_PLUGIN_NAME); ?></p>
-	<?php endif; ?>
-</div>
+          <div>
+            <ul>
+              <li class="slide-holder row-fluid">
+                <div class="fl-l loader-check check-column"><input type="checkbox" name="checkboxall" id="checkboxall" value="checkboxall" /></div>
+                <div class="fl-l loader-image"><?php _e('Image', SATL_PLUGIN_NAME); ?></div>
+                <div class="fl-l loader-title"><?php _e('Title', SATL_PLUGIN_NAME); ?></div>
+                <div class="fl-r loader-date"><?php _e('Modified', SATL_PLUGIN_NAME); ?></div>
+                <div class="fl-r loader-uselink"><?php _e('Link', SATL_PLUGIN_NAME); ?></div>
+                <div class="fl-r loader-order"><?php _e('Order', SATL_PLUGIN_NAME); ?></div>
+                <div class="fl-r loader-section"><?php _e('Gallery', SATL_PLUGIN_NAME); ?></div>
+              </li>
+            </ul>  
+          </div>
+          <?php $this -> render('lazyload', array('slides' => $slides), true, 'admin'); ?>
+          <?php else : ?>
+            <p style="color:red;"><?php _e('No slides found', SATL_PLUGIN_NAME); ?></p>
+          <?php endif; ?>
+        </div>
+      </div>
+    </form>

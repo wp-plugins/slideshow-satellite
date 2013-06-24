@@ -112,6 +112,25 @@ class SatelliteImageHelper extends SatellitePlugin {
       imagecopyresampled($new_image, $this->image, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
       $this->image = $new_image;
     }      
+    
+    public function getImageStretch($id,$i_w,$i_h,$crop) {
+      $styles = $this->get_option('styles');
+      $width=$this->get_option('width_temp');
+      $height=$this->get_option('height_temp');
+      $s_w = ($wt = intval($width[$id])) ? $wt : $styles['width'];
+      $s_h = ($ht = intval($height[$id])) ? $ht : $styles['height'];
+      $i_r = intval($i_w)/intval($i_h);
+      $s_r = $s_w/$s_h;
+      $notclose = (abs($i_r - $s_r) > .7) ? true : false;
+      //$this->log_me("sw $s_w / sh $s_h  = sr: $s_r and iw $i_w / ih $i_h = ir: $i_r");
+      $crop = ($crop) ? "stretchCrop absoluteCenter" : false;
+      $crop = ($notclose && $crop) ? "stretchCenter absoluteCenter" : $crop;
+      if ($i_r <= $s_r) {
+        return "tall $crop";
+      } else {
+        return "wide $crop";
+      }
+    }
     /*
      * @image is 
      */

@@ -103,6 +103,24 @@ class SatelliteConfigHelper extends SatellitePlugin {
                 
                 break;  
               
+            case 'advanced':
+              $advanced = $this->get_option('Advanced');
+              
+              $optionsArray = array (
+                array(  "name"      => "Debug Mode",
+                        "desc"      => "Helps a developer find a bug on your site",
+                        "id"        => "debug",
+                        "type"      => "select",
+                        "value"     => $advanced['debug'],
+                        "std"       => false,
+                        "options"   => array(
+                               array('id' => false, 'title' => 'Off'),
+                               array('id' => true, 'title' => 'On')
+                        )
+                    ));
+
+              break;
+              
             case 'images':
               
               $image = $this->get_option('Images');
@@ -114,15 +132,28 @@ class SatelliteConfigHelper extends SatellitePlugin {
                         "value"     => $image['resize'],
                         "std"       => 1024,
                         "options"   => array(
-                                       array('id' => 0, 'title' => 'No Resizing'),
-                                       array('id' => 1024, 'title' => '1024 px'),
-                                       array('id' => 900, 'title' => '900 px'),
-                                       array('id' => 800, 'title' => '800 px'),
-                                       array('id' => 600, 'title' => '600 px'))
+                               array('id' => 0, 'title' => 'No Resizing'),
+                               array('id' => 1024, 'title' => '1024 px'),
+                               array('id' => 900, 'title' => '900 px'),
+                               array('id' => 800, 'title' => '800 px'),
+                               array('id' => 600, 'title' => '600 px'))
                         ),
+                
                   
+                array(  "name"      => "Image Positioning",
+                        "desc"      => "When the image is too small, stretch it or no? Cropping will make sure it bleeds to all edges without distortion",
+                        "id"        => "position",
+                        "type"      => "select",
+                        "value"     => $image['position'],
+                        "std"       => 'S',
+                        "options"   => array(
+                               array('id' => 'A', 'title' => __('Center - No Stretch', SATL_PLUGIN_NAME)),
+                               array('id' => 'S', 'title' => __('Stretch and Fit Center', SATL_PLUGIN_NAME)),
+                               array('id' => 'C', 'title' => __('Stretch and Crop', SATL_PLUGIN_NAME))
+                               )
+                        ),
                 array(  "name"      => "Open Images in...",
-                        "desc"      => "Thickbox is the standard, built into wordpress, but if you use another plugin choose custom",
+                        "desc"      => "Thickbox is WordPress Standard. Use a Lightbox Plugin or something else!",
                         "id"        => "imagesbox",
                         "type"      => "select",
                         "value"     => $image['imagesbox'],
@@ -131,6 +162,7 @@ class SatelliteConfigHelper extends SatellitePlugin {
                                array('id' => 'N', 'title' => __('No link', SATL_PLUGIN_NAME)),
                                array('id' => 'W', 'title' => __('Window', SATL_PLUGIN_NAME)),
                                array('id' => 'T', 'title' => __('Thickbox', SATL_PLUGIN_NAME)),
+                               array('id' => 'L', 'title' => __('Lightbox Ready', SATL_PLUGIN_NAME)),
                                array('id' => 'C', 'title' => __('Custom', SATL_PLUGIN_NAME))
                                )
                         ),
@@ -260,12 +292,12 @@ class SatelliteConfigHelper extends SatellitePlugin {
      * 
      */
     function showNumberConfig($params, $extra = null) {
-     $end = ($params['firstend']) ? $params['firstend'] : $params['end'];
+     $end = (isset($params['firstend'])) ? $params['firstend'] : $params['end'];
      for ($i = $params['start'];$i <= $end; $i = $i + $params['skip1'] ) {
        $return[] = array("id" => $i, "title" => $i." ".$extra);
      }
      // Firstend means there must be a second end. Otherwise there's just an end
-     if ($params['firstend']) {
+     if (isset($params['firstend']) && $params['firstend']) {
        for ($i = $i+$params['skip2']-1;$i <= $params['end']; $i = $i + $params['skip2'] ) {
          $return[] = array("id" => $i, "title" => $i." ".$extra);
        }       

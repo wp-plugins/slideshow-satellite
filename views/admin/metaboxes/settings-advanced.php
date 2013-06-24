@@ -1,5 +1,13 @@
+<?php
+    $Config = new SatelliteConfigHelper;
+    $Form = new SatelliteFormHelper;
+    $options = $Config -> displayOption('advanced', 'Advanced');
+?>
+
 <table class="form-table">
     <tbody>
+    <?php $Form -> display($options, 'Advanced'); ?>
+
         <tr>
             <th><label for="embedss"><?php _e('Enable slideshow as embed?', SATL_PLUGIN_NAME); ?></label></th>
             <td>

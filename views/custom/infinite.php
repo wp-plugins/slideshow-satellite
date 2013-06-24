@@ -6,7 +6,7 @@ $fontsize = $this -> Gallery -> data -> font;
 <script type='text/javascript' src='<?php echo(SATL_PLUGIN_URL);?>/js/angular.min.js?ver=<?php echo(SATL_VERSION);?>'></script>
 <script type='text/javascript' src='<?php echo(SATL_PLUGIN_URL);?>/js/ng-infinite-scroll.min.js?ver=<?php echo(SATL_VERSION);?>'></script>
 
-<div class="wrap" ng-app="scrollApp" ng-controller="ScrollController">
+<div class="wrap scroll-guarantee" ng-app="scrollApp" ng-controller="ScrollController">
   <div  infinite-scroll='loadMore()' infinite-scroll-distance='2'>
     <div class="satellite-infinite" ng-repeat="i in items" ng-mouseover="onhover($event)" ng-mouseout="onhover($event)">
       <div class="info-hold" ng-show="hover">
@@ -44,7 +44,7 @@ scrollApp.controller('ScrollController', function($scope) {
     if (last >= total) { 
       return;
     }
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < 6; i++) {
         $scope.items.push({
           title: Slides[last + i].title,
           image: Slides[last + i].image

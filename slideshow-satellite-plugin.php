@@ -9,8 +9,8 @@ class SatellitePlugin
     var $debugging = false;
     var $errorlog = true;
     var $menus = array();
-    //var $latestorbit = 'jquery.orbit-1.3.1.js';
-    var $latestorbit = 'orbit-min.js';
+    private $_latestOrbit = 'jquery.orbit-1.3.1.js';
+    private $_latestOrbitMin = 'orbit-min.js';
     var $cssfile = 'orbit-css.php';
     var $staticCSSFile = 'orbit-1.3.1.css';
     var $cssadmin = 'admin-styles.css';
@@ -53,9 +53,10 @@ class SatellitePlugin
     }
     function add_admin_styles() {
         $adminStyleUrl = SATL_PLUGIN_URL . '/css/' . $this -> cssadmin . '?v=' . SATL_VERSION;
+        $page = (isset($_GET['page'])) ? $_GET['page'] : null;
         wp_register_style(SATL_PLUGIN_NAME . "_adstyle", $adminStyleUrl);
         wp_enqueue_style(SATL_PLUGIN_NAME . "_adstyle");
-        if ($_GET['page'] == "satellite-slides") {
+        if ($page == "satellite-slides" || $page == "satellite-galleries") {
           wp_enqueue_style('bootstrap',"http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css");
         }
 
@@ -107,6 +108,7 @@ class SatellitePlugin
                     $background = $this->get_option('background');
                     $infobackground = $this->get_option('infobackground');
                     $infocolor = $this->get_option('infocolor');
+                    $this->log_me("pID: $pID");
                     
                     $satlStyleUrl .= $this->Premium->addProStyling($width_temp,'width_temp',$pID);
                     $satlStyleUrl .= $this->Premium->addProStyling($height_temp,'height_temp',$pID);
@@ -132,8 +134,10 @@ class SatellitePlugin
                     // enqueue here
             wp_enqueue_style(SATL_PLUGIN_NAME . "_styleStatic");
             wp_enqueue_style(SATL_PLUGIN_NAME . "_style");
+            $advanced = $this->get_option('Advanced');
+            $orbitjss = ($advanced['debug']) ? $this->_latestOrbit : $this->_latestOrbitMin;
 
-            wp_enqueue_script(SATL_PLUGIN_NAME . "_script", '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/' . $this->latestorbit,
+            wp_enqueue_script(SATL_PLUGIN_NAME . "_script", '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/' . $orbitjss,
                     array('jquery'),
                     SATL_VERSION);
                 
@@ -225,6 +229,7 @@ class SatellitePlugin
         );
         $images = array(
             'imagesbox'   => 'T',
+            'position'    => 'A',
             'resize'      => 1024,
             'pagelink'    =>  'S'
         );
@@ -239,7 +244,6 @@ class SatellitePlugin
         //General Settings
         $this->add_option('autospeed', 10);
         $this->add_option('autoslide', "Y");
-        $this->add_option('abscenter', "Y");
         $this->add_option('fadespeed', 10);
         $this->add_option('nav_opacity', 30);
         $this->add_option('navhover', 70);

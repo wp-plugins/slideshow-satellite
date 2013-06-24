@@ -174,3 +174,9 @@ body.toplevel_page_satellite, body.satellite_page_satellite-galleries, body.sate
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none;
 }
+
+/**** Infinite Scroll Specific ****/
+
+.scrollSpace {
+  margin-bottom: 400px;
+}

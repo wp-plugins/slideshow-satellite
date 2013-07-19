@@ -495,7 +495,7 @@ ul.orbit-thumbnails {
     /*width:255px !important;*/
     width:100%;
     position:relative;
-    padding-bottom: 25px !important;
+    padding: 0 0 25px 0 !important;
 }
 .full-left.shrunk .orbit-thumbnails {
     /*padding-left:5px;*/
@@ -536,9 +536,6 @@ ul.orbit-thumbnails {
 }
 .full-left .thumbholder {
     margin-left:0px !important;
-}
-.full-left .orbit-thumbnails {
-    padding: 0;
 }
 .full-right div.orbit-caption {
     width:100%;

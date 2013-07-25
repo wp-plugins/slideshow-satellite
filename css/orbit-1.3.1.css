@@ -416,6 +416,7 @@ ul.orbit-thumbnails {
     margin: 2px auto 0 auto;
     padding-top: 300px;
     background: #000;
+    box-sizing: content-box !important;
 }
     
 .orbit-thumbnails li {

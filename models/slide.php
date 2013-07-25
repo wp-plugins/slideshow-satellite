@@ -11,7 +11,7 @@ class SatelliteSlide extends SatelliteDbHelper {
 		'title'			=>	"VARCHAR(150) CHARACTER SET utf8 NOT NULL DEFAULT ''",
 		'description'		=>	"TEXT CHARACTER SET utf8",
 		'image'			=>	"VARCHAR(75) NOT NULL DEFAULT ''",
-		'type'			=>	"ENUM('file','url') NOT NULL DEFAULT 'file'",
+		'type'			=>	"ENUM('file','url','current') NOT NULL DEFAULT 'file'",
 		'section'		=>	"INT(5) NOT NULL DEFAULT '1'",
 		'image_url'		=>	"VARCHAR(200) NOT NULL DEFAULT ''",
 		'uselink'		=>	"ENUM('Y','N') NOT NULL DEFAULT 'N'",
@@ -155,7 +155,15 @@ class SatelliteSlide extends SatelliteDbHelper {
 					}
 				}
 			}
-		} else {
+		} elseif ($type == "current") {
+				if (empty($image_current)) { $this -> errors['image_current'] = __('Please try a different image', SATL_PLUGIN_NAME); }
+				else {
+					$imagepath = SATL_UPLOAD_DIR . '/';
+					$imagefull = $imagepath . $image_current;
+					
+					$this -> data -> image = $image_current;
+        }
+    }else {
 			$this -> errors[] = __('No data was posted', SATL_PLUGIN_NAME);
 		}
 		return $this -> errors;

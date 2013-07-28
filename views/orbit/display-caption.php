@@ -2,7 +2,7 @@
 <?php
 $images = $this->get_option('Images');
 $description = ($frompost) ? $slider->post_content: $slider->description;
-$textlocation = ($frompost) ? $slider->textlocation : '';
+$textlocation = ($frompost) ? '': $slider->textlocation;
 $title = ($frompost) ? $slider->post_title : $slider->title;
 $spanid = ($frompost) ? "post-".$slider->ID :"custom".$satellite_init_ok."-".$i;
 $pagelink = $images['pagelink'];

@@ -148,10 +148,9 @@ class SatelliteDbHelper extends SatellitePlugin {
 				case 'Slide'				:
 					if ($this -> data -> type == "file") {
 						//$this -> data -> image = $_FILES['image_file']['name'];	
-					} elseif ($this -> data -> type == "current") {
-            $this -> data -> image = $this -> data -> image_current;
-            $this -> data -> type = 'current';
-            $this->log_me($this->data);
+					} elseif ($this -> data -> type == "existing") {
+            $this -> data -> image = $this -> data -> image_existing;
+            $this -> data -> type = 'existing';
           } else {
 						$this -> data -> image = basename( $this -> data -> image_url );
 					}

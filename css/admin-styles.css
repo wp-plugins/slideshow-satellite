@@ -183,7 +183,7 @@ body.toplevel_page_satellite, body.satellite_page_satellite-galleries, body.sate
 
 
 /*** Settings Pages ***/
-.satl-settings #poststuff th {
+.satl-settings form th {
   text-transform: none;
 }
 .satl-settings input {
@@ -192,4 +192,7 @@ body.toplevel_page_satellite, body.satellite_page_satellite-galleries, body.sate
 
 .satl-settings a:visited {
   color: #FFF;
+}
+input[type="submit"] {
+  padding: 5px 24px 5px;
 }

@@ -180,3 +180,16 @@ body.toplevel_page_satellite, body.satellite_page_satellite-galleries, body.sate
 .scrollSpace {
   margin-bottom: 400px;
 }
+
+
+/*** Settings Pages ***/
+.satl-settings #poststuff th {
+  text-transform: none;
+}
+.satl-settings input {
+  border: none;
+}
+
+.satl-settings a:visited {
+  color: #FFF;
+}

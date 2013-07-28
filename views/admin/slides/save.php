@@ -29,7 +29,7 @@ array(  "name"      => "More Image",
         "std"       => "Select an Image",
         "options"   => $this -> Slide -> getGalleryImages("More"))
 );	
-?>  <div class="wrap">
+?>  <div class="wrap satl-settings">
 	<h2><?php _e('Save a Slide', SATL_PLUGIN_NAME); ?></h2>
 	
 	<form action="<?php echo $this -> url; ?>&amp;method=save&amp;single=<?php echo( $single );?>" method="post" enctype="multipart/form-data">

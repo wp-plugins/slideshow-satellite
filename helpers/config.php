@@ -211,7 +211,7 @@ class SatelliteConfigHelper extends SatellitePlugin {
                         "value"     => $model -> data -> textlocation,
                         "std"       => "D",
                         "options"   => array(
-                                array('id'=>'N', 'title'=>'None'),
+                                array('id'=>'N', 'title'=>'Hidden'),
                                 array('id'=>'D', 'title'=>'Default'),
                                 array('id'=>'BR', 'title'=>'Bottom Right'),
                                 array('id'=>'TR', 'title'=>'Top Right')))

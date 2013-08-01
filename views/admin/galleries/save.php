@@ -13,7 +13,7 @@ $ptypes = array_push($ptypes1, 'resume');
 $options = $this -> Config -> displayOption('gallery', $this -> Gallery);
         
 ?>        
-    <div class="wrap">
+    <div class="wrap satl-settings">
     <script type="text/javascript">
     // Convert divs to queue widgets when the DOM is ready
     jQuery(function($) {

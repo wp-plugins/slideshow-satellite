@@ -13,7 +13,7 @@ if (!empty($_GET['quickedit'])) {
 }
 
 ?>
-<div class="wrap scrollSpace" ng-app="slideApp" ng-controller="SlideController">
+<div class="wrap scrollSpace satl-settings" ng-app="slideApp" ng-controller="SlideController">
 	 <?php 
     if (!$version['latest'] && $version['message'] && SATL_PRO) : ?>
         <div class="plugin-update-tr">

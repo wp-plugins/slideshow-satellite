@@ -1,10 +1,10 @@
 === Slideshow Satellite ===
 Contributors: C- Pres
-Donate link: http://c-pr.es/projects/satellite
+Donate link: http://c-pr.es/satellite
 Tags: responsive slideshow, photography, watermark, satellite, orbit, responsive, slideshow, infinite scroll, lazy load, flipbook 
 Requires at least: 3.1
-Tested up to: 3.5.1
-Stable tag: 2.1.2
+Tested up to: 3.6
+Stable tag: 2.1.3
 License: GPLv2 or later
 
 So Responsive! So Customizable! So Modern! Build Slideshows, Flipbooks, and do Infinite Scrolls with Slideshow Satellite. 
@@ -16,7 +16,7 @@ Choose from multiple easy to use themes like Slideshows with full thumbnail disp
 
 Use either your WordPress Media Galleries or our own highly customized Gallery Editor.
 
-To explore the manual, watch tutorial videos, or get the Premium edition: http://c-pr.es/projects/satellite/
+To explore the manual, watch tutorial videos, or get the Premium edition: http://c-pr.es/satellite/
 
 Easily embed using our slideshow button. Otherwise, to embed into a post/page, simply insert <code>[satellite]</code> into its content with optional <code>post_id</code>, <code>thumbs</code>, <code>exclude</code>, <code>include</code>, <code>caption</code>, and <code>auto</code>  parameters.  Check out the Slideshow Satellite Manual on the plugin details page (linked above) for code examples.
 
@@ -33,7 +33,7 @@ Installing the WordPress Slideshow Satellite plugin manually is very easy. Simpl
 
 1. Put `[satellite post_id="X" exclude="" caption="on/off" thumbs="on/off"]` to embed a slideshow with the images of a post into your posts/pages or use `[satellite gallery=X]` to embed a slideshow with images in 'Manage Slides'
 
-1. For the most up to date list of options available please goto: http://c-pr.es/projects/satellite and check out the manual
+1. For the most up to date list of options available please goto: http://c-pr.es/satellite and check out the manual
 
 1. Premium Edition: You will download the premium edition from the website directly after paying and setting up your user account. Check your spam folder for your password!!
 
@@ -46,7 +46,7 @@ Start with 'Reset to Defaults' on the top of your plugin configuration page.
 = Still having some major issues, next? =
 You may be dealing with a conflict with your theme or other plugins. To really test, if it works with Twenty-Eleven theme and no other plugins active it's a conflict.
 
-= It's not that serious, just a little funky=
+= It's not that serious, just a little funky =
 Oh, well have you checked out the Manual? http://bit.ly/stlmanual
 
 = How can I display the slideshow in a sidebar as a widget? =
@@ -61,7 +61,7 @@ You're most likely dealing with some javascript weirdness. Check using Firebug a
 = Can I display/embed multiple instances of Slideshow Satellite? =
 Yes you can, but you have to have the Premium Edition
 
-= What if I only want captions on some of my pages
+= What if I only want captions on some of my pages =
 Set your default captions to off; for any slideshow you put on your page use `[satellite caption=on]` - Captions can also be set at the Gallery level
 
 = How do I find the numbers to exclude (or include)? =
@@ -89,10 +89,16 @@ You may also want to "Reset Configuration" from the Configuration page
 1. Slideshow Satellite with bottom thumbnails
 2. Slideshow Satellite with "Full Right"
 
-See slideshows in action on our Sandbox: http://c-pr.es/sandbox
+See slideshows in action on our Examples Site: http://c-pr.es/satellite
 See the manual and videos and more: http://c-pr.es/satellite
 
 == Changelog ==
+= 2.1.3 =
+* WP 3.6 Release - Support for Twenty Thirteen Theme
+* Reuse existing images in your slideshows
+* Fixes jQuery problem
+* Updated Satellite website (new links)
+
 = 2.1.2 =
 * Add Stretch and Center
 * Lightbox Readiness

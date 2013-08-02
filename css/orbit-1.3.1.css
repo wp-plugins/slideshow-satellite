@@ -398,6 +398,16 @@ ul.orbit-bullets {
     background: url(../images/bullets.jpg) no-repeat 4px 0;*/
     overflow: hidden; }
 
+ .satl-wrapper ul {
+   margin: 0 auto;
+ }
+ .satl-wrapper ul li {
+   padding: 0;
+   text-align: left;
+   font-size:1.5em;
+ }
+
+
 /* THUMBNAIL NAV
    ================================================== */
 div.orbit-default.resp .satl-wrapper, div.orbit-default .satl-wrapper {
@@ -416,6 +426,7 @@ ul.orbit-thumbnails {
     margin: 2px auto 0 auto;
     padding-top: 300px;
     background: #000;
+    box-sizing: content-box !important;
 }
     
 .orbit-thumbnails li {
@@ -495,7 +506,7 @@ ul.orbit-thumbnails {
     /*width:255px !important;*/
     width:100%;
     position:relative;
-    padding-bottom: 25px !important;
+    padding: 0 0 25px 0 !important;
 }
 .full-left.shrunk .orbit-thumbnails {
     /*padding-left:5px;*/
@@ -536,9 +547,6 @@ ul.orbit-thumbnails {
 }
 .full-left .thumbholder {
     margin-left:0px !important;
-}
-.full-left .orbit-thumbnails {
-    padding: 0;
 }
 .full-right div.orbit-caption {
     width:100%;

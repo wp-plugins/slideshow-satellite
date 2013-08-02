@@ -484,7 +484,7 @@ class SatellitePlugin
       $this->log_me("enqueuing scripts");
       if ($this->get_option('ggljquery') == "Y") {
           wp_deregister_script( 'jquery' );
-          wp_register_script( 'jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js');
+          wp_register_script( 'jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js');
       }
       wp_enqueue_script('jquery');
 

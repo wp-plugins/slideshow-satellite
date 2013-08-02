@@ -211,7 +211,7 @@ class SatelliteConfigHelper extends SatellitePlugin {
                         "value"     => $model -> data -> textlocation,
                         "std"       => "D",
                         "options"   => array(
-                                array('id'=>'N', 'title'=>'None'),
+                                array('id'=>'N', 'title'=>'Hidden'),
                                 array('id'=>'D', 'title'=>'Default'),
                                 array('id'=>'BR', 'title'=>'Bottom Right'),
                                 array('id'=>'TR', 'title'=>'Top Right')))
@@ -346,6 +346,19 @@ class SatelliteConfigHelper extends SatellitePlugin {
       return array("none","1","100","Y");
     }
     
+    public function displayThumbnailInfo($html_model, $image) {
+      if (!empty($image)) {
+        ?>                                    
+        <p><small><?php _e('Current thumbnail. Leave the field above blank to keep this image.', SATL_PLUGIN_NAME); ?></small></p>
+        <a href="<?php echo $html_model -> image_url($image); ?>" class="thickbox">
+            <img src="<?php echo $html_model -> image_url($html_model -> thumbname($image, "thumb")); ?>" />
+            <br />
+            <?php	echo ("Filename: " . $image); ?>
+            <br />
+            </a>
+        <?php	
+       }
 
+    }
 }
 ?>

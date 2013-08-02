@@ -24,11 +24,10 @@
     }
     // mouse_out should be on for all auto & pausehovers
     $mouse_out = ((!$this->Gallery->data->pausehover && $auto == "Y") || $this->Gallery->data->pausehover && $auto != "N") ? 'true' : 'false';
-    $this->log_me("auto: ".$auto);
     
     if ($fullthumb) { $bullets = true; }
-    elseif ($this->get_option('thumbnails_temp') == "Y") { $bullets = true; }
-    else { $bullets = false; }
+    elseif ($this->get_option('thumbnails_temp') == "Y") { $bullets = true; $fullthumb = false;}
+    else { $bullets = false; $fullthumb = false; }
     ?>
     <script type="text/javascript">
         jQuery(document).ready(function($) {

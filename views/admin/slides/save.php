@@ -29,7 +29,7 @@ array(  "name"      => "More Image",
         "std"       => "Select an Image",
         "options"   => $this -> Slide -> getGalleryImages("More"))
 );	
-?>  <div class="wrap">
+?>  <div class="wrap satl-settings">
 	<h2><?php _e('Save a Slide', SATL_PLUGIN_NAME); ?></h2>
 	
 	<form action="<?php echo $this -> url; ?>&amp;method=save&amp;single=<?php echo( $single );?>" method="post" enctype="multipart/form-data">
@@ -50,8 +50,9 @@ array(  "name"      => "More Image",
                         <tr>
                             <th><label for="Slide.type.file"><?php _e('Image Type', SATL_PLUGIN_NAME); ?></label></th>
                         <td>
-                            <label><input onclick="jQuery('#typediv_file').show(); jQuery('#typediv_url').hide();" <?php echo (empty($this -> Slide -> data -> type) || $this -> Slide -> data -> type == "file") ? 'checked="checked"' : ''; ?> type="radio" name="Slide[type]" value="file" id="Slide.type.file" /> <?php _e('Upload File (recommended)', SATL_PLUGIN_NAME); ?></label>
-                            <label><input onclick="jQuery('#typediv_url').show(); jQuery('#typediv_file').hide();" <?php echo ($this -> Slide -> data -> type == "url") ? 'checked="checked"' : ''; ?> type="radio" name="Slide[type]" value="url" id="Slide.type.url" /> <?php _e('Specify URL', SATL_PLUGIN_NAME); ?></label>
+                            <label><input onclick="jQuery('#typediv_file').show(); jQuery('#typediv_url').hide(); jQuery('#typediv_existing').hide();" <?php echo (empty($this -> Slide -> data -> type) || $this -> Slide -> data -> type == "file") ? 'checked="checked"' : ''; ?> type="radio" name="Slide[type]" value="file" id="Slide.type.file" /> <?php _e('Upload File (recommended)', SATL_PLUGIN_NAME); ?></label>
+                            <label><input onclick="jQuery('#typediv_url').show(); jQuery('#typediv_file').hide(); jQuery('#typediv_existing').hide();" <?php echo ($this -> Slide -> data -> type == "url") ? 'checked="checked"' : ''; ?> type="radio" name="Slide[type]" value="url" id="Slide.type.url" /> <?php _e('Specify URL', SATL_PLUGIN_NAME); ?></label>
+                            <label><input onclick="jQuery('#typediv_existing').show(); jQuery('#typediv_file').hide();jQuery('#typediv_url').hide();" <?php echo ($this -> Slide -> data -> type == "existing") ? 'checked="checked"' : ''; ?> type="radio" name="Slide[type]" value="existing" id="Slide.type.existing" /> <?php _e('Use Existing Image', SATL_PLUGIN_NAME); ?></label>
                             <?php echo (!empty($this -> Slide -> errors['type'])) ? '<div style="color:red;">' . $this -> Slide -> errors['type'] . '</div>' : ''; ?>
                             <span class="howto"><?php _e('do you want to upload an image or specify a local/remote image URL?', SATL_PLUGIN_NAME); ?></span>
                         </td>
@@ -71,22 +72,7 @@ array(  "name"      => "More Image",
 
                                 <input type="hidden" name="Slide[image_oldfile]" value="<?php echo esc_attr(stripslashes($this -> Slide -> data -> image)); ?>" />
 
-                                <?php 
-                                if (!empty($this -> Slide -> data -> image)) {
-                                    $image = $this -> Slide -> data -> image;
-                                    
-                                    ?>                                    
-                                    <p><small><?php _e('Current thumbnail. Leave the field above blank to keep this image.', SATL_PLUGIN_NAME); ?></small></p>
-                                   	<a href="<?php echo $this -> Html -> image_url($image); ?>" class="thickbox">
-                                                <img src="<?php echo $this -> Html -> image_url($this -> Html -> thumbname($image, "thumb")); ?>" />
-                                                        <br />
-                                                        <?php	echo ("Filename: " . $this -> Slide -> data -> image); ?>
-                                                <br />
-                                        </a>
-                                    <?php	
-                                 }
-                            //}
-                            ?>
+                                <?php echo $this->Config->displayThumbnailInfo($this->Html, $this -> Slide -> data -> image);?>
                         </td>
                     </tr>
                 </tbody>
@@ -102,13 +88,37 @@ array(  "name"      => "More Image",
                             <input class="widefat" type="text" name="Slide[image_url]" value="<?php echo esc_attr($this -> Slide -> data -> image_url); ?>" id="Slide.image_url" />
                             <span class="howto"><?php _e('Local or remote image location eg. http://domain.com/path/to/image.jpg', SATL_PLUGIN_NAME); ?></span>
                             <?php echo (!empty($this -> Slide -> errors['image_url'])) ? '<div style="color:red;">' . $this -> Slide -> errors['image_url'] . '</div>' : ''; ?>
+                            <?php echo $this->Config->displayThumbnailInfo($this->Html, $this -> Slide -> data -> image);?>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>    
                 
-        <table class="form-table">
+        <div id="typediv_existing" style="display:<?php echo ($this -> Slide -> data -> type == "existing") ? 'block' : 'none'; ?>;">
+            <table class="form-table">
+                <tbody>
+                    <tr>
+                        <th><label for="Slide.image_existing"><?php _e('Choose an Image', SATL_PLUGIN_NAME); ?></label></th>
+                        <td>
+                            <select name="Slide[image_existing]" id="Slide.image_existing" />
+                            <!--option value="<?php echo esc_attr($this -> Slide -> data -> image_existing); ?>"-->
+                            <?php $slides = $this->Image->getAllCustomImages($this -> Slide); ?>
+                            <?php foreach ($slides as $slide) : ?>
+                              <?php $check = ($this -> Slide -> data -> image == $slide->image) ? "selected" : null;?>
+                              <option value="<?php echo $slide -> image;?>" <?php echo $check;?> ><?php echo $slide -> title;?></option>
+                            <?php endforeach; ?>
+                            </select>
+                            <span class="howto"><?php _e('Choose an image from the ones already uploaded', SATL_PLUGIN_NAME); ?></span>
+                            <?php echo (!empty($this -> Slide -> errors['image_existing'])) ? '<div style="color:red;">' . $this -> Slide -> errors['image_existing'] . '</div>' : ''; ?>
+                            <?php echo $this->Config->displayThumbnailInfo($this->Html,$this -> Slide -> data -> image);?>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>    
+
+    <table class="form-table">
         <tbody>
                     <tr>
                         <th><label for="Slide_userlink_N"><?php _e('Use Link', SATL_PLUGIN_NAME); ?></label></th>

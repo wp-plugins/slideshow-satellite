@@ -178,5 +178,21 @@ body.toplevel_page_satellite, body.satellite_page_satellite-galleries, body.sate
 /**** Infinite Scroll Specific ****/
 
 .scrollSpace {
-  margin-bottom: 400px;
+  margin-bottom: 415px;
+}
+
+
+/*** Settings Pages ***/
+.satl-settings form th {
+  text-transform: none;
+}
+.satl-settings input {
+  border: none;
+}
+
+.satl-settings #gallery-slide-switch a:visited {
+  color: #FFF;
+}
+input[type="submit"] {
+  padding: 5px 24px 5px;
 }

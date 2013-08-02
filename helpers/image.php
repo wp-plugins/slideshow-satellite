@@ -135,21 +135,36 @@ class SatelliteImageHelper extends SatellitePlugin {
      * @image is 
      */
     function applyWatermark($image, $galId) {
-        if (!SATL_PRO) { return; }
-        $Gallery = new SatelliteGallery;
-        error_log( "gallery id is ". $galId);
-        if ($Gallery -> isSpecialGallery($galId)) {
-          return;
-        }
-        $watermark = $this->get_option('Watermark');
-        if (!$watermark['enabled']) {
-          error_log("Watermarking is not enabled");
-          return;
-        }
-        SatellitePremiumHelper::doWatermark($image, $watermark);
+      if (!SATL_PRO) { return; }
+      $Gallery = new SatelliteGallery;
+      error_log( "gallery id is ". $galId);
+      if ($Gallery -> isSpecialGallery($galId)) {
+        return;
+      }
+      $watermark = $this->get_option('Watermark');
+      if (!$watermark['enabled']) {
+        error_log("Watermarking is not enabled");
+        return;
+      }
+      SatellitePremiumHelper::doWatermark($image, $watermark);
+    }
+    /**
+     *
+     * @param int $gallery_id
+     * @param string $order
+     * @param string $dir
+     * @return array 
+     */
+    public function getAllCustomImages($model, $gallery_id = false, $order="created", $dir="DESC") {
+      if ($gallery_id) {
+        $images = $model -> find_all(array('section'=>(int) stripslashes($gallery_id)), null, array($order, $dir));
+      } else {
+        $images = $model -> find_all(null, null, array($order,$dir));
+      }
+      return $images;
     }
     
-    function deleteImages($record, $deleteall) {
+    public function deleteImages($record, $deleteall) {
       $imagepath = SATL_UPLOAD_DIR . '/';
       $name = SatelliteHtmlHelper::strip_ext($record->image, 'filename');
       $ext = SatelliteHtmlHelper::strip_ext($record->image, 'ext');

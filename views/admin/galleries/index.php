@@ -1,4 +1,4 @@
-﻿<div class="wrap">
+﻿<div class="wrap satl-settings">
     <?php /*$version = $this->Version->checkLatestVersion();
     if (!$version['latest'] && SATL_PRO) { ?>
         <div class="plugin-update-tr">

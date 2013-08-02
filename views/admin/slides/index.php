@@ -55,7 +55,7 @@ if (!empty($_GET['quickedit'])) {
     <h5>Slides Count: <?php echo(count($slides));?></h5>
     <?php if ($single): ?>
     <div id="gallery-slide-switch">
-      Switch Your View: <a class="btn btn-primary" href="<?php echo(admin_url()."admin.php?page=satellite-galleries&method=save&id=".$single) ?>">Gallery View</a>
+      <?php _e('Switch Your View:', SATL_PLUGIN_NAME); ?> <a class="btn btn-primary" href="<?php echo(admin_url()."admin.php?page=satellite-galleries&method=save&id=".$single) ?>">Gallery View</a>
     </div>
     <?php endif; ?>
       
@@ -121,3 +121,4 @@ if (!empty($_GET['quickedit'])) {
         </div>
       </div>
     </form>
+    <?php _e('Pssst, scrolling loads more images.', SATL_PLUGIN_NAME); ?>

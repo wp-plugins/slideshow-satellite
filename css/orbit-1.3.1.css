@@ -398,6 +398,16 @@ ul.orbit-bullets {
     background: url(../images/bullets.jpg) no-repeat 4px 0;*/
     overflow: hidden; }
 
+ .satl-wrapper ul {
+   margin: 0 auto;
+ }
+ .satl-wrapper ul li {
+   padding: 0;
+   text-align: left;
+   font-size:1.5em;
+ }
+
+
 /* THUMBNAIL NAV
    ================================================== */
 div.orbit-default.resp .satl-wrapper, div.orbit-default .satl-wrapper {

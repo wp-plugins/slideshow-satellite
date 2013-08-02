@@ -32,7 +32,7 @@ slideApp.controller('SlideController', function($scope) {
     if (last >= total) { 
       return;
     }
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < 5; i++) {
         $scope.items.push({
           id: Slides[last + i].id,
           title: Slides[last + i].title,

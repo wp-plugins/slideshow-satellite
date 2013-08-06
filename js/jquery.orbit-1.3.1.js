@@ -523,7 +523,8 @@
         this.$bullets = $(this.thumbHTML);
         if (!this.options.sideThumbs) {
             this.$thumbwidth = (this.$slides.length * this.options.thumbWidth);
-            this.$bullets.css('width', this.$thumbwidth);
+            // 40 because of 20px padding on orbit-thumbnails
+            this.$bullets.css('width', this.$thumbwidth + 40);
             
         } else {
             this.$bullets.css('min-width', this.options.thumbWidth);

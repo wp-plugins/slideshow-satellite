@@ -250,15 +250,15 @@ span.pause.active {
   }
 	
 	@media only screen and (min-width: 1100px) {
-		.satl-wrapper .orbit-caption { font-size:120%;}
+		.satl-wrapper .orbit-caption { font-size:100%;}
 	}  
 	       
 	@media only screen and (max-width: 800px) {
-		.satl-wrapper .orbit-caption { font-size:100%;}
+		.satl-wrapper .orbit-caption { font-size:90%;}
 	}   
 	
 	@media only screen and (max-width: 400px) {
-		.satl-wrapper .orbit-caption { font-size:90%;}
+		.satl-wrapper .orbit-caption { font-size:80%;}
 	}
   
 .satl-wrapper .orbit-caption h5 {

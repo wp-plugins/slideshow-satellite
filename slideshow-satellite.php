@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: Slideshow Satellite
-Plugin URI: http://c-pr.es/projects/satellite
+Plugin URI: http://c-pr.es/satellite
 Author: C- Pres
-Author URI: http://c-pr.es/membership-options
+Author URI: http://c-pr.es
 Description: Responsive display for all your photo needs. Customize to your hearts content.
 Version: 2.1.3
 */

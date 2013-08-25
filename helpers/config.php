@@ -57,10 +57,7 @@ class SatelliteConfigHelper extends SatellitePlugin {
                         "value"     => $model -> data -> theme,
                         "type"      => "select",
                         "std"       => "standard",
-                        "options"   =>  array(
-                                        array("id" => "standard", "title" => "Standard"),
-                                        array("id" => "flipbook", "title" => "Flipbook"),
-                                        array("id" => "infinite", "title" => "Infinite Scroll"))),
+                        "options"   =>  $this->getThemes()),
 
                 array(  "name"      => "Caption sizing",
                         "desc"      => "Large is In Charge for a reason. Default is how you have it set in General Configuration",
@@ -359,6 +356,14 @@ class SatelliteConfigHelper extends SatellitePlugin {
         <?php	
        }
 
+    }
+    public function getThemes() {
+      $themes = array(
+        array("id" => "standard", "title" => "Standard"),
+        array("id" => "flipbook", "title" => "Flipbook"),
+        array("id" => "infinite", "title" => "Infinite Scroll"));
+      $themes = apply_filters($this->shortname.'_add_theme_view', $themes);
+      return $themes;
     }
 }
 ?>

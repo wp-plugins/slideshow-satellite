@@ -6,6 +6,7 @@ class SatellitePlugin
     var $plugin_name;
     var $plugin_base;
     var $pre = 'Satellite';
+    var $shortname = 'satl';
     var $debugging = false;
     var $errorlog = true;
     var $menus = array();

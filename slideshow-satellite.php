@@ -322,6 +322,7 @@ class Satellite extends SatellitePlugin {
         /* THIS IS WHERE THE VIEW MAGIC HAPPENS */
         $view = $this->getCustomView($multigallery,$gallery);
         $this->log_me('View for this embed is: '.$view);
+        error_log('wtf');
         
         switch ($view) {
           case 'multigallery':
@@ -339,7 +340,13 @@ class Satellite extends SatellitePlugin {
             $content = $this -> render('infinite', array('slides' => $slides, 'frompost' => false), false, 'custom');
             break;
           default:
-            $content = $this -> render('default', array('slides' => $slides, 'frompost' => false), false, 'orbit');
+            if (has_filter($this->shortname.'_render_view')) {
+              $content = apply_filters($this->shortname.'_render_view', array($view, $slides));
+            }
+            if (!$content) {
+              $content = $this -> render('default', array('slides' => $slides, 'frompost' => false), false, 'orbit');
+            }
+            
             break;
           
         }
@@ -378,8 +385,9 @@ class Satellite extends SatellitePlugin {
   
   public function getCustomView($multigallery,$gallery) {
     $this->Gallery->loadData($gallery);
-    if ($this->Gallery->data->theme == 'infinite')
-      return 'infinite';
+    $theme = $this->Gallery->data->theme;
+    if ($theme && $theme != 'standard' && $theme != 'flipbook')
+      return $theme;
     elseif ( SATL_PRO && $multigallery )
       return 'multigallery';
     elseif (SATL_PRO && $this -> get_option('splash'))

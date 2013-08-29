@@ -119,6 +119,18 @@ class SatelliteImageHelper extends SatellitePlugin {
       $height=$this->get_option('height_temp');
       $s_w = ($wt = intval($width[$id])) ? $wt : $styles['width'];
       $s_h = ($ht = intval($height[$id])) ? $ht : $styles['height'];
+      return $this->imageStretchStyles($i_w, $i_h, $s_w, $s_h, $crop);
+    }
+    /**
+     *
+     * @param int $i_w - width of image
+     * @param int $i_h - height of image
+     * @param int $s_w - width of image container
+     * @param int $s_h - height of image container
+     * @param bool $crop - are we cropping the image or not?
+     * @return string
+     */
+    public function imageStretchStyles($i_w, $i_h, $s_w, $s_h, $crop) {
       $i_r = intval($i_w)/intval($i_h);
       $s_r = $s_w/$s_h;
       $notclose = (abs($i_r - $s_r) > .7) ? true : false;

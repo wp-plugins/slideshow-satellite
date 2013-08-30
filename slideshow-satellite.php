@@ -107,9 +107,11 @@ class Satellite extends SatellitePlugin {
 		add_meta_box('stylesdiv', __('Appearance &amp; Styles', SATL_PLUGIN_NAME), array($this -> Metabox, "settings_styles"), $this -> menus['satellite'], 'normal', 'core');
 		add_meta_box('thumbsdiv', __('Thumbnail Settings', SATL_PLUGIN_NAME), array($this -> Metabox, "settings_thumbs"), $this -> menus['satellite'], 'normal', 'core');
 		add_meta_box('advanceddiv', __('Advanced Settings', SATL_PLUGIN_NAME), array($this -> Metabox, "settings_advanced"), $this -> menus['satellite'], 'normal', 'core');
-                if ( SATL_PRO ) {
-                    add_meta_box('prodiv', __('Premium Edition Only', SATL_PLUGIN_NAME), array($this -> Metabox, "settings_pro"), $this -> menus['satellite'], 'normal', 'core');
-                }
+    if ( SATL_PRO ) {
+        add_meta_box('prodiv', __('Premium Edition Only', SATL_PLUGIN_NAME), array($this -> Metabox, "settings_pro"), $this -> menus['satellite'], 'normal', 'core');
+    }
+    
+    apply_filters('satl_add_menu', $this -> menus['satellite']);
 		
 		do_action('do_meta_boxes', $this -> menus['satellite'], 'normal');
 		do_action('do_meta_boxes', $this -> menus['satellite'], 'side');

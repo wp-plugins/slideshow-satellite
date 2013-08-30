@@ -149,7 +149,6 @@ class SatelliteImageHelper extends SatellitePlugin {
     function applyWatermark($image, $galId) {
       if (!SATL_PRO) { return; }
       $Gallery = new SatelliteGallery;
-      error_log( "gallery id is ". $galId);
       if ($Gallery -> isSpecialGallery($galId)) {
         return;
       }
@@ -158,7 +157,8 @@ class SatelliteImageHelper extends SatellitePlugin {
         error_log("Watermarking is not enabled");
         return;
       }
-      SatellitePremiumHelper::doWatermark($image, $watermark);
+      $Premium = new SatellitePremiumHelper;
+      $Premium->doWatermark($image, $watermark);
     }
     /**
      *

@@ -80,6 +80,7 @@ class SatelliteSlide extends SatelliteDbHelper {
 						else {
 							$this -> data -> image = $imagename;
               $Gallery = new SatelliteGallery();
+              // No resizing or watermarking on our Special Galleries like More and Watermark
               if (!$Gallery -> isSpecialGallery($this -> data -> section)) {
                 $name = SatelliteHtmlHelper::strip_ext($imagename, 'filename');
                 $ext = SatelliteHtmlHelper::strip_ext($imagename, 'ext');
@@ -88,7 +89,7 @@ class SatelliteSlide extends SatelliteDbHelper {
                 $Image -> load($imagefull);
                 $Image -> resizeToBox($images[resize]);
                 $Image -> save($imagefull);
-                $Image -> applyWatermark($imagename, $this -> data -> section);                                          
+                $Image -> applyWatermark($imagename, $this -> data -> section);
 
                 $thumbfull = $imagepath . $name . '-thumb.' . strtolower($ext);
                 $smallfull = $imagepath . $name . '-small.' . strtolower($ext);

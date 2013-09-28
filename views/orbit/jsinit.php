@@ -71,5 +71,16 @@
             });
         });
         <?php endif; ?>
-        
-    </script> 
+      
+        <?php if ($auto == "Y" && $style['playshow'] != "N"): ?>
+        jQuery(window).bind('focus', function(ev) {
+          jQuery('#featured<?php echo $satellite_init_ok; ?>').satlfocus({
+            focus: true
+          });
+        }).bind('blur', function(ev) {
+          jQuery('#featured<?php echo $satellite_init_ok; ?>').satlfocus({
+            focus: false
+          });
+        }).trigger('focus');
+        <?php endif; ?>
+    </script>

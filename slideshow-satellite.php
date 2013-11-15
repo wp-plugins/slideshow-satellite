@@ -200,36 +200,48 @@ class Satellite extends SatellitePlugin {
 		$post -> ID = $post_id_orig;
 		if ($output) { echo $content; } else { return $content; }
 	}
-        function parseSimpleEmbed( $embed, $option, $need, $get ) {
-                if ( !empty( $embed )) {
-                        if ($embed == $need)
-                           $this -> update_option($option, $get);
-                }
-            
-        }
-	function embed($atts = array(), $content = null) {
+  
+  /**
+   * SimpleEmbed - Boolean only
+   * @param type $embed - The passed embed variable
+   * @param type $option - The option argument for update_option
+   * @param type $need - What is needed in order to update the option; ex. "on"
+   * @param type $get - What that value of need SHOULD be; ex. true
+   */
+  public function parseSimpleEmbed( $embed, $option, $need, $get ) {
+    if ( !empty( $embed )) {
+      if ($embed == $need)
+        $this -> update_option($option, $get);
+    }
+
+  }
+  
+	public function embed($atts = array(), $content = null) {
 		//global variables
 		global $wpdb;
-                if (SATL_PRO) {
-                    require SATL_PLUGIN_DIR . '/pro/newinit.php';
-                }
-                $defaults=array();
-                $setDefault = array('post_id','exclude','include','custom','gallery','caption','auto','w','h','nolink',
-                                    'slug','thumbs','align','nav','transition','display','random','splash','background',
-                                    'infobackground','infocolor','autospeed', 'animspeed');
-                foreach ($setDefault as $d) {
-                    $defaults[$d] = null;
-                }
+    
+    if (SATL_PRO) {
+        require SATL_PLUGIN_DIR . '/pro/newinit.php';
+    }
+    $defaults=array();
+    $setDefault = array('post_id','exclude','include','custom','gallery','caption','auto','w','h','nolink',
+                        'slug','thumbs','align','nav','transition','display','random','splash','background',
+                        'infobackground','infocolor','autospeed', 'animspeed', 'play');
+    foreach ($setDefault as $d) {
+        $defaults[$d] = null;
+    }
 		extract( shortcode_atts( $defaults, $atts ) );
 		
 		$this->resetTemp();
 		$align = stripslashes($align);
-                
-                if (!empty ($display)) {
-                    if ($display == "off") {
-                        return null;
-                    }
-                }
+    
+    /** display is only used to fake a satellite embed ***/
+    if (!empty ($display)) {
+        if ($display == "off") {
+            return null;
+        }
+    }
+    
 		if ( !empty( $caption ) ) { 
 			if ( ($this -> get_option('information')=='Y') && ( $caption == 'off' ) ) {
 				$this -> update_option('information_temp', 'N');
@@ -290,14 +302,13 @@ class Satellite extends SatellitePlugin {
 		} elseif ( $this -> get_option( 'autoslide') == 'Y' ) {
 			$this -> update_option( 'autoslide_temp', 'Y' ); 
 		}
-                $this->parseSimpleEmbed($splash, 'splash', 'on', true);
-                $this->parseSimpleEmbed($nolink, 'nolinker', true, true);
+    $this->parseSimpleEmbed($splash, 'splash', 'on', true);
+    $this->parseSimpleEmbed($nolink, 'nolinker', true, true);
+    $this->parseSimpleEmbed($play, 'play', "off", true);
 
                 /******** PRO ONLY **************/
 		if ( SATL_PRO ) {
-
-			require SATL_PLUGIN_DIR . '/pro/custom_sizing.php';
-                       
+			require SATL_PLUGIN_DIR . '/pro/custom_sizing.php';                       
 		}
 		//$this -> add_action(array($this, 'pro_custom_wh'));
 		/******** END PRO ONLY **************/
@@ -427,9 +438,10 @@ class Satellite extends SatellitePlugin {
 		$style['align'] = "none";
 		$this -> update_option('styles', $style);
                 
-    // RESET non configurable options
+    // RESET non configurable options - reset parseSimpleEmbed
     $this -> update_option('splash', false);
     $this -> update_option('nolinker', false);
+    $this -> update_option('play', false);
 	}
   
 	function exclude_ids( $attachments, $exclude, $include ) {

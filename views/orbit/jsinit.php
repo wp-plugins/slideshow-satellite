@@ -25,7 +25,7 @@
     // mouse_out should be on for all auto & pausehovers
     $mouse_out = ((!$this->Gallery->data->pausehover && $auto == "Y") || $this->Gallery->data->pausehover && $auto != "N") ? 'true' : 'false';
     
-    if ($fullthumb) { $bullets = true; }
+    if (isset($fullthumb) && $fullthumb = true) { $bullets = true; }
     elseif ($this->get_option('thumbnails_temp') == "Y") { $bullets = true; $fullthumb = false;}
     else { $bullets = false; $fullthumb = false; }
     ?>
@@ -55,7 +55,7 @@
                 thumbWidth: <?php echo $thumbwidth; ?>,
                 respExtra: <?php echo $respExtra; ?>, // the width beyond the slide image
                 alwaysPlayBtn: <?php echo ($style['playshow'] == "A") ? 'true' : 'false'; ?>
-            });			
+            });
         });
         jQuery('.orbit-thumbnails').ready(function ($) {
           if ($('.orbit-thumbnails').width() < $('.thumbholder').width()) {

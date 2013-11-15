@@ -3,9 +3,10 @@
 $images = $this->get_option('Images');
 $imagesbox = $images['imagesbox'];
 $title = ($frompost) ? $slider->post_title : $slider->title;
-$attachment_link = ($frompost) ? get_attachment_link($slider->ID) : '';
+$attachment_link = ($frompost) ? get_attachment_link($slider->id) : '';
 $pagelink = $images['pagelink'];
-$full_image_href = wp_get_attachment_image_src($slider->ID, 'full', false);
+//$this->log_me($slider);die();
+$full_image_href = wp_get_attachment_image_src($slider->id, 'full', false);
 $imagelink = ($frompost) ? $full_image_href[0] : $this->Html->image_url($slider->image);
 if ($images['position'] == "S" || $images['position'] == "C") {
   $crop = ($images['position'] == "C") ? true : false;

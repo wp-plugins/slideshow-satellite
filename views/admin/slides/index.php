@@ -25,7 +25,7 @@ if (!empty($_GET['quickedit'])) {
 
     <h2><?php _e('Manage Slides', SATL_PLUGIN_NAME); ?> <?php echo $this -> Html -> link(__('Add New'), 
                     $this -> url . '&amp;method=save&single='.$single, 
-                    array('class' => "button add-new-h2")); ?></h2>
+                    array('class' => "btn btn-default jadd-new-h2")); ?></h2>
 	<?php if (!empty($slides)) : ?>	
                 <div class="alignright">
                     <form action="<?php echo $this -> url; ?>&amp;method=single" method="POST">
@@ -62,7 +62,7 @@ if (!empty($_GET['quickedit'])) {
 		<form onsubmit="if (!confirm('<?php _e('Are you sure you wish to execute this action on the selected slides?', SATL_PLUGIN_NAME); ?>')) { return false; }" action="<?php echo $this -> url; ?>&amp;method=mass&amp;single=<?php echo($single);?>" method="post">
 			<div class="tablenav">
 				<div class="alignleft actions">
-					<a href="<?php echo $this -> url; ?>&amp;method=order&single=<?php echo $_GET['single']; ?>" title="<?php _e('Order all your slides', SATL_PLUGIN_NAME); ?>" class="button clearfix alignright" style="margin-left:7px;"><?php _e('Order Slides', SATL_PLUGIN_NAME); ?></a>
+					<a href="<?php echo $this -> url; ?>&amp;method=order&single=<?php echo $_GET['single']; ?>" title="<?php _e('Order all your slides', SATL_PLUGIN_NAME); ?>" class="btn btn-default blue clearfix alignright" style="margin-left:7px;"><?php _e('Order Slides', SATL_PLUGIN_NAME); ?></a>
 				
 					<select id="satl_bulkaction" name="action" class="action alignleft">
 						<option value="">- <?php _e('Bulk Actions', SATL_PLUGIN_NAME); ?> -</option>
@@ -75,7 +75,7 @@ if (!empty($_GET['quickedit'])) {
               <option value="watermark"><?php _e('Watermark', SATL_PLUGIN_NAME); ?></option>
             <?php endif; ?>
 					</select>
-					<input type="submit" class="button alignleft" value="<?php _e('Apply', SATL_PLUGIN_NAME); ?>" name="execute" />
+					<input type="submit" class="btn btn-default alignleft" value="<?php _e('Apply', SATL_PLUGIN_NAME); ?>" name="execute" />
 				</div>
 			</div>
 		

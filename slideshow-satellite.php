@@ -110,8 +110,8 @@ class Satellite extends SatellitePlugin {
     if ( SATL_PRO ) {
         add_meta_box('prodiv', __('Premium Edition Only', SATL_PLUGIN_NAME), array($this -> Metabox, "settings_pro"), $this -> menus['satellite'], 'normal', 'core');
     }
-    
-    apply_filters('satl_add_menu', $this -> menus['satellite']);
+        // Satellite Extendable!
+        apply_filters('satl_add_menu', $this -> menus['satellite']);
 		
 		do_action('do_meta_boxes', $this -> menus['satellite'], 'normal');
 		do_action('do_meta_boxes', $this -> menus['satellite'], 'side');

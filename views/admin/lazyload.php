@@ -33,6 +33,9 @@ slideApp.controller('SlideController', function($scope) {
       return;
     }
     for (var i = 0; i < 5; i++) {
+      if (Slides[last + i] == null) {
+          break;
+      }
         $scope.items.push({
           id: Slides[last + i].id,
           title: Slides[last + i].title,
@@ -49,6 +52,10 @@ slideApp.controller('SlideController', function($scope) {
   $scope.hover = false;
   $scope.onhover = function (e) {
     this.hover = e.type === 'mouseover';
+  };
+
+  $scope.quickEdit = function(id){
+    editSatlSlide(id)
   };
 
 });

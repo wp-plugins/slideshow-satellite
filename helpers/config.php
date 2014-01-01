@@ -362,8 +362,8 @@ class SatelliteConfigHelper extends SatellitePlugin {
         array("id" => "standard", "title" => "Standard"),
         array("id" => "flipbook", "title" => "Flipbook"),
         array("id" => "infinite", "title" => "Infinite Scroll"));
-      $themes = apply_filters($this->shortname.'_add_theme_view', $themes);
-      return $themes;
+      $all_themes = apply_filters('satl_add_theme_view', $themes);
+      return $all_themes;
     }
 }
 ?>

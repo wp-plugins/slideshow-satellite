@@ -130,7 +130,7 @@ class SatelliteImageHelper extends SatellitePlugin {
      * @param bool $crop - are we cropping the image or not?
      * @return string
      */
-    public function imageStretchStyles($i_w, $i_h, $s_w, $s_h, $crop) {
+    function imageStretchStyles($i_w, $i_h, $s_w, $s_h, $crop) {
       $i_r = intval($i_w)/intval($i_h);
       $s_r = $s_w/$s_h;
       $notclose = (abs($i_r - $s_r) > .7) ? true : false;

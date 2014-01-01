@@ -36,9 +36,9 @@ if ($imagesbox == "T") {
 ?>
 
 <?php if (!$frompost && $slider->uselink == "Y" && !empty($slider->link)) : ?>
-  <a href="<?php echo $slider->link; ?>" title="<?php echo $slider->title; ?>" target="<?php echo ($pagelink == "S") ? "_self" : "_blank" ?>">
+  <a class="sorbit-link" href="<?php echo $slider->link; ?>" title="<?php echo $slider->title; ?>" target="<?php echo ($pagelink == "S") ? "_self" : "_blank" ?>">
 <?PHP elseif ($frompost && $this->get_option('wpattach') == 'Y') : ?>
-  <a class="<?php echo $class; ?>" href="<?php echo $attachment_link; ?>" rel="<?php echo $rel; ?>" title="<?php echo $title; ?>">
+  <a class="sorbit-link <?php echo $class; ?>" href="<?php echo $attachment_link; ?>" rel="<?php echo $rel; ?>" title="<?php echo $title; ?>">
 <?PHP elseif ($imagesbox != "N" && ! $this->get_option('nolinker')) : ?>
   <a class="sorbit-link <?php echo $class; ?>" href="<?php echo $imagelink; ?>" rel="<?php echo $rel; ?>" title="<?php echo $title; ?>">
 <?PHP endif; ?>

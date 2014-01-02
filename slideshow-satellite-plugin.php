@@ -102,10 +102,10 @@ class SatellitePlugin
             $satlStyleUrl = SATL_PLUGIN_URL . '/css/' . $this -> cssfile . '?v=' . SATL_VERSION . '&amp;pID=' . $pID;
             $satlStyleStaticUrl = SATL_PLUGIN_URL . '/css/' . $this -> staticCSSFile . '?v=' . SATL_VERSION;
             
-            if ($_SERVER['HTTPS']) {
+            if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']) {
                 $satlStyleUrl = str_replace("http:", "https:", $satlStyleUrl);
             }
-            //$infogal = $this;
+
             if (file_exists($satlStyleFile)) {
                 if ($styles = $this->get_option('styles')) {
                   foreach ($styles as $skey => $sval) {
@@ -233,6 +233,7 @@ class SatellitePlugin
             'infobackground' => "#000000",
             'infocolor' => "#FFFFFF",
             'playshow'  => "A",
+            'nav_opacity' => "30",
             'navpush'   => "0",
             'infomin' => "Y"
         );
@@ -809,10 +810,10 @@ class SatellitePlugin
     }
     
     public function canPremiumDoThis($action) {
-      if (SATL_PRO && class_exists(SatellitePremiumHelper)) {
+      if (SATL_PRO && class_exists('SatellitePremiumHelper')) {
         switch ($action) {
           case 'watermark':
-            return method_exists(SatellitePremiumHelper,'doWatermark');
+            return method_exists('SatellitePremiumHelper','doWatermark');
             break;
           default:
             return false;

@@ -46,6 +46,7 @@ array(  "name"      => "More Image",
                             </td>
                         </tr>
                         <?php endif;?>
+<!--                        --><?php //$this->log_me($this);die();?>
                         <?php $this -> Form -> display($slideOptions, 'Slide'); ?>
                         <tr>
                             <th><label for="Slide.type.file"><?php _e('Image Type', SATL_PLUGIN_NAME); ?></label></th>

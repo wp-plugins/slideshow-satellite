@@ -68,14 +68,14 @@ if (!empty($_GET['quickedit'])) {
 						<option value="">- <?php _e('Bulk Actions', SATL_PLUGIN_NAME); ?> -</option>
 						<option value="delete"><?php _e('Delete', SATL_PLUGIN_NAME); ?></option>
             <option value="quickedit" <?php echo ($quickedit) ? "selected=selected" : null ?>><?php _e('Quick Edit', SATL_PLUGIN_NAME); ?></option>
-            <?php if ($images[resize]):?>
+            <?php if (isset($images[resize])):?>
               <option value="resize"><?php _e('Resize to ', SATL_PLUGIN_NAME); echo($images['resize'].'px'); ?></option>
             <?php endif;?>
 						<?php if ($this->canPremiumDoThis('watermark')) :?>
               <option value="watermark"><?php _e('Watermark', SATL_PLUGIN_NAME); ?></option>
             <?php endif; ?>
 					</select>
-					<input type="submit" class="btn btn-default alignleft" value="<?php _e('Apply', SATL_PLUGIN_NAME); ?>" name="execute" />
+					<input type="submit" class="btn btn-primary alignleft" value="<?php _e('Apply', SATL_PLUGIN_NAME); ?>" name="execute" />
 				</div>
 			</div>
 		
@@ -97,7 +97,7 @@ if (!empty($_GET['quickedit'])) {
               if ($quickedit) {
                 $this -> render('slides/display-quickedit', array(), true, 'admin');
               } else {
-                $this -> render('slides/display-standard', array(), true, 'admin'); 
+                $this -> render('slides/display-standard', array('single'=>$single), true, 'admin');
               }
              ?>
           </div>

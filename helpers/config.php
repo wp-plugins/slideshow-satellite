@@ -247,7 +247,7 @@ class SatelliteConfigHelper extends SatellitePlugin {
                         "desc"      => "With this checked - On your image uploads we will apply your chosen watermark",
                         "id"        => "enabled",
                         "type"      => "select",
-                        "value"     => $watermark['enabled'],
+                        "value"     => (isset($watermark['enabled'])) ? $watermark['enabled'] : 0,
                         "options"   => array(
                             array('id'=>1, 'title'=>'Enabled'),
                             array('id'=>0, 'title'=>'Disabled')
@@ -256,14 +256,14 @@ class SatelliteConfigHelper extends SatellitePlugin {
                         "desc"      => "Create a gallery entitled \"Watermark\" if enabled. Upload transparent PNG images you'd like to use as the watermark there.",
                         "id"        => "image",
                         "type"      => "select",
-                        "value"     => $watermark['image'],
+                        "value"     => (isset($watermark['image'])) ? $watermark['image'] : 0,
                         "std"       => "Select a Watermark",
                         "options"   => $Slide -> getGalleryImages("Watermark")),
                 array(  "name"      => "Watermark Opacity",
                         "desc"      => "At 100% opacity you can use advanced PNG-24 transparency, utilizing the percentage is best for PNG-8",
                         "id"        => "opacity",
                         "type"      => "select",
-                        "value"     => $watermark['opacity'],
+                        "value"     => (isset($watermark['opacity'])) ? $watermark['opacity'] : 0,
                         "std"       => "100",
                         "options"   => $this->showNumberConfig($params,"%")
                         ),
@@ -271,7 +271,7 @@ class SatelliteConfigHelper extends SatellitePlugin {
                         "desc"      => "Only bottom right for now",
                         "id"        => "location",
                         "type"      => "select",
-                        "value"     => $watermark['location'],
+                        "value"     => (isset($watermark['location'])) ? $watermark['location'] : 0,
                         "std"       => "BR",
                         "options"   => array(
                             array('id'=>'BR', 'title'=>'Bottom Right')

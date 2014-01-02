@@ -8,7 +8,7 @@
       <div ng-show="hover">
         <span class="edit"><span class="satl-edit" ng-click="quickEdit(i.id)" data-id="{{ i.id }}"><?php _e('Quick Edit', SATL_PLUGIN_NAME); ?></span> |</span>
         <span class="edit"><?php echo $this -> Html -> link(__('Edit', SATL_PLUGIN_NAME), "?page=satellite-slides&amp;method=save&amp;single=".$single."&amp;id={{i.id}}"); ?> |</span>
-        <span class="delete"><?php echo $this -> Html -> link(__('Delete', SATL_PLUGIN_NAME), "?page=satellite-slides&amp;method=delete&amp;single=".$single."&amp;id={{i.id}}" . $slide ->id, array('class' => "submitdelete", 'onclick' => "if (!confirm('" . __('Are you sure you want to permanently remove this slide?', SATL_PLUGIN_NAME) . "')) { return false; }")); ?></span>
+        <span class="delete"><?php echo $this -> Html -> link(__('Delete', SATL_PLUGIN_NAME), "?page=satellite-slides&amp;method=delete&amp;single=".$single."&amp;id={{i.id}}", array('class' => "submitdelete", 'onclick' => "if (!confirm('" . __('Are you sure you want to permanently remove this slide?', SATL_PLUGIN_NAME) . "')) { return false; }")); ?></span>
       </div>
       <div class="loader-title" style="display:none" showonhoverparent>
          <span ng-click="deleteEntry(entry)"><a class="btn btn-danger" href="#">Delete</a></span>

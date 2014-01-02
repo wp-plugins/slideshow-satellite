@@ -38,7 +38,7 @@ if (!empty($slides)) :
                     echo "<div class='sorbit-wide ".$class."'  
                             data-caption='#post-{$slider->ID}' 
                             data-thumb='{$thumbnail_link[0]}'>";
-                            
+
                     $this->render('display-image', 
                       array('frompost'  =>  true,
                             'slider'    => $slider), true, 'orbit');?>

@@ -93,6 +93,16 @@ See slideshows in action on our Examples Site: http://c-pr.es/satellite
 See the manual and videos and more: http://c-pr.es/satellite
 
 == Changelog ==
+= 2.2 =
+* The Extendable Release - Support for Twenty Fourteen Theme
+* Allows for other plugins to add functionality to Satellite
+* Everyone can have multiple slideshows now
+* [satellite play=off]
+* Slideshows stop when you leave the browser window
+* Fixing many bugs
+* Config/Admin fixes and updates
+
+
 = 2.1.3 =
 * WP 3.6 Release - Support for Twenty Thirteen Theme
 * Reuse existing images in your slideshows

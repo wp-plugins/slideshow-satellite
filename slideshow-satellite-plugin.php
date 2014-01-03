@@ -6,6 +6,7 @@ class SatellitePlugin
     var $plugin_name;
     var $plugin_base;
     var $pre = 'Satellite';
+    var $shortname = 'satl';
     var $debugging = false;
     var $errorlog = true;
     var $menus = array();
@@ -47,6 +48,7 @@ class SatellitePlugin
         $this->add_action("admin_head", 'plupload_admin_head');
         $this->add_action('admin_init', 'admin_scripts');
         $this->add_filter('the_posts', 'conditionally_add_scripts_and_styles'); // the_posts gets triggered before wp_head
+        $this->add_action("wp_head", 'print_styles');
         $this->add_action('wp_ajax_plupload_action', "g_plupload_action");
         
         return true;
@@ -60,6 +62,18 @@ class SatellitePlugin
           wp_enqueue_style('bootstrap',"http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css");
         }
 
+    }
+    
+    function print_styles() {
+        if ($this->get_option('play')) :
+        ?>
+        <style type="text/css">
+          div.timer {
+            opacity: 0;
+          }
+        </style>      <?
+      
+        endif;
     }
 
     function conditionally_add_scripts_and_styles($posts){
@@ -88,13 +102,12 @@ class SatellitePlugin
             $satlStyleUrl = SATL_PLUGIN_URL . '/css/' . $this -> cssfile . '?v=' . SATL_VERSION . '&amp;pID=' . $pID;
             $satlStyleStaticUrl = SATL_PLUGIN_URL . '/css/' . $this -> staticCSSFile . '?v=' . SATL_VERSION;
             
-            if ($_SERVER['HTTPS']) {
+            if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']) {
                 $satlStyleUrl = str_replace("http:", "https:", $satlStyleUrl);
             }
-            //$infogal = $this;
+
             if (file_exists($satlStyleFile)) {
                 if ($styles = $this->get_option('styles')) {
-                  $this->log_me($styles);
                   foreach ($styles as $skey => $sval) {
                       $satlStyleUrl .= "&amp;" . $skey . "=" . urlencode($sval);
                   }
@@ -108,7 +121,6 @@ class SatellitePlugin
                     $background = $this->get_option('background');
                     $infobackground = $this->get_option('infobackground');
                     $infocolor = $this->get_option('infocolor');
-                    $this->log_me("pID: $pID");
                     
                     $satlStyleUrl .= $this->Premium->addProStyling($width_temp,'width_temp',$pID);
                     $satlStyleUrl .= $this->Premium->addProStyling($height_temp,'height_temp',$pID);
@@ -221,6 +233,7 @@ class SatellitePlugin
             'infobackground' => "#000000",
             'infocolor' => "#FFFFFF",
             'playshow'  => "A",
+            'nav_opacity' => "30",
             'navpush'   => "0",
             'infomin' => "Y"
         );
@@ -245,17 +258,15 @@ class SatellitePlugin
         $this->add_option('autospeed', 10);
         $this->add_option('autoslide', "Y");
         $this->add_option('fadespeed', 10);
-        $this->add_option('nav_opacity', 30);
-        $this->add_option('navhover', 70);
-        $this->add_option('nolinker', false);
-        $this->add_option('nolinkpage', 0);
-        $this->add_option('wpattach', "N");
         $this->add_option('captionlink', "N");
-        $this->add_option('transition', "FB");
         $this->add_option('information', "Y");
         $this->add_option('infospeed', 10);
         $this->add_option('embedss', "Y");
         $this->add_option('ggljquery', "Y");
+        $this->add_option('nav_opacity', 30);
+        $this->add_option('navhover', 70);
+        $this->add_option('nolinker', false);
+        $this->add_option('nolinkpage', 0);
         $this->add_option('responsive', 1);
         $this->add_option('satwiz', "Y");
         $this->add_option('shortreq', "Y");
@@ -265,6 +276,9 @@ class SatellitePlugin
         $this->add_option('thumbnails', "N");
         $this->add_option('thumbposition', "bottom");
         $this->add_option('thumbscrollspeed', 5);
+        $this->add_option('transition', "FB");
+        $this->add_option('wpattach', "N");
+
         // Orbit Only
         $this->add_option('autospeed2', 5000);
         $this->add_option('duration', 700);
@@ -796,10 +810,10 @@ class SatellitePlugin
     }
     
     public function canPremiumDoThis($action) {
-      if (SATL_PRO && class_exists(SatellitePremiumHelper)) {
+      if (SATL_PRO && class_exists('SatellitePremiumHelper')) {
         switch ($action) {
           case 'watermark':
-            return method_exists(SatellitePremiumHelper,'doWatermark');
+            return method_exists('SatellitePremiumHelper','doWatermark');
             break;
           default:
             return false;

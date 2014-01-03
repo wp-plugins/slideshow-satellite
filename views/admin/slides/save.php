@@ -32,7 +32,7 @@ array(  "name"      => "More Image",
 ?>  <div class="wrap satl-settings">
 	<h2><?php _e('Save a Slide', SATL_PLUGIN_NAME); ?></h2>
 	
-	<form action="<?php echo $this -> url; ?>&amp;method=save&amp;single=<?php echo( $single );?>" method="post" enctype="multipart/form-data">
+	<form action="<?php echo $this -> url; ?>&amp;method=save&amp;single=<?php echo( $single );?>" method="post" enctype="multipart/form-data" class="satl_table">
 		<input type="hidden" name="Slide[id]" value="<?php echo $slide -> id; ?>" />
 		<input type="hidden" name="Slide[slide_order]" value="<?php echo $slide -> slide_order; ?>" />
 		<table class="form-table">
@@ -46,6 +46,7 @@ array(  "name"      => "More Image",
                             </td>
                         </tr>
                         <?php endif;?>
+<!--                        --><?php //$this->log_me($this);die();?>
                         <?php $this -> Form -> display($slideOptions, 'Slide'); ?>
                         <tr>
                             <th><label for="Slide.type.file"><?php _e('Image Type', SATL_PLUGIN_NAME); ?></label></th>

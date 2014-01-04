@@ -707,7 +707,9 @@ class Satellite extends SatellitePlugin
                     }
                 } else {
                     $this->Db->model = $this->Gallery->model;
-                    $this->Gallery->find(array('id' => $_GET['id']));
+                    if (isset($_GET['id'])){
+                        $this->Gallery->find(array('id' => $_GET['id']));
+                    }
                     $this->render('galleries/save', false, true, 'admin');
                 }
                 break;

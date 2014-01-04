@@ -85,7 +85,7 @@
                 <td>
                     <input style="width:400px;" class="<?php echo $r['class']; ?>"name="<?php echo $Html->field_name($name); ?>" id="<?php echo $r['id']; ?>" type="<?php echo $r['type']; ?>" value="<?php echo ($r['value']); ?>" />
                     <?php echo ($error == true) ? '<div style="color:red;">' . $Html->field_error($name) . '</div>' : ''; ?>
-                    <span class="howto"><?php echo($r['desc']); ?></span>
+                    <span class="howto"><?php echo(isset($r['desc']) ? $r['desc'] : '') ; ?></span>
                 </td>
             </tr>
         

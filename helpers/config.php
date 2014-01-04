@@ -28,14 +28,14 @@ class SatelliteConfigHelper extends SatellitePlugin {
                 array(  "name"      => "Gallery Name",
                         "id"        => "title",
                         "type"      => "text",
-                        "value"     => $model -> data -> title,
+                        "value"     => (isset($model -> data -> title)) ? $model -> data -> title : '',
                         "std"       => "New Gallery"),
 
                 array(  "name"      => "Gallery Type",
                         "desc"      => "What kind of slideshow is this?",
                         "id"        => "type",
                         "type"      => "select",
-                        "value"     => $model -> data -> type,
+                        "value"     => (isset($model -> data -> type)) ? $model -> data -> type : '',
                         "std"       => "custom slides",
                         "options"   => array(
                                        array('id' => 'custom slides', 'title' => 'Custom Slides'))),
@@ -43,7 +43,7 @@ class SatelliteConfigHelper extends SatellitePlugin {
                 array(  "name"      => "Description",
                         "desc"      => "This will be used in future slideshow versions to describe the slideshow before someone selects to view it.",
                         "id"        => "description",
-                        "value"     => $model -> data -> description,
+                        "value"     => (isset($model -> data -> description)) ? $model -> data -> description : '',
                         "type"      => "textarea"),
                     
                 array(  "name"      => "Upload Images",
@@ -54,7 +54,7 @@ class SatelliteConfigHelper extends SatellitePlugin {
                 array(  "name"      => "Theme",
                         "desc"      => "Which Theme should this slideshow use? Flipbook is similar to an animated gif",
                         "id"        => "theme",
-                        "value"     => $model -> data -> theme,
+                        "value"     => (isset($model -> data -> theme)) ? $model -> data -> theme : '',
                         "type"      => "select",
                         "std"       => "standard",
                         "options"   =>  $this->getThemes()),
@@ -63,7 +63,7 @@ class SatelliteConfigHelper extends SatellitePlugin {
                         "desc"      => "Large is In Charge for a reason. Default is how you have it set in General Configuration",
                         "id"        => "font",
                         "type"      => "select",
-                        "value"     => $model -> data -> font,
+                        "value"     => (isset($model -> data -> font)) ? $model -> data -> font : '',
                         "std"       => "Default",
                         "options"   => array(
                                        array('id' => '1', 'title' => 'Default'),
@@ -74,7 +74,7 @@ class SatelliteConfigHelper extends SatellitePlugin {
                 array(  "name"      => "Caption Position",
                         "desc"      => "Where would you like to display the caption?",
                         "id"        => "capposition",
-                        "value"     => $model -> data -> capposition,
+                        "value"     => (isset($model -> data -> capposition)) ? $model -> data -> capposition : '',
                         "type"      => "select",
                         "std"       => "Overlayed",
                         "options"   => array(
@@ -86,17 +86,17 @@ class SatelliteConfigHelper extends SatellitePlugin {
                         "desc"      => "Caption and Navigation Arrows display on mouse hover",
                         "id"        => "caphover",
                         "type"      => "checkbox",
-                        "value"     => $model -> data -> caphover),
+                        "value"     => (isset($model -> data -> caphover)) ? $model -> data -> caphover : ''),
 
                 array(  "name"      => "Pause on Hover",
                         "desc"      => "Pause the advancement of the slideshow on hover? Only works with auto being on",
                         "id"        => "pausehover",
                         "type"      => "checkbox",
-                        "value"     => $model -> data -> pausehover),
+                        "value"     => (isset($model -> data -> pausehover)) ? $model -> data -> pausehover : ''),
 
                 array(  "type"      => "close")
 
-                );	
+                );
                 
                 break;  
               

@@ -4,10 +4,6 @@
 
     public function display($newfields, $model) {
 
-        // when called from the Configuration page the class isn't set
-        if (!class_exists('SatelliteFormHelper')) {
-            $form = new SatelliteFormHelper;
-        } else { $form = $this; }
         foreach ($newfields as $value) {
             $valId = (isset($value['id'])) ? $value['id'] : null;
             switch ( $value['type'] ) {
@@ -148,9 +144,8 @@
      * end form
      */
     
-    function close() { ?>
-        </table><br />
-        <?php
+    function close() {
+        echo "</table><br />";
     }
     
     /**

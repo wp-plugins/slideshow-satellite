@@ -3,13 +3,10 @@ global $post, $post_ID;
 $post_ID = 1;
 wp_nonce_field('closedpostboxes', 'closedpostboxesnonce', false);
 wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
-
+$single = (isset($single)) ? $single : null;
 $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($single)), null, array('slide_order', "ASC"));
 
 $pluginName = "Slideshow Satellite";
-$shortname = "satl";
-$ptypes1 = get_post_types(array('public' => true),'names','and');
-$ptypes = array_push($ptypes1, 'resume');
 $options = $this -> Config -> displayOption('gallery', $this -> Gallery);
         
 ?>        
@@ -93,14 +90,14 @@ $options = $this -> Config -> displayOption('gallery', $this -> Gallery);
         <?php $this -> Form -> display($options, 'Gallery'); ?>
     
     <p class="submit">
-    <input name="saver" type="submit" value="Save" />
+    <input name="saver" type="submit" value="Save" class="btn btn-primary" />
     <input type="hidden" name="action" value="save-option" />
     </p>
     </form>
 
     <form method="post">
     <p class="submit">
-    <input name="reseter" type="submit" value="Reset" />
+    <input name="reseter" type="submit" value="Reset" class="btn btn-danger" />
     <input type="hidden" name="action" value="reset-option" />
     </p>
     </form>

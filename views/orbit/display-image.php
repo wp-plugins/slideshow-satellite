@@ -2,11 +2,12 @@
 <?php
 $images = $this->get_option('Images');
 $imagesbox = $images['imagesbox'];
+$ID = ($frompost) ? $slider->ID : $slider->id;
 $title = ($frompost) ? $slider->post_title : $slider->title;
-$attachment_link = ($frompost) ? get_attachment_link($slider->ID) : '';
+$attachment_link = ($frompost) ? get_attachment_link($ID) : '';
 $pagelink = $images['pagelink'];
 
-$full_image_href = wp_get_attachment_image_src($slider->ID, 'full', false);
+$full_image_href = wp_get_attachment_image_src($ID, 'full', false);
 
 $imagelink = ($frompost) ? $full_image_href[0] : $this->Html->image_url($slider->image);
 if ($images['position'] == "S" || $images['position'] == "C") {

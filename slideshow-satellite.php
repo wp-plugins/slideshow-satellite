@@ -322,9 +322,11 @@ class Satellite extends SatellitePlugin
 
         /******** PRO ONLY **************/
         if (SATL_PRO) {
-            require SATL_PLUGIN_DIR . '/pro/custom_sizing.php';
+            $custom_sizing = SATL_PLUGIN_DIR . '/pro/custom_sizing.php';
+            if (file_exists($custom_sizing)) {
+                require $custom_sizing;
+            }
         }
-        //$this -> add_action(array($this, 'pro_custom_wh'));
         /******** END PRO ONLY **************/
         if (!empty($nocaption)) {
             $this->update_option('information', 'N');
@@ -349,7 +351,6 @@ class Satellite extends SatellitePlugin
             /* THIS IS WHERE THE VIEW MAGIC HAPPENS */
             $view = $this->getCustomView($multigallery, $gallery);
             $this->log_me('View for this embed is: ' . $view);
-            error_log('wtf');
 
             switch ($view) {
                 case 'multigallery':
@@ -380,7 +381,6 @@ class Satellite extends SatellitePlugin
         } else { // from post "frompost => true"
             global $post;
             $post_id_orig = $post->ID;
-
 
             if (empty($slug)) {
                 $pid = (empty($post_id)) ? $post->ID : $post_id;

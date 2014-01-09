@@ -317,11 +317,11 @@ class SatellitePlugin
         if (!empty($message)) {
             $url .= '&' . $this->pre . 'message=' . urlencode($message);
         }
-        ?>
-        <script type="text/javascript">
-            window.location = '<?php echo (empty($url)) ? get_option('home') : $url; ?>';
-        </script>
-        <?php
+        $url = (empty($url)) ? get_option('home') : $url;
+
+        echo '<script type="text/javascript">';
+        echo 'window.location = "'.$url.'"';
+        echo '</script>';
         flush();
     }
 
@@ -539,11 +539,11 @@ class SatellitePlugin
                 'imgid' => 0 // will be added per uploader
             )
         );
-    ?>
-    <script type="text/javascript">
-        var base_plupload_config=<?php echo json_encode($plupload_init); ?>;
-    </script>
-    <?php
+
+        echo "<script type='text/javascript'>";
+        echo "var base_plupload_config=".json_encode($plupload_init);
+        echo "</script>";
+
     }
     
     function g_plupload_action() {

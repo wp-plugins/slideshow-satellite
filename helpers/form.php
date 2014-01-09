@@ -4,10 +4,6 @@
 
     public function display($newfields, $model) {
 
-        // when called from the Configuration page the class isn't set
-        if (!class_exists('SatelliteFormHelper')) {
-            $form = new SatelliteFormHelper;
-        } else { $form = $this; }
         foreach ($newfields as $value) {
             $valId = (isset($value['id'])) ? $value['id'] : null;
             switch ( $value['type'] ) {
@@ -85,7 +81,7 @@
                 <td>
                     <input style="width:400px;" class="<?php echo $r['class']; ?>"name="<?php echo $Html->field_name($name); ?>" id="<?php echo $r['id']; ?>" type="<?php echo $r['type']; ?>" value="<?php echo ($r['value']); ?>" />
                     <?php echo ($error == true) ? '<div style="color:red;">' . $Html->field_error($name) . '</div>' : ''; ?>
-                    <span class="howto"><?php echo($r['desc']); ?></span>
+                    <span class="howto"><?php echo(isset($r['desc']) ? $r['desc'] : '') ; ?></span>
                 </td>
             </tr>
         
@@ -148,9 +144,8 @@
      * end form
      */
     
-    function close() { ?>
-        </table><br />
-        <?php
+    function close() {
+        echo "</table><br />";
     }
     
     /**

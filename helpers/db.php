@@ -302,7 +302,7 @@ class SatelliteDbHelper extends SatellitePlugin {
 						if (is_array($this -> data -> {$field}) || is_object($this -> data -> {$field})) {
 							$value = serialize($this -> data -> {$field});
 						} else {
-							$value = mysql_escape_string($this -> data -> {$field});
+							$value = mysql_real_escape_string($this -> data -> {$field});
 						}
 					
 						$query .= "`" . $field . "` = '" . $value . "'";

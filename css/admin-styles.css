@@ -97,9 +97,6 @@ h3 span {
 .metabox-holder input, .metabox-holder textarea, .metabox-holder select, .metabox-holder .uneditable-input {
     padding:2px;
 }
-table.form-table {
-    display: block;
-}
 
 .form-table input[type=radio] {
     background: #DDD;
@@ -209,10 +206,6 @@ table.form-table {
 .satl-settings form th {
   text-transform: none;
 }
-.satl-settings input {
-  border: none;
-}
-
 .satl-settings #gallery-slide-switch a:visited {
   color: #FFF;
 }

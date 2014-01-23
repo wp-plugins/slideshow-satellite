@@ -117,9 +117,9 @@ class SatelliteHtmlHelper extends SatellitePlugin
      */
     function field_value($name = null)
     {
-        // $mn-example = array('Slide.title','Slide','title')
+        // $mn example = array('Slide.title','Slide','title')
         if ($mn = $this->strip_mn($name)) {
-            if (is_object($this->{$mn[1]})) {
+            if (in_array($mn[1],$this->models) && isset($this->{$mn[1]}) && is_object($this->{$mn[1]})) {
                 $value = $this->{$mn[1]}->data->{$mn[2]};
                 return $value;
             }
@@ -183,7 +183,7 @@ class SatelliteHtmlHelper extends SatellitePlugin
         return false;
     }
 
-    function gen_date($format = "Y-m-d H:i:s", $time = false)
+    public static function gen_date($format = "Y-m-d H:i:s", $time = false)
     {
         $time = (empty($time)) ? time() : $time;
         $date = date($format, $time);
@@ -191,7 +191,7 @@ class SatelliteHtmlHelper extends SatellitePlugin
         return $date;
     }
 
-    function array_to_object($array = array())
+    public static function array_to_object($array = array())
     {
         //type casting...
         return (object)$array;

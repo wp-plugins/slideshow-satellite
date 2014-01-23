@@ -34,7 +34,7 @@
         }
         
     }
-    
+
     function hidden($name = '', $args = array()) {
         global $wpcoHtml;
         $defaults = array(
@@ -63,23 +63,21 @@
             'width' => '100%',
             'class' => "widefat",
             'error' => true,
-            'value' => (empty($args['value'])) ? $Html->field_value($name) : $args['value'],
+            'value' => (empty($args['value'])) ? $Html -> field_value($name) : $args['value'],
             'autocomplete' => "on",
         );
 
         $r = wp_parse_args($args, $defaults);
         extract($r, EXTR_SKIP);
 
-//        $this->debug($this);
-
         ob_start();
 
         ?>
-        <?php echo $Html->field_value($name); ?>
+        <?php //echo $Html->field_value($name); ?>
             <tr>
                 <th class="verttop"><label><strong><?php echo $r['name']; ?></strong></label></th>
                 <td>
-                    <input style="width:400px;" class="<?php echo $r['class']; ?>"name="<?php echo $Html->field_name($name); ?>" id="<?php echo $r['id']; ?>" type="<?php echo $r['type']; ?>" value="<?php echo ($r['value']); ?>" />
+                    <input style="width:400px;" class="<?php echo $r['class']; ?>"name="<?php echo $Html->field_name($name); ?>" id="<?php echo $r['id']; ?>" type="<?php echo $r['type']; ?>" value="<?php echo ($r['value']) ? $r['value'] : $r['std']; ?>" />
                     <?php echo ($error == true) ? '<div style="color:red;">' . $Html->field_error($name) . '</div>' : ''; ?>
                     <span class="howto"><?php echo(isset($r['desc']) ? $r['desc'] : '') ; ?></span>
                 </td>
@@ -117,8 +115,6 @@
 
         $r = wp_parse_args($args, $defaults);
         extract($r, EXTR_SKIP);
-
-        $this->debug($this);
 
         ob_start();
         ?>

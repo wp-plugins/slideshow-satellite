@@ -65,15 +65,15 @@ class SatellitePlugin
     }
     
     function print_styles() {
+
         if ($this->get_option('play')) :
-        ?>
-        <style type="text/css">
-          div.timer {
-            opacity: 0;
-          }
-        </style>      <?
-      
+
+            echo '<style type="text/css">';
+            echo '  div.timer { opacity: 0; }';
+            echo '</style>';
+
         endif;
+
     }
 
     function conditionally_add_scripts_and_styles($posts){
@@ -253,6 +253,7 @@ class SatellitePlugin
         $this->add_option('Images', $images);
         $this->add_option('styles', $styles);
         $this->add_option('Preloader', $preloader);
+//        $this->add_option('Awesome', null);
         
         //General Settings
         $this->add_option('autospeed', 10);
@@ -822,6 +823,7 @@ class SatellitePlugin
       }
       return false;
     }
+
     public function log_me($message) {
         if (WP_DEBUG === true) {
             if (is_array($message) || is_object($message)) {
@@ -832,4 +834,3 @@ class SatellitePlugin
         }
     }
 }
-?>

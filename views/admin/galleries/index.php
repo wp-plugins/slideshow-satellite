@@ -86,3 +86,4 @@
         <p style="color:red;"><?php _e('No galleries found', SATL_PLUGIN_NAME); ?></p>
     <?php endif; ?>
 </div>
+<img src="<?php echo(SATL_PLUGIN_URL.'/images/Satellite-Logo-sm.png');?>" style="height:100px" class="alignright"/>

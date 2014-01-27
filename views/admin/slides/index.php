@@ -122,3 +122,4 @@ if (!empty($_GET['quickedit'])) {
       </div>
     </form>
     <?php _e('Pssst, scrolling loads more images.', SATL_PLUGIN_NAME); ?>
+    <img src="<?php echo(SATL_PLUGIN_URL.'/images/Satellite-Logo-sm.png');?>" style="height:100px" class="alignright"/>

@@ -4,6 +4,7 @@
             }
             else {
                 $galleries = $this -> Gallery -> find_all();
+                $single = '';
             }
             if (!empty($_GET['order'])) { $order = $_GET['order']; }
             else { $order = 'slide_order'; }
@@ -12,10 +13,10 @@
 ?>
 ﻿<div class="wrap"> 
         
-	<h2><?php _e('Order Slides', SG2_PLUGIN_NAME); ?></h2>
+	<h2><?php _e('Order Slides', SATL_PLUGIN_NAME); ?></h2>
 	<div style="float:none;" class="subsubsub">
             <?php $manage_link = ($single) ? $this -> url .'&single='.$single : $this -> url; ?>
-		<a href="<?php echo $manage_link; ?>"><?php _e('&larr; Back to Slides', SG2_PLUGIN_NAME); ?></a>
+		<a href="<?php echo $manage_link; ?>"><?php _e('&larr; Back to Slides', SATL_PLUGIN_NAME); ?></a>
 	</div>
 	<?php if (!empty($slides)) :
             foreach ($galleries as $gallery ) {

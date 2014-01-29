@@ -90,7 +90,7 @@
     }
     
     function open() { ?>
-        <table width="100%" border="0"id="satl_table" style="">
+        <table width="100%" border="0" id="satl_table" style="">
     <?php 
     }
     

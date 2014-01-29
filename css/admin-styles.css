@@ -36,19 +36,24 @@ body.toplevel_page_satellite, body.satellite_page_satellite-galleries, body.sate
     user-select: none;
     border-image: initial;
 }
-#satl_table {
+#satl_table, .satl_table {
     background-color:#eef5fb; 
     padding:10px;
-}
-.satl_table {
-    background: #FFF;
-    border: 2px solid #888;
-    padding: 10px;
-}
-#satl_table td, #satl_table th {
     border: 0;
 }
-#satl_table .howto {
+.satl_table {
+    padding: 10px;
+}
+form.satl_table {
+    border: 2px #888 solid;
+}
+form.satl_table table {
+    border: 0;
+}
+#satl_table td, #satl_table th, .satl_table td, .satl_table th {
+    border: 0;
+}
+#satl_table .howto, .satl_table .howto {
     margin-bottom:10px;
 }
 .togbox {
@@ -96,9 +101,6 @@ h3 span {
 }
 .metabox-holder input, .metabox-holder textarea, .metabox-holder select, .metabox-holder .uneditable-input {
     padding:2px;
-}
-table.form-table {
-    display: block;
 }
 
 .form-table input[type=radio] {
@@ -209,10 +211,6 @@ table.form-table {
 .satl-settings form th {
   text-transform: none;
 }
-.satl-settings input {
-  border: none;
-}
-
 .satl-settings #gallery-slide-switch a:visited {
   color: #FFF;
 }

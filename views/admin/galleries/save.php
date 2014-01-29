@@ -85,7 +85,7 @@ $options = $this -> Config -> displayOption('gallery', $this -> Gallery);
     <?php endif; ?>
 
 
-    <form action="<?php echo $this -> url; ?>&amp;method=save" name="post" id="post" method="post">
+    <form action="<?php echo $this -> url; ?>&amp;method=save" name="post" id="post" method="post" class="satl_table">
     <input type="hidden" name="Gallery[id]" value="<?php echo $this -> Gallery -> data -> id; ?>" />
         <?php $this -> Form -> display($options, 'Gallery'); ?>
     

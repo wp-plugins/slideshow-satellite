@@ -5,9 +5,9 @@ Plugin URI: http://c-pr.es/satellite
 Author: C- Pres
 Author URI: http://c-pr.es
 Description: Responsive display for all your photo needs. Customize to your hearts content.
-Version: 2.2.1
+Version: 2.2.2
 */
-define('SATL_VERSION', '2.2.1');
+define('SATL_VERSION', '2.2.2');
 $uploads = wp_upload_dir();
 if (!defined('SATL_PLUGIN_BASENAME'))
     define('SATL_PLUGIN_BASENAME', plugin_basename(__FILE__));
@@ -132,7 +132,7 @@ class Satellite extends SatellitePlugin
         if (!empty($_GET[$this->pre . 'message'])) {
             $msg_type = (!empty($_GET[$this->pre . 'updated'])) ? 'msg' : 'err';
             $render_method = 'render_' . $msg_type;
-            call_user_func($this->$render_method(), $this, $_GET[$this->pre . 'message']);
+            call_user_func(array('SatellitePlugin', $render_method), $_GET[$this->pre . 'message']);
         }
     }
 

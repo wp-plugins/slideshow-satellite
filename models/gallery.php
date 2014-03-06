@@ -61,7 +61,9 @@ class SatelliteGallery extends SatelliteDbHelper
             $data = (empty($data[$this->model])) ? $data : $data[$this->model];
 
             foreach ($data as $dkey => $dval) {
-                $this->data->{$dkey} = stripslashes($dval);
+                if (!empty($this->data)) {
+                    $this->data->{$dkey} = stripslashes($dval);
+                }
             }
 
             extract($data, EXTR_SKIP);
@@ -123,8 +125,6 @@ class SatelliteGallery extends SatelliteDbHelper
                                                     font,
                                                     type,
                                                     id');
-        //return $this -> find_all(array('id'=>$gallery));
-        //return $animation;
     }
 
     /*
@@ -160,6 +160,9 @@ class SatelliteGallery extends SatelliteDbHelper
 
     /*
      * Returns true if gallery is special like "More or Watermark"
+     * No resizing or watermarking
+     *
+     * @param int $galId
      * @return bool
      */
     public function isSpecialGallery($galId)

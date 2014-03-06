@@ -371,7 +371,7 @@ class Satellite extends SatellitePlugin
                     if (has_filter('satl_render_view')) {
                         $content = apply_filters('satl_render_view', array($view, $slides));
                     }
-                    if (!$content) {
+                    if (!$content || is_array($content) ) {
                         $content = $this->render('default', array('slides' => $slides, 'frompost' => false), false, 'orbit');
                     }
 

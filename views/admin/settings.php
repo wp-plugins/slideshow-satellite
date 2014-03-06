@@ -51,7 +51,6 @@ wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
                   <div id="minor-publishing">
                       <div id="misc-publishing-actions" class="preminfo">
                           <h4>What's different on the Premium Edition?</h4>
-                          <p>Display multiple slideshows in a page</p>
                           <p>Watermark your images</p>
                           <p>Customize height and width per use</p>
                           <p>Have multiple arrow options</p>
@@ -63,7 +62,7 @@ wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
                   </div>
                   <div id="major-publishing-actions">
                       <div id="publishing-action">
-                          <a href="http://c-pr.es/projects/satellite" class="button-primary" target="_blank"><?php echo($satellitebtn); ?></a>
+                          <a href="http://c-pr.es/satellite" class="button-primary" target="_blank"><?php echo($satellitebtn); ?></a>
                       </div>
                       <br class="clear" />
                   </div>

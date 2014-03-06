@@ -75,7 +75,7 @@ $options = $this -> Config -> displayOption('gallery', $this -> Gallery);
 
     <img src="<?php echo(SATL_PLUGIN_URL.'/images/Satellite-Logo-sm.png');?>" style="height:100px" />
     <div class="wrap">
-    <?php if ($this -> Gallery -> data -> id) : ?>
+    <?php if ($this -> Gallery -> data) : ?>
       <h2><?php echo $pluginName; ?> <?php _e('Gallery Editor', SATL_PLUGIN_NAME); ?></h2>
       <div id="gallery-slide-switch">
         Switch Your View: <a class="btn btn-primary" href="<?php echo(admin_url()."admin.php?page=satellite-slides&single=".$this -> Gallery -> data -> id) ?>">Slides View</a>
@@ -86,8 +86,12 @@ $options = $this -> Config -> displayOption('gallery', $this -> Gallery);
 
 
     <form action="<?php echo $this -> url; ?>&amp;method=save" name="post" id="post" method="post" class="satl_table">
+    <?php  // If this is a current gallery - we must collect that
+    if ($this -> Gallery -> data) : ?>
     <input type="hidden" name="Gallery[id]" value="<?php echo $this -> Gallery -> data -> id; ?>" />
-        <?php $this -> Form -> display($options, 'Gallery'); ?>
+    <?php endif; ?>
+
+    <?php $this -> Form -> display($options, 'Gallery'); ?>
     
     <p class="submit">
     <input name="saver" type="submit" value="Save" class="btn btn-primary" />

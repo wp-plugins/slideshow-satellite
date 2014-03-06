@@ -121,7 +121,7 @@ class SatellitePlugin
                     $background = $this->get_option('background');
                     $infobackground = $this->get_option('infobackground');
                     $infocolor = $this->get_option('infocolor');
-                    
+
                     $satlStyleUrl .= $this->Premium->addProStyling($width_temp,'width_temp',$pID);
                     $satlStyleUrl .= $this->Premium->addProStyling($height_temp,'height_temp',$pID);
                     $satlStyleUrl .= $this->Premium->addProStyling($background,'background',$pID);

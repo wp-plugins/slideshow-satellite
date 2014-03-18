@@ -573,7 +573,9 @@ class Satellite extends SatellitePlugin
                     }
                 } else {
                     $this->Db->model = $this->Slide->model;
-                    $this->Slide->find(array('id' => $_GET['id']));
+                    if (isset($_GET['id'])) {
+                        $this->Slide->find(array('id' => $_GET['id']));
+                    }
                     $this->render('slides/save', false, true, 'admin');
                 }
                 break;

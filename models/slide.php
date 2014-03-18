@@ -33,7 +33,7 @@ class SatelliteSlide extends SatelliteDbHelper
         $this->check_table($this->model);
         if (!empty($data)) {
             foreach ($data as $dkey => $dval) {
-                $this->{$dkey} = $dval;
+                $this->{$dkey} = ($dval) ? $dval : null;
             }
         }
 
@@ -57,10 +57,10 @@ class SatelliteSlide extends SatelliteDbHelper
 
         if (!empty($data)) {
             $data = (empty($data[$this->model])) ? $data : $data[$this->model];
+
             foreach ($data as $dkey => $dval) {
                 $this->data->{$dkey} = stripslashes($dval);
             }
-
             extract($data, EXTR_SKIP);
 
             if (empty($title)) {
@@ -301,6 +301,26 @@ class SatelliteSlide extends SatelliteDbHelper
         $this->save_field('title', $title, $conditions);
         $this->save_field('section', intval($gallery), $conditions);
         $this->save_field('modified', SatelliteHtmlHelper::gen_date(), $conditions);
+    }
+
+    public function getData()
+    {
+        if (!empty($this->data)) {
+            return $this->data;
+        } else {
+            $this->data = new stdClass();
+            $this->data->link = null;
+            $this->data->image = null;
+            $this->data->section = null;
+            $this->data->title = null;
+            $this->data->description = null;
+            $this->data->textlocation = null;
+            $this->data->type = null;
+            $this->data->uselink = null;
+
+        }
+//        print_r($this->data);die();
+        return $this->data;
     }
 
 }

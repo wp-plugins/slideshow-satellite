@@ -10,7 +10,9 @@ $single = ($_GET['single']) ? $_GET['single'] : null;
 $shortname = "satl";
 $ptypes1 = get_post_types(array('public' => true),'names','and');
 $ptypes = array_push($ptypes1, 'resume');
-$slide = $this -> Slide -> data;
+$slide = $this -> Slide -> getData();
+//echo (empty($this -> Slide -> data)) ?  "empty " : "not empty";
+//print_r($this -> Slide );die();
 
 $slideOptions = $this -> Config -> displayOption('slide', $this -> Slide);
 
@@ -25,7 +27,7 @@ array(  "name"      => "More Image",
         "desc"      => "From here you can select an image if you have a Gallery with the title 'More'",
         "id"        => "more",
         "type"      => "select",
-        "value"     => $slide -> more,
+        "value"     => (empty($slide)) ? $slide -> more : null,
         "std"       => "Select an Image",
         "options"   => $this -> Slide -> getGalleryImages("More"))
 );
@@ -33,8 +35,8 @@ array(  "name"      => "More Image",
 	<h2><?php _e('Save a Slide', SATL_PLUGIN_NAME); ?></h2>
 
 	<form action="<?php echo $this -> url; ?>&amp;method=save&amp;single=<?php echo( $single );?>" method="post" enctype="multipart/form-data" class="satl_table">
-		<input type="hidden" name="Slide[id]" value="<?php echo $slide -> id; ?>" />
-		<input type="hidden" name="Slide[slide_order]" value="<?php echo $slide -> slide_order; ?>" />
+		<input type="hidden" name="Slide[id]" value="<?php echo ($slide -> id) ? $slide->id : null; ?>" />
+		<input type="hidden" name="Slide[slide_order]" value="<?php echo ($slide -> slide_order) ? $slide -> slide_order : 0; ?>" />
 		<table id="satl_table">
                     <tbody>
                         <?php if ($slide->image) : ?>

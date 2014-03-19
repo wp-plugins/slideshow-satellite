@@ -11,6 +11,7 @@ class SatelliteSlide extends SatelliteDbHelper
         'id' => "INT(11) NOT NULL AUTO_INCREMENT",
         'title' => "VARCHAR(150) CHARACTER SET utf8 NOT NULL DEFAULT ''",
         'description' => "TEXT CHARACTER SET utf8",
+        'alt_text' => "VARCHAR(150) CHARACTER SET utf8 NULL DEFAULT ''",
         'image' => "VARCHAR(75) NOT NULL DEFAULT ''",
         'type' => "ENUM('file','url','existing') NOT NULL DEFAULT 'file'",
         'section' => "INT(5) NOT NULL DEFAULT '1'",

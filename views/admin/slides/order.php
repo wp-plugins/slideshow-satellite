@@ -26,53 +26,36 @@
             echo "<a href=?page=satellite-slides&method=order&single=".$gallery -> id."&order=created>Created By</a> | ";
             echo "<a href=?page=satellite-slides&method=order&single=".$gallery -> id."&order=created&dir=DESC>Reverse-Created</a> | ";
             echo "<a href=?page=satellite-slides&method=order&single=".$gallery -> id."&order=slide_order>Slide Order</a><br />";
+
             echo "Drag any slide to save!"
             ?>
-            <ul id="slidelist<?php echo $i;?>">
+            <ul id="slidelist<?php echo $gallery -> id;?>" class="slide-order">
                 <?php $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($gallery -> id)), null, array($order, $dir)); ?>
                     <?php if (is_array($slides)) : ?>
                     <?php foreach ($slides as $slide) : ?>
                             <li class="lineitem" id="item_<?php echo $slide -> id; ?>">
-                                    <span style="float:left; margin:5px 10px 0 5px;"><img src="<?php echo $this -> Html -> image_url($this -> Html -> thumbname($slide -> image, "small")); ?>" alt="<?php echo $this -> Html -> sanitize($slide -> title); ?>" /></span>
-                                    <h4><?php echo $slide -> title; ?></h4>
-                                    <hr class="clear" style="clear:both; visibility:hidden; height:1px; display:block;" />
+                                    <img src="<?php echo $this -> Html -> image_url($this -> Html -> thumbname($slide -> image, "thumb")); ?>" alt="<?php echo $this -> Html -> sanitize($slide -> title); ?>" />
+                                    <p><?php echo $slide -> title; ?></p>
                             </li>
                     <?php endforeach; ?>
                     <?php endif; ?>
             </ul>
-            <div id="slidemessage<?php echo $i;?>"></div>
+            <div id="slidemessage<?php echo $gallery -> id;?>" class="clearfix"></div>
 
             <script type="text/javascript">
             jQuery(document).ready(function() {
-                    jQuery("ul#slidelist<?php echo $i;?>").sortable({
+                    jQuery("ul#slidelist<?php echo $gallery -> id;?>").sortable({
                             start: function(request) {
-                                    jQuery("#slidemessage<?php echo $i;?>").slideUp();
+                                    jQuery("#slidemessage<?php echo $gallery -> id;?>").slideUp();
                             },
                             stop: function(request) {
-                                    jQuery("#slidemessage<?php echo $i;?>").load(SatelliteAjax + "?cmd=slides_order", jQuery("ul#slidelist<?php echo $i;?>").sortable('serialize')).slideDown("slow");
-                            },
-                            axis: "y"
+                                    jQuery("#slidemessage<?php echo $gallery -> id;?>").load(SatelliteAjax + "?cmd=slides_order", jQuery("ul#slidelist<?php echo $gallery -> id;?>").sortable('serialize')).slideDown("slow");
+                            }
                     });
+                    jQuery("ul#slidelist<?php echo $gallery -> id;?>").disableSelection();
             });
             </script>
             <?php } ?>
-
-            <style type="text/css">
-            li.lineitem {
-                    list-style: none;
-                    margin: 3px 135px !important;
-                    padding: 2px 5px 2px 5px;
-                    background-color: #F1F1F1 !important;
-                    border:1px solid #B2B2B2;
-                    cursor: move;
-                    vertical-align: middle !important;
-                    display: block;
-                    clear: both;
-                    -moz-border-radius: 4px;
-                    -webkit-border-radius: 4px;
-                    width:300px;
-            }
-            </style>
 	<?php else : ?>
 		<p style="color:red;"><?php _e('No slides found', SG2_PLUGIN_NAME); ?></p>
 	<?php endif; ?>

@@ -227,3 +227,27 @@ input.btn:active {
     height: 30px;
     padding: 5px 10px;
 }
+ul.slide-order {
+    float:left;
+}
+li.lineitem {
+    list-style: none;
+    padding: 2px 5px 2px 5px;
+    background-color: #F1F1F1 !important;
+    border:1px solid #B2B2B2;
+    cursor: move;
+    vertical-align: middle !important;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    width:200px;
+    float:left;
+    margin: 5px;
+    font-size: 12px;
+}
+li.lineitem img {
+    height: 150px;
+    margin: 5px 25px;
+}
+li.lineitem p {
+    text-align: center;
+}

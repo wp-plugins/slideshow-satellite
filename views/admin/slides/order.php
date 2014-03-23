@@ -27,35 +27,56 @@
             echo "<a href=?page=satellite-slides&method=order&single=".$gallery -> id."&order=created&dir=DESC>Reverse-Created</a> | ";
             echo "<a href=?page=satellite-slides&method=order&single=".$gallery -> id."&order=slide_order>Slide Order</a><br />";
 
-            echo "Drag any slide to save!"
+            echo "Drag any slide to save!";
+            $n = 1;
             ?>
             <ul id="slidelist<?php echo $gallery -> id;?>" class="slide-order">
                 <?php $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($gallery -> id)), null, array($order, $dir)); ?>
                     <?php if (is_array($slides)) : ?>
                     <?php foreach ($slides as $slide) : ?>
-                            <li class="lineitem" id="item_<?php echo $slide -> id; ?>">
-                                    <img src="<?php echo $this -> Html -> image_url($this -> Html -> thumbname($slide -> image, "thumb")); ?>" alt="<?php echo $this -> Html -> sanitize($slide -> title); ?>" />
-                                    <p><?php echo $slide -> title; ?></p>
+                            <li class="lineitem" data-order="<?php echo $slide -> id; ?>">
+                                <img src="<?php echo $this -> Html -> image_url($this -> Html -> thumbname($slide -> image, "thumb")); ?>" alt="<?php echo $this -> Html -> sanitize($slide -> title); ?>" />
+                                <p class="slide-title"><?php echo $slide -> title; ?></p>
+                                <p class="slide-order"><?php echo($n);?></p>
                             </li>
-                    <?php endforeach; ?>
-                    <?php endif; ?>
+                    <?php
+                        $n++;
+                        endforeach;
+                        endif;
+                    ?>
             </ul>
-            <div id="slidemessage<?php echo $gallery -> id;?>" class="clearfix"></div>
+            <div id="slidemessage<?php echo $gallery -> id;?>" class="clearfix red-msg hidden">Gallery #<?php echo $gallery -> id;?> has been successfully reordered </div>
 
             <script type="text/javascript">
             jQuery(document).ready(function() {
+                    var slideOrder;
                     jQuery("ul#slidelist<?php echo $gallery -> id;?>").sortable({
                             start: function(request) {
                                     jQuery("#slidemessage<?php echo $gallery -> id;?>").slideUp();
                             },
                             stop: function(request) {
-                                    jQuery("#slidemessage<?php echo $gallery -> id;?>").load(SatelliteAjax + "?cmd=slides_order", jQuery("ul#slidelist<?php echo $gallery -> id;?>").sortable('serialize')).slideDown("slow");
+                                slideOrder = jQuery("ul#slidelist<?php echo $gallery -> id;?>").sortable('toArray', {attribute: 'data-order'});
+                                var data = {
+                                    action : 'satl_order_slides',
+                                    slides_order : slideOrder
+                                }
+                                jQuery.post(ajaxurl, data, function(response) {
+                                    jQuery("#slidemessage<?php echo $gallery -> id;?>").slideDown("slow");;
+                                    setOrder(<?php echo $gallery -> id;?>);
+                                });
                             }
                     });
                     jQuery("ul#slidelist<?php echo $gallery -> id;?>").disableSelection();
             });
             </script>
             <?php } ?>
+        <script type="text/javascript">
+            setOrder = function (order) {
+                jQuery("ul#slidelist" + order +" li").each(function(index,li) {
+                    jQuery(li).find('.slide-order').html(parseInt(index+1));
+                })
+            }
+        </script>
 	<?php else : ?>
 		<p style="color:red;"><?php _e('No slides found', SG2_PLUGIN_NAME); ?></p>
 	<?php endif; ?>

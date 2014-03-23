@@ -50,6 +50,7 @@ class SatellitePlugin
         $this->add_filter('the_posts', 'conditionally_add_scripts_and_styles'); // the_posts gets triggered before wp_head
         $this->add_action("wp_head", 'print_styles');
         $this->add_action('wp_ajax_plupload_action', "g_plupload_action");
+        $this->add_action('wp_ajax_satl_order_slides', 'satl_ajax_reorder');
         
         return true;
     }
@@ -561,14 +562,6 @@ class SatellitePlugin
         exit;
     }
 
-    function plugin_base() {
-        return rtrim(dirname(__FILE__), '/');
-    }
-
-    function url() {
-        return rtrim(WP_PLUGIN_URL, '/') . '/' . substr(preg_replace("/\\" . "/" . "/si", "/", $this->plugin_base()), strlen(ABSPATH));
-    }
-
     function add_option($name = '', $value = '') {
         if (add_option($this->pre . $name, $value)) {
             return true;
@@ -593,15 +586,6 @@ class SatellitePlugin
             }
             return $option;
         }
-        return false;
-    }
-
-    function debug($var = array()) {
-        if ($this->debugging) {
-            echo '<pre>' . print_r($var, true) . '</pre>';
-            return true;
-        }
-
         return false;
     }
 
@@ -775,6 +759,22 @@ class SatellitePlugin
         return false;
     }
 
+    public function satl_ajax_reorder() {
+
+        if (!empty($_REQUEST['slides_order'])) {
+            $slideOrder = $_REQUEST['slides_order'];
+            foreach ($slideOrder as $order => $slide_id) {
+                $this->log_me( "order $order slide $slide_id");
+                $this -> Slide -> save_field('slide_order', $order, array('id' => $slide_id));
+            }
+            echo "<br/><div style='color:red;'>";
+            _e('Slides have been ordered', SATL_PLUGIN_NAME);
+            echo "</div>";
+        }
+
+        die();
+    }
+
     /**
      * Add Settings link to plugins - code from GD Star Ratings
      */
@@ -833,4 +833,24 @@ class SatellitePlugin
             }
         }
     }
+
+    function plugin_base() {
+        return rtrim(dirname(__FILE__), '/');
+    }
+
+    function url() {
+        return rtrim(WP_PLUGIN_URL, '/') . '/' . substr(preg_replace("/\\" . "/" . "/si", "/", $this->plugin_base()), strlen(ABSPATH));
+    }
+
+    function debug($var = array()) {
+        if ($this->debugging) {
+            echo '<pre>' . print_r($var, true) . '</pre>';
+            return true;
+        }
+
+        return false;
+    }
+
+
+
 }

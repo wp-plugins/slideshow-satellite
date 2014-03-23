@@ -250,4 +250,9 @@ li.lineitem img {
 }
 li.lineitem p {
     text-align: center;
+    margin: 0;
+    font-weight: bold;
+}
+.red-msg {
+    color: red;
 }

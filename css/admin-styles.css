@@ -256,3 +256,8 @@ li.lineitem p {
 .red-msg {
     color: red;
 }
+.slide-order-msg {
+    height: 48px;
+}
+.slide-order-msg .slide-status { float:left;}
+.slide-order-msg .slide-msg { float:left;}

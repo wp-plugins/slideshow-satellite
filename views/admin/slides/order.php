@@ -26,10 +26,14 @@
             echo "<a href=?page=satellite-slides&method=order&single=".$gallery -> id."&order=created>Created By</a> | ";
             echo "<a href=?page=satellite-slides&method=order&single=".$gallery -> id."&order=created&dir=DESC>Reverse-Created</a> | ";
             echo "<a href=?page=satellite-slides&method=order&single=".$gallery -> id."&order=slide_order>Slide Order</a><br />";
-
-            echo "Drag any slide to save!";
             $n = 1;
             ?>
+            <div class="slide-order-msg">
+                <div class="slide-status">Status:</div><div id="slidemessage<?php echo $gallery -> id;?>" class="clearfix red-msg slide-msg"><?php _e('Original Ordering (Unsaved)', SATL_PLUGIN_NAME);?></div>
+                <p class="clear">Save by dragging slides</p>
+            </div>
+
+
             <ul id="slidelist<?php echo $gallery -> id;?>" class="slide-order">
                 <?php $slides = $this -> Slide -> find_all(array('section'=>(int) stripslashes($gallery -> id)), null, array($order, $dir)); ?>
                     <?php if (is_array($slides)) : ?>
@@ -45,7 +49,6 @@
                         endif;
                     ?>
             </ul>
-            <div id="slidemessage<?php echo $gallery -> id;?>" class="clearfix red-msg hidden">Gallery #<?php echo $gallery -> id;?> has been successfully reordered </div>
 
             <script type="text/javascript">
             jQuery(document).ready(function() {
@@ -61,7 +64,7 @@
                                     slides_order : slideOrder
                                 }
                                 jQuery.post(ajaxurl, data, function(response) {
-                                    jQuery("#slidemessage<?php echo $gallery -> id;?>").slideDown("slow");;
+                                    jQuery("#slidemessage<?php echo $gallery -> id;?>").html(response).slideDown("slow");;
                                     setOrder(<?php echo $gallery -> id;?>);
                                 });
                             }

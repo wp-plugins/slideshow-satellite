@@ -767,9 +767,9 @@ class SatellitePlugin
                 $this->log_me( "order $order slide $slide_id");
                 $this -> Slide -> save_field('slide_order', $order, array('id' => $slide_id));
             }
-            echo "<br/><div style='color:red;'>";
-            _e('Slides have been ordered', SATL_PLUGIN_NAME);
-            echo "</div>";
+
+            _e('Slides have been reordered', SATL_PLUGIN_NAME);
+
         }
 
         die();

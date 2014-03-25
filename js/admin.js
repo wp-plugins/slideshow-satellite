@@ -10,6 +10,12 @@ jQuery('document').ready(function(){
   jQuery('#title133').focus(function() {
     alert('focused!');
   });
+
+    jQuery(function() {
+        jQuery('#display-gallery').change(function() {
+            this.submit();
+        });
+    });
   
   
 });

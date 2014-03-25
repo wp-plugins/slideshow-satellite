@@ -28,7 +28,7 @@ if (!empty($_GET['quickedit'])) {
                     array('class' => "btn btn-primary")); ?></h2>
 	<?php if (!empty($slides)) : ?>	
                 <div class="alignright">
-                    <form action="<?php echo $this -> url; ?>&amp;method=single" method="POST">
+                    <form id="display-gallery" action="<?php echo $this -> url; ?>&amp;method=single" method="POST">
                         <select name="section">
                             <option value="All">All</option>
                             <?php $single = ($_GET['single']) ? $_GET['single'] : null;?>
@@ -43,7 +43,7 @@ if (!empty($_GET['quickedit'])) {
                                         <option <?php echo ((int) $this -> Slide -> data -> section == '1') ? 'selected="selected"' : ''; ?> value="1">Gallery 1</option>
                                 <?php endif; ?>
                         </select>
-                        <input type="submit" name="View" value="View"/>
+                        <input type="submit" name="View" value="View" class="hidden"/>
                     </form>
                 </div>
                 <span class="alignright viewonly" style="padding-top:5px">View Only : </span>

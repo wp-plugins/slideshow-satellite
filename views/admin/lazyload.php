@@ -9,7 +9,7 @@ foreach ($slides as $slide) {
   Slides[<?php echo($i) ?>].title = '<?php echo(addslashes($slide->title)) ?>';
   Slides[<?php echo($i) ?>].section = '<?php echo(addslashes($slide->section)) ?>';
   Slides[<?php echo($i) ?>].uselink = '<?php echo(addslashes($slide->uselink)) ?>';
-  Slides[<?php echo($i) ?>].slide_order = '<?php echo(addslashes($slide->slide_order)) ?>';
+  Slides[<?php echo($i) ?>].slide_order = '<?php echo(addslashes($slide->slide_order)+1) ?>';
   Slides[<?php echo($i) ?>].date = '<?php echo(date("Y-m-d", strtotime($slide -> modified))) ?>';
   Slides[<?php echo($i) ?>].image = '<?php echo(addslashes( $this -> Html -> image_url($slide -> image))) ?>';
   Slides[<?php echo($i) ?>].thumb = '<?php echo(addslashes( $this -> Html -> image_url($this->Html->thumbname($slide->image)))) ?>';

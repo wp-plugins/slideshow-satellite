@@ -130,6 +130,19 @@ class SatelliteConfigHelper extends SatellitePlugin
                             array('id' => false, 'title' => 'Off'),
                             array('id' => true, 'title' => 'On')
                         )
+                    ),
+                    array("name" => "Run Jquery Through Google?",
+                        "desc" => "Helps a developer find a bug on your site",
+                        "id" => "jquery",
+                        "type" => "select",
+                        "value" => $advanced['jquery'],
+                        "std" => 'Please Select',
+                        "options" => array(
+                            array('id' => 1, 'title' => 'Yes, Google (latest)'),
+                            array('id' => 10, 'title' => 'Yes, Google (v.10)'),
+                            array('id' => 9, 'title' => 'Yes, Google (v.9)'),
+                            array('id' => 0, 'title' => 'No, WordPress')
+                        )
                     ));
 
                 break;
@@ -209,6 +222,12 @@ class SatelliteConfigHelper extends SatellitePlugin
                         "id" => "description",
                         "type" => "textarea",
                         "value" => $model->data->description,
+                        "std" => ""),
+                    array("name" => "Alt Text",
+                        "desc" => "Alternative Text (used by other plugins for extra info)",
+                        "id" => "alt_text",
+                        "type" => "text",
+                        "value" => $model->data->alt_text,
                         "std" => ""),
                     array("name" => "Gallery",
                         "desc" => "The gallery this slide belongs to",

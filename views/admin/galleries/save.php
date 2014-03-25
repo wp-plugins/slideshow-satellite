@@ -59,7 +59,7 @@ $options = $this -> Config -> displayOption('gallery', $this -> Gallery);
                 return false;
             });
         });
-    }
+    });
 
     </script>
 

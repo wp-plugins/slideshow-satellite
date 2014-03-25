@@ -130,6 +130,19 @@ class SatelliteConfigHelper extends SatellitePlugin
                             array('id' => false, 'title' => 'Off'),
                             array('id' => true, 'title' => 'On')
                         )
+                    ),
+                    array("name" => "Run Jquery Through Google?",
+                        "desc" => "Helps a developer find a bug on your site",
+                        "id" => "jquery",
+                        "type" => "select",
+                        "value" => $advanced['jquery'],
+                        "std" => 'Please Select',
+                        "options" => array(
+                            array('id' => 1, 'title' => 'Yes, Google (latest)'),
+                            array('id' => 10, 'title' => 'Yes, Google (v.10)'),
+                            array('id' => 9, 'title' => 'Yes, Google (v.9)'),
+                            array('id' => 0, 'title' => 'No, WordPress')
+                        )
                     ));
 
                 break;

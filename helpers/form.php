@@ -269,7 +269,7 @@
             </div>
             <div class="plupload-thumbs <?php if ($multiple): ?>plupload-thumbs-multiple<?php endif; ?>" id="<?php echo $id; ?>plupload-thumbs">
             </div>
-            <span class="howto"><?php echo($r['desc']); ?></span>
+            <span class="howto clear"><?php echo($r['desc']); ?></span>
             <div class="clear"></div>
 
         </td>

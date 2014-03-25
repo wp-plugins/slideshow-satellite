@@ -41,6 +41,9 @@ body.toplevel_page_satellite, body.satellite_page_satellite-galleries, body.sate
     padding:10px;
     border: 0;
 }
+.form-table td, .form-table th {
+    border: 0;
+}
 .satl_table {
     padding: 10px;
 }

@@ -250,10 +250,14 @@ class SatellitePlugin
         $preloader = array(
             'quantity'    => 1,
         );
+        $advanced = array(
+            'jquery'    => 0
+        );
         $this->add_option('Watermark', $watermark);
         $this->add_option('Images', $images);
         $this->add_option('styles', $styles);
         $this->add_option('Preloader', $preloader);
+        $this->add_option('Advanced', $advanced);
 //        $this->add_option('Awesome', null);
         
         //General Settings
@@ -264,7 +268,6 @@ class SatellitePlugin
         $this->add_option('information', "Y");
         $this->add_option('infospeed', 10);
         $this->add_option('embedss', "Y");
-        $this->add_option('ggljquery', "Y");
         $this->add_option('nav_opacity', 30);
         $this->add_option('navhover', 70);
         $this->add_option('nolinker', false);
@@ -498,9 +501,19 @@ class SatellitePlugin
 
     function enqueue_scripts() {
       $this->log_me("enqueuing scripts");
-      if ($this->get_option('ggljquery') == "Y") {
+        $advanced = $this->get_option('Advanced');
+        $jquery = $advanced['jquery'];
+        $this->log_me('jquery'.$jquery);
+      if ($jquery != 0) {
           wp_deregister_script( 'jquery' );
-          wp_register_script( 'jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js');
+          if ($jquery == 1) {
+              wp_register_script( 'jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js');
+          } elseif ($jquery == 10) {
+              wp_register_script( 'jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js');
+          } else {
+              wp_register_script( 'jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js');
+          }
+
       }
       wp_enqueue_script('jquery');
 
@@ -764,7 +777,6 @@ class SatellitePlugin
         if (!empty($_REQUEST['slides_order'])) {
             $slideOrder = $_REQUEST['slides_order'];
             foreach ($slideOrder as $order => $slide_id) {
-                $this->log_me( "order $order slide $slide_id");
                 $this -> Slide -> save_field('slide_order', $order, array('id' => $slide_id));
             }
 

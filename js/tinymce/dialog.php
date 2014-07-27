@@ -53,7 +53,7 @@ function insertTag() {
 		
     }
     if (window.tinyMCE) {
-        window.tinyMCE.execInstanceCommand('content', 'mceInsertContent', false, tag);
+        window.tinyMCE.execCommand('mceInsertContent', false, tag);
         tinyMCEPopup.editor.execCommand('mceRepaint');
         tinyMCEPopup.close();
     }

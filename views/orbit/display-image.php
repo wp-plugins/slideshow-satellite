@@ -9,10 +9,12 @@ $pagelink = $images['pagelink'];
 
 $full_image_href = wp_get_attachment_image_src($ID, 'full', false);
 
+$image_path = ($frompost) ? $full_image_href[0] : $this->Html->image_path($slider->image);
 $imagelink = ($frompost) ? $full_image_href[0] : $this->Html->image_url($slider->image);
+$this->log_me($image_path);
 if ($images['position'] == "S" || $images['position'] == "C") {
   $crop = ($images['position'] == "C") ? true : false;
-  if (!$frompost && $data = getimagesize($imagelink)) {
+  if (!$frompost && $data = getimagesize($image_path)) {
     list($width,$height) = $data;
     $size = $this->Image->getImageStretch($GLOBALS['post']->ID,$width,$height,$crop);
   } elseif ($frompost) {

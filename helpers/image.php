@@ -211,6 +211,27 @@ class SatelliteImageHelper extends SatellitePlugin {
         }
       }
     }
+    
+    public function getImageData($ID, $slide, $frompost, $source)
+    {
+      if ($frompost) {
+        $full_image_href = wp_get_attachment_image_src($ID, 'full', false);
+        $imagelink = $full_image_href[0];
+        return array($imagelink, $full_image_href[1], $full_image_href[2]);
+      } elseif ($source != 'satellite') {
+        $imagelink = $slide->img_url;
+        $width = $slide->img_width;
+        $height = $slide->img_height;
+      } else {
+        // This is from Satellite Slides - we don't have the width & height yet
+        $imagelink = SatelliteHtmlHelper::image_url($slide->image);
+        list($width,$height) = getimagesize($imagelink);
+      }
+
+
+      return array($imagelink, $width, $height);
+      
+    }
 
 
 }

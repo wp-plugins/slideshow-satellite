@@ -199,6 +199,7 @@
         
         $r = wp_parse_args($args, $defaults);
         extract($r, EXTR_SKIP);
+//        error_log(print_r($r));
         
         ob_start();
         ?>
@@ -240,11 +241,14 @@
         );
         
         $r = wp_parse_args($args, $defaults);
+        $SG = new SatelliteGallery;
+        $info = $SG->loadData($_REQUEST['id']);
+        
         extract($r, EXTR_SKIP);
         
         ob_start();        
         ?>
-        <tr>
+        <tr id="uploader" <?php echo ($info->source != 'satellite' && !empty($info->source)) ? 'style="display:none"' : '' ?>>
             <th class="verttop"><label><strong><?php echo $r['name']; ?></strong></label></th>
         <td>
             <?php

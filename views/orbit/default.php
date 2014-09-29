@@ -83,7 +83,9 @@ if (!empty($slides)) :
 
                     $this->render('display-image', 
                       array('frompost'  =>false,
-                            'slider'    => $slider), true, 'orbit');?>
+                            'slider'    => $slider,
+                            'source'    => $this->Gallery->data->source), 
+                            true, 'orbit');?>
 
                 </div>
             <?php

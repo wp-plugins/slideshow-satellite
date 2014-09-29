@@ -5,9 +5,9 @@ Plugin URI: http://c-pr.es/satellite
 Author: C- Pres
 Author URI: http://c-pr.es
 Description: Responsive display for all your photo needs. Customize to your hearts content.
-Version: 2.2.5
+Version: 2.2.6
 */
-define('SATL_VERSION', '2.2.5');
+define('SATL_VERSION', '2.2.6');
 $uploads = wp_upload_dir();
 if (!defined('SATL_PLUGIN_BASENAME'))
     define('SATL_PLUGIN_BASENAME', plugin_basename(__FILE__));
@@ -112,6 +112,7 @@ class Satellite extends SatellitePlugin
         add_meta_box('linksimagesdiv', __('Links &amp; Images', SATL_PLUGIN_NAME), array($this->Metabox, "settings_linksimages"), $this->menus['satellite'], 'normal', 'core');
         add_meta_box('stylesdiv', __('Appearance &amp; Styles', SATL_PLUGIN_NAME), array($this->Metabox, "settings_styles"), $this->menus['satellite'], 'normal', 'core');
         add_meta_box('thumbsdiv', __('Thumbnail Settings', SATL_PLUGIN_NAME), array($this->Metabox, "settings_thumbs"), $this->menus['satellite'], 'normal', 'core');
+        add_meta_box('posttypediv', __('Post Type Settings', SATL_PLUGIN_NAME), array($this->Metabox, "settings_posttype"), $this->menus['satellite'], 'normal', 'core');
         add_meta_box('advanceddiv', __('Advanced Settings', SATL_PLUGIN_NAME), array($this->Metabox, "settings_advanced"), $this->menus['satellite'], 'normal', 'core');
         if (SATL_PRO) {
             add_meta_box('prodiv', __('Premium Edition Only', SATL_PLUGIN_NAME), array($this->Metabox, "settings_pro"), $this->menus['satellite'], 'normal', 'core');
@@ -170,7 +171,20 @@ class Satellite extends SatellitePlugin
         </script>
     <?php
     }
-
+    /**
+     **** DEPRECATED - USE do_shortcode() instead ***
+     * 
+     * @global type $wpdb
+     * @param type $output
+     * @param type $post_id
+     * @param type $exclude
+     * @param type $include
+     * @param type $custom
+     * @param type $gallery
+     * @param type $width
+     * @param type $height
+     * @return type 
+     */
     function slideshow($output = true, $post_id = null, $exclude = null, $include = null, $custom = null, $gallery = null, $width = null, $height = null)
     {
         $this->satellite_counter();
@@ -335,21 +349,16 @@ class Satellite extends SatellitePlugin
         if ((!empty($custom)) || (!empty($gallery))) { // custom is deprecated as of version 1.2
             $gallery = ($custom) ? $custom : $gallery;
             $multigallery = preg_match("[\,]", $gallery);
-            if ($multigallery) {
-                $gallery_array = explode(',', $gallery);
-                $first_gallery = $gallery_array[0];
-                $slides = $this->Slide->find_all(array('section' => (int)stripslashes($first_gallery)), null, array('slide_order', "ASC"));
-            } else {
-                $slides = $this->Slide->find_all(array('section' => (int)stripslashes($gallery)), null, array('slide_order', "ASC"));
-            }
 
-            if ($this->get_option('random') == "on") {
-                shuffle($slides);
-            }
+            $data = $this->Gallery->loadData($gallery);
+
+            $slides = $this->getSlidesArray($data, $gallery,$multigallery);
+            var_dump($slides);
+
             $this->slidenum = count($slides);
 
             /* THIS IS WHERE THE VIEW MAGIC HAPPENS */
-            $view = $this->getCustomView($multigallery, $gallery);
+            $view = $this->getCustomView($data, $multigallery, $gallery);
             $this->log_me('View for this embed is: ' . $view);
 
             switch ($view) {
@@ -410,10 +419,9 @@ class Satellite extends SatellitePlugin
         return $content;
     }
 
-    public function getCustomView($multigallery, $gallery)
+    public function getCustomView($data, $multigallery, $gallery)
     {
-        $this->Gallery->loadData($gallery);
-        $theme = $this->Gallery->data->theme;
+        $theme = $data->theme;
         if ($theme && $theme != 'standard' && $theme != 'flipbook')
             return $theme;
         elseif (SATL_PRO && $multigallery)
@@ -425,15 +433,85 @@ class Satellite extends SatellitePlugin
         else
             return 'default';
     }
+    
+    /**
+     *
+     * @param int $gal - Gallery ID
+     * @param int $mg - multigallery or not
+     * @return array 
+     */
+    private function getSlidesArray($data,$gal,$mg) {
+      if ($mg) {
+          $gallery_array = explode(',', $gal);
+          $first_gallery = $gallery_array[0];
+          $slides = $this->Slide->find_all(array('section' => (int)stripslashes($first_gallery)), null, array('slide_order', "ASC"));
+      } else {
+          if ($data->source == 'satellite') {
+            $slides = $this->Slide->find_all(array('section' => (int)stripslashes($gal)), null, array('slide_order', "ASC"));
+          } else {
+            error_log('post type slides');
+            $slides = $this->processPostTypeSlides($data->source);
+          }
+      }
+
+      if ($this->get_option('random') == "on") {
+          shuffle($slides);
+      }
+      
+      return $slides;
+    }
+    
+    function processPostTypeSlides($postType)
+    {
+      $args = array(
+            'orderby'       => 'post_title',
+            //'order'       => $post_order,
+            'post_type'     => $postType,
+            'post_status'   => 'publish',
+            //'paged'			  => $paged,
+            'nopaging'		  => true,
+        );
+
+      $my_query = new WP_Query();
+      $query_posts = $my_query->query($args);
+      $slide_arr = Array();
+      $pTConfig = $this->get_option('PostType');
+
+      while ( $my_query->have_posts() ) : 
+        
+        // Each image saved is a Wordpress Post in nm-userfiles tied to a post
+        $my_query->the_post();
+        if (has_post_thumbnail()) {
+          $slide = new SatelliteSlide;
+          $slide->id = get_the_ID();
+          error_log(get_attachment_link(get_the_ID()));
+          $large_img = wp_get_attachment_image_src(get_post_thumbnail_id(), 'large');
+          $slide->title = get_the_title();
+          $slide->description = "test description";
+          $slide->img_url = $large_img[0];
+          $slide->img_width = $large_img[1];
+          $slide->img_height = $large_img[2];
+          if (is_user_logged_in() && $pTConfig['post_link']) {
+            $slide->uselink = "Y";
+            $slide->link = get_the_permalink();
+          }
+
+          $slide_arr[] = $slide;
+        }
+
+      endwhile;
+
+      return $slide_arr;
+    }
 
     function satellite_counter()
     {
-        global $satellite_init_ok;
-        if (!$satellite_init_ok) {
-            $satellite_init_ok = 1;
-        } else {
-            $satellite_init_ok = $satellite_init_ok + 1;
-        }
+      global $satellite_init_ok;
+      if (!$satellite_init_ok) {
+        $satellite_init_ok = 1;
+      } else {
+        $satellite_init_ok = $satellite_init_ok + 1;
+      }
     }
 
     function resetTemp()
@@ -693,6 +771,7 @@ class Satellite extends SatellitePlugin
                 break;
             case 'save'                :
                 if (!empty($_POST)) {
+//                  var_dump($_POST);die();
                     if ($this->Gallery->save($_POST, true)) {
                         if (!empty($_POST['images'])) {
                             if ($this->Slide->processImages($_POST['images'], $_POST['Gallery']['id'])) {

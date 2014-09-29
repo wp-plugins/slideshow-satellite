@@ -13,7 +13,7 @@ class SatelliteGallery extends SatelliteDbHelper
         'title' => "VARCHAR(150) CHARACTER SET utf8 NOT NULL DEFAULT ''",
         'description' => "TEXT CHARACTER SET utf8",
         'image' => "VARCHAR(75) NOT NULL DEFAULT ''",
-        'type' => "VARCHAR(40) NOT NULL DEFAULT ''",
+        'source' => "VARCHAR(40) NOT NULL DEFAULT ''",
         'capposition' => "VARCHAR(40) NOT NULL DEFAULT ''",
         'theme' => "VARCHAR(40) NOT NULL DEFAULT ''",
         'caphover' => "BOOLEAN NOT NULL DEFAULT 0",
@@ -59,6 +59,7 @@ class SatelliteGallery extends SatelliteDbHelper
 
         if (!empty($data)) {
             $data = (empty($data[$this->model])) ? $data : $data[$this->model];
+//            var_dump($data);die();
 
             foreach ($data as $dkey => $dval) {
                 if (!empty($this->data)) {
@@ -71,10 +72,10 @@ class SatelliteGallery extends SatelliteDbHelper
             if (empty($title)) {
                 $this->errors['title'] = __('Please enter a title', SATL_PLUGIN_NAME);
             }
-            if (empty($type)) {
-                $this->errors['type'] = __('Please select a gallery type', SATL_PLUGIN_NAME);
-            } elseif ($type == "customslides") {
-            } elseif ($type == "wordpressimages") {
+            if (empty($source)) {
+                $this->errors['type'] = __('Please select a gallery source', SATL_PLUGIN_NAME);
+            } elseif ($source == "satellite") {
+            } elseif ($source == "post") {
             }
         } else {
             $this->errors[] = __('No data was posted', SATL_PLUGIN_NAME);
@@ -123,7 +124,7 @@ class SatelliteGallery extends SatelliteDbHelper
                                                     theme,
                                                     description,
                                                     font,
-                                                    type,
+                                                    source,
                                                     id');
     }
 

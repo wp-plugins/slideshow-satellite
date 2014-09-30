@@ -59,7 +59,6 @@ class SatelliteGallery extends SatelliteDbHelper
 
         if (!empty($data)) {
             $data = (empty($data[$this->model])) ? $data : $data[$this->model];
-//            var_dump($data);die();
 
             foreach ($data as $dkey => $dval) {
                 if (!empty($this->data)) {
@@ -116,7 +115,7 @@ class SatelliteGallery extends SatelliteDbHelper
 
     public function loadData($gallery)
     {
-        return $this->find(array('id' => $gallery), 'caphover,
+      $data = $this->find(array('id' => $gallery), 'caphover,
                                                     pausehover,
                                                     capposition,
                                                     capanimation,
@@ -126,6 +125,13 @@ class SatelliteGallery extends SatelliteDbHelper
                                                     font,
                                                     source,
                                                     id');
+
+        return $data;
+    }
+    
+    public function getSource($id) {
+      $data = $this->find(array('id' => $gallery), 'source');
+      return $data->source;
     }
 
     /*

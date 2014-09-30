@@ -353,7 +353,6 @@ class Satellite extends SatellitePlugin
             $data = $this->Gallery->loadData($gallery);
 
             $slides = $this->getSlidesArray($data, $gallery,$multigallery);
-            var_dump($slides);
 
             $this->slidenum = count($slides);
 
@@ -491,9 +490,12 @@ class Satellite extends SatellitePlugin
           $slide->img_url = $large_img[0];
           $slide->img_width = $large_img[1];
           $slide->img_height = $large_img[2];
-          if (is_user_logged_in() && $pTConfig['post_link']) {
-            $slide->uselink = "Y";
-            $slide->link = get_the_permalink();
+          $slide->source = $postType;
+          $slide->link = get_the_permalink();
+          $slide->uselink = "Y";
+          // Default is allow click through, if post_link is true, only logged in users can click through
+          if (!is_user_logged_in() && $pTConfig['post_link']) {
+            $slide->uselink = false;
           }
 
           $slide_arr[] = $slide;

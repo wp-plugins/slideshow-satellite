@@ -253,7 +253,7 @@ class SatelliteConfigHelper extends SatellitePlugin
                 $postType = $this->get_option('PostType');
                 $optionsArray = array(
                     array("name" => "Login for Click-Thru",
-                        "desc" => "When checked, only logged in users can click the image and go to the post.",
+                        "desc" => "When checked, only logged in users can click the image and go to the post. Otherwise everyone clicks through",
                         "id" => "post_link",
                         "type" => "checkbox",
                         "value" => (isset($postType['post_link'])) ? $postType['post_link'] : ''));

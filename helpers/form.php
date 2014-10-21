@@ -202,6 +202,7 @@
 //        error_log(print_r($r));
         
         ob_start();
+        $this->log_me($r['options']);
         ?>
             <tr>
                 <th class="verttop"><label><strong><?php echo $r['name']; ?></strong></label></th>
@@ -210,7 +211,9 @@
                 <?php if ( ! $Html->findInOptions($r['std'],$r['options']) ) : ?>
                         <option value="" ><?php echo($r['std']); ?></option> 
                 <?php endif; ?>
-                <?php foreach ($r['options'] as $option) : ?>
+                <?php foreach ($r['options'] as $option) : 
+                  
+                  ?>
                         <option value="<?php echo($option['id']); ?>"<?php 
                         if ( $r['value'] == $option['id'] ) { echo ' selected=selected'; }
                         elseif ( $r['value'] == null && $r['std'] == $option['id'] ) { echo ' selected=selected'; }

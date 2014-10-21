@@ -292,6 +292,7 @@ class SatelliteConfigHelper extends SatellitePlugin
                         "id" => "enabled",
                         "type" => "select",
                         "value" => (isset($watermark['enabled'])) ? $watermark['enabled'] : 0,
+                        "std" => 0,
                         "options" => array(
                             array('id' => 1, 'title' => 'Enabled'),
                             array('id' => 0, 'title' => 'Disabled')

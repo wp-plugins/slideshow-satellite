@@ -35,8 +35,8 @@ array(  "name"      => "More Image",
 	<h2><?php _e('Save a Slide', SATL_PLUGIN_NAME); ?></h2>
 
 	<form action="<?php echo $this -> url; ?>&amp;method=save&amp;single=<?php echo( $single );?>" method="post" enctype="multipart/form-data" class="satl_table">
-		<input type="hidden" name="Slide[id]" value="<?php echo ($slide -> id) ? $slide->id : null; ?>" />
-		<input type="hidden" name="Slide[slide_order]" value="<?php echo ($slide -> slide_order) ? $slide -> slide_order : 0; ?>" />
+		<input type="hidden" name="Slide[id]" value="<?php echo (isset($slide -> id)) ? $slide->id : null; ?>" />
+		<input type="hidden" name="Slide[slide_order]" value="<?php echo (isset($slide -> slide_order)) ? $slide -> slide_order : 0; ?>" />
 		<table id="satl_table">
                     <tbody>
                         <?php if ($slide->image) : ?>

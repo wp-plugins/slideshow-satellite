@@ -259,7 +259,7 @@ class SatelliteSlide extends SatelliteDbHelper
                 $imgarray[] = array('title' => $moreimg->title, 'id' => $moreimg->id);
         } else {
             $msg = __('Gallery not yet created', SATL_PLUGIN_NAME);
-            $imgarray[] = array('title' => $msg);
+            $imgarray[] = array('title' => $msg, 'id' => 0);
         }
         return $imgarray;
     }
@@ -316,6 +316,7 @@ class SatelliteSlide extends SatelliteDbHelper
             $this->data->title = null;
             $this->data->description = null;
             $this->data->textlocation = null;
+            $this->data->alt_text = null;
             $this->data->type = null;
             $this->data->uselink = null;
 

@@ -51,12 +51,13 @@ if (!empty($_GET['quickedit'])) {
 	<?php endif; ?>
         
 	
-	<?php if (!empty($slides)) :  ?>
-    <h5>Slide Count: <?php echo(count($slides));?></h5>
-    <?php if ($single): ?>
     <div id="gallery-slide-switch">
       <?php _e('Switch Your View:', SATL_PLUGIN_NAME); ?> <a class="btn btn-primary" href="<?php echo(admin_url()."admin.php?page=satellite-galleries&method=save&id=".$single) ?>">Gallery View</a>
     </div>
+
+	<?php if (!empty($slides)) :  ?>
+    <h5>Slide Count: <?php echo(count($slides));?></h5>
+    <?php if ($single): ?>
     <?php endif; ?>
       
 		<form onsubmit="if (!confirm('<?php _e('Are you sure you wish to execute this action on the selected slides?', SATL_PLUGIN_NAME); ?>')) { return false; }" action="<?php echo $this -> url; ?>&amp;method=mass&amp;single=<?php echo($single);?>" method="post" class="satl_table">

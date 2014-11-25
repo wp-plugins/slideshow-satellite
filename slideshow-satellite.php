@@ -377,7 +377,6 @@ class Satellite extends SatellitePlugin
                     break;
                 default:
                     if (has_filter('satl_render_view')) {
-                      error_log('has filter panel');
                         $content = apply_filters('satl_render_view', array($view, $slides));
                     }
                     if (!$content || is_array($content) ) {
@@ -499,7 +498,6 @@ class Satellite extends SatellitePlugin
           $slide->section = $gal;
           $slide->img_width = $large_img[1];
           $slide->img_height = $large_img[2];
-          $slide->source = $postType;
           if ($pTConfig['post_link'] && $satl_link = get_post_custom_values('satl_link')) {
             $slide->link = $satl_link[0];
           } else {

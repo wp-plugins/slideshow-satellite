@@ -17,7 +17,6 @@ class SatelliteConfigHelper extends SatellitePlugin
 
     function displayOption($option, $model)
     {
-
         switch ($option) {
 
             case 'gallery':
@@ -252,8 +251,15 @@ class SatelliteConfigHelper extends SatellitePlugin
             case 'post_type':
                 $postType = $this->get_option('PostType');
                 $optionsArray = array(
-                    array("name" => "Login for Click-Thru",
+                    
+                    array("name" => "Login to Click-Thru",
                         "desc" => "When checked, only logged in users can click the image and go to the post. Otherwise everyone clicks through",
+                        "id" => "post_clickthru",
+                        "type" => "checkbox",
+                        "value" => (isset($postType['post_clickthru'])) ? $postType['post_clickthru'] : ''),
+                    
+                    array("name" => "Enable Custom Links",
+                        "desc" => "When checked, links will use the custom field 'satl_link' of the post type as the href, instead of linking to the post.",
                         "id" => "post_link",
                         "type" => "checkbox",
                         "value" => (isset($postType['post_link'])) ? $postType['post_link'] : ''));
@@ -425,7 +431,7 @@ class SatelliteConfigHelper extends SatellitePlugin
     
     /**
      * Retrieve all public post types 
-     * @return array 
+     * @return array
      */
     public function getGallerySources() {
       $args = array('public'=>true);

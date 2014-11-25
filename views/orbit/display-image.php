@@ -9,7 +9,6 @@ $pagelink = $images['pagelink'];
 
 list($imagelink,$width,$height) = $this->Image->getImageData($ID,$slider,$frompost,$source);
 
-$this->log_me($image_path);
 if ($images['position'] == "S" || $images['position'] == "C") {
   $crop = ($images['position'] == "C") ? true : false;
   if ($height > 0) {

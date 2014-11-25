@@ -190,6 +190,7 @@ h3 span {
   display:block;
   font-size:1.2em;
   clear:both;
+  margin: 30px 5px 0 0;
 }
 
 .viewonly form {

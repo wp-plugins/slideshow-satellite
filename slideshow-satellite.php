@@ -5,9 +5,9 @@ Plugin URI: http://c-pr.es/satellite
 Author: C- Pres
 Author URI: http://c-pr.es
 Description: Responsive display for all your photo needs. Customize to your hearts content.
-Version: 2.2.6
+Version: 2.3
 */
-define('SATL_VERSION', '2.2.6');
+define('SATL_VERSION', '2.3');
 $uploads = wp_upload_dir();
 if (!defined('SATL_PLUGIN_BASENAME'))
     define('SATL_PLUGIN_BASENAME', plugin_basename(__FILE__));
@@ -377,6 +377,7 @@ class Satellite extends SatellitePlugin
                     break;
                 default:
                     if (has_filter('satl_render_view')) {
+                      error_log('has filter panel');
                         $content = apply_filters('satl_render_view', array($view, $slides));
                     }
                     if (!$content || is_array($content) ) {
@@ -445,11 +446,12 @@ class Satellite extends SatellitePlugin
           $first_gallery = $gallery_array[0];
           $slides = $this->Slide->find_all(array('section' => (int)stripslashes($first_gallery)), null, array('slide_order', "ASC"));
       } else {
+          $gal = intVal($gal);
           if ($data->source == 'satellite') {
             $slides = $this->Slide->find_all(array('section' => (int)stripslashes($gal)), null, array('slide_order', "ASC"));
           } else {
             error_log('post type slides');
-            $slides = $this->processPostTypeSlides($data->source);
+            $slides = $this->processPostTypeSlides($data->source,$gal);
           }
       }
 
@@ -459,8 +461,14 @@ class Satellite extends SatellitePlugin
       
       return $slides;
     }
-    
-    function processPostTypeSlides($postType)
+    /**
+     *
+     * Creates a Slide object array for the post type
+     * @param type $postType - Post Type
+     * @param int $gal - Gallery
+     * @return SatelliteSlide 
+     */
+    function processPostTypeSlides($postType,$gal)
     {
       $args = array(
             'orderby'       => 'post_title',
@@ -486,15 +494,20 @@ class Satellite extends SatellitePlugin
           error_log(get_attachment_link(get_the_ID()));
           $large_img = wp_get_attachment_image_src(get_post_thumbnail_id(), 'large');
           $slide->title = get_the_title();
-          $slide->description = "test description";
+          $slide->description = get_the_content();
           $slide->img_url = $large_img[0];
+          $slide->section = $gal;
           $slide->img_width = $large_img[1];
           $slide->img_height = $large_img[2];
           $slide->source = $postType;
-          $slide->link = get_the_permalink();
+          if ($pTConfig['post_link'] && $satl_link = get_post_custom_values('satl_link')) {
+            $slide->link = $satl_link[0];
+          } else {
+            $slide->link = get_the_permalink();
+          }
           $slide->uselink = "Y";
-          // Default is allow click through, if post_link is true, only logged in users can click through
-          if (!is_user_logged_in() && $pTConfig['post_link']) {
+          // Default is allow click through, if post_clickthru is true, only logged in users can click through
+          if (!is_user_logged_in() && $pTConfig['post_clickthru']) {
             $slide->uselink = false;
           }
 

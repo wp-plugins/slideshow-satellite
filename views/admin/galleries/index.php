@@ -26,7 +26,7 @@
                         <option value="">- <?php _e('Bulk Actions', SATL_PLUGIN_NAME); ?> -</option>
                         <option value="delete"><?php _e('Delete', SATL_PLUGIN_NAME); ?></option>
                     </select>
-                    <input type="submit" class="btn-primary" value="<?php _e('Apply', SATL_PLUGIN_NAME); ?>" name="execute" />
+                    <input type="submit" class="btn btn-primary" value="<?php _e('Apply', SATL_PLUGIN_NAME); ?>" name="execute" />
                 </div>
                 <?php $this->render('paginate', array('paginate' => $paginate), true, 'admin'); ?>
             </div>

@@ -141,7 +141,6 @@ class SatelliteDbHelper extends SatellitePlugin {
 				$this -> validate($r);                         
 			}
 		}
-		
 		if (empty($this -> errors)) {
 
 			switch ($this -> model) {
@@ -172,15 +171,17 @@ class SatelliteDbHelper extends SatellitePlugin {
 					break;                                     
                                      
 			}
+      
 			
 			//the MySQL query
 			$query = (empty($this -> data -> id)) ? $this -> insert_query($this -> model) : $this -> update_query($this -> model);
-			
+
 			if ($wpdb -> query($query)) {
+//        error_log( "succeeded : ". $query);
 				$this -> insertid = $insertid = (empty($this -> data -> id)) ? $wpdb -> insert_id : $this -> data -> id;				
 				return true;
 			} else {
-        			error_log( "failed : ". $query);
+        error_log( "SATELLITE failed : ". $query);
                         }
 		}
 		

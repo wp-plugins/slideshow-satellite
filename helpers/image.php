@@ -135,7 +135,7 @@ class SatelliteImageHelper extends SatellitePlugin {
           $i_r = intval($i_w)/intval($i_h);
           $s_r = $s_w/$s_h;
           $notclose = (abs($i_r - $s_r) > .7) ? true : false;
-//          $this->log_me("sw $s_w / sh $s_h  = sr: $s_r and iw $i_w / ih $i_h = ir: $i_r");
+//          $this->log_me("sw $s_w / sh $s_h  = sr: $s_r and iw $i_w / ih $i_h = ir: $i_r - crop: $crop");
           $crop = ($crop) ? "stretchCrop absoluteCenter" : false;
           $crop = ($notclose && $crop) ? "stretchCenter absoluteCenter" : $crop;
           if ($i_r <= $s_r) {
@@ -210,6 +210,30 @@ class SatelliteImageHelper extends SatellitePlugin {
           error_log('Caught exception'. $e->getMessage()); 
         }
       }
+    }
+    
+    public function getImageData($ID, $slide, $frompost, $source)
+    {
+
+      if ($frompost) {
+        $full_image_href = wp_get_attachment_image_src($ID, 'full', false);
+        $imagelink = $full_image_href[0];
+        return array($imagelink, $full_image_href[1], $full_image_href[2]);
+      } elseif ($source != 'satellite') {
+        
+        // Using a Post Type - 'post' 'page' 'custom_post_type'
+        $imagelink = $slide->img_url;
+        $width = $slide->img_width;
+        $height = $slide->img_height;
+      } else {
+        
+        // This is from Satellite Slides - we don't have the width & height yet
+        $imagelink = SatelliteHtmlHelper::image_url($slide->image);
+        list($width,$height) = getimagesize($imagelink);
+      }
+
+      return array($imagelink, $width, $height);
+      
     }
 
 

@@ -17,7 +17,6 @@ class SatelliteConfigHelper extends SatellitePlugin
 
     function displayOption($option, $model)
     {
-
         switch ($option) {
 
             case 'gallery':
@@ -34,14 +33,13 @@ class SatelliteConfigHelper extends SatellitePlugin
                         "value" => (isset($model->data->title)) ? $model->data->title : '',
                         "std" => "New Gallery"),
 
-                    array("name" => "Gallery Type",
-                        "desc" => "What kind of slideshow is this?",
-                        "id" => "type",
-                        "type" => "select",
-                        "value" => (isset($model->data->type)) ? $model->data->type : '',
-                        "std" => "custom slides",
-                        "options" => array(
-                            array('id' => 'custom slides', 'title' => 'Custom Slides'))),
+                    array("name"    => "Gallery Source",
+                        "desc"      => "Where are we pulling the images from? Satellite Slides uses the images uploaded through the form below. Post Types will pull from the posts featured image.",
+                        "id"        => "source",
+                        "type"      => "select",
+                        "value"     => $model -> data -> source,
+                        "std"       => "satellite",
+                        "options"   => $this->getGallerySources()),
 
                     array("name" => "Description",
                         "desc" => "This will be used in future slideshow versions to describe the slideshow before someone selects to view it.",
@@ -250,6 +248,23 @@ class SatelliteConfigHelper extends SatellitePlugin
                 );
                 break;
 
+            case 'post_type':
+                $postType = $this->get_option('PostType');
+                $optionsArray = array(
+                    
+                    array("name" => "Login to Click-Thru",
+                        "desc" => "When checked, only logged in users can click the image and go to the post. Otherwise everyone clicks through",
+                        "id" => "post_clickthru",
+                        "type" => "checkbox",
+                        "value" => (isset($postType['post_clickthru'])) ? $postType['post_clickthru'] : ''),
+                    
+                    array("name" => "Enable Custom Links",
+                        "desc" => "When checked, links will use the custom field 'satl_link' of the post type as the href, instead of linking to the post.",
+                        "id" => "post_link",
+                        "type" => "checkbox",
+                        "value" => (isset($postType['post_link'])) ? $postType['post_link'] : ''));
+                break;
+
             case 'preloader':
                 $preloader = $this->get_option('Preloader');
                 $params = array("start" => 1,
@@ -283,6 +298,7 @@ class SatelliteConfigHelper extends SatellitePlugin
                         "id" => "enabled",
                         "type" => "select",
                         "value" => (isset($watermark['enabled'])) ? $watermark['enabled'] : 0,
+                        "std" => 0,
                         "options" => array(
                             array('id' => 1, 'title' => 'Enabled'),
                             array('id' => 0, 'title' => 'Disabled')
@@ -411,6 +427,20 @@ class SatelliteConfigHelper extends SatellitePlugin
             array("id" => "infinite", "title" => "Infinite Scroll"));
         $all_themes = apply_filters('satl_add_theme_view', $themes);
         return $all_themes;
+    }
+    
+    /**
+     * Retrieve all public post types 
+     * @return array
+     */
+    public function getGallerySources() {
+      $args = array('public'=>true);
+      $pTypes = get_post_types( $args );
+      $types = array(array("id" => 'satellite', 'title' => 'Satellite Slides'));
+      foreach($pTypes as $type) {
+        $types[] = array("id" => $type, 'title'=> $type);
+      }
+      return $types;
     }
 }
 

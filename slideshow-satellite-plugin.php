@@ -60,7 +60,7 @@ class SatellitePlugin
         wp_register_style(SATL_PLUGIN_NAME . "_adstyle", $adminStyleUrl);
         wp_enqueue_style(SATL_PLUGIN_NAME . "_adstyle");
         if ($page == "satellite-slides" || $page == "satellite-galleries") {
-          wp_enqueue_style('bootstrap',SATL_PLUGIN_URL. '/css/bootstrap.min.css?v=' . SATL_VERSION);
+//          wp_enqueue_style('bootstrap',SATL_PLUGIN_URL. '/css/bootstrap.min.css?v=' . SATL_VERSION);
         }
 
     }
@@ -313,7 +313,7 @@ class SatellitePlugin
 
     function redirect($location = '', $msgtype = '', $message = '') {
         $url = $location;
-        $url = ($_GET['single']) ? $url."&single=".$_GET['single'] : $url;
+        $url = (isset($_GET['single'])) ? $url."&single=".$_GET['single'] : $url;
         if ($msgtype == "message") {
             $url .= '&' . $this->pre . 'updated=true';
         } elseif ($msgtype == "error") {
@@ -462,7 +462,7 @@ class SatellitePlugin
 
 
                 if ($_GET['page'] == 'satellite') {
-                    wp_enqueue_script('common');
+//                    wp_enqueue_script('common');
                     wp_enqueue_script('wp-lists');
                     wp_enqueue_script('postbox');
 
@@ -476,7 +476,7 @@ class SatellitePlugin
                 
                 if ($_GET['page'] == "satellite-slides") {
                     $this->run_angular();
-                    wp_enqueue_script('bootstrap','http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js');
+//                    wp_enqueue_script('bootstrap','http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js');
                     wp_enqueue_script('admin', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/admin.js', array('jquery'), SATL_VERSION);
                 }
                 
@@ -485,7 +485,7 @@ class SatellitePlugin
                     wp_enqueue_script('jquery-ui-sortable');
                     wp_enqueue_script('admin', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/admin.js', array('jquery'), SATL_VERSION);
                 }
-                wp_enqueue_scripts();
+//                wp_enqueue_scripts();
                 //wp_enqueue_script('jquery-ui-sortable');
 
                 add_thickbox();
@@ -493,7 +493,6 @@ class SatellitePlugin
     }
     
     function run_angular() {
-      $this->log_me("Registering angular");
       wp_enqueue_script('angular', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/angular.min.js', array('jquery'), SATL_VERSION);
       wp_enqueue_script('infinitescroll', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/ng-infinite-scroll.min.js', array('jquery'), SATL_VERSION);
 
@@ -503,7 +502,6 @@ class SatellitePlugin
       $this->log_me("enqueuing scripts");
         $advanced = $this->get_option('Advanced');
         $jquery = $advanced['jquery'];
-        $this->log_me('jquery'.$jquery);
       if ($jquery != 0) {
           wp_deregister_script( 'jquery' );
           if ($jquery == 1) {

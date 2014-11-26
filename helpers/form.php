@@ -199,8 +199,10 @@
         
         $r = wp_parse_args($args, $defaults);
         extract($r, EXTR_SKIP);
+//        error_log(print_r($r));
         
         ob_start();
+//        $this->log_me($r['options']);
         ?>
             <tr>
                 <th class="verttop"><label><strong><?php echo $r['name']; ?></strong></label></th>
@@ -209,7 +211,9 @@
                 <?php if ( ! $Html->findInOptions($r['std'],$r['options']) ) : ?>
                         <option value="" ><?php echo($r['std']); ?></option> 
                 <?php endif; ?>
-                <?php foreach ($r['options'] as $option) : ?>
+                <?php foreach ($r['options'] as $option) : 
+                  
+                  ?>
                         <option value="<?php echo($option['id']); ?>"<?php 
                         if ( $r['value'] == $option['id'] ) { echo ' selected=selected'; }
                         elseif ( $r['value'] == null && $r['std'] == $option['id'] ) { echo ' selected=selected'; }
@@ -240,11 +244,14 @@
         );
         
         $r = wp_parse_args($args, $defaults);
+        $SG = new SatelliteGallery;
+        $info = $SG->loadData($_REQUEST['id']);
+        
         extract($r, EXTR_SKIP);
         
         ob_start();        
         ?>
-        <tr>
+        <tr id="uploader" <?php echo ($info->source != 'satellite' && !empty($info->source)) ? 'style="display:none"' : '' ?>>
             <th class="verttop"><label><strong><?php echo $r['name']; ?></strong></label></th>
         <td>
             <?php

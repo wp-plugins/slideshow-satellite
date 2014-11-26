@@ -11,6 +11,7 @@ root {
 }
 body.toplevel_page_satellite, body.satellite_page_satellite-galleries, body.satellite_page_satellite-slides {
   background-image : none;
+  background-color: rgba(244,244,244,1);
 }
 .fl-l { float:left }
 .fl-r { float: right }
@@ -131,13 +132,13 @@ h3 span {
  
 }
 .plupload-thumbs .thumb {
-    width: 50px;
+    width: 80px;
     padding-right: 5px;
     float: left;
 }
 .plupload-thumbs .thumb img {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
 }
 .ui-sortable  .thumb img {
     cursor: pointer;
@@ -189,6 +190,7 @@ h3 span {
   display:block;
   font-size:1.2em;
   clear:both;
+  margin: 30px 5px 0 0;
 }
 
 .viewonly form {
@@ -222,6 +224,52 @@ input[type="submit"] {
 }
 
 /*** Bootstrap fixes ***/
+a.btn { text-decoration: none; }
+a.btn:hover { color: #FFF; }
+.btn-primary {
+  color: #fff;
+  background-color: #428bca;
+  border-color: #357ebd;
+}
+.btn-success {
+  color: #fff;
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+}
+.btn-info {
+  color: #fff;
+  background-color: #5bc0de;
+  border-color: #46b8da;
+}
+.btn-warning {
+  color: #fff;
+  background-color: #f0ad4e;
+  border-color: #eea236;
+}
+.btn-default {
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+}
+.btn, input.btn {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
 input.btn {
     height: 30px;
     padding: 5px 10px;
@@ -264,3 +312,22 @@ li.lineitem p {
 }
 .slide-order-msg .slide-status { float:left;}
 .slide-order-msg .slide-msg { float:left;}
+.btn:hover,
+.btn:focus,
+.btn:active,
+.btn.active,
+.btn.disabled,
+.btn[disabled] {
+}
+.btn.btn-primary:hover {
+	background-color: #2ca8e4;
+}
+.btn.btn-info:hover {
+	background-color: #41cae4;
+}
+.btn.btn-success:hover {
+	background-color: #55cc60;
+}
+.btn.btn-warning:hover {
+	background-color: #f9d92c;
+}

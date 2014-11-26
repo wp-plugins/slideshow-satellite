@@ -32,6 +32,7 @@
     if (isset($fullthumb) && $fullthumb = true) { $bullets = true; }
     elseif ($this->get_option('thumbnails_temp') == "Y") { $bullets = true; $fullthumb = false;}
     else { $bullets = false; $fullthumb = false; }
+    $captions = ( $this->Gallery->data->capposition == 'Disabled') ? false: $this->get_option('information_temp');
     ?>
     <script type="text/javascript">
         jQuery(document).ready(function($) {
@@ -44,7 +45,7 @@
                 startClockOnMouseOut: <?php echo ($mouse_out); ?>, 	 // if clock should start on MouseOut
                 startClockOnMouseOutAfter: 1000, 	 // how long after MouseOut should the timer start again
                 directionalNav: true, 		 // manual advancing directional navs
-                captions: <?php echo($this->get_option('information_temp') == 'Y') ? 'true' : 'false'; ?>,	 // do you want captions?
+                captions: <?php echo($captions == 'Y') ? 'true' : 'false'; ?>,	 // do you want captions?
                 captionAnimation: <?php echo (!$frompost && $this->Gallery->data->capanimation) ? '\'' . $this->Gallery->data->capanimation . '\'' : '\'slideOpen\''; ?>, // fade, slideOpen, none
                 captionHover: <?php echo (!$frompost && $this->Gallery->data->caphover) ? 'true' : 'false'; ?>, // true means only show caption on mousehover
                 captionAnimationSpeed: 800, 	 // if so how quickly should they animate in

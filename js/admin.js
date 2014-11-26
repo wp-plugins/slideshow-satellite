@@ -15,6 +15,13 @@ jQuery('document').ready(function(){
             this.submit();
         });
     });
+    jQuery("#source").change(function() {
+      if (jQuery(this).val() != 'satellite') {
+        jQuery("#uploader").slideUp();
+      } else {
+        jQuery("#uploader").slideDown();
+      }
+    });
   
   
 });

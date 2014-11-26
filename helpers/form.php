@@ -202,7 +202,7 @@
 //        error_log(print_r($r));
         
         ob_start();
-        $this->log_me($r['options']);
+//        $this->log_me($r['options']);
         ?>
             <tr>
                 <th class="verttop"><label><strong><?php echo $r['name']; ?></strong></label></th>

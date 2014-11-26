@@ -74,12 +74,12 @@ if (!empty($slides)) :
                 <?php $i = 0; ?>
                 <?php foreach ($slides as $slider) : ?>     
                     <?php
-
                 $class= ($images['position'] == "S") ? "stretchCenter" : "absoluteCenter";
-
+                $thumb = ($this->Gallery->data->source == 'satellite') ? $this->Html->image_url($this->Html->thumbname($slider->image)) : $slider->img_url;
+                
                 echo "<div id='satl-custom-{$this->Gallery->data->id}{$slider->id}' class='sorbit-wide ".$class."' 
                     data-caption='#custom{$satellite_init_ok}-$i'
-                    data-thumb='{$this->Html->image_url($this->Html->thumbname($slider->image))}'>";
+                    data-thumb='{$thumb}'>";
 
                     $this->render('display-image', 
                       array('frompost'  =>false,

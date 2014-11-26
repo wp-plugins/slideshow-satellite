@@ -313,7 +313,7 @@ class SatellitePlugin
 
     function redirect($location = '', $msgtype = '', $message = '') {
         $url = $location;
-        $url = ($_GET['single']) ? $url."&single=".$_GET['single'] : $url;
+        $url = (isset($_GET['single'])) ? $url."&single=".$_GET['single'] : $url;
         if ($msgtype == "message") {
             $url .= '&' . $this->pre . 'updated=true';
         } elseif ($msgtype == "error") {
@@ -493,7 +493,6 @@ class SatellitePlugin
     }
     
     function run_angular() {
-      $this->log_me("Registering angular");
       wp_enqueue_script('angular', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/angular.min.js', array('jquery'), SATL_VERSION);
       wp_enqueue_script('infinitescroll', '/' . PLUGINDIR . '/' . SATL_PLUGIN_NAME . '/js/ng-infinite-scroll.min.js', array('jquery'), SATL_VERSION);
 
@@ -503,7 +502,6 @@ class SatellitePlugin
       $this->log_me("enqueuing scripts");
         $advanced = $this->get_option('Advanced');
         $jquery = $advanced['jquery'];
-        $this->log_me('jquery'.$jquery);
       if ($jquery != 0) {
           wp_deregister_script( 'jquery' );
           if ($jquery == 1) {

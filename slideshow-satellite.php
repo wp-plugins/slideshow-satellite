@@ -496,6 +496,8 @@ class Satellite extends SatellitePlugin
           $slide->description = get_the_content();
           $slide->img_url = $large_img[0];
           $slide->section = $gal;
+          $slide->more = false;
+          $slide->textlocation = "D";
           $slide->img_width = $large_img[1];
           $slide->img_height = $large_img[2];
           if ($pTConfig['post_link'] && $satl_link = get_post_custom_values('satl_link')) {

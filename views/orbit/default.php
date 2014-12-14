@@ -44,7 +44,8 @@ if (!empty($slides)) :
 
                     $this->render('display-image', 
                       array('frompost'  =>  true,
-                            'slider'    => $slider), true, 'orbit');?>
+                            'slider'    => $slider,
+                            'source'    => 'post'), true, 'orbit');?>
  
             </div>
 

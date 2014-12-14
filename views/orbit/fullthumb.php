@@ -34,7 +34,8 @@ if (!empty($slides)) :
                             
                     $this->render('display-image', 
                       array('frompost'  =>  true,
-                            'slider'    => $slider), true, 'orbit');?>
+                            'slider'    => $slider,
+                            'source'    => 'post'), true, 'orbit');?>
                 </div>
             
                 <?php $this -> render('display-caption', 
@@ -60,14 +61,16 @@ if (!empty($slides)) :
                 <?php foreach ($slides as $slider) :
 
                     $class= ($images['position'] == "S") ? "stretchCenter" : "absoluteCenter";
-                    
+                    $thumb = ($this->Gallery->data->source == 'satellite') ? $this->Html->image_url($this->Html->thumbname($slider->image)) : $slider->img_url;
                     echo "<div class='sorbit-wide ".$class."' 
                         data-caption='#custom{$satellite_init_ok}-$i'
-                        data-thumb='{$this->Html->image_url($this->Html->thumbname($slider->image))}'>";
+                        data-thumb='{$thumb}'>";
 
                     $this->render('display-image', 
                     array('frompost'  =>false,
-                          'slider'    => $slider), true, 'orbit');?>
+                          'slider'    => $slider,
+                          'source'    => $this->Gallery->data->source), 
+                          true, 'orbit');?>
                 </div>
                 <?php if ($slider->textlocation != "N") { ?>
                   <?php $this -> render('display-caption', array('frompost'   => false, 

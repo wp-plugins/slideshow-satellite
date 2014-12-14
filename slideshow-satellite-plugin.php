@@ -667,11 +667,12 @@ class SatellitePlugin
 
         if (!empty($table)) {
             $fullname = $table;
-            if (($tablefields = mysql_list_fields(DB_NAME, $fullname, $wpdb->dbh)) !== false) {
-                $columns = mysql_num_fields($tablefields);
+            
+            if (($tablefields = $wpdb->get_results( 'SHOW COLUMNS FROM '.$table, OBJECT )) !== false) {
+                $columns = count($tablefields);
                 $field_array = array();
                 for ($i = 0; $i < $columns; $i++) {
-                    $fieldname = mysql_field_name($tablefields, $i);
+                    $fieldname = $tablefields[$i]->Field;
                     $field_array[] = $fieldname;
                 }
 

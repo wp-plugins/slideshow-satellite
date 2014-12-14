@@ -93,6 +93,12 @@ See slideshows in action on our Examples Site: http://c-pr.es/satellite
 See the manual and videos and more: http://c-pr.es/satellite
 
 == Changelog ==
+= 2.3.1 =
+* Adding Post Types to Gallery options
+* Fixing Thumb Right/Left
+* Adding Thumb Right/Left to button
+* bug with mysql_list_fields fix
+
 = 2.2.5 =
 * Fixed Transition = none bug
 * Fixed tinyMCE dialog box insert slideshow bug

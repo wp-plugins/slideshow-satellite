@@ -229,7 +229,8 @@ class SatelliteImageHelper extends SatellitePlugin {
         
         // This is from Satellite Slides - we don't have the width & height yet
         $imagelink = SatelliteHtmlHelper::image_url($slide->image);
-        list($width,$height) = getimagesize($imagelink);
+        $imagedir = SatelliteHtmlHelper::image_dir($slide->image);
+        list($width,$height) = getimagesize($imagedir);
       }
 
       return array($imagelink, $width, $height);

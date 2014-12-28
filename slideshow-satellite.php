@@ -349,7 +349,6 @@ class Satellite extends SatellitePlugin
         if ((!empty($custom)) || (!empty($gallery))) { // custom is deprecated as of version 1.2
             $gallery = ($custom) ? $custom : $gallery;
             $multigallery = preg_match("[\,]", $gallery);
-
             $data = $this->Gallery->loadData($gallery);
 
             $slides = $this->getSlidesArray($data, $gallery,$multigallery);
@@ -362,6 +361,9 @@ class Satellite extends SatellitePlugin
 
             switch ($view) {
                 case 'multigallery':
+                  
+                    $gallery_array = explode(',', $gallery);
+//                    $first_gallery = $gallery_array[0];
                     $content = $this->render('galleries', array('slides' => $slides, 'frompost' => false, 'galleries' => $gallery_array), false, 'premium');
                     break;
                 case 'splash':

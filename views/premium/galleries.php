@@ -10,7 +10,7 @@ if (!empty($slides)) :
             $i=0;
             foreach ($galleries as $gallery) : 
                 $info = $this -> Gallery -> find(array("id" => $gallery));
-                $current = ($_POST['slideshow'] == $info->id) ? 'current' : '';
+                $current = (isset($_POST['slideshow']) && $_POST['slideshow'] == $info->id) ? 'current' : '';
                 if ($i == 0)
                     $firstID = $info->id;
                 ?>

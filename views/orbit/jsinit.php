@@ -25,14 +25,16 @@
     if (!$frompost) {
         // mouse_out should be on for all auto & pausehovers
         $mouse_out = ((!$this->Gallery->data->pausehover && $auto == "Y") || $this->Gallery->data->pausehover && $auto != "N") ? 'true' : 'false';
+        $captions = ( $this->Gallery->data->capposition == 'Disabled') ? false: $this->get_option('information_temp');
     } else {
         $mouse_out = 'false';
+        $captions = $this->get_option('information_temp');
     }
 
     if (isset($fullthumb) && $fullthumb = true) { $bullets = true; }
     elseif ($this->get_option('thumbnails_temp') == "Y") { $bullets = true; $fullthumb = false;}
     else { $bullets = false; $fullthumb = false; }
-    $captions = ( $this->Gallery->data->capposition == 'Disabled') ? false: $this->get_option('information_temp');
+    
     ?>
     <script type="text/javascript">
         jQuery(document).ready(function($) {

@@ -8,7 +8,7 @@ $attachment_link = ($frompost) ? get_attachment_link($ID) : '';
 $pagelink = $images['pagelink'];
 
 list($imagelink,$width,$height) = $this->Image->getImageData($ID,$slider,$frompost,$source);
-
+$this->log_me("imagelink: $imagelink");
 if ($images['position'] == "S" || $images['position'] == "C") {
   $crop = ($images['position'] == "C") ? true : false;
   if ($height > 0) {

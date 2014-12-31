@@ -350,7 +350,8 @@ class Satellite extends SatellitePlugin
             $gallery = ($custom) ? $custom : $gallery;
             $multigallery = preg_match("[\,]", $gallery);
             $data = $this->Gallery->loadData($gallery);
-
+            $this->log_me("multi: ".$multigallery);
+//            $this->log_me($data);
             $slides = $this->getSlidesArray($data, $gallery,$multigallery);
 
             $this->slidenum = count($slides);
@@ -358,7 +359,7 @@ class Satellite extends SatellitePlugin
             /* THIS IS WHERE THE VIEW MAGIC HAPPENS */
             $view = $this->getCustomView($data, $multigallery, $gallery);
             $this->log_me('View for this embed is: ' . $view);
-
+            $this->log_me($slides);
             switch ($view) {
                 case 'multigallery':
                   
@@ -448,7 +449,8 @@ class Satellite extends SatellitePlugin
           $slides = $this->Slide->find_all(array('section' => (int)stripslashes($first_gallery)), null, array('slide_order', "ASC"));
       } else {
           $gal = intVal($gal);
-          if ($data->source == 'satellite') {
+          $this->log_me("starting getSlides not multi ".$gal);
+          if ($data->source == 'satellite' || empty($data->source)) {
             $slides = $this->Slide->find_all(array('section' => (int)stripslashes($gal)), null, array('slide_order', "ASC"));
           } else {
             error_log('post type slides');

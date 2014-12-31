@@ -3,7 +3,6 @@
 global $satellite_init_ok;
 global $post;
 if (!empty($slides)) :
-    $this->log_me('DEFAULT: we have slides');
     $style = $this->get_option('styles');
     $images = $this->get_option('Images');
     $imagesbox = $images['imagesbox'];

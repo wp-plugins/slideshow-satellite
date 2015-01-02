@@ -359,7 +359,6 @@ class Satellite extends SatellitePlugin
             /* THIS IS WHERE THE VIEW MAGIC HAPPENS */
             $view = $this->getCustomView($data, $multigallery, $gallery);
             $this->log_me('View for this embed is: ' . $view);
-            $this->log_me($slides);
             switch ($view) {
                 case 'multigallery':
                   
@@ -449,7 +448,6 @@ class Satellite extends SatellitePlugin
           $slides = $this->Slide->find_all(array('section' => (int)stripslashes($first_gallery)), null, array('slide_order', "ASC"));
       } else {
           $gal = intVal($gal);
-          $this->log_me("starting getSlides not multi ".$gal);
           if ($data->source == 'satellite' || empty($data->source)) {
             $slides = $this->Slide->find_all(array('section' => (int)stripslashes($gal)), null, array('slide_order', "ASC"));
           } else {

@@ -501,7 +501,7 @@ class SatellitePlugin
     function enqueue_scripts() {
       $this->log_me("enqueuing scripts");
         $advanced = $this->get_option('Advanced');
-        $jquery = $advanced['jquery'];
+        $jquery = isset($advanced['jquery']) ? $advanced['jquery'] : false;
       if ($jquery != 0) {
           wp_deregister_script( 'jquery' );
           if ($jquery == 1) {

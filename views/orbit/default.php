@@ -11,7 +11,7 @@ if (!empty($slides)) :
     $responsive = $this->get_option('responsive');
     $respExtra = (isset($respExtra)) ? $respExtra : 0;
     $align = $this->get_option('align');
-    $pID = $post->ID;
+    $pID = (isset($orig_post)) ? $orig_post : $post->ID;
 
     if (!$frompost) {
         $this->Gallery->loadData($slides[0]->section);
@@ -114,7 +114,7 @@ if (!empty($slides)) :
         </div>
 
         </div>
-        <?php $this -> render('jsinit', array('gallery'=>$slides[0]->section,'frompost' => false, 'respExtra' => $respExtra), true, 'orbit');?>
+        <?php $this -> render('jsinit', array('gallery'=>$slides[0]->section,'frompost' => false, 'respExtra' => $respExtra, 'pID' => $pID), true, 'orbit');?>
     <?php
     endif;
     /*     * ****** PRO ONLY ************* */

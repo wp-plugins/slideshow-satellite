@@ -83,22 +83,18 @@ class SatellitePlugin
 
             $shortcode_found = false; // use this flag to see if styles and scripts need to be enqueued
             
-            if ($this->get_option('shortreq') == 'N') { $shortcode_found = true; }
-            else {
-                foreach ($posts as $post) {
-                    if (    ( stripos($post->post_content, '[gpslideshow') !== false ) ||
-                            ( stripos($post->post_content, '[satellite') !== false) ||
-                            ( stripos($post->post_content, '[slideshow') !== false && $this->get_option('embedss') == "Y" )
-                    ) {
-                            $shortcode_found = true; // bingo!
-                            $pID = ($post->ID) ? $post->ID : $post->id;
-//                            $this->log_me($post);
-                            break;
-                    }
+            foreach ($posts as $post) {
+                if (    ( stripos($post->post_content, '[gpslideshow') !== false ) ||
+                        ( stripos($post->post_content, '[satellite') !== false) ||
+                        ( stripos($post->post_content, '[slideshow') !== false && $this->get_option('embedss') == "Y" )
+                ) {
+                        $shortcode_found = true; // bingo!
+                        $pID = $post->ID;
+                        break;
                 }
             }
-
-            if ($shortcode_found) {
+            // If this page has the embed or under Advanced Setting we have Shortcode Requirement = Off
+            if ($shortcode_found || $this->get_option('shortreq') == 'N') {
                         
             $satlStyleFile = SATL_PLUGIN_DIR . '/css/' . $this -> cssfile;
             $satlStyleUrl = SATL_PLUGIN_URL . '/css/' . $this -> cssfile . '?v=' . SATL_VERSION . '&amp;pID=' . $pID;

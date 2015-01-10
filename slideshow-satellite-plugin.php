@@ -91,7 +91,8 @@ class SatellitePlugin
                             ( stripos($post->post_content, '[slideshow') !== false && $this->get_option('embedss') == "Y" )
                     ) {
                             $shortcode_found = true; // bingo!
-                            $pID = $post->ID;
+                            $pID = ($post->ID) ? $post->ID : $post->id;
+//                            $this->log_me($post);
                             break;
                     }
                 }

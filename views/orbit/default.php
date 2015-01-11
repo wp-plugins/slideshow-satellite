@@ -3,7 +3,6 @@
 global $satellite_init_ok;
 global $post;
 if (!empty($slides)) :
-
     $style = $this->get_option('styles');
     $images = $this->get_option('Images');
     $imagesbox = $images['imagesbox'];
@@ -12,7 +11,7 @@ if (!empty($slides)) :
     $responsive = $this->get_option('responsive');
     $respExtra = (isset($respExtra)) ? $respExtra : 0;
     $align = $this->get_option('align');
-    $pID = $post->ID;
+    $pID = (isset($orig_post)) ? $orig_post : $post->ID;
 
     if (!$frompost) {
         $this->Gallery->loadData($slides[0]->section);
@@ -64,7 +63,9 @@ if (!empty($slides)) :
         <?php $this -> render('jsinit', array('gallery'=>false,'frompost' => true,'respExtra' => 0), true, 'orbit');?>
 
         <!--  CUSTOM GALLERY -->
-    <?php else : ?>
+    <?php else : 
+        $source = (empty($this->Gallery->data->source)) ? 'satellite' : $this->Gallery->data->source;
+      ?>
         <div class="orbit-default
         <?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' default-thumbs' : ''; ?>
                 <?php echo(isset($sidetext)) ? ' text-' . $sidetext : ''; ?>
@@ -76,7 +77,7 @@ if (!empty($slides)) :
                 <?php foreach ($slides as $slider) : ?>     
                     <?php
                 $class= ($images['position'] == "S") ? "stretchCenter" : "absoluteCenter";
-                $thumb = ($this->Gallery->data->source == 'satellite') ? $this->Html->image_url($this->Html->thumbname($slider->image)) : $slider->img_url;
+                $thumb = ($source == 'satellite') ? $this->Html->image_url($this->Html->thumbname($slider->image)) : $slider->img_url;
                 
                 echo "<div id='satl-custom-{$this->Gallery->data->id}{$slider->id}' class='sorbit-wide ".$class."' 
                     data-caption='#custom{$satellite_init_ok}-$i'
@@ -85,7 +86,7 @@ if (!empty($slides)) :
                     $this->render('display-image', 
                       array('frompost'  =>false,
                             'slider'    => $slider,
-                            'source'    => $this->Gallery->data->source), 
+                            'source'    => $source), 
                             true, 'orbit');?>
 
                 </div>
@@ -113,7 +114,7 @@ if (!empty($slides)) :
         </div>
 
         </div>
-        <?php $this -> render('jsinit', array('gallery'=>$slides[0]->section,'frompost' => false, 'respExtra' => $respExtra), true, 'orbit');?>
+        <?php $this -> render('jsinit', array('gallery'=>$slides[0]->section,'frompost' => false, 'respExtra' => $respExtra, 'pID' => $pID), true, 'orbit');?>
     <?php
     endif;
     /*     * ****** PRO ONLY ************* */

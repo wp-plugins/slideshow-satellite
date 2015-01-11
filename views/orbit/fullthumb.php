@@ -52,7 +52,9 @@ if (!empty($slides)) :
 
          <?php $this -> render('jsinit', array('gallery'=>false,'frompost' => true, 'fullthumb' => true, 'respExtra' => $respExtra), true, 'orbit');?>
         <!--  CUSTOM GALLERY -->
-    <?php else : ?>  
+    <?php else : 
+      $source = (empty($this->Gallery->data->source)) ? 'satellite' : $this->Gallery->data->source;
+    ?>  
 
         <div class="<?php echo ( $this->get_option('thumbnails_temp') == 'FR') ? 'full-right' : 'full-left';?><?php echo($responsive) ? ' resp' : ''; ?>
             <?php echo($sidetext) ? ' text-' . $sidetext : ''; ?>">
@@ -61,7 +63,7 @@ if (!empty($slides)) :
                 <?php foreach ($slides as $slider) :
 
                     $class= ($images['position'] == "S") ? "stretchCenter" : "absoluteCenter";
-                    $thumb = ($this->Gallery->data->source == 'satellite') ? $this->Html->image_url($this->Html->thumbname($slider->image)) : $slider->img_url;
+                    $thumb = ($source == 'satellite') ? $this->Html->image_url($this->Html->thumbname($slider->image)) : $slider->img_url;
                     echo "<div class='sorbit-wide ".$class."' 
                         data-caption='#custom{$satellite_init_ok}-$i'
                         data-thumb='{$thumb}'>";
@@ -69,7 +71,7 @@ if (!empty($slides)) :
                     $this->render('display-image', 
                     array('frompost'  =>false,
                           'slider'    => $slider,
-                          'source'    => $this->Gallery->data->source), 
+                          'source'    => $source), 
                           true, 'orbit');?>
                 </div>
                 <?php if ($slider->textlocation != "N") { ?>

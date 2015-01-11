@@ -79,8 +79,9 @@ class SatelliteHtmlHelper extends SatellitePlugin
     {
         if (!empty($id)) {
             $Slide = new SatelliteSlide;
-            $image = $Slide->find(array('id' => (int)stripslashes($id)), 'id,image');
-            return $this->image_url($image->image);
+            if ($image = $Slide->find(array('id' => (int)stripslashes($id)), 'id,image')) {
+              return $this->image_url($image->image);
+            }
         }
         return false;
     }

@@ -5,9 +5,9 @@ Plugin URI: http://c-pr.es/satellite
 Author: C- Pres
 Author URI: http://c-pr.es
 Description: Responsive display for all your photo needs. Customize to your hearts content.
-Version: 2.3.2
+Version: 2.3.3
 */
-define('SATL_VERSION', '2.3.2');
+define('SATL_VERSION', '2.3.3');
 $uploads = wp_upload_dir();
 if (!defined('SATL_PLUGIN_BASENAME'))
     define('SATL_PLUGIN_BASENAME', plugin_basename(__FILE__));
@@ -350,7 +350,8 @@ class Satellite extends SatellitePlugin
             $gallery = ($custom) ? $custom : $gallery;
             $multigallery = preg_match("[\,]", $gallery);
             $data = $this->Gallery->loadData($gallery);
-
+            $this->log_me("multi: ".$multigallery);
+//            $this->log_me($data);
             $slides = $this->getSlidesArray($data, $gallery,$multigallery);
 
             $this->slidenum = count($slides);
@@ -358,7 +359,6 @@ class Satellite extends SatellitePlugin
             /* THIS IS WHERE THE VIEW MAGIC HAPPENS */
             $view = $this->getCustomView($data, $multigallery, $gallery);
             $this->log_me('View for this embed is: ' . $view);
-
             switch ($view) {
                 case 'multigallery':
                   
@@ -448,7 +448,7 @@ class Satellite extends SatellitePlugin
           $slides = $this->Slide->find_all(array('section' => (int)stripslashes($first_gallery)), null, array('slide_order', "ASC"));
       } else {
           $gal = intVal($gal);
-          if ($data->source == 'satellite') {
+          if ($data->source == 'satellite' || empty($data->source)) {
             $slides = $this->Slide->find_all(array('section' => (int)stripslashes($gal)), null, array('slide_order', "ASC"));
           } else {
             error_log('post type slides');

@@ -219,7 +219,7 @@ class SatelliteImageHelper extends SatellitePlugin {
         $full_image_href = wp_get_attachment_image_src($ID, 'full', false);
         $imagelink = $full_image_href[0];
         return array($imagelink, $full_image_href[1], $full_image_href[2]);
-      } elseif ($source != 'satellite') {
+      } elseif ($source != 'satellite' && !empty($source)) {
         
         // Using a Post Type - 'post' 'page' 'custom_post_type'
         $imagelink = $slide->img_url;

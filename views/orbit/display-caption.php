@@ -6,7 +6,7 @@ $textlocation = ($frompost) ? '': $slider->textlocation;
 $title = ($frompost) ? $slider->post_title : $slider->title;
 $spanid = ($frompost) ? "post-".$slider->ID :"custom".$satellite_init_ok."-".$i;
 $pagelink = $images['pagelink'];
-
+//$this->log_me($slider);
 ?>
 <span class="orbit-caption<?php echo ($textlocation == 'BR' || $textlocation == 'TR') ? ' sattext sattext' . $textlocation : '' ?>
     <?php echo($this->get_option('thumbnails_temp') == 'Y') ? ' thumb-on' : ''; ?>" id='<?php echo ($spanid); ?>'>

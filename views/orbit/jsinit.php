@@ -1,6 +1,6 @@
 <?php
     global $satellite_init_ok, $post;
-    $postID = ($pID) ? $pID : $post -> ID;
+    $postID = (isset($pID)) ? $pID : $post -> ID;
     $style = $this->get_option('styles');
     $preloader = $this->get_option('Preloader');
     $preload = $preloader['quantity'];

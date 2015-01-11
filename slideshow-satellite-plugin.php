@@ -51,6 +51,7 @@ class SatellitePlugin
         $this->add_action("wp_head", 'print_styles');
         $this->add_action('wp_ajax_plupload_action', "g_plupload_action");
         $this->add_action('wp_ajax_satl_order_slides', 'satl_ajax_reorder');
+        $this->add_action('wp_ajax_slideshow_tinymce', 'ajax_tinymce', 10, 1);
         
         return true;
     }
@@ -159,7 +160,14 @@ class SatellitePlugin
         wp_register_style(SATL_PLUGIN_NAME.'_googleFonts', 'http://fonts.googleapis.com/css?family=Cabin:400,600,400italic,600italic|Cabin+Condensed|Scada:400,700');
         wp_enqueue_style( SATL_PLUGIN_NAME.'_googleFonts' );
     }
-
+    
+	function ajax_tinymce() {
+        $this->log_me('running tinymce off ajax');
+		$this -> render('tinymce-modal', false, true, 'admin');
+		
+		exit();
+		die();
+	}
 
     function init_class($name = null, $params = array()) {
         if (!empty($name)) {

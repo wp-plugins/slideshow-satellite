@@ -30,6 +30,9 @@ if ($imagesbox == "T") {
 } elseif ($imagesbox == "L") {
   $rel = ($frompost) ? "lightbox[".$slider->post_parent."]" : "lightbox[".$slider->section."]";
   $class = "lightbox";
+} elseif ($imagesbox == "P") {
+  $rel = ($frompost) ? "prettyPhoto[".$slider->post_parent."]" : "prettyPhoto[".$slider->section."]";
+  $class = "prettyphoto";
 }
 ?>
 

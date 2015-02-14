@@ -13,14 +13,13 @@ class SatelliteHtmlHelper extends SatellitePlugin
         );
 
         $r = wp_parse_args($args, $defaults);
-        extract($r, EXTR_SKIP);
 
         ob_start();
 
         ?><a class="<?php echo $class; ?>"
-             rel="<?php echo $rel; ?>" <?php echo (!empty($onclick)) ? 'onclick="' . $onclick . '"' : ''; ?>
-             href="<?php echo $href; ?>" target="<?php echo $target; ?>"
-             title="<?php echo $title; ?>"><?php echo $name; ?></a><?php
+             rel="<?php echo $r['rel']; ?>" <?php echo (!empty($r['onclick'])) ? 'onclick="' . $r['onclick'] . '"' : ''; ?>
+             href="<?php echo $r['href']; ?>" target="<?php echo $r['target']; ?>"
+             title="<?php echo $r['title']; ?>"><?php echo $name; ?></a><?php
 
         $link = ob_get_clean();
         return $link;

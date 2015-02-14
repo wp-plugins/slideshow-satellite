@@ -62,19 +62,18 @@ class SatelliteSlide extends SatelliteDbHelper
             foreach ($data as $dkey => $dval) {
                 $this->data->{$dkey} = stripslashes($dval);
             }
-            extract($data, EXTR_SKIP);
 
-            if (empty($title)) {
+            if (empty($r['title'])) {
                 $this->errors['title'] = __('Please fill in a title', SATL_PLUGIN_NAME);
             }
             //if (empty($description)) { $this -> errors['description'] = __('Please fill in a description', SATL_PLUGIN_NAME); }
-            if (empty($type)) {
+            if (empty($r['type'])) {
                 $this->errors['type'] = __('Please select an image type', SATL_PLUGIN_NAME);
             } //if (empty($section)) { $section = '1'; }
 
-            elseif ($type == "file") {
-                if (!empty($image_oldfile) && empty($_FILES['image_file']['name'])) {
-                    $imagename = str_replace(" ", "-", $image_oldfile);
+            elseif ($r['type'] == "file") {
+                if (!empty($r['image_oldfile']) && empty($_FILES['image_file']['name'])) {
+                    $imagename = str_replace(" ", "-", $r['image_oldfile']);
 
                     $imagepath = SATL_UPLOAD_DIR . '/';
                     $imagefull = $imagepath . $imagename;

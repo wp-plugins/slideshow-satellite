@@ -66,15 +66,15 @@ class SatelliteGallery extends SatelliteDbHelper
                 }
             }
 
-            extract($data, EXTR_SKIP);
-
-            if (empty($title)) {
+            if (empty($data['title'])) {
                 $this->errors['title'] = __('Please enter a title', SATL_PLUGIN_NAME);
             }
-            if (empty($source)) {
+            if (empty($data['source'])) {
                 $this->errors['type'] = __('Please select a gallery source', SATL_PLUGIN_NAME);
-            } elseif ($source == "satellite") {
-            } elseif ($source == "post") {
+            } elseif ($data['source'] == "satellite") {
+              // validation for custom gallery
+            } elseif ($data['source'] == "post") {
+              // validation for post
             }
         } else {
             $this->errors[] = __('No data was posted', SATL_PLUGIN_NAME);

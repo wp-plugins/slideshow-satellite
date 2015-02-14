@@ -187,6 +187,7 @@ class SatelliteConfigHelper extends SatellitePlugin
                             array('id' => 'W', 'title' => __('Window', SATL_PLUGIN_NAME)),
                             array('id' => 'T', 'title' => __('Thickbox', SATL_PLUGIN_NAME)),
                             array('id' => 'L', 'title' => __('Lightbox Ready', SATL_PLUGIN_NAME)),
+                            array('id' => 'P', 'title' => __('PrettyPhoto Ready', SATL_PLUGIN_NAME)),
                             array('id' => 'C', 'title' => __('Custom', SATL_PLUGIN_NAME))
                         )
                     ),

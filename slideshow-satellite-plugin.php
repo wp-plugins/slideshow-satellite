@@ -608,7 +608,8 @@ class SatellitePlugin
     function check_table( $model = null ) {
         global $wpdb;
         
-        if ( !empty($model) ) {
+        if ( !empty($model) && (SATL_VERSION != $this->get_option($model.'_version'))) {
+            $this->update_option($model.'_version', SATL_VERSION);
             if ( !empty($this->fields) && is_array($this->fields ) ) {
                 if ( /*!$wpdb->get_var("SHOW TABLES LIKE '" . $this->table . "'") ||*/ $this->get_option($model.'db_version') != SATL_VERSION ) {
                     $query = "CREATE TABLE " . $this->table . " (\n";

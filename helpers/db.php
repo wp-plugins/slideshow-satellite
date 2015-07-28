@@ -135,13 +135,13 @@ class SatelliteDbHelper extends SatellitePlugin {
 		$data = (empty($data[$this -> model])) ? $data : $data[$this -> model];
 		$r = wp_parse_args($data, $defaults);
 		$this -> data = SatelliteHtmlHelper::array_to_object($r);
-		
 		if ($validate == true) {
 			if (method_exists($this, 'validate')) {
 				$this -> validate($r);                         
 			}
 		}
 		if (empty($this -> errors)) {
+//          $this->log_me('no errors');
 
 			switch ($this -> model) {
 				case 'Slide'				:
@@ -183,7 +183,9 @@ class SatelliteDbHelper extends SatellitePlugin {
 			} else {
         error_log( "SATELLITE failed : ". $query);
                         }
-		}
+		} else {
+          $this->log_me($this->errors);
+        }
 		
 		return false;
 	}
@@ -256,7 +258,7 @@ class SatelliteDbHelper extends SatellitePlugin {
 							if (is_array($this -> data -> {$field}) || is_object($this -> data -> {$field})) {
 								$value = serialize($this -> data -> {$field});
 							} else {
-								$value = mysql_escape_string($this -> data -> {$field});
+								$value = esc_sql($this -> data -> {$field});
 							}
 				
 							$query1 .= "`" . $field . "`";
@@ -304,7 +306,7 @@ class SatelliteDbHelper extends SatellitePlugin {
 						if (is_array($this -> data -> {$field}) || is_object($this -> data -> {$field})) {
 							$value = serialize($this -> data -> {$field});
 						} else {
-                            $value = mysql_real_escape_string($this -> data -> {$field});
+                            $value = esc_sql($this -> data -> {$field});
 						}
 					
 						$query .= "`" . $field . "` = '" . $value . "'";

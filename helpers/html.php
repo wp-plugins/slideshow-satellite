@@ -16,9 +16,9 @@ class SatelliteHtmlHelper extends SatellitePlugin
 
         ob_start();
 
-        ?><a class="<?php echo $class; ?>"
+        ?><a class="<?php echo $r['class']; ?>"
              rel="<?php echo $r['rel']; ?>" <?php echo (!empty($r['onclick'])) ? 'onclick="' . $r['onclick'] . '"' : ''; ?>
-             href="<?php echo $r['href']; ?>" target="<?php echo $r['target']; ?>"
+             href="<?php echo $href; ?>" target="<?php echo $r['target']; ?>"
              title="<?php echo $r['title']; ?>"><?php echo $name; ?></a><?php
 
         $link = ob_get_clean();
@@ -52,6 +52,7 @@ class SatelliteHtmlHelper extends SatellitePlugin
             if (file_exists(SATL_UPLOAD_DIR . '/' . $filename)) {
                 return SATL_UPLOAD_URL . '/' . $filename;
             } else {
+                $this->log_me('could not find file: '.$filename);
                 return SATL_PLUGIN_URL . "/images/placeholder.png";
             }
 
@@ -173,7 +174,7 @@ class SatelliteHtmlHelper extends SatellitePlugin
         return preg_replace("/\?(\&)?/si", "?", $url);
     }
 
-    function strip_ext($filename = '', $return = 'ext')
+    public function strip_ext($filename = '', $return = 'ext')
     {
         if (!empty($filename)) {
             $path_parts = pathinfo($filename);
@@ -207,14 +208,20 @@ class SatelliteHtmlHelper extends SatellitePlugin
 
     public static function array_to_object($array = array())
     {
-        //type casting...
-        return (object)$array;
+        $object = new stdClass();
+
+        foreach ($array as $key => $value)
+        {
+            $object->$key = $value;
+        }
+        return $object;
+
     }
 
     function sanitize($string = '', $sep = '-')
     {
         if (!empty($string)) {
-            $string = ereg_replace("[^0-9a-z" . $sep . "]", "", strtolower(str_replace(" ", $sep, $string)));
+            $string = preg_replace("[^0-9a-z" . $sep . "]", "", strtolower(str_replace(" ", $sep, $string)));
             $string = preg_replace("/" . $sep . "[" . $sep . "]*/i", $sep, $string);
 
             return $string;

@@ -115,7 +115,7 @@ class Satellite extends SatellitePlugin
         add_meta_box('posttypediv', __('Post Type Settings', SATL_PLUGIN_NAME), array($this->Metabox, "settings_posttype"), $this->menus['satellite'], 'normal', 'core');
         add_meta_box('advanceddiv', __('Advanced Settings', SATL_PLUGIN_NAME), array($this->Metabox, "settings_advanced"), $this->menus['satellite'], 'normal', 'core');
         if (SATL_PRO) {
-            add_meta_box('prodiv', __('Premium Edition Only', SATL_PLUGIN_NAME), array($this->Metabox, "settings_pro"), $this->menus['satellite'], 'normal', 'core');
+            add_meta_box('prodiv', __('Premium Features', SATL_PLUGIN_NAME), array($this->Metabox, "settings_pro"), $this->menus['satellite'], 'normal', 'core');
         }
         // Satellite Extendable!
         apply_filters('satl_add_menu', $this->menus['satellite']);

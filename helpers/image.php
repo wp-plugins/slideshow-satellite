@@ -81,6 +81,7 @@ class SatelliteImageHelper extends SatellitePlugin {
       return imagesy($this->image);
     }
     function resizeToBox($size = null) {
+      $this->log_me('resizing to :'.$size);
       if (!$size) { return; }
       if ($this->getHeight() > $this->getWidth()) {
         $this->resizeToHeight($size);
@@ -214,7 +215,7 @@ class SatelliteImageHelper extends SatellitePlugin {
     
     public function getImageData($ID, $slide, $frompost, $source)
     {
-
+      $HtmlHelper = new SatelliteHtmlHelper();
       if ($frompost) {
         $full_image_href = wp_get_attachment_image_src($ID, 'full', false);
         $imagelink = $full_image_href[0];
@@ -228,8 +229,8 @@ class SatelliteImageHelper extends SatellitePlugin {
       } else {
         
         // This is from Satellite Slides - we don't have the width & height yet
-        $imagelink = SatelliteHtmlHelper::image_url($slide->image);
-        $imagedir = SatelliteHtmlHelper::image_dir($slide->image);
+        $imagelink = $HtmlHelper->image_url($slide->image);
+        $imagedir = $HtmlHelper->image_dir($slide->image);
         list($width,$height) = getimagesize($imagedir);
       }
 

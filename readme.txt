@@ -14,16 +14,20 @@ Satellite's goal is to present a responsive and beautiful slideshow experience t
 
 Choose from multiple easy to use themes like Slideshows with full thumbnail displays, Flipbooks for that animated-gif style slideshow, or the brand new Infinite Scroll!
 
+As of August 2015 - Premium edition is available for free for everyone!
+
 Use either your WordPress Media Galleries or our own highly customized Gallery Editor.
 
-To explore the manual, watch tutorial videos, or get the Premium edition: http://c-pr.es/satellite/
+Videos, Feature info, Developer Information and more : http://c-pr.es/satellite/
 
 Easily embed using our slideshow button. Otherwise, to embed into a post/page, simply insert <code>[satellite]</code> into its content with optional <code>post_id</code>, <code>thumbs</code>, <code>exclude</code>, <code>include</code>, <code>caption</code>, and <code>auto</code>  parameters.  Check out the Slideshow Satellite Manual on the plugin details page (linked above) for code examples.
 
 == Installation ==
 Installing the WordPress Slideshow Satellite plugin manually is very easy. Simply follow the steps below.
 
-1. In your WP Dashboard goto Plugins and Add New. Then click Upload
+1. Option 1) Search Satellite in WordPress plugins, find Slideshow Satellite and install!
+
+1. Option 2) In your WP Dashboard goto Plugins and Add New. Then click Upload
 
 1. Upload 'slideshow-satellite.zip', Install & Activate.
 
@@ -93,6 +97,12 @@ See slideshows in action on our Examples Site: http://c-pr.es/satellite
 See the manual and videos and more: http://c-pr.es/satellite
 
 == Changelog ==
+= 2.4 =
+* PREMIUM RELEASE August 2015
+* All premium capabilities are now added for everyone to use!
+* Fixed all PHP 5.5 issues
+* Added support for HVM
+
 = 2.3.3 =
 * Fixing needing to save gallery before it loads bug
 * Fixing premium width on shortcode not required bug

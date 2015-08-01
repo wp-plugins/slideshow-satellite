@@ -81,7 +81,6 @@ class SatelliteImageHelper extends SatellitePlugin {
       return imagesy($this->image);
     }
     function resizeToBox($size = null) {
-      $this->log_me('resizing to :'.$size);
       if (!$size) { return; }
       if ($this->getHeight() > $this->getWidth()) {
         $this->resizeToHeight($size);
@@ -90,7 +89,6 @@ class SatelliteImageHelper extends SatellitePlugin {
       }
     }
     function resizeToHeight($height) {
-
       $ratio = $height / $this->getHeight();
       $width = $this->getWidth() * $ratio;
       $this->resize($width,$height);
@@ -147,23 +145,23 @@ class SatelliteImageHelper extends SatellitePlugin {
           return false;
       }
     }
+    
     /*
      * @image is 
      */
     function applyWatermark($image, $galId) {
-      if (!SATL_PRO) { return; }
       $Gallery = new SatelliteGallery;
-      if ($Gallery -> isSpecialGallery($galId)) {
+      if ($Gallery -> isSpecialGallery($galId))
         return;
-      }
       $watermark = $this->get_option('Watermark');
       if (!$watermark['enabled']) {
         error_log("Watermarking is not enabled");
         return;
       }
-      $Premium = new SatellitePremiumHelper;
+      $Premium = new SatellitePremiumHelper();
       $Premium->doWatermark($image, $watermark);
     }
+    
     /**
      *
      * @param int $gallery_id
@@ -171,7 +169,7 @@ class SatelliteImageHelper extends SatellitePlugin {
      * @param string $dir
      * @return array 
      */
-    public function getAllCustomImages($model, $gallery_id = false, $order="created", $dir="DESC") {
+    public function getAllCustomImages( $model, $gallery_id = false, $order="created", $dir="DESC" ) {
       if ($gallery_id) {
         $images = $model -> find_all(array('section'=>(int) stripslashes($gallery_id)), null, array($order, $dir));
       } else {
@@ -180,10 +178,11 @@ class SatelliteImageHelper extends SatellitePlugin {
       return $images;
     }
     
-    public function deleteImages($record, $deleteall) {
+    public function deleteImages( $record, $deleteall ) {
+      $HtmlHelper = new SatelliteHtmlHelper();
       $imagepath = SATL_UPLOAD_DIR . '/';
-      $name = SatelliteHtmlHelper::strip_ext($record->image, 'filename');
-      $ext = SatelliteHtmlHelper::strip_ext($record->image, 'ext');
+      $name = $HtmlHelper->strip_ext($record->image, 'filename');
+      $ext = $HtmlHelper->strip_ext($record->image, 'ext');
 
       $imagefull = $imagepath . $record->image;
       $thumbfull = $imagepath . $name . '-thumb.' . strtolower($ext);
@@ -215,7 +214,7 @@ class SatelliteImageHelper extends SatellitePlugin {
     
     public function getImageData($ID, $slide, $frompost, $source)
     {
-      $HtmlHelper = new SatelliteHtmlHelper();
+      
       if ($frompost) {
         $full_image_href = wp_get_attachment_image_src($ID, 'full', false);
         $imagelink = $full_image_href[0];
@@ -227,7 +226,7 @@ class SatelliteImageHelper extends SatellitePlugin {
         $width = $slide->img_width;
         $height = $slide->img_height;
       } else {
-        
+        $HtmlHelper = new SatelliteHtmlHelper();
         // This is from Satellite Slides - we don't have the width & height yet
         $imagelink = $HtmlHelper->image_url($slide->image);
         $imagedir = $HtmlHelper->image_dir($slide->image);

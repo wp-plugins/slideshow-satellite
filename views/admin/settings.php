@@ -38,7 +38,7 @@ wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
               <div class="inside">
                   <div id="minor-publishing">
                       <div id="misc-publishing-actions" class="preminfo">
-                          <h4>What's different on the Premium Edition?</h4>
+                          <h4>Premium for Everyone!:</h4>
                           <p>Watermark your images</p>
                           <p>Customize height and width per use</p>
                           <p>Have multiple arrow options</p>

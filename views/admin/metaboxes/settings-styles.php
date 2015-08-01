@@ -17,7 +17,7 @@ $styles = $this -> get_option('styles');
                     <option>1- Default </option> <?php _e('1- Default', SATL_PLUGIN_NAME); ?>
                 </select>
 			<?php } ?>
-				<span class="howto clear"><?php _e('Premium Edition Only: Choose your nav arrows for left and right transitioning', SATL_PLUGIN_NAME); ?></span>
+				<span class="howto clear"><?php _e('Choose your nav arrows for left and right transitioning', SATL_PLUGIN_NAME); ?></span>
 			</td>
 		</tr>
                 <tr class="navpush">

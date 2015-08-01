@@ -41,9 +41,9 @@
             'value' => (empty($args['value'])) ? $this->Html->field_value($name) : $args['value'],
         );
         $r = wp_parse_args($args, $defaults);
-        extract($r, EXTR_SKIP);
+
         ob_start();
-        ?><input type="hidden" name="<?php echo $this->Html->field_name($name); ?>" value="<?php echo $value; ?>" id="<?php echo $name; ?>" /><?php
+        ?><input type="hidden" name="<?php echo $this->Html->field_name($name); ?>" value="<?php echo $r['value']; ?>" id="<?php echo $name; ?>" /><?php
         $hidden = ob_get_clean();
         return $hidden;
     }
@@ -68,7 +68,6 @@
         );
 
         $r = wp_parse_args($args, $defaults);
-        extract($r, EXTR_SKIP);
 
         ob_start();
 
@@ -78,12 +77,12 @@
                 <th class="verttop"><label><strong><?php echo $r['name']; ?></strong></label></th>
                 <td>
                     <input style="width:400px;" class="<?php echo $r['class']; ?>"name="<?php echo $Html->field_name($name); ?>" id="<?php echo $r['id']; ?>" type="<?php echo $r['type']; ?>" value="<?php echo ($r['value']) ? $r['value'] : $r['std']; ?>" />
-                    <?php echo ($error == true) ? '<div style="color:red;">' . $Html->field_error($name) . '</div>' : ''; ?>
+                    <?php echo ($r['error'] == true) ? '<div style="color:red;">' . $Html->field_error($name) . '</div>' : ''; ?>
                     <span class="howto"><?php echo(isset($r['desc']) ? $r['desc'] : '') ; ?></span>
                 </td>
             </tr>
         
-        <!--input class="<?php echo $class; ?>" type="text" autocomplete="<?php echo $autocomplete; ?>" style="width:<?php echo $width; ?>" name="<?php echo $Html->field_name($name); ?>" value="<?php echo $value; ?>" id="<?php echo $id; ?>" /--><?php
+        <?php
 
         $text = ob_get_clean();
         return $text;
@@ -114,7 +113,6 @@
         );
 
         $r = wp_parse_args($args, $defaults);
-        extract($r, EXTR_SKIP);
 
         ob_start();
         ?>
@@ -130,7 +128,7 @@
 
           </tr>
         <?php
-        if ($error == true) {
+        if ($r['error'] == true) {
             echo $Html->field_error($name);
         }
 
@@ -162,7 +160,6 @@
         );
         
         $r = wp_parse_args($args, $defaults);
-        extract($r, EXTR_SKIP);
         $Html = new SatelliteHtmlHelper;
         
         ob_start();
@@ -170,12 +167,12 @@
             <tr>
                 <th class="verttop"><label><strong><?php echo $r['name']; ?></strong></label></th>
                 <td>
-                    <textarea class="<?php echo $class; ?>" name="<?php echo $Html->field_name($name); ?>" rows="<?php echo $rows; ?>" style="width:<?php echo $width; ?>;" cols="<?php echo $cols; ?>" id="<?php echo ($r['id']); ?>"><?php echo ($r['value']); ?></textarea>
+                    <textarea class="<?php echo $r['class']; ?>" name="<?php echo $Html->field_name($name); ?>" rows="<?php echo $r['rows']; ?>" style="width:<?php echo $r['width']; ?>;" cols="<?php echo $r['cols']; ?>" id="<?php echo ($r['id']); ?>"><?php echo ($r['value']); ?></textarea>
                     <span class="howto"><?php echo($r['desc']); ?></span>
                 </td>
             </tr>
             <?php
-        if ($error == true) {
+        if ($r['error'] == true) {
             echo $Html->field_error($name);
         }
 
@@ -198,8 +195,6 @@
         );
         
         $r = wp_parse_args($args, $defaults);
-        extract($r, EXTR_SKIP);
-//        error_log(print_r($r));
         
         ob_start();
 //        $this->log_me($r['options']);
@@ -207,7 +202,7 @@
             <tr>
                 <th class="verttop"><label><strong><?php echo $r['name']; ?></strong></label></th>
                 <td >
-                    <select class="<?php echo $class; ?>" style="width:<?php echo $width; ?>px;" name="<?php echo $Html->field_name($name); ?>" id="<?php echo $r['id']; ?>">
+                    <select class="<?php echo $r['class']; ?>" style="width:<?php echo $r['width']; ?>px;" name="<?php echo $Html->field_name($name); ?>" id="<?php echo $r['id']; ?>">
                 <?php if ( ! $Html->findInOptions($r['std'],$r['options']) ) : ?>
                         <option value="" ><?php echo($r['std']); ?></option> 
                 <?php endif; ?>
@@ -246,16 +241,14 @@
         $r = wp_parse_args($args, $defaults);
         $SG = new SatelliteGallery;
         $info = $SG->loadData($_REQUEST['id']);
-        
-        extract($r, EXTR_SKIP);
-        
+                
         ob_start();        
         ?>
         <tr id="uploader" <?php echo ($info->source != 'satellite' && !empty($info->source)) ? 'style="display:none"' : '' ?>>
             <th class="verttop"><label><strong><?php echo $r['name']; ?></strong></label></th>
         <td>
             <?php
-            $resize = true;
+            $resize = false;
             // adjust values here
             $id = "images"; // this will be the name of form field. Image url(s) will be submitted in $_POST using this key. So if $id == “img1” then $_POST[“img1”] will have all the image urls
             $svalue = ""; // this will be initial value of the above form field. Image urls.
@@ -282,8 +275,7 @@
 
         </td>
         </tr>
-
-    <?php 
+        <?php 
         $upload = ob_get_clean();
         return $upload;
     }    
@@ -298,10 +290,9 @@
         $Html = new SatelliteHtmlHelper;
         $defaults = array('class' => "button-primary");
         $r = wp_parse_args($args, $defaults);
-        extract($r, EXTR_SKIP);
 
         ob_start();
-        ?><input class="<?php echo $class; ?>" type="submit" name="<?php echo $Html->sanitize($name); ?>" value="<?php echo $name; ?>" /><?php
+        ?><input class="<?php echo $r['class']; ?>" type="submit" name="<?php echo $Html->sanitize($name); ?>" value="<?php echo $name; ?>" /><?php
         $submit = ob_get_clean();
         return $submit;
     }

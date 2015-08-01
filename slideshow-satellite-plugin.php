@@ -185,11 +185,7 @@ class SatellitePlugin
     function initialize_classes() {
         if (!empty($this->helpers)) {
             foreach ($this->helpers as $helper) {
-                if ($helper == 'Premium') {
-                    $hfile = dirname(__FILE__) . '/pro/' . strtolower($helper) . '.php';
-                } else {
-                    $hfile = dirname(__FILE__) . '/helpers/' . strtolower($helper) . '.php';
-                }
+                $hfile = dirname(__FILE__) . '/helpers/' . strtolower($helper) . '.php';
                 if (file_exists($hfile)) {
                     require_once($hfile);
                     if (empty($this->{$helper}) || !is_object($this->{$helper})) {
@@ -608,7 +604,8 @@ class SatellitePlugin
     function check_table( $model = null ) {
         global $wpdb;
         
-        if ( !empty($model) ) {
+        if ( !empty($model) && (SATL_VERSION != $this->get_option($model.'_version'))) {
+            $this->update_option($model.'_version', SATL_VERSION);
             if ( !empty($this->fields) && is_array($this->fields ) ) {
                 if ( /*!$wpdb->get_var("SHOW TABLES LIKE '" . $this->table . "'") ||*/ $this->get_option($model.'db_version') != SATL_VERSION ) {
                     $query = "CREATE TABLE " . $this->table . " (\n";

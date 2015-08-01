@@ -55,26 +55,28 @@ class SatelliteSlide extends SatelliteDbHelper
     function validate($data = null)
     {
         $this->errors = array();
+        $this->log_me('validating satellite slide');
 
         if (!empty($data)) {
             $data = (empty($data[$this->model])) ? $data : $data[$this->model];
+            
+            $HtmlHelper = new SatelliteHtmlHelper();
 
             foreach ($data as $dkey => $dval) {
                 $this->data->{$dkey} = stripslashes($dval);
             }
-            extract($data, EXTR_SKIP);
-
-            if (empty($title)) {
+//            $this->log_me($this->data);
+            if (empty($data['title'])) {
                 $this->errors['title'] = __('Please fill in a title', SATL_PLUGIN_NAME);
             }
             //if (empty($description)) { $this -> errors['description'] = __('Please fill in a description', SATL_PLUGIN_NAME); }
-            if (empty($type)) {
+            if (empty($data['type'])) {
                 $this->errors['type'] = __('Please select an image type', SATL_PLUGIN_NAME);
             } //if (empty($section)) { $section = '1'; }
 
-            elseif ($type == "file") {
-                if (!empty($image_oldfile) && empty($_FILES['image_file']['name'])) {
-                    $imagename = str_replace(" ", "-", $image_oldfile);
+            elseif ($data['type'] == "file") {
+                if (!empty($r['image_oldfile']) && empty($_FILES['image_file']['name'])) {
+                    $imagename = str_replace(" ", "-", $r['image_oldfile']);
 
                     $imagepath = SATL_UPLOAD_DIR . '/';
                     $imagefull = $imagepath . $imagename;
@@ -92,27 +94,9 @@ class SatelliteSlide extends SatelliteDbHelper
                             $this->errors['image_file'] = __('Image could not be moved from TMP to ' . SATL_UPLOAD_URL . ', please check permissions', SATL_PLUGIN_NAME);
                         } else {
                             $this->data->image = $imagename;
-                            $Gallery = new SatelliteGallery();
-                            // No resizing or watermarking on our Special Galleries like More and Watermark
-                            if (!$Gallery->isSpecialGallery($this->data->section)) {
-                                $name = SatelliteHtmlHelper::strip_ext($imagename, 'filename');
-                                $ext = SatelliteHtmlHelper::strip_ext($imagename, 'ext');
-                                $Image = new SatelliteImageHelper;
-                                $images = $this->get_option('Images');
-                                $Image->load($imagefull);
-                                $Image->resizeToBox($images[resize]);
-                                $Image->save($imagefull);
-                                $Image->applyWatermark($imagename, $this->data->section);
-
-                                $thumbfull = $imagepath . $name . '-thumb.' . strtolower($ext);
-                                $smallfull = $imagepath . $name . '-small.' . strtolower($ext);
-
-                                image_resize($imagefull, $width = 100, $height = 100, $crop = true, $append = 'thumb', $dest = null, $quality = 100);
-                                image_resize($imagefull, $width = 50, $height = 50, $crop = true, $append = 'small', $dest = null, $quality = 100);
-                                @chmod($thumbfull, 0777);
-                                @chmod($smallfull, 0777);
-                            }
-                            @chmod($imagefull, 0777);
+                            
+                            $this->_imageProcess($imagefull);
+                            
                         }
                     } else {
                         switch ($_FILES['image_file']['error']) {
@@ -135,12 +119,12 @@ class SatelliteSlide extends SatelliteDbHelper
                         }
                     }
                 }
-            } elseif ($type == "url") {
-                if (empty($image_url)) {
+            } elseif ($data['type'] == "url") {
+                if (empty($data['image_url'])) {
                     $this->errors['image_url'] = __('Please specify an image', SATL_PLUGIN_NAME);
                 } else {
-                    if ($image = wp_remote_fopen($image_url)) {
-                        $filename = str_replace(" ", "-", basename($image_url));
+                    if ($image = wp_remote_fopen($data['image_url'])) {
+                        $filename = str_replace(" ", "-", basename($data['image_url']));
                         $filepath = SATL_UPLOAD_DIR . '/';
 
                         $filefull = $filepath . $filename;
@@ -148,24 +132,9 @@ class SatelliteSlide extends SatelliteDbHelper
                             $fh = @fopen($filefull, "w");
                             @fwrite($fh, $image);
                             @fclose($fh);
-                            $Gallery = new SatelliteGallery();
-                            if (!$Gallery->isSpecialGallery($this->data->section)) {
+                            $this->data->image = $filename;
+                            $this->_imageProcess($filefull);
 
-                                $name = SatelliteHtmlHelper::strip_ext($filename, 'filename');
-                                $ext = SatelliteHtmlHelper::strip_ext($filename, 'ext');
-                                $ext = strtolower($ext);
-
-                                $Image = new SatelliteImageHelper;
-                                $Image->applyWatermark($filename, $this->data->section);
-
-                                $thumbfull = $filepath . $name . '-thumb.' . $ext;
-                                $smallfull = $filepath . $name . '-small.' . $ext;
-                                image_resize($filefull, $width = 100, $height = 100, $crop = true, $append = 'thumb', $dest = null, $quality = 100);
-                                image_resize($filefull, $width = 50, $height = 50, $crop = true, $append = 'small', $dest = null, $quality = 100);
-                                @chmod($filefull, 0777);
-                                @chmod($thumbfull, 0777);
-                            }
-                            @chmod($smallfull, 0777);
                         }
                     }
                 }
@@ -184,6 +153,36 @@ class SatelliteSlide extends SatelliteDbHelper
             $this->errors[] = __('No data was posted', SATL_PLUGIN_NAME);
         }
         return $this->errors;
+    }
+    
+    private function _imageProcess($file_dir_path) {
+        $Gallery = new SatelliteGallery();
+        $HtmlHelper = new SatelliteHtmlHelper();
+//        $this->log_me("Processing: ".$this->data->image);
+        // No resizing or watermarking on our Special Galleries like More and Watermark
+        if (!$Gallery->isSpecialGallery($this->data->section)) {
+            $imagepath = SATL_UPLOAD_DIR . '/';
+            $name = $HtmlHelper->strip_ext($this->data->image, 'filename');
+            $ext = $HtmlHelper->strip_ext($this->data->image, 'ext');
+            $Image = new SatelliteImageHelper;
+            $images = $this->get_option('Images');
+            $Image->load($file_dir_path);
+            $Image->resizeToBox($images[resize]);
+            $Image->save($file_dir_path);
+            $Image->applyWatermark($this->data->image, $this->data->section);
+
+            $thumbfull = $imagepath . $name . '-thumb.' . strtolower($ext);
+
+            $imagethumbs = wp_get_image_editor($file_dir_path);
+            if ( ! is_wp_error( $imagethumbs ) ) {
+              $imagethumbs->resize( 150, 150, true );
+              $imagethumbs->save( $thumbfull );
+            } else {
+              $this->log_me('thumb error');
+              $this->log_me(is_wp_error( $imagethumbs ));
+            }
+        }
+        @chmod($imagefull, 0755);
     }
 
     function full_copy($source, $target)
@@ -211,17 +210,22 @@ class SatelliteSlide extends SatelliteDbHelper
 
     public function processImages($images, $section = false)
     {
+        $HtmlHelp = new SatelliteHtmlHelper();
+        $this->log_me('starting processImages');
+        
         $imgarray = explode(",", $images);
         if (!$section) {
             $section = $this->latestSection();
         }
         $i = 0;
+//        $this->log_me($imgarray);
         foreach ($imgarray as $image) {
             $file = basename($image);
-            $name = SatelliteHtmlHelper::strip_ext($file, 'filename');
-            $data = array(title => $name, section => $section, type => 'url', image_url => $image, use_link => 'N', slide_order => $i);
+            $this->log_me($file);
+            $name = $HtmlHelp->strip_ext($file, 'filename');
+            $data = array('title' => $name, 'section' => $section, 'type' => 'url', 'image_url' => $image, 'use_link' => 'N', 'slide_order' => $i);
             $slidedata = array('Slide' => $data);
-
+            $this->log_me($data);
             if ($this->save($data, true)) {
                 error_log($name . " has successfully saved");
                 continue;

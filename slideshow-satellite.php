@@ -115,7 +115,7 @@ class Satellite extends SatellitePlugin
         add_meta_box('posttypediv', __('Post Type Settings', SATL_PLUGIN_NAME), array($this->Metabox, "settings_posttype"), $this->menus['satellite'], 'normal', 'core');
         add_meta_box('advanceddiv', __('Advanced Settings', SATL_PLUGIN_NAME), array($this->Metabox, "settings_advanced"), $this->menus['satellite'], 'normal', 'core');
         if (SATL_PRO) {
-            add_meta_box('prodiv', __('Premium Edition Only', SATL_PLUGIN_NAME), array($this->Metabox, "settings_pro"), $this->menus['satellite'], 'normal', 'core');
+            add_meta_box('prodiv', __('Premium Features', SATL_PLUGIN_NAME), array($this->Metabox, "settings_pro"), $this->menus['satellite'], 'normal', 'core');
         }
         // Satellite Extendable!
         apply_filters('satl_add_menu', $this->menus['satellite']);
@@ -258,10 +258,10 @@ class Satellite extends SatellitePlugin
         foreach ($setDefault as $d) {
             $defaults[$d] = null;
         }
-        extract(shortcode_atts($defaults, $atts));
+        $r = shortcode_atts($defaults, $atts);
 
         $this->resetTemp();
-        $align = stripslashes($align);
+        $align = stripslashes($r['align']);
 
         /** display is only used to fake a satellite embed ***/
         if (!empty ($display)) {
@@ -271,83 +271,87 @@ class Satellite extends SatellitePlugin
         }
 
         if (!empty($caption)) {
-            if (($this->get_option('information') == 'Y') && ($caption == 'off')) {
+            if (($this->get_option('information') == 'Y') && ($r['caption'] == 'off')) {
                 $this->update_option('information_temp', 'N');
 
-            } elseif (($this->get_option('information') == 'N') && ($caption == 'on')) {
+            } elseif (($this->get_option('information') == 'N') && ($r['caption'] == 'on')) {
                 $this->update_option('information_temp', 'Y');
             }
-            if (($this->get_option('orbitinfo') == 'Y') && ($caption == 'off')) {
+            if (($this->get_option('orbitinfo') == 'Y') && ($r['caption'] == 'off')) {
                 $this->update_option('orbitinfo_temp', 'N');
 
-            } elseif (($this->get_option('orbitinfo') == 'N') && ($caption == 'on')) {
+            } elseif (($this->get_option('orbitinfo') == 'N') && ($r['caption'] == 'on')) {
                 $this->update_option('orbitinfo_temp', 'Y');
             }
         }
-        if (!empty($thumbs)) {
-            if (($this->get_option('thumbnails') == 'Y') && ($thumbs == 'off')) {
+        if (!empty($r['thumbs'])) {
+            if (($this->get_option('thumbnails') == 'Y') && ($r['thumbs'] == 'off')) {
                 $this->update_option('thumbnails_temp', 'N');
-            } elseif (($this->get_option('thumbnails') == 'N') && ($thumbs == 'on')) {
+            } elseif (($this->get_option('thumbnails') == 'N') && ($r['thumbs'] == 'on')) {
                 $this->update_option('thumbnails_temp', 'Y');
-            } elseif ($thumbs == "fullright") {
+            } elseif ($r['thumbs'] == "fullright") {
                 $this->update_option('thumbnails_temp', 'FR');
-            } elseif ($thumbs == "fullleft") {
+            } elseif ($r['thumbs'] == "fullleft") {
                 $this->update_option('thumbnails_temp', 'FL');
             }
         }
 
-        if (!empty($random)) { // update random in db options
-            if (($this->get_option('random') == 'off' || $this->get_option('random') == null) && ($random == 'on')) {
+        if (!empty($r['random'])) { // update random in db options
+            if (($this->get_option('random') == 'off' || $this->get_option('random') == null) && ($r['random'] == 'on')) {
                 $this->update_option('random', 'on');
-            } elseif (($this->get_option('random') == 'on') && ($random == 'off')) {
+            } elseif (($this->get_option('random') == 'on') && ($r['random'] == 'off')) {
                 $this->update_option('random', 'off');
             }
         }
 
-        if (!empty($transition)) {
-            if (($this->get_option('transition') != 'FE') && ($transition == 'fade-empty')) {
+        if (!empty($r['transition'])) {
+            if (($this->get_option('transition') != 'FE') && ($r['transition'] == 'fade-empty')) {
                 $this->update_option('transition_temp', 'FE');
-            } elseif (($this->get_option('transition') != 'FB') && ($transition == 'fade-blend')) {
+            } elseif (($this->get_option('transition') != 'FB') && ($r['transition'] == 'fade-blend')) {
                 $this->update_option('transition_temp', 'FB');
-            } elseif (($this->get_option('transition') != 'OHS') && ($transition == 'vertical-slide')) {
+            } elseif (($this->get_option('transition') != 'OHS') && ($r['transition'] == 'vertical-slide')) {
                 $this->update_option('transition_temp', 'OVS');
-            } elseif (($this->get_option('transition') != 'OHS') && ($transition == 'horizontal-slide')) {
+            } elseif (($this->get_option('transition') != 'OHS') && ($r['transition'] == 'horizontal-slide')) {
                 $this->update_option('transition_temp', 'OHS');
-            } elseif (($this->get_option('transition') != 'OHP') && ($transition == 'horizontal-push')) {
+            } elseif (($this->get_option('transition') != 'OHP') && ($r['transition'] == 'horizontal-push')) {
                 $this->update_option('transition_temp', 'OHP');
-            } elseif (($this->get_option('transition') != 'OM') && ($transition == 'orbit-multi')) {
+            } elseif (($this->get_option('transition') != 'OM') && ($r['transition'] == 'orbit-multi')) {
                 $this->update_option('transition_temp', 'OM');
-            } elseif (($this->get_option('transition') != 'N') && ($transition == 'none')) {
+            } elseif (($this->get_option('transition') != 'N') && ($r['transition'] == 'none')) {
                 $this->update_option('transition_temp', 'N');
             }
         }
-        if (!empty($auto)) {
-            if (($this->get_option('autoslide') == 'Y') && ($auto == 'off')) {
+        if (!empty($r['auto'])) {
+            if (($this->get_option('autoslide') == 'Y') && ($r['auto'] == 'off')) {
                 $this->update_option('autoslide_temp', 'N');
-            } elseif (($this->get_option('autoslide') == 'N') && ($auto == 'on')) {
+            } elseif (($this->get_option('autoslide') == 'N') && ($r['auto'] == 'on')) {
                 $this->update_option('autoslide_temp', 'Y');
             }
         } elseif ($this->get_option('autoslide') == 'Y') {
             $this->update_option('autoslide_temp', 'Y');
         }
-        $this->parseSimpleEmbed($splash, 'splash', 'on', true);
-        $this->parseSimpleEmbed($nolink, 'nolinker', true, true);
-        $this->parseSimpleEmbed($play, 'play', "off", true);
+        $this->parseSimpleEmbed($r['splash'], 'splash', 'on', true);
+        $this->parseSimpleEmbed($r['nolink'], 'nolinker', true, true);
+        $this->parseSimpleEmbed($r['play'], 'play', "off", true);
 
         /******** PRO ONLY **************/
         if (SATL_PRO) {
             $custom_sizing = SATL_PLUGIN_DIR . '/pro/custom_sizing.php';
             if (file_exists($custom_sizing)) {
+                $w = isset($r['w']) ? $r['w'] : null;
+                $w = isset($r['width']) ? $r['width'] : $w;
+                $h = isset($r['h']) ? $r['h'] : null;
+                $h = isset($r['height']) ? $r['height'] : $w;
                 require $custom_sizing;
             }
         }
         /******** END PRO ONLY **************/
-        if (!empty($nocaption)) {
+        if (!empty($r['nocaption'])) {
             $this->update_option('information', 'N');
             $this->update_option('orbitinfo', 'N');
         }
-        if ((!empty($custom)) || (!empty($gallery))) { // custom is deprecated as of version 1.2
-            $gallery = ($custom) ? $custom : $gallery;
+        if (!empty($r['gallery'])) { // custom is deprecated as of version 1.2
+            $gallery = $r['gallery'];
             $multigallery = preg_match("[\,]", $gallery);
             $data = $this->Gallery->loadData($gallery);
             $this->log_me("multi: ".$multigallery);

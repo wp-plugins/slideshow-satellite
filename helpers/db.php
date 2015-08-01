@@ -123,34 +123,25 @@ class SatelliteDbHelper extends SatellitePlugin {
 		global $wpdb;
 
 		$defaults = (method_exists($this, 'defaults')) ? $this -> defaults() : false;
-               /* if ($model != null) {
-                    $this -> model = $model;
-                    print_r( $this->model );
-                    $data = (empty($data[$this -> model])) ? $data : $data[$this -> model];
-                    $r = wp_parse_args($data, $defaults);
-                    $this -> data = SatelliteHtmlHelper::array_to_object($r);
-                    print_r ($this -> data);
-                    die();
-                }*/
 		$data = (empty($data[$this -> model])) ? $data : $data[$this -> model];
 		$r = wp_parse_args($data, $defaults);
 		$this -> data = SatelliteHtmlHelper::array_to_object($r);
-		
 		if ($validate == true) {
 			if (method_exists($this, 'validate')) {
 				$this -> validate($r);                         
 			}
 		}
 		if (empty($this -> errors)) {
+//          $this->log_me('no errors');
 
 			switch ($this -> model) {
 				case 'Slide'				:
 					if ($this -> data -> type == "file") {
 						//$this -> data -> image = $_FILES['image_file']['name'];	
 					} elseif ($this -> data -> type == "existing") {
-            $this -> data -> image = $this -> data -> image_existing;
-            $this -> data -> type = 'existing';
-          } else {
+                      $this -> data -> image = $this -> data -> image_existing;
+                      $this -> data -> type = 'existing';
+                    } else {
 						$this -> data -> image = basename( $this -> data -> image_url );
 					}
 					if ( empty($this -> data -> uselink ) || $this -> data -> uselink == "N" ) {
@@ -161,13 +152,13 @@ class SatelliteDbHelper extends SatellitePlugin {
 					}
 					break;
 				case 'Gallery':	
-          $Gallery = new SatelliteGallery;
-          $specials = $Gallery -> specials;
-          foreach ($specials as $special) {
-            if ( $this -> data -> title == $special ) {
-              $Gallery -> registerSpecials();
-            }
-          }
+                    $Gallery = new SatelliteGallery;
+                    $specials = $Gallery -> specials;
+                    foreach ($specials as $special) {
+                      if ( $this -> data -> title == $special ) {
+                        $Gallery -> registerSpecials();
+                      }
+                    }
 					break;                                     
                                      
 			}
@@ -183,7 +174,9 @@ class SatelliteDbHelper extends SatellitePlugin {
 			} else {
         error_log( "SATELLITE failed : ". $query);
                         }
-		}
+		} else {
+          $this->log_me($this->errors);
+        }
 		
 		return false;
 	}
@@ -256,7 +249,7 @@ class SatelliteDbHelper extends SatellitePlugin {
 							if (is_array($this -> data -> {$field}) || is_object($this -> data -> {$field})) {
 								$value = serialize($this -> data -> {$field});
 							} else {
-								$value = mysql_escape_string($this -> data -> {$field});
+								$value = esc_sql($this -> data -> {$field});
 							}
 				
 							$query1 .= "`" . $field . "`";
@@ -304,7 +297,7 @@ class SatelliteDbHelper extends SatellitePlugin {
 						if (is_array($this -> data -> {$field}) || is_object($this -> data -> {$field})) {
 							$value = serialize($this -> data -> {$field});
 						} else {
-                            $value = mysql_real_escape_string($this -> data -> {$field});
+                            $value = esc_sql($this -> data -> {$field});
 						}
 					
 						$query .= "`" . $field . "` = '" . $value . "'";

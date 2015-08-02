@@ -3,8 +3,8 @@ Contributors: C- Pres
 Donate link: http://c-pr.es/satellite/
 Tags: responsive slideshow, custom slideshow, watermark, satellite, orbit, responsive, slideshow, infinite scroll, lazy load, flipbook 
 Requires at least: 3.1
-Tested up to: 4.1
-Stable tag: 2.3.3
+Tested up to: 4.2.3
+Stable tag: 2.4
 License: GPLv2 or later
 
 So Responsive! So Customizable! So Modern! Build Slideshows, Flipbooks, and do Infinite Scrolls with Slideshow Satellite. 

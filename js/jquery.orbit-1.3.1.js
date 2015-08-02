@@ -1,5 +1,5 @@
   /*
-   * jQuery Orbit Plugin 1.3.0
+   * jQuery Orbit Plugin 1.3.2
    * www.ZURB.com/playground
    * Copyright 2010, ZURB
    * Free to use under the MIT license.
@@ -153,20 +153,19 @@
         var self = this;
         if (!width) { width = self.$element.width(); }
         if (!containWidth) { containWidth = self.$wrapper.parent().parent().width(); }
-        var extraWidth = containWidth - width;
-        if (extraWidth < this.options.thumbWidth) {
+        this.extraWidth = containWidth - width;
+        if (this.extraWidth < this.options.thumbWidth) {
           self.$wrapper.find('.thumbholder').css('width',this.options.thumbWidth+10);
           self.$wrapper.find('.thumbholder').css('margin-left',width);
-          return this.options.thumbWidth;
+          this.extraWidth = this.options.thumbWidth;
         }
-        else if (extraWidth < self.options.respExtra) {
-          self.$wrapper.find('.thumbholder').css('width',extraWidth+10);
+        else if (this.extraWidth < self.options.respExtra) {
+          self.$wrapper.find('.thumbholder').css('width',this.extraWidth+10);
           self.$wrapper.find('.thumbholder').css('margin-left',width);
-          this.$element.css('margin-left',extraWidth);
-          this.setLeftMargin(extraWidth);
-          return extraWidth;
+          this.$element.css('margin-left',this.extraWidth);
+          this.setLeftMargin(this.extraWidth);
         }
-        return self.options.respExtra;  
+        this.extraWidth = self.options.respExtra;
       },
 
       setDimensionsFromLargestSlide: function (bullet, twidth) {
@@ -198,28 +197,29 @@
       beResponsive: function (width,height) {
         var self = this;
         var percent = 1;
-        var extraWidth = self.options.respExtra;
+        this.extraWidth = self.options.respExtra;
         var containWidth = self.$wrapper.parent().parent().width();
         var maxWidth = parseInt(self.$wrapper.css('max-width'));
         var newWidth = false;
         if (this.options.sideThumbs) {
-          extraWidth = this.setSideThumbSize(width,containWidth);
+          this.setSideThumbSize(width,containWidth);
         }
+          console.log("be responsive: "+this.extraWidth);
         // Zero out extra width so slideshow can start to be resized
         if (width >= containWidth || containWidth <= maxWidth) {
-          extraWidth = 0;
+          this.extraWidth = 0;
         }
-        if (width + extraWidth > containWidth || (width < maxWidth && containWidth < maxWidth)) {
+        if (width + this.extraWidth > containWidth || (width < maxWidth && containWidth < maxWidth)) {
             if (this.options.sideThumbs) {
               newWidth = containWidth - (self.options.thumbWidth + 5);              
-            } else if (!extraWidth) {
+            } else if (!this.extraWidth) {
               newWidth = containWidth;
             }
             if(!self.$wrapper.parent().hasClass('shrunk')) {
                 self.$wrapper.parent().addClass('shrunk');
                 self.$wrapper.parent().parent().parent().addClass('shrunk');
             }
-        } else if (width <= maxWidth && width + extraWidth < containWidth) {
+        } else if (width <= maxWidth && width + this.extraWidth < containWidth) {
             newWidth = maxWidth
             if(self.$wrapper.parent().hasClass('shrunk')) {
                 self.$wrapper.parent().removeClass('shrunk');
@@ -405,8 +405,12 @@
               .html(captionHTML); // Change HTML in Caption 
               //
               captionClass = $(captionLocation).attr('class');
+              
               this.$caption.attr('class', captionClass); // Add class caption TODO why is the id being set?
-
+              if (this.options.sideThumbs) {
+                // captions disappear so this needs to be done every time
+                this.setCaptionLeft();
+              }
               //Animations for Caption entrances
               if (this.options.captionHover) {
                   this.$wrapper.mouseleave(this.clearCaptionAfterMouseLeave);
@@ -494,16 +498,24 @@
 
       },
 
-      setLeftMargin: function(extraWidth) {
+      setLeftMargin: function(eW) {
+          console.log('setting the extrawidth:'+ eW);
+          this.extraWidth = (eW) ? eW : this.extraWidth;
+          console.log('setting the extrawidth2:'+ this.extraWidth);
           var self = this;
           // Navigation
-          self.$wrapper.find('.left').css('left',extraWidth);
+          self.$wrapper.find('.left').css('left',this.extraWidth);
           var distance = parseInt(self.$wrapper.find('.left').css('left'))+self.$element.width();
           self.$wrapper.find('.right').css('left',distance - self.$wrapper.find('.right').width());
           // Caption
-          this.$wrapper.find('.orbit-caption').css('left',extraWidth);
+          self.setCaptionLeft(this.extraWidth);
           // Timer
           self.$wrapper.find('.timer').css('left',distance - self.$wrapper.find('.timer').width());
+      },
+      
+      setCaptionLeft: function() {
+        console.log('settings the extrawidth:'+ this.extraWidth);
+        this.$wrapper.find('.orbit-caption').css('left',this.extraWidth);
       },
 
       setupDirectionalThumb: function (thumbHeight) {

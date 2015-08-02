@@ -5,6 +5,8 @@
     $preloader = $this->get_option('Preloader');
     $preload = $preloader['quantity'];
     $auto = $this->get_option("autoslide_temp");
+    $extrathumbarea = (int) $style['thumbareamargin'];
+    $extraspacing = $extrathumbarea + $respExtra;
     if (!$frompost) {
         $this->Gallery->loadData($gallery);
     }
@@ -60,7 +62,7 @@
                 sideThumbs: <?php echo ($fullthumb) ? 'true' : 'false'; ?>,
                 preloader: <?php echo ($preload) ? $preload : 5 ?>,
                 thumbWidth: <?php echo $thumbwidth; ?>,
-                respExtra: <?php echo $respExtra; ?>, // the width beyond the slide image
+                respExtra: <?php echo intval($extraspacing); ?>, // the width beyond the slide image
                 alwaysPlayBtn: <?php echo ($style['playshow'] == "A") ? 'true' : 'false'; ?>
             });
         });

@@ -566,12 +566,12 @@
               this.$wrapper.find('.thumbholder').hover(function() {
                 var s = b.scrollTop();    
                 b.css('overflow', 'hidden');
-                b.css('margin-right', 15);
+//                b.css('margin-right', 15);
                 b.scrollTop(s);
               }, function(){
                 var s = b.scrollTop();   
                 b.css('overflow', 'auto');
-                b.css('margin-right', 0);
+//                b.css('margin-right', 0);
                 b.scrollTop(s);
               });
           }

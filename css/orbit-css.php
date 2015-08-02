@@ -54,7 +54,6 @@ div.satl-wrapper {
         margin: 0 auto 15px auto;
     <?php } ?>
     background:<?php echo $styles['background']?>; /* VAR BACKGROUND */
-    border:<?php echo $styles['border']; ?>;
     }
 div.orbit-default.default-thumbs div.satl-wrapper {
     margin-bottom:<?php echo $fullthumbheight + $styles['thumbmargin']; ?>px;

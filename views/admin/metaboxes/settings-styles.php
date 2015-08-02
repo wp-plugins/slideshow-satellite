@@ -48,12 +48,6 @@ $styles = $this -> get_option('styles');
                             <span class="howto"><?php _e('height of the slideshow gallery', SATL_PLUGIN_NAME); ?></span>
 			</td>
 		</tr>
-		<tr class="border">
-			<th><label for="styles.border"><?php _e('Slideshow Border', SATL_PLUGIN_NAME); ?></label></th>
-			<td>
-                            <input type="text" name="styles[border]" value="<?php echo $styles['border']; ?>" id="styles.border" style="width:145px;" />
-			</td>
-		</tr>
 		<tr class="background">
 			<th><label for="styles.background"><?php _e('Slideshow Background', SATL_PLUGIN_NAME); ?></label></th>
 			<td>

@@ -158,12 +158,14 @@
           self.$wrapper.find('.thumbholder').css('width',this.options.thumbWidth+10);
           self.$wrapper.find('.thumbholder').css('margin-left',width);
           this.extraWidth = this.options.thumbWidth;
+          return;
         }
         else if (this.extraWidth < self.options.respExtra) {
           self.$wrapper.find('.thumbholder').css('width',this.extraWidth+10);
           self.$wrapper.find('.thumbholder').css('margin-left',width);
           this.$element.css('margin-left',this.extraWidth);
           this.setLeftMargin(this.extraWidth);
+          return;
         }
         this.extraWidth = self.options.respExtra;
       },

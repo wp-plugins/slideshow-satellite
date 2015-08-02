@@ -206,7 +206,6 @@
         if (this.options.sideThumbs) {
           this.setSideThumbSize(width,containWidth);
         }
-          console.log("be responsive: "+this.extraWidth);
         // Zero out extra width so slideshow can start to be resized
         if (width >= containWidth || containWidth <= maxWidth) {
           this.extraWidth = 0;
@@ -501,9 +500,7 @@
       },
 
       setLeftMargin: function(eW) {
-          console.log('setting the extrawidth:'+ eW);
           this.extraWidth = (eW) ? eW : this.extraWidth;
-          console.log('setting the extrawidth2:'+ this.extraWidth);
           var self = this;
           // Navigation
           self.$wrapper.find('.left').css('left',this.extraWidth);
